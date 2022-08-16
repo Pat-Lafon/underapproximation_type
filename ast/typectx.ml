@@ -19,7 +19,7 @@ module F (R : Refinement.T) = struct
     | Some ty -> ty
 
   let add_to_right ctx (ty, id) =
-    if exists ctx id then _failatwith __FILE__ __LINE__ ""
+    if exists ctx id then _failatwith __FILE__ __LINE__ ("Variable already exists: " ^ id )
     else ctx @ [ (id, [ ty ]) ]
 
   let add_to_rights ctx l = List.fold_left add_to_right ctx l

@@ -14,6 +14,7 @@ let mode_of_ocamlexpr e =
 
 let overtype_of_ocamlexpr expr =
   let open T in
+  let () = Printf.printf "\nExpr: %s\n\n" (Pprintast.string_of_expression expr) in
   let rec aux expr =
     match expr.pexp_desc with
     | Pexp_apply (x, [ prop ]) ->

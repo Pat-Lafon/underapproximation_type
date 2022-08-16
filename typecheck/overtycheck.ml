@@ -7,7 +7,7 @@ open Languages.SMTSimpleTypectx
 
 let infer_id ctx name =
   match List.find_opt (fun (y, _) -> String.equal y name.x) ctx with
-  | None -> failwith "free variable in refinement type"
+  | None -> failwith ("free variable in refinement type: " ^ name.x)
   | Some (_, ty) -> P.{ ty; x = name.x }
 
 let rec infer_lit ctx lit =
