@@ -24,8 +24,8 @@ let _check q =
   match smt_solve ctx q with
   | SmtUnsat -> true
   | SmtSat model ->
-      Printf.printf "model:\n%s\n" @@ Z3.Model.to_string model;
-      (* pretty_print_model model; *)
+      (* Printf.printf "model:\n%s\n" @@ Z3.Model.to_string model; *)
+      pretty_print_model model;
       false
   | Timeout -> failwith "smt timeout"
 

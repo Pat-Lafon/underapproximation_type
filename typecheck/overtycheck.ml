@@ -6,7 +6,7 @@ open Sugar
 let infer_id ctx name =
   let open Autov.Prop in
   match Typectx.find_opt ctx name.x with
-  | None -> failwith "free variable in refinement type"
+  | None -> failwith ("free variable in refinement type: " ^ name.x)
   | Some ty -> { ty; x = name.x }
 
 let rec infer_lit ctx lit =
