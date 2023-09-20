@@ -1,18 +1,19 @@
 (copy_files# under/*.ml{,i})
+
 (library
+ (public_name underapproximation_type.typecheck)
  (name typecheck)
  (wrapped true)
  (libraries utils languages core translate abstraction env)
  (modules
-   opcheck
-   oversub
-   termcheck
-   undercheck
-   undersub
-   undertycheck
-   checkaux
-   dt_eq
-   litcheck
-   param
-   underctx
- ))
+  opcheck
+  oversub
+  termcheck
+  undercheck
+  undersub
+  undertycheck
+  checkaux
+  dt_eq
+  litcheck
+  param
+  underctx))

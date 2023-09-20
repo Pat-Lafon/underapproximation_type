@@ -1,23 +1,23 @@
 (library
+ (public_name underapproximation_type.autov)
  (name autov)
  (wrapped true)
  (modules
-   ast
-   autov
-   check
-   encoding
-   enum
-   frontend
-   func_interp
-   parse
-   peval
-   prop
-   query
-   stat
-   unify_qvs
-   unique
-   z3aux
- )
- (preprocess (pps ppx_optcomp ppx_compare ppx_sexp_conv))
- (libraries zzdatatype str z3 ocaml_parser normalty utils z3parser env)
-)
+  ast
+  autov
+  check
+  encoding
+  enum
+  frontend
+  func_interp
+  parse
+  peval
+  prop
+  query
+  stat
+  unify_qvs
+  unique
+  z3aux)
+ (preprocess
+  (pps ppx_optcomp ppx_compare ppx_sexp_conv))
+ (libraries zzdatatype str z3 ocaml_parser normalty utils z3parser env))

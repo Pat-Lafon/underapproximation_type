@@ -1,20 +1,14 @@
 (ocamllex
- (modules lexer)
-)
+ (modules lexer))
 
 (menhir
  (modules parser)
- (flags -lg 1 -la 1 -lc 2)
-)
+ (flags -lg 1 -la 1 -lc 2))
 
 (library
+ (public_name underapproximation_type.z3parser)
  (name z3parser)
  (wrapped false)
  (modules_without_implementation past)
- (modules
-   lexer
-   parser
-   past
- )
- (libraries utils menhirLib core)
-)
+ (modules lexer parser past)
+ (libraries utils menhirLib core))
