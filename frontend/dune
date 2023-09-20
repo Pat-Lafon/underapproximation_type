@@ -1,22 +1,22 @@
 (library
+ (public_name underapproximation_type.frontend)
  (name frontend)
  (wrapped true)
  (libraries utils ast core ocaml_parser abstraction env)
  (modules
-   ; qtypectx
-   quantified
-   ; qunderty
-   anormal
-   expr
-   lemma
-   overty
-   pat
-   structure
-   typectx
-   utypectx
-   typedec
-   underty
-   value
- )
- (preprocess (pps ppx_optcomp ppx_compare ppx_sexp_conv))
-)
+  ; qtypectx
+  quantified
+  ; qunderty
+  anormal
+  expr
+  lemma
+  overty
+  pat
+  structure
+  typectx
+  utypectx
+  typedec
+  underty
+  value)
+ (preprocess
+  (pps ppx_optcomp ppx_compare ppx_sexp_conv)))

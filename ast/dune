@@ -1,24 +1,25 @@
 (library
+ (public_name underapproximation_type.ast)
  (name ast)
  (wrapped false)
  (modules_without_implementation type quantifiable refinement)
  (modules
-   anormal
-   ast
-   lemma
-   modu
-   op
-   overty
-   prim
-   refinement
-   simpletypectx
-   termlang
-   type
-   type_dec
-   typectx
-   underty
-   value
- )
- (preprocess (pps ppx_optcomp ppx_compare ppx_sexp_conv))
-  (libraries zzdatatype autov utils normalty)
-)
+  anormal
+  ast
+  lemma
+  modu
+  op
+  overty
+  prim
+  refinement
+  simpletypectx
+  termlang
+  type
+  quantifiable
+  type_dec
+  typectx
+  underty
+  value)
+ (preprocess
+  (pps ppx_optcomp ppx_compare ppx_sexp_conv))
+ (libraries zzdatatype autov utils normalty))

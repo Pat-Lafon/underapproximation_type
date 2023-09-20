@@ -35,8 +35,8 @@ ocolor                      1.3.0       Print with style in your terminal using 
 # dune exec -- bin/main.exe print-coverage-types meta-config.json data/benchmark/quickchick/sizedlist/_under.ml
 ```
 
-- Type check a program agaisnt the given type.
-  + The file `meta-config.json` contain the configurations of Poirot.
+- Type-check a program against the given type.
+  + The file `meta-config.json` contains the configurations of Poirot.
   + The file `data/benchmark/quickchick/sizedlist/prog.ml` contains the target program to be verified.
   + The file `data/benchmark/quickchick/sizedlist/_under.ml` contains the coverage refinement types.
   + By default, the verification result and statistics will be saved in the file `.result`.
@@ -52,7 +52,7 @@ ocolor                      1.3.0       Print with style in your terminal using 
 # python3 scripts/get_table1.py
 ```
 
-when add the `verbose` flag, the script will print commands of each benchmark.
+When adding the `verbose` flag, the script will print commands of each benchmark.
 
 ```
 # python3 scripts/get_table1.py verbose

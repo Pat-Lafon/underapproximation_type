@@ -1,11 +1,7 @@
 (library
+ (public_name underapproximation_type.translate)
  (name translate)
  (wrapped false)
- (modules
-   term2normalanormal
-   trans
-   na
- )
+ (modules term2normalanormal trans na)
  ; (preprocess (pps ppx_optcomp ppx_compare ppx_sexp_conv))
- (libraries zzdatatype utils ast frontend abstraction)
-)
+ (libraries zzdatatype utils ast frontend abstraction))

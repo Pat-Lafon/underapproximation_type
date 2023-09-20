@@ -1,10 +1,8 @@
 (library
+ (public_name underapproximation_type.abstraction)
  (name abstraction)
  (wrapped true)
  (libraries utils ast core)
- (modules
-   prim
-   prim_map
- )
- (preprocess (pps ppx_optcomp ppx_compare ppx_sexp_conv))
-)
+ (modules prim prim_map)
+ (preprocess
+  (pps ppx_optcomp ppx_compare ppx_sexp_conv)))

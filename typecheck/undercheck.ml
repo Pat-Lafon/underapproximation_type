@@ -75,10 +75,12 @@ and value_type_check (uctx : uctx) (a : NL.value NL.typed) (ty : UT.t) : unit =
   let result =
     match (a.NL.x, ty) with
     | NL.Exn, _ | NL.Lit _, _ | NL.Var _, _ ->
+        print_endline "value_type_check::Exn/Lit/Var";
         let x = value_type_infer uctx a in
         subtyping_check __FILE__ __LINE__ uctx x ty
     | ( NL.Lam { lamarg = id; lambody = body },
         UnderTy_over_arrow { argname; argty; retty } ) ->
+        print_endline "value_type_check::Lam";
         let () =
           match Typectx.get_opt uctx.nctx id.x with
           | Some _ -> _failatwith __FILE__ __LINE__ "die"
@@ -94,6 +96,7 @@ and value_type_check (uctx : uctx) (a : NL.value NL.typed) (ty : UT.t) : unit =
           body retty
     | ( NL.Lam { lamarg = id; lambody = body },
         UnderTy_under_arrow { argty; retty } ) ->
+        print_endline "value_type_check::Lam";
         let () =
           match Nctx.get_opt uctx.nctx id.x with
           | Some _ -> _failatwith __FILE__ __LINE__ "die"
@@ -109,6 +112,7 @@ and value_type_check (uctx : uctx) (a : NL.value NL.typed) (ty : UT.t) : unit =
     | NL.Lam _, _ -> _failatwith __FILE__ __LINE__ ""
     | ( NL.Fix { fixname; fstarg; lambody },
         UnderTy_over_arrow { argname; argty; retty } ) ->
+        print_endline "value_type_check::Fix";
         let a = NL.{ x = Rename.unique fstarg.x; ty = fstarg.ty } in
         let _ = erase_check_mk_id __FILE__ __LINE__ a (ot_to_ut argty) in
         let f = erase_check_mk_id __FILE__ __LINE__ fixname ty in
@@ -475,14 +479,19 @@ and term_type_check (uctx : uctx) (x : NL.term NL.typed) (ty : UT.t) : unit =
   let _ = _check_equality __FILE__ __LINE__ NT.eq (UT.erase ty) (snd @@ x.ty) in
   let open NL in
   match (x.x, ty) with
-  | V v, _ -> value_type_check uctx v ty
+  | V v, _ ->
+      print_endline "term_type_check:V";
+      value_type_check uctx v ty
   | LetTu { tu; args; body }, _ ->
+      print_endline "term_type_check:LetTu";
       let _ = handle_lettu uctx (tu, args, body) (Some ty) in
       ()
   | LetDeTu { tu; args; body }, _ ->
+      print_endline "term_type_check:LetDeTu";
       let _ = handle_letdetu uctx (tu, args, body) (Some ty) in
       ()
   | LetApp { ret; f; args; body }, _ -> (
+      print_endline "term_type_check:LetApp";
       let fty = id_type_infer uctx f in
       let argsty = List.map (value_type_infer uctx) args in
       match fty with
@@ -491,6 +500,7 @@ and term_type_check (uctx : uctx) (x : NL.term NL.typed) (ty : UT.t) : unit =
           let _ = handle_letapp uctx (ret, f.x, fty, argsty, body) (Some ty) in
           ())
   | LetDtConstructor { ret; f; args; body }, _ -> (
+      print_endline "term_type_check:LetDtConstructor";
       (* NOTE: add a size before each data type argument *)
       let argsty = List.map (value_type_infer uctx) args in
       let fnty, argsty = dt_expand f argsty in
@@ -518,6 +528,7 @@ and term_type_check (uctx : uctx) (x : NL.term NL.typed) (ty : UT.t) : unit =
           ()
       | _ -> _failatwith __FILE__ __LINE__ "unimp: still multi")
   | LetOp { ret; op; args; body }, _ ->
+      print_endline "term_type_check:LetOp";
       let opty =
         Prim.get_primitive_under_ty
           ( Op.op_to_string op,
@@ -529,9 +540,11 @@ and term_type_check (uctx : uctx) (x : NL.term NL.typed) (ty : UT.t) : unit =
       let _ = handle_letapp uctx (ret, fname, opty, argsty, body) (Some ty) in
       ()
   | LetVal { lhs; rhs; body }, _ ->
+      print_endline "term_type_check:LetVal";
       let _ = handle_letval uctx (lhs, rhs, body) (Some ty) in
       ()
   | Ite _, _ | Match _, _ ->
+      print_endline "term_type_check:Ite/Match";
       let x = term_type_infer uctx x in
       Undersub.subtyping_check __FILE__ __LINE__ uctx.ctx x ty
 
