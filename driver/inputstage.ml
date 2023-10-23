@@ -107,16 +107,18 @@ let load_user_defined_under_refinments refine_file =
   let randomness_refinements =
     Ocaml_parser.Frontend.parse ~sourcefile:(Env.get_randomp_path ())
   in
+  (* let () = *)
+  (*   Printf.printf "Env.get_randomp_path ()" *)
+  (*     (Env.get_randomp_path ()) *)
+  (* > underapproximation_type/data/predefined/builtin_randomness_coverage_typing.ml *)
   let refinements =
+    (* See ocaml_parser/driver/frontend.ml *)
     match Ocaml_parser.Frontend.parse ~sourcefile:refine_file with
     | [] -> failwith "method predicates list is expected"
     | _ :: code -> code
   in
-  (* let () = *)
-  (*   Printf.printf "load_under_refinments\n%s\n" *)
-  (*     (Ocaml_parser.Pprintast.string_of_structure refinements) *)
-  (* in *)
   (* let () = failwith "end" in *)
+  let () = Printf.printf "randomness_refinements: %s\n" (Ocaml_parser.Pprintast.string_of_structure randomness_refinements) in
   _load_under_refinments (randomness_refinements @ refinements)
 
 open Languages
