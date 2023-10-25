@@ -11,6 +11,14 @@ type lit =
   | ACbool of bool
 [@@deriving sexp]
 
+let rec lit_to_string (l : lit) : id =
+  match l with
+  | ACint n -> string_of_int n
+  | AVar id -> id.x
+  | AOp2 (op, a, b) ->
+      Printf.sprintf "(%s %s %s)" (lit_to_string a) op (lit_to_string b)
+  | ACbool b -> string_of_bool b
+
 type t =
   | Lit of lit
   | Implies of t * t
@@ -23,6 +31,40 @@ type t =
   | Forall of string typed * t
   | Exists of string typed * t
 [@@deriving sexp]
+
+let rec to_string (p : t) : id =
+  match p with
+  | Lit l -> lit_to_string l
+  | Implies (e1, e2) ->
+      Printf.sprintf "(%s) -> (%s)" (to_string e1) (to_string e2)
+  | Ite (e1, e2, e3) ->
+      Printf.sprintf "if %s then %s else %s" (to_string e1) (to_string e2)
+        (to_string e3)
+  | Not e -> Printf.sprintf "not (%s)" (to_string e)
+  | And [] -> failwith "to_string: empty And"
+  | And (h :: []) -> to_string h
+  | And (h :: t) -> to_string h ^ " && " ^ to_string (And t)
+  | Or [] -> failwith "to_string: empty Or"
+  | Or (h :: []) -> to_string h
+  | Or (h :: t) -> to_string h ^ " || " ^ to_string (Or t)
+  | Iff (e1, e2) -> Printf.sprintf "(%s) <-> (%s)" (to_string e1) (to_string e2)
+  | MethodPred (">=", [ a; b ]) ->
+      Printf.sprintf "(%s) >= (%s)" (lit_to_string a) (lit_to_string b)
+  | MethodPred ("<=", [ a; b ]) ->
+      Printf.sprintf "(%s) <= (%s)" (lit_to_string a) (lit_to_string b)
+  | MethodPred ("==", [ a; b ]) ->
+      Printf.sprintf "(%s) == (%s)" (lit_to_string a) (lit_to_string b)
+  | MethodPred ("<", [ a; b ]) ->
+      Printf.sprintf "(%s) < (%s)" (lit_to_string a) (lit_to_string b)
+  | MethodPred (">", [ a; b ]) ->
+      Printf.sprintf "(%s) > (%s)" (lit_to_string a) (lit_to_string b)
+  | MethodPred (mp, args) ->
+      let args =
+        String.concat ", " @@ List.map (fun a -> lit_to_string a) args
+      in
+      Printf.sprintf "%s(%s)" mp args
+  | Forall (u, e) -> Printf.sprintf "forall %s. %s" u.x (to_string e)
+  | Exists (u, e) -> Printf.sprintf "exists %s. %s" u.x (to_string e)
 
 let mk_true = Lit (ACbool true)
 let mk_false = Lit (ACbool false)

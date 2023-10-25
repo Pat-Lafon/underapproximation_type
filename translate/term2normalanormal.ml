@@ -170,7 +170,10 @@ let rec convert (cont : cont) (e : term opttyped) (ename : string option) :
         match v with
         | I i -> ConstI i
         | B b -> ConstB b
-        | _ -> _failatwith __FILE__ __LINE__ "unimp complex const"
+        | _ ->
+            _failatwith __FILE__ __LINE__
+              ("unimp complex const: " ^ Sexplib.Sexp.to_string_hum
+             @@ Value.sexp_of_t v)
       in
       let lit = { ty = ety; x = Lit lit } in
       let res =
