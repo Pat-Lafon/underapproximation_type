@@ -480,6 +480,12 @@ module MMT = struct
     | Ot ot -> ot_fv ot
     | Consumed ut -> ut_fv ut
     | Ut ut -> ut_fv ut
+
+  let mmt_subst_id t x y =
+    match t with
+    | Ot ot -> Ot (ot_subst_id ot x y)
+    | Ut (UtNormal ut) -> Ut (UtNormal (subst_id ut x y))
+    | _ -> failwith "mmt_subst_id can't handle this type"
 end
 
 module Utyped = struct
