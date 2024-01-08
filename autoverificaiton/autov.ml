@@ -8,6 +8,7 @@ exception FailWithModel of string * Z3.Model.model
 let _failwithmodel file line msg model =
   raise (FailWithModel (Printf.sprintf "[%s:%i] %s" file line msg, model))
 
+(* Timeout is in milliseconds *)
 let ctx =
   Z3.mk_context [ ("model", "true"); ("proof", "false"); ("timeout", "99999") ]
 

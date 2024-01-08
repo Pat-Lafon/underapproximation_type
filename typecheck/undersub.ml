@@ -592,21 +592,30 @@ let subtyping_check_ot file line (ctx : Typectx.ctx) (inferred_ty : UT.ot)
       raise (FailTimeout (__FILE__, __LINE__))
   | e -> raise e
 
-let type_err_to_false f =
+type bool_or_timeout = Result of bool | Timeout
+
+let bool_or_timeout_to_string = function
+  | Result b -> string_of_bool b
+  | Timeout -> "timeout"
+
+let type_err_to_bool_or_timeout f =
   try
     let _ = f () in
-    true
+    Result true
   with
-  | FailwithCex _ | FailUnderAgainstOver _ | FailOverAgainstUnder _
-  | FailTimeout _ ->
-      false
+  | FailwithCex _ | FailUnderAgainstOver _ | FailOverAgainstUnder _ ->
+      Result false
+  | FailTimeout _ -> Timeout
   | FailTypeConsumedonsumed _ ->
       let () =
         Env.show_debug_typing @@ fun _ ->
         Pp.printf "@{<orange>Over Type Check failed:@}%s\n" "consumed"
       in
-      false
+      Result false
   | e -> raise e
+
+let type_err_to_false f =
+  match type_err_to_bool_or_timeout f with Result b -> b | Timeout -> false
 
 let subtyping_check_bool file line (ctx : Typectx.ctx) (inferred_ty : UT.t)
     (target_ty : UT.t) =
@@ -631,3 +640,11 @@ let mmt_check file line ctx t1 t2 =
 
 let mmt_check_bool file line ctx t1 t2 =
   type_err_to_false (fun () -> mmt_check file line ctx t1 t2)
+
+let mmt_check_bool_or_timeout file line ctx t1 t2 =
+  type_err_to_bool_or_timeout (fun () -> mmt_check file line ctx t1 t2)
+
+let subtyping_check_or_timeout file line (ctx : Typectx.ctx)
+    (inferred_ty : UT.t) (target_ty : UT.t) =
+  type_err_to_bool_or_timeout (fun () ->
+      subtyping_check file line ctx inferred_ty target_ty)
