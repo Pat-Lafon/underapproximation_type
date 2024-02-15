@@ -9,7 +9,7 @@ module F (Type : Type.T) = struct
 
   let get_ty ctx id =
     match get_opt ctx id with
-    | None -> failwith "Not found"
+    | None -> failwith ("Not found: " ^ id)
     | Some (_, ty) -> ty
 
   let empty = []

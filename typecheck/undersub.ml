@@ -564,7 +564,9 @@ let subtyping_check file line (ctx : Typectx.ctx) (inferred_ty : UT.t)
   | Autov.FailWithModel (msg, m) ->
       let () =
         Env.show_debug_typing @@ fun _ ->
-        Pp.printf "@{<orange>Under Type Check failed:@}%s\n" msg
+        Pp.printf "@{<orange>Under Type Check failed:@}%s\n" msg;
+        Pp.printf "@{<orange>Under Type Check failed:@}%s\n"
+          (Z3.Model.to_string m)
       in
       raise (FailwithCex (msg, m))
   | Autov.SMTTIMEOUT ->
