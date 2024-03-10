@@ -22,6 +22,17 @@ module T = struct
     | UnderTy_tuple of t list
   [@@deriving sexp]
 
+  let rec to_string (ty : t) : id =
+    match ty with
+    | UnderTy_base { basename; normalty; prop } ->
+        Printf.sprintf "[%s: %s | %s]" basename (NT.to_string normalty)
+          (P.to_string prop)
+    | UnderTy_over_arrow { argname : id; argty : ot; retty : t } ->
+        Printf.sprintf "{%s as %s: %s | %s} -> %s" argty.basename argname
+          (NT.to_string argty.normalty)
+          (P.to_string argty.prop) (to_string retty)
+    | _ -> sexp_of_t ty |> Core.Sexp.to_string_hum
+
   open Zzdatatype.Datatype
 
   let ot_to_ut { basename; normalty; prop } =
@@ -453,39 +464,42 @@ module MMT = struct
   type t = Ot of T.ot | Ut of ut_with_copy | Consumed of ut_with_copy
   [@@deriving sexp]
 
-  open T
-
   let ut_eq_ = function
-    | UtNormal ut1, UtNormal ut2 -> strict_eq ut1 ut2
+    | UtNormal ut1, UtNormal ut2 -> T.strict_eq ut1 ut2
     | UtCopy id1, UtCopy id2 -> Normalty.Ast.Ntyped.typed_eq id1 id2
     | _, _ -> false
 
   let eq_ = function
-    | Ot ot1, Ot ot2 -> ot_strict_eq ot1 ot2
+    | Ot ot1, Ot ot2 -> T.ot_strict_eq ot1 ot2
     | Ut ut1, Ut ut2 -> ut_eq_ (ut1, ut2)
     | Consumed ut1, Consumed ut2 -> ut_eq_ (ut1, ut2)
     | _, _ -> false
 
   let eq a b = eq_ (a, b)
-  let ut_erase_ = function UtNormal ut -> erase ut | UtCopy id -> id.ty
+  let ut_erase_ = function UtNormal ut -> T.erase ut | UtCopy id -> id.ty
 
   let erase = function
     | Ot ot -> ot.normalty
     | Ut ut -> ut_erase_ ut
     | Consumed ut -> ut_erase_ ut
 
-  let ut_fv = function UtNormal ut -> fv ut | UtCopy id -> [ id.x ]
+  let ut_fv = function UtNormal ut -> T.fv ut | UtCopy id -> [ id.x ]
 
   let fv = function
-    | Ot ot -> ot_fv ot
+    | Ot ot -> T.ot_fv ot
     | Consumed ut -> ut_fv ut
     | Ut ut -> ut_fv ut
 
   let mmt_subst_id t x y =
     match t with
-    | Ot ot -> Ot (ot_subst_id ot x y)
-    | Ut (UtNormal ut) -> Ut (UtNormal (subst_id ut x y))
+    | Ot ot -> Ot (T.ot_subst_id ot x y)
+    | Ut (UtNormal ut) -> Ut (UtNormal (T.subst_id ut x y))
     | _ -> failwith "mmt_subst_id can't handle this type"
+
+  let to_string ty : string =
+    match ty with
+    | Ut (UtNormal ut) -> T.to_string ut
+    | _ -> sexp_of_t ty |> Core.Sexp.to_string_hum
 end
 
 module Utyped = struct
