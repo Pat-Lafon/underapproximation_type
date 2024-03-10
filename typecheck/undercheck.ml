@@ -579,9 +579,13 @@ let struc_check l notations libs r =
           in
           let ctx = Typectx.empty in
           let res =
-            Undersub.type_err_to_false (fun () ->
-                type_check { nctx; ctx; libctx } body ty)
+            type_check { nctx; ctx; libctx } body ty;
+            true
           in
+          (* let res =
+               Undersub.type_err_to_false (fun () ->
+                   type_check { nctx; ctx; libctx } body ty)
+             in *)
           let () =
             if res then
               Env.show_debug_typing @@ fun _ ->
