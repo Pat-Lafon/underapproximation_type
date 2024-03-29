@@ -27,6 +27,7 @@ let item_check (axioms, uctx) imps = function
           (FrontendTyped.layout_rty rty)
       in
       let _ = Nt._type_unify __FILE__ __LINE__ imp.ty (erase_rty rty) in
+      (* let _ = failwith "end" in *)
       match
         Termcheck.value_type_check_with_rec_check
           { builtin_ctx = uctx; local_ctx = emp; axioms }

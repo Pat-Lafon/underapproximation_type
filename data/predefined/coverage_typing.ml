@@ -109,6 +109,40 @@ let[@library] Lhpnode =
     : [%v: int leftisthp])
     [@under]
 
+(* STLC *)
+
+let[@library] Stlc_ty_nat = (stlc_ty_nat v : [%v: stlc_ty]) [@under]
+
+let[@library] Stlc_ty_arr =
+  let t1 = (true : [%v: stlc_ty]) [@over] in
+  let t2 = (true : [%v: stlc_ty]) [@over] in
+  (stlc_ty_arr1 v t1 && stlc_ty_arr2 v t2 : [%v: stlc_ty]) [@under]
+
+let[@library] Stlc_const =
+  let n = (true : [%v: int]) [@over] in
+  (stlc_const v n : [%v: stlc_term]) [@under]
+
+let[@library] Stlc_id =
+  let n = (true : [%v: int]) [@over] in
+  (stlc_id v n : [%v: stlc_term]) [@under]
+
+let[@library] Stlc_app =
+  let t1 = (true : [%v: stlc_term]) [@over] in
+  let t2 = (true : [%v: stlc_term]) [@over] in
+  (stlc_app1 v t1 && stlc_app2 v t2 : [%v: stlc_term]) [@under]
+
+let[@library] Stlc_abs =
+  let ty = (true : [%v: stlc_ty]) [@over] in
+  let body = (true : [%v: stlc_term]) [@over] in
+  (stlc_abs_ty v ty && stlc_abs_body v body : [%v: stlc_term]) [@under]
+
+let[@library] Stlc_tyctx_nil = (stlc_tyctx_emp v : [%v: stlc_tyctx]) [@under]
+
+let[@library] Stlc_tyctx_cons =
+  let ty = (true : [%v: stlc_ty]) [@over] in
+  let ctx = (true : [%v: stlc_tyctx]) [@over] in
+  (stlc_tyctx_hd v ty && stlc_tyctx_tl v ctx : [%v: stlc_tyctx]) [@under]
+
 (* the built-in random generators *)
 
 let[@library] int_range =

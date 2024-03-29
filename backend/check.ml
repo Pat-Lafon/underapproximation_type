@@ -60,7 +60,30 @@ let smt_solve ctx assertions =
   let _, res = Sugar.clock (fun () -> solver_result solver) in
   res
 
-let extend = [ ("len", [ "hd"; "tl"; "emp" ]) ]
+let extend =
+  [
+    ("len", [ "hd"; "tl"; "emp" ]);
+    ( "typing",
+      [
+        "is_const";
+        "is_var";
+        "is_abs";
+        "is_app";
+        "num_app";
+        "stlc_ty_nat";
+        "stlc_ty_arr1";
+        "stlc_ty_arr2";
+        "stlc_const";
+        "stlc_id";
+        "stlc_app1";
+        "stlc_app2";
+        "stlc_abs_ty";
+        "stlc_abs_body";
+        "stlc_tyctx_emp";
+        "stlc_tyctx_hd";
+        "stlc_tyctx_tl";
+      ] );
+  ]
 
 let smt_neg_and_solve ctx axioms vc =
   (* let () = *)
@@ -91,6 +114,8 @@ let smt_neg_and_solve ctx axioms vc =
         List.for_all (fun mp -> List.exists (String.equal mp) current_mps) mps)
       axioms
   in
+  (* let () = Printf.printf "Num of axioms: %i\n" (List.length axioms) in *)
+  (* let () = failwith "end" in *)
   let assertions = List.map (Propencoding.to_z3 ctx) (axioms @ [ Not vc ]) in
   let time_t, res = Sugar.clock (fun () -> smt_solve ctx assertions) in
   let () =

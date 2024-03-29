@@ -80,3 +80,26 @@ val leftisthp_root : 'a leftisthp -> 'a -> bool
 val leftisthp_rank : 'a leftisthp -> int -> bool
 val leftisthp_lch : 'a leftisthp -> 'a leftisthp -> bool
 val leftisthp_rch : 'a leftisthp -> 'a leftisthp -> bool
+
+(* for stlc *)
+val is_const : stlc_term -> bool
+val is_var : stlc_term -> bool
+val is_abs : stlc_term -> bool
+val is_app : stlc_term -> bool
+val typing : stlc_tyctx -> stlc_term -> stlc_ty -> bool
+val num_app : stlc_term -> int -> bool
+
+(* val dec_pair : stlc_ty -> int -> int -> bool *)
+val num_arr : stlc_ty -> int -> bool
+val stlc_ty_nat : stlc_ty -> bool
+val stlc_ty_arr1 : stlc_ty -> stlc_ty -> bool
+val stlc_ty_arr2 : stlc_ty -> stlc_ty -> bool
+val stlc_const : stlc_term -> int -> bool
+val stlc_id : stlc_term -> int -> bool
+val stlc_app1 : stlc_term -> stlc_term -> bool
+val stlc_app2 : stlc_term -> stlc_term -> bool
+val stlc_abs_ty : stlc_term -> stlc_ty -> bool
+val stlc_abs_body : stlc_term -> stlc_term -> bool
+val stlc_tyctx_emp : stlc_tyctx -> bool
+val stlc_tyctx_hd : stlc_tyctx -> stlc_ty -> bool
+val stlc_tyctx_tl : stlc_tyctx -> stlc_tyctx -> bool

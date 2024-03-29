@@ -23,7 +23,7 @@ let preproress meta_config_file source_file () =
   let _, code = struct_check init_normal_ctx code in
   (* let _ = Pp.printf "%s\n" (FrontendTyped.layout_structure code) in *)
   let code = normalize_structure code in
-  (*   let _ = Pp.printf "%s\n" (FrontendTyped.layout_structure code) in *)
+  (* let _ = Pp.printf "%s\n" (FrontendTyped.layout_structure code) in *)
   code
 
 let print_source_code meta_config_file source_file () =
@@ -49,19 +49,20 @@ let subtype_check_ meta_config_file source_file () =
   let () = Pp.printf "Result: %b\n" res in
   ()
 
-let rec_arg = "rec_arg"
+let rec_arg_list = [ "rec_arg"; "rec_arg2" ]
 
 let handle_template templates =
-  let rec_arg, templates =
-    List.partition (fun x -> String.equal x.x rec_arg)
-    @@ Typing.Itemcheck.gather_axioms templates
+  let templates = Typing.Itemcheck.gather_axioms templates in
+  let rec_arg_temp =
+    List.map
+      (fun y ->
+        match List.find_opt (fun x -> String.equal x.x y) templates with
+        | None ->
+            failwith (Sugar.spf "cannot find builtin rec arg constraints: %s" y)
+        | Some x -> (x.x, x.ty))
+      rec_arg_list
   in
-  let rec_arg =
-    match rec_arg with
-    | [ x ] -> x.ty
-    | _ -> failwith "cannot find builtin rec arg constraints"
-  in
-  let () = Typing.Termcheck.init_rec_arg rec_arg in
+  let () = Typing.Termcheck.init_rec_arg rec_arg_temp in
   let temp_names = Env.get_uninterops () in
   let templates =
     List.map

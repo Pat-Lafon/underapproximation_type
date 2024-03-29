@@ -7,15 +7,30 @@ open Subtyping
 type t = Nt.t
 
 let layout_ty = Nt.layout
-let _rec_arg : t prop option ref = ref None
-let init_rec_arg x = _rec_arg := Some x
+let _rec_arg : (string * t prop) list ref = ref []
+let init_rec_arg x = _rec_arg := x
 
-let apply_rec_arg arg =
-  match !_rec_arg with
-  | Some p ->
+let apply_rec_arg1 arg =
+  match
+    List.find_opt (fun (name, _) -> String.equal name "rec_arg") !_rec_arg
+  with
+  | Some (_, p) ->
       let arg = (AVar arg) #: arg.ty in
       let param = (AVar default_v #: Nt.int_ty) #: Nt.int_ty in
       let phi = apply_pi_prop (apply_pi_prop p arg) param in
+      Cty { nty = Nt.int_ty; phi }
+  | None -> _failatwith __FILE__ __LINE__ "die"
+
+let apply_rec_arg2 arg1 param1 arg2 =
+  match
+    List.find_opt (fun (name, _) -> String.equal name "rec_arg2") !_rec_arg
+  with
+  | Some (_, p) ->
+      let arg1, param1, arg2 =
+        map3 (fun x -> (AVar x) #: x.ty) (arg1, param1, arg2)
+      in
+      let param2 = (AVar default_v #: Nt.int_ty) #: Nt.int_ty in
+      let phi = List.fold_left apply_pi_prop p [ arg1; param1; arg2; param2 ] in
       Cty { nty = Nt.int_ty; phi }
   | None -> _failatwith __FILE__ __LINE__ "die"
 
@@ -110,29 +125,79 @@ and value_type_check (uctx : uctx) (a : (t, t value) typed) (rty : t rty) :
       Some (VLam { lamarg; body }) #: rty
   | VLam _, _ -> _failatwith __FILE__ __LINE__ ""
   | VFix { fixname; fixarg; body }, RtyBaseArr { argcty; arg; retty } ->
-      let rec_constraint_cty = apply_rec_arg arg #: fixarg.ty in
-      let () = init_cur_rec_func_name (fixname.x, rec_constraint_cty) in
-      let rty' =
-        let a = { x = Rename.unique arg; ty = fixarg.ty } in
-        RtyBaseArr
-          {
-            argcty = intersect_ctys [ argcty; rec_constraint_cty ];
-            arg = a.x;
-            retty = subst_rty_instance arg (AVar a) retty;
-          }
-      in
-      let binding = arg #: (RtyBase { ou = true; cty = argcty }) in
-      let body =
-        body #-> (subst_term_instance fixarg.x (VVar arg #: fixarg.ty))
-      in
-      let* body' =
-        term_type_check
-          (add_to_rights uctx [ binding; fixname.x #: rty' ])
-          body retty
-      in
-      Some
-        (VFix { fixname = fixname.x #: rty; fixarg = binding; body = body' })
-        #: rty
+      let _, ret_nty = Nt.destruct_arr_tp fixname.ty in
+      (* For STLC, we use a different recursion template *)
+      if String.equal "stlc_term" (layout_ty ret_nty) then
+        match (body.x, retty) with
+        | ( CVal { x = VLam { lamarg; body }; _ },
+            RtyBaseArr { argcty = argcty1; arg = arg1; retty } ) ->
+            let rty' =
+              let arg' = { x = Rename.unique arg; ty = fixarg.ty } in
+              let arg = arg #: fixarg.ty in
+              let arg1' = { x = Rename.unique arg1; ty = lamarg.ty } in
+              let arg1 = arg1 #: lamarg.ty in
+              let rec_constraint_cty = apply_rec_arg2 arg arg' arg1 in
+              RtyBaseArr
+                {
+                  argcty;
+                  arg = arg'.x;
+                  retty =
+                    RtyBaseArr
+                      {
+                        argcty = intersect_ctys [ argcty1; rec_constraint_cty ];
+                        arg = arg1'.x;
+                        retty =
+                          subst_rty_instance arg1.x (AVar arg1')
+                          @@ subst_rty_instance arg.x (AVar arg') retty;
+                      };
+                }
+            in
+            let binding = arg #: (RtyBase { ou = true; cty = argcty }) in
+            let binding1 = arg1 #: (RtyBase { ou = true; cty = argcty1 }) in
+            let body =
+              body
+              #-> (subst_term_instance fixarg.x (VVar arg #: fixarg.ty))
+              #-> (subst_term_instance lamarg.x (VVar arg1 #: fixarg.ty))
+            in
+            let* body' =
+              term_type_check
+                (add_to_rights uctx [ binding; binding1; fixname.x #: rty' ])
+                body retty
+            in
+            let lam =
+              (VLam { lamarg = binding1; body = body' })
+              #: (RtyBaseArr { argcty = argcty1; arg = arg1; retty })
+            in
+            let clam = (CVal lam) #: lam.ty in
+            Some
+              (VFix
+                 { fixname = fixname.x #: rty; fixarg = binding; body = clam })
+              #: rty
+        | _ -> _failatwith __FILE__ __LINE__ "die"
+      else
+        let rec_constraint_cty = apply_rec_arg1 arg #: fixarg.ty in
+        let () = init_cur_rec_func_name (fixname.x, rec_constraint_cty) in
+        let rty' =
+          let a = { x = Rename.unique arg; ty = fixarg.ty } in
+          RtyBaseArr
+            {
+              argcty = intersect_ctys [ argcty; rec_constraint_cty ];
+              arg = a.x;
+              retty = subst_rty_instance arg (AVar a) retty;
+            }
+        in
+        let binding = arg #: (RtyBase { ou = true; cty = argcty }) in
+        let body =
+          body #-> (subst_term_instance fixarg.x (VVar arg #: fixarg.ty))
+        in
+        let* body' =
+          term_type_check
+            (add_to_rights uctx [ binding; fixname.x #: rty' ])
+            body retty
+        in
+        Some
+          (VFix { fixname = fixname.x #: rty; fixarg = binding; body = body' })
+          #: rty
   | VFix _, _ -> _failatwith __FILE__ __LINE__ ""
   | VTu _, _ -> _failatwith __FILE__ __LINE__ ""
 
@@ -150,7 +215,7 @@ and match_case_type_infer (uctx : uctx) (matched : (t, t value) typed)
             match rty with
             | RtyBaseArr { argcty; arg; retty } ->
                 let retty = subst_rty_instance arg (AVar x) retty in
-                let x = x.x #: (RtyBase { ou = true; cty = argcty }) in
+                let x = x.x #: (RtyBase { ou = false; cty = argcty }) in
                 (args @ [ x ], retty)
             | RtyArrArr { argrty; retty } ->
                 let x = x.x #: argrty in

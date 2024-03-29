@@ -32,6 +32,24 @@ let feature_id_to_vec (num_features : int) id =
   in
   aux (0, []) id
 
+let stlc_list = [ "is_const"; "is_var"; "is_abs"; "is_app" ]
+
+(* HACK *)
+let filter_conflict_vec (ftab : feature_tab) (vec : feature_vec) =
+  let ass = List.combine ftab vec in
+  let ass =
+    List.filter
+      (fun (lit, b) ->
+        match lit with
+        | AAppOp (op, _) when List.exists (String.equal op.x) stlc_list -> b
+        | _ -> false)
+      ass
+  in
+  if List.length ass > 1 then false else true
+
+let filter_conflict_id (ftab : feature_tab) id =
+  filter_conflict_vec ftab @@ feature_id_to_vec (List.length ftab) id
+
 let feature_vec_to_prop (ftab : feature_tab) vec =
   let props =
     List.map (fun (b, lit) ->

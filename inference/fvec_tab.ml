@@ -10,9 +10,10 @@ let init (ftab : feature_tab) =
   let fvec_tab = Hashtbl.create vec_num in
   let rec aux i =
     if i == vec_num then ()
-    else (
+    else if filter_conflict_id ftab i then (
       Hashtbl.add fvec_tab i Unknown;
       aux (i + 1))
+    else ()
   in
   let () = aux 0 in
   { ftab; fvec_tab }
