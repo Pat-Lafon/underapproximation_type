@@ -20,7 +20,9 @@ def run_type_infer(dir_str):
     meta_config_file = "{}/{}".format(dir_str, config_file)
     if not (os.path.exists(meta_config_file)):
         for f in os.listdir(dir_str):
-            run_type_infer("{}/{}".format(dir_str, f))
+            pp = "{}/{}".format(dir_str, f)
+            if os.path.isdir(pp):
+                run_type_infer(pp)
     else:
         for filename in os.listdir(dir_str):
             matches = re.search(r"prog[0-9]+\.ml$", filename, re.MULTILINE)
