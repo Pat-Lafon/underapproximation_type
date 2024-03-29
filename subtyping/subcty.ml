@@ -14,8 +14,8 @@ let layout_vs qt uqvs =
   @@ List.map (fun { x; ty } -> { x = (qt, x); ty }) uqvs
 
 (* let layout_prop_ = layout_prop_to_smtlib2 *)
-let layout_prop_ = layout_prop_to_coq
-(* let layout_prop_ = layout_prop *)
+(* let layout_prop_ = layout_prop_to_coq *)
+let layout_prop_ = layout_prop
 
 let rec normalize_ctx ctx =
   match ctx with
@@ -28,10 +28,15 @@ let rec normalize_ctx ctx =
       (fa_ctx, (x #: cty) :: ex_ctx)
 
 let check_query axioms query =
+  (* let query = Simp.peval_prop query in *)
   let () =
     Env.show_debug_queries @@ fun _ ->
     Printf.printf "query: %s\n" (layout_prop_ query)
   in
+  (* let () = *)
+  (*   Env.show_debug_queries @@ fun _ -> *)
+  (*   Printf.printf "simpl query: %s\n" (layout_prop_ (Simp.peval_prop query)) *)
+  (* in *)
   let fvs = fv_prop query in
   let () =
     _assert __FILE__ __LINE__
@@ -102,7 +107,7 @@ let aux_emptyness (axioms, uqvs) cty =
   (*   List.fold_right (fun x body -> forall_cty_to_prop (x, body)) fa_ctx query *)
   (* in *)
   (* not (check_query axioms (Not query)) *)
-  check_query axioms query
+  check_query axioms (Not query)
 
 type t = Nt.t
 

@@ -32,23 +32,8 @@ let feature_id_to_vec (num_features : int) id =
   in
   aux (0, []) id
 
+let stlc_list_num = [ "num_app" ]
 let stlc_list = [ "is_const"; "is_var"; "is_abs"; "is_app" ]
-
-(* HACK *)
-let filter_conflict_vec (ftab : feature_tab) (vec : feature_vec) =
-  let ass = List.combine ftab vec in
-  let ass =
-    List.filter
-      (fun (lit, b) ->
-        match lit with
-        | AAppOp (op, _) when List.exists (String.equal op.x) stlc_list -> b
-        | _ -> false)
-      ass
-  in
-  if List.length ass > 1 then false else true
-
-let filter_conflict_id (ftab : feature_tab) id =
-  filter_conflict_vec ftab @@ feature_id_to_vec (List.length ftab) id
 
 let feature_vec_to_prop (ftab : feature_tab) vec =
   let props =
@@ -58,6 +43,53 @@ let feature_vec_to_prop (ftab : feature_tab) vec =
     @@ List.combine vec ftab
   in
   match props with [] -> mk_true | _ -> And props
+
+(* (\* HACK *\) *)
+(* type stlc_cases = IsConst | IsVar | IsAbs | IsApp *)
+(* let filter_conflict_vec (ftab : feature_tab) (vec : feature_vec) = *)
+(*   let ass = List.combine ftab vec in *)
+(*   let ass_num_app = *)
+(*     List.filter *)
+(*       (fun (lit, b) -> *)
+(*         match lit with *)
+(*         | AAppOp (op, _) when List.exists (String.equal op.x) stlc_list -> true *)
+(*         | _ -> false) *)
+(*       ass *)
+(*   in *)
+(*   let res = *)
+(*   match ass_num_app with *)
+(*   | [] -> true *)
+(*   | (_, ass_num_app_b) :: _ -> *)
+(*       let ass_4_cases = *)
+(*         List.filter *)
+(*           (fun (lit, b) -> *)
+(*             match lit with *)
+(*             | AAppOp (op, _) when List.exists (String.equal op.x) stlc_list -> b *)
+(*             | _ -> false) *)
+(*           ass *)
+(*       in *)
+(*       match ass_4_cases with *)
+(*       | [(x, _)] -> *)
+(*         let case = *)
+(*         match x with *)
+(*         | "is_const" -> IsConst *)
+(*         | "is_var" -> IsVar *)
+(*         | "is_abs" -> IsAbs *)
+(*         | "is_app" -> IsApp *)
+(*           | _ -> _failatwith __FILE__ __LINE__ "die" *)
+(*       | _ -> false *)
+
+(*       if List.length ass != 1 then ( *)
+(*         Printf.printf "Filter out: %s\n" *)
+(*           (layout_prop @@ feature_vec_to_prop ftab vec); *)
+(*         false) *)
+(*       else *)
+(*         let case = match ass_4_cases with *)
+(*           | [x] -> *)
+(*         true *)
+
+(* let filter_conflict_id (ftab : feature_tab) id = *)
+(*   filter_conflict_vec ftab @@ feature_id_to_vec (List.length ftab) id *)
 
 let feature_id_to_prop (ftab : feature_tab) id =
   feature_vec_to_prop ftab @@ feature_id_to_vec (List.length ftab) id

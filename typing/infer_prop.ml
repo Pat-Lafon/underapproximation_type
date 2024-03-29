@@ -7,8 +7,8 @@ open Feature
 type t = Nt.t
 
 let abductive_infer_subtyping_query ~(features : t lit list)
-    ~(verifier : t prop -> bool) =
-  match Cegis.cegis features verifier with
+    ~(verifier : t prop -> bool) ~(sanity_check : t prop -> bool) =
+  match Cegis.cegis features verifier sanity_check with
   | None -> _failatwith __FILE__ __LINE__ "end"
   | Some res -> res
 
@@ -38,7 +38,18 @@ let abductive_infer_cty uctx cty1 cty2 =
         in
         res
       in
-      let phi' = abductive_infer_subtyping_query ~features ~verifier in
+      let sanity_check phi =
+        let cty1 = Cty { nty; phi } in
+        let res = not (Subtyping.Subcty.is_nonempty_cty uctx cty1) in
+        let () =
+          Env.show_debug_queries @@ fun _ ->
+          Pp.printf "@{<bold>@{<orange>Sanity_check:@} %b@}\n" res
+        in
+        res
+      in
+      let phi' =
+        abductive_infer_subtyping_query ~features ~verifier ~sanity_check
+      in
       match cty2 with
       | Cty { nty; phi } -> Cty { nty; phi = smart_add_to phi' phi })
 

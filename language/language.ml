@@ -25,21 +25,6 @@ module FrontendRaw = struct
   let layout_typed_raw_term = To_raw_term.layout_typed_raw_term
   let layout_item = To_item.layout_item
   let layout_structure = To_item.layout_structure
-
-  (* let layout_typed_term e = *)
-  (*   let e = Anf_to_raw_term.denormalize_term e in *)
-  (*   let e = (map_raw_term (fun t -> Some t) e.x) #: (Some e.ty) in *)
-  (*   To_raw_term.layout_typed_raw_term e *)
-
-  (* let layout_item item = *)
-  (*   layout_item *)
-  (*   @@ map_item (fun t -> Some t) *)
-  (*   @@ Anf_to_raw_term.denormalize_item item *)
-
-  (* let layout_structure s = *)
-  (*   layout_structure *)
-  (*   @@ List.map (map_item (fun t -> Some t)) *)
-  (*   @@ Anf_to_raw_term.denormalize_structure s *)
 end
 
 module FrontendTyped = struct
@@ -86,6 +71,11 @@ module FrontendTyped = struct
   let layout_id_rty x = x.x ^ ":" ^ layout_rty x.ty
 
   (* Lit *)
+
+  let eq_lit p1 p2 =
+    Sexplib.Sexp.equal
+      (sexp_of_lit Nt.sexp_of_t p1)
+      (sexp_of_lit Nt.sexp_of_t p2)
 
   let mk_typed_lit_by_id id = (AVar id) #: id.ty
   let mk_typed_lit_by_const c = (AC c.x) #: c.ty
@@ -485,56 +475,3 @@ module FrontendTyped = struct
     | None -> get_opt builtin_ctx id
     | Some res -> Some res
 end
-
-(* module Typedec = struct *)
-(*   include Frontendu.Typedec *)
-(*   include Typedec *)
-(* end *)
-
-(* module Struc = struct *)
-(*   include Frontendu.Structure *)
-(*   include Struc *)
-
-(*   let prog_of_ocamlstruct = Frontendu.Structure.client_of_ocamlstruct *)
-(*   let mps_of_ocamlstruct = Frontendu.Structure.mps_of_ocamlstruct_one *)
-(* end *)
-
-(* module NL = struct *)
-(*   include NL *)
-
-(*   let layout x = Frontendu.Expr.layout @@ Trans.nan_to_term x *)
-(*   let layout_value v = layout { x = V v; ty = v.ty } *)
-(*   let layout_id x = layout_value { x = Var x; ty = x.ty } *)
-(* end *)
-
-(* module StrucNA = struct *)
-(*   include StrucNA *)
-
-(*   let prog_of_ocamlstruct = Frontendu.Structure.client_of_ocamlstruct *)
-(*   let layout code = Struc.layout @@ Trans.struc_nan_to_term code *)
-(* end *)
-
-(* module OT = struct *)
-(*   include Frontendu.Overty *)
-(*   include OT *)
-(* end *)
-
-(* module UL = struct *)
-(*   include UL *)
-
-(*   let typed_map f { ty; x } = { ty; x = f x } *)
-(*   let to_ntyped NNtyped.{ x; ty } = Ntyped.{ x; ty = snd ty } *)
-
-(*   let get_args_return_name retname body = *)
-(*     let open Anormal.NormalAnormal in *)
-(*     let rec aux body = *)
-(*       match body.x with *)
-(*       | V { x = Lam { lamarg; lambody }; _ } -> *)
-(*           let args, retv = aux lambody in *)
-(*           (to_ntyped lamarg :: args, retv) *)
-(*       | _ -> ([], to_ntyped { x = retname; ty = body.ty }) *)
-(*     in *)
-(*     aux body *)
-(* end *)
-
-(* module NT = Nt *)

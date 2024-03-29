@@ -44,29 +44,80 @@ let rec partial_value_type_infer (uctx : uctx) (a : (t, t value) typed)
         Some (VLam { lamarg; body }) #: rty
     | VLam _, _ -> _failatwith __FILE__ __LINE__ ""
     | VFix { fixname; fixarg; body }, RtyBaseArr { argcty; arg; retty } ->
-        let rec_constraint_cty = apply_rec_arg1 arg #: fixarg.ty in
-        let rty' =
-          let a = { x = Rename.unique arg; ty = fixarg.ty } in
-          RtyBaseArr
-            {
-              argcty = intersect_ctys [ argcty; rec_constraint_cty ];
-              arg = a.x;
-              retty = subst_rty_instance arg (AVar a) retty;
-            }
-        in
-        let binding = arg #: (RtyBase { ou = true; cty = argcty }) in
-        let body =
-          body #-> (subst_term_instance fixarg.x (VVar arg #: fixarg.ty))
-        in
-        let* body' =
-          partial_term_type_infer
-            (add_to_rights uctx [ binding; fixname.x #: rty' ])
-            body retty
-        in
-        let rty = RtyBaseArr { argcty; arg; retty = body'.ty } in
-        Some
-          (VFix { fixname = fixname.x #: rty; fixarg = binding; body = body' })
-          #: rty
+        let _, ret_nty = Nt.destruct_arr_tp fixname.ty in
+        (* For STLC, we use a different recursion template *)
+        if String.equal "stlc_term" (layout_ty ret_nty) then
+          match (body.x, retty) with
+          | ( CVal { x = VLam { lamarg; body }; _ },
+              RtyBaseArr { argcty = argcty1; arg = arg1; retty } ) ->
+              let rty' =
+                let arg' = { x = Rename.unique arg; ty = fixarg.ty } in
+                let arg = arg #: fixarg.ty in
+                let arg1' = { x = Rename.unique arg1; ty = lamarg.ty } in
+                let arg1 = arg1 #: lamarg.ty in
+                let rec_constraint_cty = apply_rec_arg2 arg arg' arg1 in
+                RtyBaseArr
+                  {
+                    argcty;
+                    arg = arg'.x;
+                    retty =
+                      RtyBaseArr
+                        {
+                          argcty =
+                            intersect_ctys [ argcty1; rec_constraint_cty ];
+                          arg = arg1'.x;
+                          retty =
+                            subst_rty_instance arg1.x (AVar arg1')
+                            @@ subst_rty_instance arg.x (AVar arg') retty;
+                        };
+                  }
+              in
+              let binding = arg #: (RtyBase { ou = true; cty = argcty }) in
+              let binding1 = arg1 #: (RtyBase { ou = true; cty = argcty1 }) in
+              let body =
+                body
+                #-> (subst_term_instance fixarg.x (VVar arg #: fixarg.ty))
+                #-> (subst_term_instance lamarg.x (VVar arg1 #: fixarg.ty))
+              in
+              let* body' =
+                partial_term_type_infer
+                  (add_to_rights uctx [ binding; binding1; fixname.x #: rty' ])
+                  body retty
+              in
+              let lam =
+                (VLam { lamarg = binding1; body = body' })
+                #: (RtyBaseArr { argcty = argcty1; arg = arg1; retty })
+              in
+              let clam = (CVal lam) #: lam.ty in
+              Some
+                (VFix
+                   { fixname = fixname.x #: rty; fixarg = binding; body = clam })
+                #: rty
+          | _ -> _failatwith __FILE__ __LINE__ "die"
+        else
+          let rec_constraint_cty = apply_rec_arg1 arg #: fixarg.ty in
+          let rty' =
+            let a = { x = Rename.unique arg; ty = fixarg.ty } in
+            RtyBaseArr
+              {
+                argcty = intersect_ctys [ argcty; rec_constraint_cty ];
+                arg = a.x;
+                retty = subst_rty_instance arg (AVar a) retty;
+              }
+          in
+          let binding = arg #: (RtyBase { ou = true; cty = argcty }) in
+          let body =
+            body #-> (subst_term_instance fixarg.x (VVar arg #: fixarg.ty))
+          in
+          let* body' =
+            partial_term_type_infer
+              (add_to_rights uctx [ binding; fixname.x #: rty' ])
+              body retty
+          in
+          let rty = RtyBaseArr { argcty; arg; retty = body'.ty } in
+          Some
+            (VFix { fixname = fixname.x #: rty; fixarg = binding; body = body' })
+            #: rty
     | _ -> Some (value_type_infer uctx a)
   in
   let () =

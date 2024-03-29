@@ -412,6 +412,12 @@ let[@axiom] stlc_num_arr_arr (tau : stlc_ty) (tau_body : stlc_ty) (m : int) =
 let[@axiom] stlc_const_num_app_0 (v : stlc_term) (n : int) =
   (is_const v && num_app v n) #==> (n == 0)
 
+let[@axiom] stlc_var_num_app_0 (v : stlc_term) (n : int) =
+  (is_var v && num_app v n) #==> (n == 0)
+
+let[@axiom] stlc_num_app_gt_0_is_abs_or_app (v : stlc_term) (n : int) =
+  (num_app v n && n > 0) #==> (is_abs v || is_app v)
+
 let[@axiom] stlc_typing_num_arr (gamma : stlc_tyctx) (v : stlc_term)
     (tau : stlc_ty) ((n [@exists]) : int) =
   (typing gamma v tau) #==> (num_arr tau n)
@@ -496,8 +502,11 @@ let[@axiom] stlc_const_typing_nat (gamma : stlc_tyctx) (v : stlc_term)
     (tau : stlc_ty) =
   (is_const v && typing gamma v tau) #==> (stlc_ty_nat tau)
 
-let[@axiom] stlc_const_num_app_0 (v : stlc_term) (c : int) (n : int) =
+let[@axiom] stlc_const_num_app_0 (v : stlc_term) (n : int) =
   (is_const v && num_app v n) #==> (n == 0)
+
+let[@axiom] stlc_app_num_app_geq_0 (v : stlc_term) (n : int) =
+  (is_app v && num_app v n) #==> (n > 0)
 
 (** For synthesis *)
 
@@ -506,9 +515,3 @@ let[@axiom] root_color_single (v : int rbtree) =
 
 let[@axiom] leaf_no_root_color (v : int rbtree) =
   (rb_leaf v) #==> ((not (rb_root_color v false)) && not (rb_root_color v true))
-
-(* let[@axiom] num_black_no_leaf_root_black_0_rt_red (v : int rbtree) = *)
-(*   (num_black v 0 && not (rb_leaf v)) #==> (rb_root_color v true) *)
-
-(* let[@axiom] black_rt_no_color_is_emp (v : int rbtree) = *)
-(*   ((not (rb_root_color v false)) && not (rb_root_color v true)) #==> (rb_leaf v) *)

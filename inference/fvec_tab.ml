@@ -5,15 +5,15 @@ open FrontendTyped
 
 type t = { ftab : feature_tab; fvec_tab : (int, label) Hashtbl.t }
 
-let init (ftab : feature_tab) =
+let init (ftab : feature_tab) (verifier : Feature.t prop -> bool) =
   let vec_num = pow 2 (List.length ftab) in
   let fvec_tab = Hashtbl.create vec_num in
   let rec aux i =
     if i == vec_num then ()
-    else if filter_conflict_id ftab i then (
+    else if verifier (feature_id_to_prop ftab i) then (
       Hashtbl.add fvec_tab i Unknown;
       aux (i + 1))
-    else ()
+    else aux (i + 1)
   in
   let () = aux 0 in
   { ftab; fvec_tab }

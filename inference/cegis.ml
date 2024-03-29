@@ -13,9 +13,9 @@ let force_get_check_res verifier candidate () =
       res
   | _, Some res -> res
 
-let cegis_break features verifier =
+let cegis_break features verifier sanity_check =
   let layout_vec_id fv = layout_prop @@ feature_id_to_prop features fv in
-  let fvec_tab = Fvec_tab.init features in
+  let fvec_tab = Fvec_tab.init features sanity_check in
   let candidate = ref (mk_false, None) in
   let get_res = force_get_check_res verifier candidate in
   let get_candidate () = fst !candidate in
@@ -57,9 +57,9 @@ let cegis_break features verifier =
   let res = if get_res () then Some (get_candidate ()) else loop () in
   res
 
-let cegis_enumerate features verifier =
+let cegis_enumerate features verifier sanity_check =
   let layout_vec_id fv = layout_prop @@ feature_id_to_prop features fv in
-  let fvec_tab = Fvec_tab.init features in
+  let fvec_tab = Fvec_tab.init features sanity_check in
   let candidate = ref (mk_true, None) in
   let get_res = force_get_check_res verifier candidate in
   let get_candidate () = fst !candidate in
