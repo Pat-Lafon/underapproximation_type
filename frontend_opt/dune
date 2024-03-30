@@ -2,7 +2,7 @@
  (public_name underapproximation_type.frontend_opt)
  (name frontend_opt)
  (wrapped true)
- (libraries syntax core env)
+ (libraries translate syntax core env)
  (modules
   to_notation
   to_id

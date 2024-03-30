@@ -89,8 +89,12 @@ let layout_item = function
         (if if_rec then "rec " else "")
         name.x
         (layout_typed_raw_term body)
-  | MFuncImp { name; if_rec; _ } ->
-      spf "let %s%s = %s" (if if_rec then "rec " else "") name.x "??"
+  | MFuncImp { name; if_rec; body } ->
+      spf "let %s%s = %s"
+        (if if_rec then "rec " else "")
+        name.x
+        (Anf_to_raw_term.typed_term_to_typed_raw_term body
+        |> layout_typed_raw_term)
   | MRty { is_assumption = false; name; rty } ->
       spf "let[@assert] %s = %s" name (layout_rty rty)
   | MRty { is_assumption = true; name; rty } ->
