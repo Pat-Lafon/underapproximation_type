@@ -94,6 +94,52 @@ Ltac destr :=
   | [ H: exists _, _|- _]  => destruct H
   end.
 
+Lemma gen_term_size_dec_dec: (forall num_arr_tau, (num_arr_tau >= 0 -> (forall num, (num >= 0 -> (forall gamma, (forall tau, (num_arr tau num_arr_tau -> (forall v, ((typing gamma v tau /\ num_app v num) -> ((num = 0 /\ typing gamma v tau /\ num_app v 0) \/ (~num = 0 /\ (exists x_2, ((x_2 /\ (exists arg_tau, (exists b_1, (0 <= b_1 /\ b_1 = num /\ (exists num_app_func, (0 <= num_app_func /\ num_app_func < b_1 /\ (exists b_3, (0 <= b_3 /\ b_3 = (num - num_app_func) /\ (exists num_app_arg, (0 <= num_app_arg /\ num_app_arg < b_3 /\ (exists func_ty, (stlc_ty_arr1 func_ty arg_tau /\ stlc_ty_arr2 func_ty tau /\ (exists num_arr_func_ty, (num_arr func_ty num_arr_func_ty /\ (exists num_arr_tau_1, (num_arr_tau_1 >= 0 /\ num_arr_tau_1 = num_arr_func_ty /\ (exists num_1, (num_1 >= 0 /\ num_arr_tau_1 >= 0 /\ (num_1 < num \/ (num_1 <= num /\ num_arr_tau_1 < num_arr_tau)) /\ num_1 = num_app_func /\ (exists x_9, (stlc_ty_arr1 x_9 arg_tau /\ stlc_ty_arr2 x_9 tau /\ (exists tau_1, (num_arr tau_1 num_arr_tau_1 /\ tau_1 = x_9 /\ (exists func, (typing gamma func tau_1 /\ num_app func num_1 /\ (exists num_arr_arg_ty, (num_arr arg_tau num_arr_arg_ty /\ (exists num_arr_tau_2, (num_arr_tau_2 >= 0 /\ num_arr_tau_2 = num_arr_arg_ty /\ (exists num_2, (num_2 >= 0 /\ num_arr_tau_2 >= 0 /\ (num_2 < num \/ (num_2 <= num /\ num_arr_tau_2 < num_arr_tau)) /\ num_2 = num_app_arg /\ (exists tau_2, (num_arr tau_2 num_arr_tau_2 /\ tau_2 = arg_tau /\ (exists arg, (typing gamma arg tau_2 /\ num_app arg num_2 /\ stlc_app1 v func /\ stlc_app2 v arg)))))))))))))))))))))))))))))))))) \/ (~x_2 /\ (exists tau1, (exists tau2, (stlc_ty_arr1 tau tau1 /\ stlc_ty_arr2 tau tau2 /\ (exists num_arr_tau2, (num_arr tau2 num_arr_tau2 /\ (exists num_arr_tau_3, (num_arr_tau_3 >= 0 /\ num_arr_tau_3 = num_arr_tau2 /\ (exists num_3, (num_3 >= 0 /\ num_arr_tau_3 >= 0 /\ (num_3 < num \/ (num_3 <= num /\ num_arr_tau_3 < num_arr_tau)) /\ num_3 = num /\ (exists x_15, (stlc_tyctx_hd x_15 tau1 /\ stlc_tyctx_tl x_15 gamma /\ (exists tau_3, (num_arr tau_3 num_arr_tau_3 /\ tau_3 = tau2 /\ (exists body, (typing x_15 body tau_3 /\ num_app body num_3 /\ stlc_abs_ty v tau1 /\ stlc_abs_body v body)))))))))))))))))))))))))))))%Z.
+Proof.
+  intros. destruct H2 as (Htyping & Hnum). destruct (Z.eqb_spec num 0)%Z.
+  - left. subst. intuition.
+  - right. intuition.
+    destruct (stlc_term_destruct v) as [(c & Hconst) | [ (id & Hvar) | [ (t1 & t2 & Happ1 & Happ2) | (ty & body & Hty & Hbody) ] ] ].
+    + assert (num = 0)%Z; eauto. intuition.
+    + admit.
+    + exists True. left. intuition.
+      destruct (stlc_typing_app_tau_destruct gamma v tau t1 t2) as (func_tau & arg_tau & Harr1 & Harr2 & Htyping1 & Htyping2); auto.
+      exists arg_tau. exists num. intuition.
+      destruct (stlc_num_app_app_rev v t1 t2 num) as (m1 & m2 & Hm1 & Hm2 & Hm1m2n); auto.
+      exists m1.
+      assert (0 <= m1)%Z; eauto. assert (0 <= m2)%Z; eauto.
+      intuition; eauto.
+      exists (num - m1)%Z. intuition.
+      exists m2. intuition; eauto.
+      exists func_tau. intuition.
+      assert (num_arr func_tau (num_arr_tau + 1)%Z). {
+        rewrite <- stlc_num_arr_arr; eauto.
+        assert (num_arr_tau + 1 - 1 = num_arr_tau)%Z. lia. rewrite H4. auto.      }
+      exists (num_arr_tau + 1)%Z. intuition.
+      exists (num_arr_tau + 1)%Z. intuition.
+      exists m1. intuition.
+      exists func_tau. intuition.
+      exists func_tau. intuition.
+      exists t1. intuition.
+      destruct (stlc_typing_num_arr gamma t2 arg_tau) as (num_arr_arg_ty & Hnum_arr_arg_ty); auto.
+      exists num_arr_arg_ty. intuition.
+      exists num_arr_arg_ty. intuition. eauto.
+      exists m2. intuition; eauto.
+      exists arg_tau. intuition.
+      exists t2. intuition.
+    + exists False. right. intuition.
+      edestruct (stlc_typing_abs_tau_destruct gamma v tau) as (Htyarr1 & (body_ty & Htyarr2)); eauto.
+      exists ty, body_ty. intuition.
+      assert (num_arr body_ty (num_arr_tau - 1)%Z). { rewrite stlc_num_arr_arr; eauto. }
+      exists (num_arr_tau - 1)%Z. intuition.
+      exists (num_arr_tau - 1)%Z. intuition. eauto.
+      exists num. intuition. eauto.
+      destruct (stlc_tyctx_cons ty gamma) as (gamma1 & Hg1 & Hg2).
+      exists gamma1. intuition.
+      exists body_ty. intuition.
+      exists body. intuition; eauto.
+Qed.
+
 
 Lemma gen_term_size_dec:
   (forall num_arr_tau, (num_arr_tau >= 0 -> (forall num, (num >= 0 -> (forall gamma, (forall tau, (num_arr tau num_arr_tau -> (forall v, ((typing gamma v tau /\ num_app v num) -> ((num = 0 /\ typing gamma v tau /\ num_app v 0) \/ (~num = 0 /\ (exists x_2, ((x_2 /\ typing gamma v tau /\ is_var v) \/ (~x_2 /\ (exists x_4, ((x_4 /\ (exists arg_tau, (exists b_1, (0 <= b_1 /\ b_1 = num /\ (exists num_app_func, (0 <= num_app_func /\ num_app_func < b_1 /\ (exists b_3, (0 <= b_3 /\ b_3 = (num - num_app_func) /\ (exists num_app_arg, (0 <= num_app_arg /\ num_app_arg < b_3 /\ (exists func_ty, (stlc_ty_arr1 func_ty arg_tau /\ stlc_ty_arr2 func_ty tau /\ (exists num_arr_func_ty, (num_arr func_ty num_arr_func_ty /\ (exists num_arr_tau_1, (num_arr_tau_1 >= 0 /\ num_arr_tau_1 = num_arr_func_ty /\ (exists num_1, (num_1 >= 0 /\ num_arr_tau_1 >= 0 /\ (num_arr_tau_1 < num_arr_tau \/ num_1 < num) /\ num_1 = num_app_func /\ (exists x_11, (stlc_ty_arr1 x_11 arg_tau /\ stlc_ty_arr2 x_11 tau /\ (exists tau_2, (num_arr tau_2 num_arr_tau_1 /\ tau_2 = x_11 /\ (exists func, (typing gamma func tau_2 /\ num_app func num_1 /\ (exists num_arr_arg_ty, (num_arr arg_tau num_arr_arg_ty /\ (exists num_arr_tau_2, (num_arr_tau_2 >= 0 /\ num_arr_tau_2 = num_arr_arg_ty /\ (exists num_2, (num_2 >= 0 /\ num_arr_tau_2 >= 0 /\ (num_arr_tau_2 < num_arr_tau \/ num_2 < num) /\ num_2 = num_app_arg /\ (exists tau_3, (num_arr tau_3 num_arr_tau_2 /\ tau_3 = arg_tau /\ (exists arg, (typing gamma arg tau_3 /\ num_app arg num_2 /\ stlc_app1 v func /\ stlc_app2 v arg)))))))))))))))))))))))))))))))))) \/ (~x_4 /\ (exists tau1, (exists tau2, (stlc_ty_arr1 tau tau1 /\ stlc_ty_arr2 tau tau2 /\ (exists num_arr_tau2, (num_arr tau2 num_arr_tau2 /\ (exists num_arr_tau_3, (num_arr_tau_3 >= 0 /\ num_arr_tau_3 = num_arr_tau2 /\ (exists num_3, (num_3 >= 0 /\ num_arr_tau_3 >= 0 /\ (num_arr_tau_3 < num_arr_tau \/ num_3 < num) /\ num_3 = num /\ (exists x_17, (stlc_tyctx_hd x_17 tau1 /\ stlc_tyctx_tl x_17 gamma /\ (exists tau_4, (num_arr tau_4 num_arr_tau_3 /\ tau_4 = tau2 /\ (exists body, (typing x_17 body tau_4 /\ num_app body num_3 /\ stlc_abs_ty v tau1 /\ stlc_abs_body v body))))))))))))))))))))))))))))))))%Z.
