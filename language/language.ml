@@ -74,6 +74,11 @@ module FrontendTyped = struct
     let e = Anf_to_raw_term.denormalize_term e in
     layout_typed_raw_term e
 
+  let layout_typed_erased_term e =
+    let e = Anf_to_raw_term.denormalize_term e in
+    let e = (map_raw_term (fun _ -> None) e.x) #: None in
+    To_raw_term.layout_typed_raw_term e
+
   let layout_typed_value e =
     let e = Anf_to_raw_term.denormalize_value e in
     layout_typed_raw_term e
