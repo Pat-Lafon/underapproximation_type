@@ -94,7 +94,7 @@ let type_check_ meta_config_file source_file () =
   let _ = Typing.Itemcheck.struc_check (axioms, builtin_ctx) code in
   ()
 
-let type_infer_ meta_config_file source_file () =
+let type_infer_inner meta_config_file source_file () =
   let () = Env.load_meta meta_config_file in
   let code = preproress meta_config_file source_file () in
   let prim_path = Env.get_prim_path () in
@@ -107,6 +107,10 @@ let type_infer_ meta_config_file source_file () =
   let () = Inference.Feature.init_template templates in
   let _ = Typing.Itemcheck.struc_infer (axioms, builtin_ctx) code in
   let result = Typing.Termsyn.get_inferred_result () in
+  result
+
+let type_infer_ meta_config_file source_file () =
+  let result = type_infer_inner meta_config_file source_file () in
   let () =
     let oc = Out_channel.create @@ Env.get_abdfile source_file in
     Printf.fprintf oc "%s\n"

@@ -59,6 +59,11 @@ module FrontendTyped = struct
     let e = Anf_to_raw_term.denormalize_term e in
     layout_typed_raw_term e
 
+  let layout_typed_erased_term e =
+    let e = Anf_to_raw_term.denormalize_term e in
+    let e = (map_raw_term (fun _ -> None) e.x) #: None in
+    To_raw_term.layout_typed_raw_term e
+
   let layout_typed_value e =
     let e = Anf_to_raw_term.denormalize_value e in
     layout_typed_raw_term e
@@ -337,6 +342,10 @@ module FrontendTyped = struct
   let map_typed_term (f : 't -> 'r) (t : ('t, 't term) typed) :
       ('r, 'r term) typed =
     { x = map_term f t.x; ty = f t.ty }
+
+  let map_typed_value (f : 't -> 'r) (v : ('t, 't value) typed) :
+      ('r, 'r value) typed =
+    { x = map_value f v.x; ty = f v.ty }
 
   let union_rtys = function
     | [] -> _failatwith __FILE__ __LINE__ "die"
