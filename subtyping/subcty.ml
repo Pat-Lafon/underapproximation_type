@@ -93,7 +93,7 @@ let aux_sub_cty (axioms, uqvs) cty1 cty2 =
 let aux_emptyness (axioms, uqvs) cty =
   let fa_ctx, ex_ctx = normalize_ctx uqvs in
   let nty, body = match cty with Cty { nty; phi } -> (nty, phi) in
-  let body =
+  let query =
     match nty with
     | Nt.Ty_unit -> body
     | _ -> Exists { qv = default_v #: nty; body }
@@ -101,13 +101,12 @@ let aux_emptyness (axioms, uqvs) cty =
   let query =
     List.fold_right
       (fun x cty -> exists_cty_to_prop (x, cty))
-      (fa_ctx @ ex_ctx) body
+      (fa_ctx @ ex_ctx) query
   in
   (* let query = *)
   (*   List.fold_right (fun x body -> forall_cty_to_prop (x, body)) fa_ctx query *)
   (* in *)
-  (* not (check_query axioms (Not query)) *)
-  check_query axioms (Not query)
+  not (check_query axioms (Not query))
 
 type t = Nt.t
 
