@@ -106,7 +106,7 @@ let aux_emptyness (axioms, uqvs) cty =
   (* let query = *)
   (*   List.fold_right (fun x body -> forall_cty_to_prop (x, body)) fa_ctx query *)
   (* in *)
-  not (check_query axioms (Not query))
+  check_query axioms (Not query)
 
 type t = Nt.t
 
@@ -133,7 +133,7 @@ let sub_cty_bool pctx (cty1, cty2) = sub_cty pctx (cty1, cty2)
 
 let is_nonempty_cty pctx cty =
   let ctx = rty_ctx_to_cty_ctx pctx.local_ctx in
-  aux_emptyness (pctx.axioms, ctx) cty
+  not (aux_emptyness (pctx.axioms, ctx) cty)
 
 let is_nonempty_rty pctx rty =
   match rty with

@@ -40,7 +40,7 @@ let abductive_infer_cty uctx cty1 cty2 =
       in
       let sanity_check phi =
         let cty1 = Cty { nty; phi } in
-        let res = not (Subtyping.Subcty.is_nonempty_cty uctx cty1) in
+        let res = Subtyping.Subcty.is_nonempty_cty uctx cty1 in
         let () =
           Env.show_debug_queries @@ fun _ ->
           Pp.printf "@{<bold>@{<orange>Sanity_check:@} %b@}\n" res
