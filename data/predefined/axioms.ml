@@ -23,7 +23,7 @@ let[@axiom] list_tl_no_emp (l : int list) (l1 : int list) =
 (** len *)
 
 let[@axiom] list_len_geq_0 (l : int list) (n : int) = (len l n) #==> (n >= 0)
-(* let[@axiom] list_len_0_emp (l : int list) = (emp l) #==> (len l 0) *)
+let[@axiom] list_len_0_emp (l : int list) = (emp l) #==> (len l 0)
 
 let[@axiom] list_emp_len_0 (l : int list) (n : int) =
   (emp l && len l n) #==> (n == 0)

@@ -46,7 +46,12 @@ let subtype_check_ meta_config_file source_file () =
   let ctx = FrontendTyped.{ builtin_ctx; local_ctx = emp; axioms } in
   let res = Subtyping.Subrty.sub_rty_bool ctx (rty1, rty2) in
   let () = FrontendTyped.pprint_typectx_subtyping emp (rty1, rty2) in
-  let () = Pp.printf "Result: %b\n" res in
+  let () =
+    Printf.printf "%s <: %s\n"
+      (FrontendTyped.layout_rty rty1)
+      (FrontendTyped.layout_rty rty2)
+  in
+  let () = Printf.printf "Result: %b\n" res in
   ()
 
 let rec_arg_list = [ "rec_arg"; "rec_arg2" ]
