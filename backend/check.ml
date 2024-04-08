@@ -85,7 +85,10 @@ let extend =
       ] );
   ]
 
+let query_counter = ref 0
+
 let smt_neg_and_solve ctx axioms vc =
+  query_counter := !query_counter + 1;
   (* let () = *)
   (*   Env.show_debug_queries @@ fun _ -> *)
   (*   Printf.printf "Query: %s\n" @@ Language.Rty.layout_prop vc *)
