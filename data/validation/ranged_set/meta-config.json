@@ -12,6 +12,7 @@
     "logfile": ".log",
     "resfile": ".result",
     "abdfile": ".abd",
+    "synfile": ".syn",
     "abd_templates": ["template_leaf", "template_leq_1"],
     "num_quantifier": 0,
     "synth_bound": 3,

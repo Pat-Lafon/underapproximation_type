@@ -12,6 +12,7 @@
     "logfile": ".log",
     "resfile": ".result",
     "abdfile": ".abd",
+    "synfile": ".syn",
     "abd_templates": ["template_emp"],
     "num_quantifier": 0,
     "synth_bound": 3,
