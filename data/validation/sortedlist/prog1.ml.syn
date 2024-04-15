@@ -2,7 +2,7 @@ let rec sorted_list_gen = fun s ->
   fun x ->
     let (x!6) = sizecheck s in
     match x!6 with
-    | True -> let (_x5!11) = Nil in Nil 
+    | True -> Nil 
     | False ->
         let (y) = int_gen () in
         let (x!7) = x <= y in
