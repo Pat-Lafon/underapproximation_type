@@ -1,7 +1,7 @@
 let rec complete_tree_gen (s : int) : int tree =
-  if s == 0 then Leaf
+  if sizecheck s then Leaf
   else
-    let (s1 : int) = s - 1 in
+    let (s1 : int) = subs s in
     let (lt : int tree) = complete_tree_gen s1 in
     let (rt : int tree) = complete_tree_gen s1 in
     let (n : int) = int_gen () in
