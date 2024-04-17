@@ -109,6 +109,9 @@ let[@axiom] tree_ch_depth_minus_1 (l : int tree) (l1 : int tree) (n : int)
     (n1 : int) =
   ((lch l l1 || rch l l1) && depth l n && depth l1 n1) #==> (n1 <= n - 1)
 
+let[@axiom] tree_depth_0_is_leaf (l : int tree) (n : int) =
+  (depth l n && n == 0) #==> (leaf l)
+
 (** tree_mem *)
 
 let[@axiom] tree_root_mem (l : int tree) (x : int) =

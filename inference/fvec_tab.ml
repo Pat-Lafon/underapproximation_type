@@ -25,7 +25,12 @@ let get_prop_by_filter f { ftab; fvec_tab } =
   (* let _ = Printf.printf "len(fvecs) = %i\n" (List.length fvecs) in *)
   match fvecs with
   | [] -> mk_false
-  | _ -> Or (List.map (feature_id_to_prop ftab) fvecs)
+  | _ ->
+      let props = List.map (feature_id_to_prop ftab) fvecs in
+      (* let props = List.rev props in *)
+      let res = Or props in
+      (* let () = Printf.printf "\t%s\n" (layout_prop res) in *)
+      res
 
 let pick_by_filter f { fvec_tab; _ } =
   Hashtbl.fold

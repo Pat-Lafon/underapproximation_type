@@ -153,6 +153,7 @@ let mk_features templates vars =
     Pp.printf "@{<bold>@{<orange>Features:@}@} %s\n"
       (List.split_by_comma layout_lit features)
   in
+  (* let features = List.rev features in *)
   features
 
 let templates : template list option ref = ref None

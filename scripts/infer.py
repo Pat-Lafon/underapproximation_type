@@ -24,7 +24,10 @@ def run_type_infer(dir_str):
             if os.path.isdir(pp):
                 run_type_infer(pp)
     else:
-        for filename in os.listdir(dir_str):
+        print(dir_str)
+        files = os.listdir(dir_str)
+        # files.reverse()
+        for filename in files:
             matches = re.search(r"prog[0-9]+\.ml$", filename, re.MULTILINE)
             if matches:
                 run_type_infer_aux(meta_config_file, "{}/{}".format(dir_str, filename))
