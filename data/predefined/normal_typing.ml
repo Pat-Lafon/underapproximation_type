@@ -21,6 +21,7 @@ val lt_eq_one : int -> bool
 val gt_eq_int_gen : int -> int
 val sizecheck : int -> bool
 val subs : int -> int
+val incr : int -> int
 val dummy : unit
 
 (* method predicates *)
