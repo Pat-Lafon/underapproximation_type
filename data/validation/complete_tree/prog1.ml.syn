@@ -1,0 +1,8 @@
+let rec complete_tree_gen = fun s ->
+  let (x!3) = sizecheck s in
+  match x!3 with
+  | True -> Leaf 
+  | False ->
+      let (s1) = subs s in
+      let (lt) = complete_tree_gen s1 in
+      let (rt) = complete_tree_gen s1 in let (n) = int_gen () in Node n lt rt
