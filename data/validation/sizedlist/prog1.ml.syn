@@ -1,7 +1,7 @@
 let rec sized_list_gen = fun s ->
   let (x!7) = sizecheck s in
   match x!7 with
-  | True -> let (_x5!1068) = Nil in Nil 
+  | True -> Nil 
   | False ->
       let (x!8) = bool_gen () in
       (match x!8 with

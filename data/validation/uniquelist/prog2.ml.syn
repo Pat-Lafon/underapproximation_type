@@ -1,0 +1,10 @@
+let rec unique_list_gen = fun s ->
+  let (x!6) = sizecheck s in
+  match x!6 with
+  | True -> [] 
+  | False ->
+      let (x!7) = subs s in
+      let (l) = unique_list_gen x!7 in
+      let (x) = int_gen () in
+      let (x!8) = list_mem l in
+      let (x!9) = x!8 x in (match x!9 with | True -> Err | False -> Cons x l)
