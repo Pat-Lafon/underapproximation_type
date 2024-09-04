@@ -2,7 +2,7 @@ let rec duplicate_list_gen = fun s ->
   fun x ->
     let (x!2) = sizecheck s in
     match x!2 with
-    | True -> Nil 
+    | True -> [] 
     | False ->
         let (_x5) = s in
         let (_x10) = subs _x5 in
