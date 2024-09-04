@@ -63,6 +63,14 @@ and bi_term_check (ctx : t ctx) (x : t option raw_term) (ty : t) :
           f'.ty
       in
       let argsty, _ = Nt.destruct_arr_tp fty in
+
+      (* This code does not currently handle partial application well because
+         destruct_arr_tp never has an arrow type as the return type *)
+      (* To get around this, we only look at the first (List.length args)
+         elements of argsty *)
+      let argsty =
+        List.sublist argsty ~start_included:0 ~end_excluded:(List.length args)
+      in
       let args =
         List.map (fun (x, ty) -> bi_typed_term_check ctx x ty)
         @@ List.combine args argsty
