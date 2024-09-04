@@ -15,6 +15,31 @@ type 't prop =
   | Exists of { qv : (('t, string) typed[@bound]); body : 't prop }
 [@@deriving sexp]
 
+let rec eq_prop eq (a : 't prop) (b : 't prop) : bool =
+  match (a, b) with
+  | Lit a, Lit b -> typed_eq eq a b
+  | Implies (a0, a1), Implies (b0, b1) -> eq_prop eq a0 b0 && eq_prop eq a1 b1
+  | Ite (a0, a1, a2), Ite (b0, b1, b2) ->
+      eq_prop eq a0 b0 && eq_prop eq a1 b1 && eq_prop eq a2 b2
+  | Not a, Not b -> eq_prop eq a b
+  | And a, And b ->
+      List.length a = List.length b && List.for_all2 (eq_prop eq) a b
+  | Or a, Or b ->
+      List.length a = List.length b && List.for_all2 (eq_prop eq) a b
+  | Iff (a0, a1), Iff (b0, b1) -> eq_prop eq a0 b0 && eq_prop eq a1 b1
+  | Forall { qv = a0; body = a1 }, Forall { qv = b0; body = b1 } ->
+      typed_eq String.equal a0 b0 && eq_prop eq a1 b1
+  | Exists { qv = a0; body = a1 }, Exists { qv = b0; body = b1 } ->
+      typed_eq String.equal a0 b0 && eq_prop eq a1 b1
+  | _ -> false
+
+(** TODO: Ideally, test that these two are equivalent *)
+(** Probably not fully true because typed_eq is suspicious *)
+let _sexp_eq_prop p1 p2 =
+  Sexplib.Sexp.equal
+    (sexp_of_prop Nt.sexp_of_t p1)
+    (sexp_of_prop Nt.sexp_of_t p2)
+
 let rec fv_prop (prop_e : 't prop) =
   match prop_e with
   | Lit _t__tlittyped0 -> [] @ typed_fv_lit _t__tlittyped0
@@ -26,13 +51,13 @@ let rec fv_prop (prop_e : 't prop) =
   | Or _tproplist0 -> [] @ List.concat (List.map fv_prop _tproplist0)
   | Iff (_tprop0, _tprop1) -> ([] @ fv_prop _tprop1) @ fv_prop _tprop0
   | Forall { qv; body } ->
-      Zzdatatype.Datatype.List.substract (typed_eq String.equal)
+      Zzdatatype.Datatype.List.substract_elm (typed_eq String.equal)
         ([] @ fv_prop body)
-        [ qv ]
+        qv
   | Exists { qv; body } ->
-      Zzdatatype.Datatype.List.substract (typed_eq String.equal)
+      Zzdatatype.Datatype.List.substract_elm (typed_eq String.equal)
         ([] @ fv_prop body)
-        [ qv ]
+        qv
 
 and typed_fv_prop (prop_e : ('t, 't prop) typed) = fv_prop prop_e.x
 

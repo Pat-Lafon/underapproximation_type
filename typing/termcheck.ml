@@ -93,7 +93,7 @@ let rec value_type_infer (uctx : uctx) (a : (t, t value) typed) :
         (VConst c) #: rty
     | VLam _ | VFix _ | VTu _ -> _failatwith __FILE__ __LINE__ "unimp"
   in
-  let () = pprint_simple_typectx_infer uctx (layout_typed_value a, res.ty) in
+  (* let () = pprint_simple_typectx_infer uctx (layout_typed_value a, res.ty) in *)
   res
 
 and value_type_check (uctx : uctx) (a : (t, t value) typed) (rty : t rty) :
@@ -374,11 +374,11 @@ and term_type_infer (uctx : uctx) (a : ('t, 't term) typed) :
         (* in *)
         Some (CLetE { rhs; lhs; body }) #: (exists_rtys_to_rty bindings body.ty)
   in
-  let () =
-    match res with
-    | Some res -> pprint_simple_typectx_infer uctx (layout_typed_term a, res.ty)
-    | None -> ()
-  in
+  (* let () =
+       match res with
+       | Some res -> pprint_simple_typectx_infer uctx (layout_typed_term a, res.ty)
+       | None -> ()
+     in *)
   res
 
 and term_type_check (uctx : uctx) (y : ('t, 't term) typed) (rty : t rty) :

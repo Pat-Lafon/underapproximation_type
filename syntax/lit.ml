@@ -10,6 +10,23 @@ type 't lit =
   | AAppOp of ('t, string) typed * ('t, 't lit) typed list
 [@@deriving sexp]
 
+let rec eq_lit (eq : 'a -> 'a -> bool) p1 p2 =
+  match (p1, p2) with
+  | AC c1, AC c2 -> equal_constant c1 c2
+  | AVar v1, AVar v2 -> typed_eq String.equal v1 v2
+  | ATu l1, ATu l2 ->
+      List.length l1 = List.length l2
+      && List.for_all2 (typed_eq (eq_lit eq)) l1 l2
+  | AProj (l1, i1), AProj (l2, i2) -> typed_eq (eq_lit eq) l1 l2 && i1 = i2
+  | AAppOp (op1, l1), AAppOp (op2, l2) ->
+      typed_eq String.equal op1 op2
+      && List.length l1 = List.length l2
+      && List.for_all2 (typed_eq (eq_lit eq)) l1 l2
+  | _ -> false
+
+let _sexp_eq_lit p1 p2 =
+  Sexplib.Sexp.equal (sexp_of_lit Nt.sexp_of_t p1) (sexp_of_lit Nt.sexp_of_t p2)
+
 let rec fv_lit (lit_e : 't lit) =
   match lit_e with
   | AC _ -> []

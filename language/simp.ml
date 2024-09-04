@@ -6,13 +6,15 @@ open FrontendTyped
 let peval_lit lit =
   match lit.x with
   | AAppOp (op, [ a; b ]) when String.equal "==" op.x ->
-      if eq_lit a.x b.x then (AC (B true)) #: lit.ty else lit
+      if eq_lit Nt.eq a.x b.x then (AC (B true)) #: lit.ty else lit
   | _ -> lit
 
 let match_var_eq_typed_lit x lit =
   match lit.x with
   | AAppOp (op, [ a; b ]) when String.equal "==" op.x ->
-      if eq_lit x a.x then Some b.x else if eq_lit x b.x then Some a.x else None
+      if eq_lit Nt.eq x a.x then Some b.x
+      else if eq_lit Nt.eq x b.x then Some a.x
+      else None
   | _ -> None
 
 let match_var_eq_prop x prop =

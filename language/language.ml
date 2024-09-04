@@ -76,12 +76,6 @@ module FrontendTyped = struct
   let layout_id_rty x = x.x ^ ":" ^ layout_rty x.ty
 
   (* Lit *)
-
-  let eq_lit p1 p2 =
-    Sexplib.Sexp.equal
-      (sexp_of_lit Nt.sexp_of_t p1)
-      (sexp_of_lit Nt.sexp_of_t p2)
-
   let mk_typed_lit_by_id id = (AVar id) #: id.ty
   let mk_typed_lit_by_const c = (AC c.x) #: c.ty
 
@@ -104,21 +98,16 @@ module FrontendTyped = struct
   let is_true p = match get_cbool p with Some true -> true | _ -> false
   let is_false p = match get_cbool p with Some false -> true | _ -> false
 
-  let eq_prop p1 p2 =
-    Sexplib.Sexp.equal
-      (sexp_of_prop Nt.sexp_of_t p1)
-      (sexp_of_prop Nt.sexp_of_t p2)
-
   open Zzdatatype.Datatype
 
   let unfold_and prop =
     let rec aux = function
       | [] -> []
-      | And l :: l' -> aux (l @ l')
+      | And l :: l' -> aux l @ aux l'
       | prop :: l' -> prop :: aux l'
     in
     let l = aux prop in
-    List.slow_rm_dup eq_prop l
+    List.slow_rm_dup (eq_prop (eq_lit Nt.eq)) l
 
   let smart_and l =
     let l = unfold_and l in
@@ -136,7 +125,7 @@ module FrontendTyped = struct
       | prop :: l' -> prop :: aux l'
     in
     let l = aux prop in
-    List.slow_rm_dup eq_prop l
+    List.slow_rm_dup (eq_prop (eq_lit Nt.eq)) l
 
   let smart_or l =
     let l = unfold_or l in

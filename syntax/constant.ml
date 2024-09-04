@@ -21,6 +21,16 @@ let rec constant_to_nt c =
 let compare_constant e1 e2 =
   Sexplib.Sexp.compare (sexp_of_constant e1) (sexp_of_constant e2)
 
-let equal_constant e1 e2 =
+let rec equal_constant e1 e2 =
+  match (e1, e2) with
+  | U, U -> true
+  | B b1, B b2 -> b1 = b2
+  | I i1, I i2 -> i1 = i2
+  | Tu l1, Tu l2 ->
+      List.length l1 = List.length l2 && List.for_all2 equal_constant l1 l2
+  | Dt (s1, l1), Dt (s2, l2) -> s1 = s2 && List.for_all2 equal_constant l1 l2
+  | _ -> false
+
+let _sexp_equal_constant e1 e2 =
   Sexplib.Sexp.equal (sexp_of_constant e1) (sexp_of_constant e2)
 (* Generated from _constant.ml *)

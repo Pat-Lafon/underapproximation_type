@@ -1,0 +1,15 @@
+let rec sorted_list_gen = fun s ->
+  fun x ->
+    let (x!3) = sizecheck s in
+    match x!3 with
+    | True -> [] 
+    | False ->
+        let (y) = int_gen () in
+        let (x!4) = x <= y in
+        (match x!4 with
+         | True ->
+             let (_x5) = s in
+             let (_x11) = subs _x5 in
+             let (_x281) = sorted_list_gen _x11 in
+             let (_x282!0) = _x281 y in Cons y _x282!0
+         | False -> Err)
