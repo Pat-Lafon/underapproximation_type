@@ -192,7 +192,7 @@ let typed_raw_term_of_expr expr =
                       args = List.map term_force_var args;
                       exp = aux case.pc_rhs;
                     }
-              | _ -> _failatwith __FILE__ __LINE__ "?")
+              | _ -> _failatwith __FILE__ __LINE__ "Expected a data constructor in match")
             match_cases
         in
         (Match { matched = aux matched; match_cases }) #: None
