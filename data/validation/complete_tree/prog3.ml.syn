@@ -5,6 +5,6 @@ let rec complete_tree_gen = fun s ->
   | False ->
       let (_x5) = s in
       let (_x8) = subs _x5 in
-      let (_x43!23) = complete_tree_gen _x8 in
-      let (_x43!22) = complete_tree_gen _x8 in
-      let (_x4) = int_gen () in Node _x4 _x43!22 _x43!23
+      let (_x43!21) = complete_tree_gen _x8 in
+      let (_x43!20) = complete_tree_gen _x8 in
+      let (_x4) = int_gen () in Node _x4 _x43!20 _x43!21
