@@ -2,6 +2,7 @@ open Mtyped
 module Nt = Normalty.Frontend
 open Sugar
 open Zzdatatype.Datatype
+module Env = Zzenv
 
 let layout_typectx (layout : 'a -> string) ctx : string =
   match ctx with

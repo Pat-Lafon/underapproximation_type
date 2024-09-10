@@ -1,3 +1,4 @@
+module Env = Zzenv
 exception FailWithModel of string * Z3.Model.model
 
 let _failwithmodel file line msg model =

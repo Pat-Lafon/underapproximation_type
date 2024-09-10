@@ -2,7 +2,7 @@
  (public_name underapproximation_type.backend)
  (name backend)
  (wrapped true)
- (libraries language env z3)
+ (libraries language zzenv z3)
  (modules z3aux litencoding propencoding check smtquery)
  (inline_tests)
  (preprocess

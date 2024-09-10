@@ -11,6 +11,7 @@ include Raw_term
 include Term
 include Constructor_declaration
 include Item
+module Env = Zzenv
 
 module FrontendRaw = struct
   let layout_constant = To_constant.layout_constant

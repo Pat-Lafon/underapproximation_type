@@ -1,6 +1,7 @@
 open Z3
 open Solver
 open Goal
+module Env = Zzenv
 (* open Z3aux *)
 
 type smt_result = SmtSat of Model.model | SmtUnsat | Timeout
