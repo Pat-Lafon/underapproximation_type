@@ -13,16 +13,18 @@
     "logfile": ".log",
     "resfile": ".result",
     "abdfile": ".abd",
+    "synfile": ".syn",
     "abd_templates": ["template_no_app", "template_is_const", "template_is_var", "template_is_abs", "template_is_app"],
     "abd_templates_back": ["template_no_app"],
     "num_quantifier": 0,
     "synth_bound": 3,
-    "synth_timeout": "999",
+    "synth_timeout": "499",
+    "synth_rlimit": 100000,
     "prim_path": {
         "data_type_decls": "data/predefined/data_type_decls.ml",
         "templates": "data/predefined/templates.ml",
-        "normal_typing": "data/predefined/normal_typing.ml",
+        "normal_typing": "data/validation/stlc/gen_term_size/normal_typing.ml",
         "axioms": "data/predefined/axioms.ml",
-        "coverage_typing": "data/predefined/coverage_typing.ml"
+        "coverage_typing": "data/validation/stlc/gen_term_size/builtin_rty.ml"
     }
 }

@@ -1,29 +1,11 @@
-val get_num_arr : stlc_ty -> int
+(* val get_num_arr : stlc_ty -> int
 val gen_type : unit -> stlc_ty
 val vars_with_type : stlc_tyctx -> stlc_ty -> stlc_term
-val gen_term_no_app : stlc_tyctx -> stlc_ty -> stlc_term
-
-let[@library] get_num_arr =
-  let s = (true : [%v: stlc_ty]) [@over] in
-  (num_arr s v : [%v: int]) [@under]
-
-let[@library] gen_type =
-  let s = (true : [%v: unit]) [@over] in
-  (true : [%v: stlc_ty]) [@under]
-
-let[@library] vars_with_type =
-  let gamma = (true : [%v: stlc_tyctx]) [@over] in
-  let tau = (true : [%v: stlc_ty]) [@over] in
-  (typing gamma v tau && is_var v : [%v: stlc_term]) [@under]
-
-let[@library] gen_term_no_app =
-  let gamma = (true : [%v: stlc_tyctx]) [@over] in
-  let tau = (true : [%v: stlc_ty]) [@over] in
-  (typing gamma v tau && num_app v 0 : [%v: stlc_term]) [@under]
+val gen_term_no_app : stlc_tyctx -> stlc_ty -> stlc_term *)
 
 let rec gen_term_size (num_arr_tau : int) (num : int) (gamma : stlc_tyctx)
     (tau : stlc_ty) : stlc_term =
-  if num == 0 then Err
+  if sizecheck num then Err
   else if bool_gen () then
     let (arg_tau : stlc_ty) = gen_type () in
     let (num_app_func : int) = int_range_inex 0 num in
