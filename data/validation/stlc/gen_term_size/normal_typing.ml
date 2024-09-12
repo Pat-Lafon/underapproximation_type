@@ -3,6 +3,7 @@ val gen_type : unit -> stlc_ty
 val vars_with_type : stlc_tyctx -> stlc_ty -> stlc_term
 val gen_term_no_app : stlc_tyctx -> stlc_ty -> stlc_term
 
+val hidden_stlc_term_gen : unit -> stlc_term
 
 val is_const : stlc_term -> bool
 val is_var : stlc_term -> bool

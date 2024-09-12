@@ -6,11 +6,11 @@ let[@library] gen_type =
   let s = (true : [%v: unit]) [@over] in
   (true : [%v: stlc_ty]) [@under]
 
-let[@library] vars_with_type =
+(* let[@library] vars_with_type =
   let gamma = (true : [%v: stlc_tyctx]) [@over] in
   let tau = (true : [%v: stlc_ty]) [@over] in
   (typing gamma v tau && is_var v : [%v: stlc_term]) [@under]
-
+ *)
 let[@library] gen_term_no_app =
   let gamma = (true : [%v: stlc_tyctx]) [@over] in
   let tau = (true : [%v: stlc_ty]) [@over] in
@@ -91,16 +91,16 @@ let[@library] Stlc_tyctx_cons =
 
 (* the built-in random generators *)
 
-let[@library] int_range =
-  let a = (true : [%v: int]) [@over] in
-  let b = (1 + a < v : [%v: int]) [@over] in
-  (a < v && v < b : [%v: int]) [@under]
+(* let[@library] int_range =
+   let a = (true : [%v: int]) [@over] in
+   let b = (1 + a < v : [%v: int]) [@over] in
+   (a < v && v < b : [%v: int]) [@under] *)
 
 let[@library] bool_gen =
   let _ = (true : [%v: unit]) [@over] in
   (true : [%v: bool]) [@under]
 
-let[@library] hidden_gen_term_size_gen =
+let[@library] hidden_stlc_term_gen =
   let _ = (true : [%v: unit]) [@over] in
   (true : [%v: stlc_term]) [@under]
 
@@ -113,4 +113,4 @@ let[@library] int_range_inex =
   let b = (a <= v : [%v: int]) [@over] in
   (a <= v && v < b : [%v: int]) [@under]
 
-let[@library] dummy = (true : [%v: unit]) [@under]
+(* let[@library] dummy = (true : [%v: unit]) [@under] *)
