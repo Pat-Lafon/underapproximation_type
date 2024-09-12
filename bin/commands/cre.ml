@@ -118,8 +118,7 @@ let type_infer_ meta_config_file source_file () =
   let result = type_infer_inner meta_config_file source_file () in
   let () =
     let oc = Out_channel.create @@ Env.get_abdfile source_file in
-    Printf.fprintf oc "%s\n"
-      (Sexplib.Sexp.to_string @@ sexp_of_rty Nt.T.sexp_of_t result);
+    Printf.fprintf oc "%s\n" (FrontendTyped.layout_rty result);
     Out_channel.close oc
   in
   ()
