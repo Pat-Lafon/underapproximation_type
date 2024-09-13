@@ -9,5 +9,5 @@ let rec sized_list_gen = fun s ->
        | False ->
            let (_x5) = s in
            let (_x9) = subs _x5 in
-           let (_494) = sized_list_gen _x9 in
-           let (_x4) = int_gen () in Cons _x4 _494)
+           let (_492) = sized_list_gen _x9 in
+           let (_x4) = int_gen () in Cons _x4 _492)
