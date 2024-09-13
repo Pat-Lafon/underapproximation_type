@@ -1,14 +1,14 @@
 let rec sorted_list_gen = fun s ->
   fun x ->
-    let (x!6) = sizecheck s in
-    match x!6 with
+    let (x_6) = sizecheck s in
+    match x_6 with
     | True -> Nil 
     | False ->
         let (y) = int_gen () in
-        let (x!7) = x <= y in
-        (match x!7 with
+        let (x_7) = x <= y in
+        (match x_7 with
          | True ->
              let (size2) = subs s in
-             let (x!8) = sorted_list_gen size2 in
-             let (l) = x!8 y in let (l2) = y :: l in l2
+             let (x_8) = sorted_list_gen size2 in
+             let (l) = x_8 y in let (l2) = y :: l in l2
          | False -> Err)
