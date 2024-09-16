@@ -195,3 +195,29 @@ _x9:[v:int | v == (_x5 - 1)]
   node3 [ shape = box, color = red ]
 }
 Path Specific Collection:
+pathcond_0:[v:unit | ∃x_7, ((x_7 <=> s == 0) ∧ (¬x_7 <=> s > 0) ∧ x_7)]
+New Blocks:
+Old Blocks:
+pathcond_1:[v:unit | ∃x_7, ((x_7 <=> s == 0) ∧ (¬x_7 <=> s > 0) ∧ ¬x_7 ∧ (∃x_8, x_8))]
+New Blocks:
+Old Blocks:
+Type: int list
+digraph poset {
+  label = "Partially Ordered Set"
+  size = "8.270000,11.690000"
+  ratio = 0.900000
+  rotate = 0.000000
+  center = 1
+
+  edge [ dir = back ]
+
+  node0 [ label = "_x5:[v:int | v == s]
+_x9:[v:int | v == (_x5 - 1)]
+pathcond_1:[v:unit | ∃x_7, ((x_7 <=> s == 0) ∧ (¬x_7 <=> s > 0) ∧ ¬x_7 ∧ (∃x_8, x_8))]
+_x26:[v:int list | ∃s_15, (0 <= s_15 ∧ s_15 >= 0 ∧ s_15 < s ∧ s_15 == _x9 ∧ (∃_x26, ((∃n, (len _x26 n ∧ n <= s_15)) ∧ v == _x26)))] 
+ ⊢ let (_x5) = s in let (_x9) = subs _x5 in sized_list_gen _x9 : int list :
+[v:int list | ∃s_15, (0 <= s_15 ∧ s_15 >= 0 ∧ s_15 < s ∧ s_15 == _x9 ∧ (∃_x26, ((∃n, (len _x26 n ∧ n <= s_15)) ∧ v == _x26)))]
+" ]
+
+  node0 [ shape = box, color = green ]
+}

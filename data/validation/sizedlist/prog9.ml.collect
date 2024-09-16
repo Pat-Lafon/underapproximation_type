@@ -195,3 +195,105 @@ _x8:[v:int | v == (_x5 - 1)]
   node3 [ shape = box, color = red ]
 }
 Path Specific Collection:
+pathcond_0:[v:unit | ∃x_2, ((x_2 <=> s == 0) ∧ (¬x_2 <=> s > 0) ∧ x_2)]
+New Blocks:
+Old Blocks:
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) ∧ (¬x_2 <=> s > 0) ∧ ¬x_2)]
+New Blocks:
+Type: int list
+digraph poset {
+  label = "Partially Ordered Set"
+  size = "8.270000,11.690000"
+  ratio = 0.900000
+  rotate = 0.000000
+  center = 1
+
+  edge [ dir = back ]
+
+  node0 [ label = "_x5:[v:int | v == s]
+_x8:[v:int | v == (_x5 - 1)]
+_x16:[v:int | v == (_x8 - 1)]
+_451:[v:int list | emp v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) ∧ (¬x_2 <=> s > 0) ∧ ¬x_2)]
+_x49:[v:int list | ∃_x49, (hd _x49 _x16 ∧ tl _x49 _451 ∧ v == _x49)] 
+ ⊢ let (_451) = Nil  in
+let (_x5) = s in
+let (_x8) = subs _x5 in let (_x16) = subs _x8 in Cons _x16 _451 : int list :
+[v:int list | ∃_x49, (hd _x49 _x16 ∧ tl _x49 _451 ∧ v == _x49)]
+" ]
+  node1 [ label = "_x5:[v:int | v == s]
+_x5:[v:int | v == s]
+_480:[v:int | v == (_x5 - 1)]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) ∧ (¬x_2 <=> s > 0) ∧ ¬x_2)]
+_481:[v:int list | ∃s_5, (0 <= s_5 ∧ s_5 >= 0 ∧ s_5 < s ∧ s_5 == _480 ∧ (∃_x25, ((∃n, (len _x25 n ∧ n <= s_5)) ∧ v == _x25)))]
+_x58:[v:int list | ∃_x58, (hd _x58 _x5 ∧ tl _x58 _481 ∧ v == _x58)] 
+ ⊢ let (_x5) = s in
+let (_x8) = subs _x5 in let (_481) = sized_list_gen _x8 in Cons _x5 _481 : int list :
+[v:int list | ∃_x58, (hd _x58 _x5 ∧ tl _x58 _481 ∧ v == _x58)]
+" ]
+  node2 [ label = "_x4:[v:int | true]
+_x5:[v:int | v == s]
+_482:[v:int | v == (_x5 - 1)]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) ∧ (¬x_2 <=> s > 0) ∧ ¬x_2)]
+_483:[v:int list | ∃s_5, (0 <= s_5 ∧ s_5 >= 0 ∧ s_5 < s ∧ s_5 == _482 ∧ (∃_x25, ((∃n, (len _x25 n ∧ n <= s_5)) ∧ v == _x25)))]
+_x59:[v:int list | ∃_x59, (hd _x59 _x4 ∧ tl _x59 _483 ∧ v == _x59)] 
+ ⊢ let (_x5) = s in
+let (_x8) = subs _x5 in
+let (_483) = sized_list_gen _x8 in let (_x4) = int_gen () in Cons _x4 _483 : int list :
+[v:int list | ∃_x59, (hd _x59 _x4 ∧ tl _x59 _483 ∧ v == _x59)]
+" ]
+  node3 [ label = "_x5:[v:int | v == s]
+_x8:[v:int | v == (_x5 - 1)]
+_x5:[v:int | v == s]
+_484:[v:int | v == (_x5 - 1)]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) ∧ (¬x_2 <=> s > 0) ∧ ¬x_2)]
+_485:[v:int list | ∃s_5, (0 <= s_5 ∧ s_5 >= 0 ∧ s_5 < s ∧ s_5 == _484 ∧ (∃_x25, ((∃n, (len _x25 n ∧ n <= s_5)) ∧ v == _x25)))]
+_x60:[v:int list | ∃_x60, (hd _x60 _x8 ∧ tl _x60 _485 ∧ v == _x60)] 
+ ⊢ let (_x5) = s in
+let (_x8) = subs _x5 in let (_485) = sized_list_gen _x8 in Cons _x8 _485 : int list :
+[v:int list | ∃_x60, (hd _x60 _x8 ∧ tl _x60 _485 ∧ v == _x60)]
+" ]
+  node4 [ label = "_x5:[v:int | v == s]
+_x8:[v:int | v == (_x5 - 1)]
+_x16:[v:int | v == (_x8 - 1)]
+_x5:[v:int | v == s]
+_486:[v:int | v == (_x5 - 1)]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) ∧ (¬x_2 <=> s > 0) ∧ ¬x_2)]
+_487:[v:int list | ∃s_5, (0 <= s_5 ∧ s_5 >= 0 ∧ s_5 < s ∧ s_5 == _486 ∧ (∃_x25, ((∃n, (len _x25 n ∧ n <= s_5)) ∧ v == _x25)))]
+_x61:[v:int list | ∃_x61, (hd _x61 _x16 ∧ tl _x61 _487 ∧ v == _x61)] 
+ ⊢ let (_x5) = s in
+let (_x8) = subs _x5 in
+let (_487) = sized_list_gen _x8 in let (_x16) = subs _x8 in Cons _x16 _487 : int list :
+[v:int list | ∃_x61, (hd _x61 _x16 ∧ tl _x61 _487 ∧ v == _x61)]
+" ]
+
+  node0 [ shape = box, color = red ]
+  node1 [ shape = box, color = red ]
+  node2 [ shape = box, color = blue ]
+  node2 -> node4
+  node2 -> node1
+  node2 -> node3
+  node3 [ shape = box, color = red ]
+  node4 -> node0
+}
+Old Blocks:
+Type: int list
+digraph poset {
+  label = "Partially Ordered Set"
+  size = "8.270000,11.690000"
+  ratio = 0.900000
+  rotate = 0.000000
+  center = 1
+
+  edge [ dir = back ]
+
+  node0 [ label = "_x5:[v:int | v == s]
+_x8:[v:int | v == (_x5 - 1)]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) ∧ (¬x_2 <=> s > 0) ∧ ¬x_2)]
+_x25:[v:int list | ∃s_5, (0 <= s_5 ∧ s_5 >= 0 ∧ s_5 < s ∧ s_5 == _x8 ∧ (∃_x25, ((∃n, (len _x25 n ∧ n <= s_5)) ∧ v == _x25)))] 
+ ⊢ let (_x5) = s in let (_x8) = subs _x5 in sized_list_gen _x8 : int list :
+[v:int list | ∃s_5, (0 <= s_5 ∧ s_5 >= 0 ∧ s_5 < s ∧ s_5 == _x8 ∧ (∃_x25, ((∃n, (len _x25 n ∧ n <= s_5)) ∧ v == _x25)))]
+" ]
+
+  node0 [ shape = box, color = green ]
+}

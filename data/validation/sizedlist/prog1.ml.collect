@@ -195,3 +195,6 @@ _x9:[v:int | v == (_x5 - 1)]
   node3 [ shape = box, color = red ]
 }
 Path Specific Collection:
+pathcond_0:[v:unit | ∃x_7, ((x_7 <=> s == 0) ∧ (¬x_7 <=> s > 0) ∧ x_7)]
+New Blocks:
+Old Blocks:
