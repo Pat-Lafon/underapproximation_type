@@ -13,6 +13,7 @@
     "resfile": ".result",
     "abdfile": ".abd",
     "synfile": ".syn",
+    "collectfile": ".collect",
     "abd_templates": ["template_emp"],
     "num_quantifier": 0,
     "synth_bound": 1,
