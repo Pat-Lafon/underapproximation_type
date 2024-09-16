@@ -14,6 +14,7 @@
     "resfile": ".result",
     "abdfile": ".abd",
     "synfile": ".syn",
+    "collectfile": ".collect",
     "abd_templates": ["template_no_app", "template_is_const", "template_is_var", "template_is_abs", "template_is_app"],
     "abd_templates_back": ["template_no_app"],
     "num_quantifier": 0,
