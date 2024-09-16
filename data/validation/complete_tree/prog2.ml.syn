@@ -1,10 +1,10 @@
 let rec complete_tree_gen = fun s ->
-  let (x!2) = sizecheck s in
-  match x!2 with
+  let (x_2) = sizecheck s in
+  match x_2 with
   | True -> Leaf 
   | False ->
       let (_x5) = s in
       let (_x8) = subs _x5 in
-      let (_x43!21) = complete_tree_gen _x8 in
-      let (_x43!20) = complete_tree_gen _x8 in
-      let (_x4) = int_gen () in Node _x4 _x43!20 _x43!21
+      let (_48066) = complete_tree_gen _x8 in
+      let (_48064) = complete_tree_gen _x8 in
+      let (_x4) = int_gen () in Node _x4 _48064 _48066

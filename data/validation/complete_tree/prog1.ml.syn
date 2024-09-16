@@ -1,6 +1,6 @@
 let rec complete_tree_gen = fun s ->
-  let (x!3) = sizecheck s in
-  match x!3 with
+  let (x_3) = sizecheck s in
+  match x_3 with
   | True -> Leaf 
   | False ->
       let (s1) = subs s in
