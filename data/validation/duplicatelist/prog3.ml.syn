@@ -1,10 +1,10 @@
 let rec duplicate_list_gen = fun s ->
   fun x ->
-    let (x!2) = sizecheck s in
-    match x!2 with
+    let (x_2) = sizecheck s in
+    match x_2 with
     | True -> Nil 
     | False ->
         let (_x5) = s in
         let (_x10) = subs _x5 in
         let (_x69) = duplicate_list_gen _x10 in
-        let (_x6) = x in let (_x70!0) = _x69 _x6 in Cons _x6 _x70!0
+        let (_x6) = x in let (_2223) = _x69 _x6 in Cons _x6 _2223
