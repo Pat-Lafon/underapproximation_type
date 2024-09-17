@@ -377,20 +377,6 @@ digraph poset {
 
   node0 [ label = "_x6:[v:int | v == x]
 _x5:[v:int | v == s]
-_2217:[v:int | v == (_x5 - 1)]
-_2218:[v:int | true]
-pathcond_0:[v:unit | ∃x_2, ((x_2 <=> s == 0) ∧ (¬x_2 <=> s > 0) ∧ ¬x_2)]
-_2219:[v:int list | ∃s_9, (s_9 >= 0 ∧ s_9 < s ∧ s_9 == _2217 ∧ (∃_x74, (len _x74 s_9 ∧ (∀u, (list_mem _x74 u => u == _2218)) ∧ v == _x74)))]
-_x266:[v:int list | ∃_x266, (hd _x266 _x6 ∧ tl _x266 _2219 ∧ v == _x266)] 
- ⊢ let (_x5) = s in
-let (_x10) = subs _x5 in
-let (_x73) = duplicate_list_gen _x10 in
-let (_795) = int_gen () in
-let (_2219) = _x73 _795 in let (_x6) = x in Cons _x6 _2219 : int list :
-[v:int list | ∃_x266, (hd _x266 _x6 ∧ tl _x266 _2219 ∧ v == _x266)]
-" ]
-  node1 [ label = "_x6:[v:int | v == x]
-_x5:[v:int | v == s]
 _2222:[v:int | v == (_x5 - 1)]
 _x6:[v:int | v == x]
 pathcond_0:[v:unit | ∃x_2, ((x_2 <=> s == 0) ∧ (¬x_2 <=> s > 0) ∧ ¬x_2)]
@@ -402,21 +388,7 @@ let (_x69) = duplicate_list_gen _x10 in
 let (_x6) = x in let (_2223) = _x69 _x6 in Cons _x6 _2223 : int list :
 [v:int list | ∃_x268, (hd _x268 _x6 ∧ tl _x268 _2223 ∧ v == _x268)]
 " ]
-  node2 [ label = "_x4:[v:int | true]
-_x5:[v:int | v == s]
-_2243:[v:int | v == (_x5 - 1)]
-_2244:[v:int | true]
-pathcond_0:[v:unit | ∃x_2, ((x_2 <=> s == 0) ∧ (¬x_2 <=> s > 0) ∧ ¬x_2)]
-_2245:[v:int list | ∃s_9, (s_9 >= 0 ∧ s_9 < s ∧ s_9 == _2243 ∧ (∃_x74, (len _x74 s_9 ∧ (∀u, (list_mem _x74 u => u == _2244)) ∧ v == _x74)))]
-_x276:[v:int list | ∃_x276, (hd _x276 _x4 ∧ tl _x276 _2245 ∧ v == _x276)] 
- ⊢ let (_x5) = s in
-let (_x10) = subs _x5 in
-let (_x73) = duplicate_list_gen _x10 in
-let (_795) = int_gen () in
-let (_2245) = _x73 _795 in let (_x4) = int_gen () in Cons _x4 _2245 : int list :
-[v:int list | ∃_x276, (hd _x276 _x4 ∧ tl _x276 _2245 ∧ v == _x276)]
-" ]
-  node3 [ label = "_x4:[v:int | true]
+  node1 [ label = "_x4:[v:int | true]
 _x5:[v:int | v == s]
 _2248:[v:int | v == (_x5 - 1)]
 _x6:[v:int | v == x]
@@ -431,13 +403,9 @@ let (_2249) = _x69 _x6 in let (_x4) = int_gen () in Cons _x4 _2249 : int list :
 [v:int list | ∃_x278, (hd _x278 _x4 ∧ tl _x278 _2249 ∧ v == _x278)]
 " ]
 
-  node0 [ shape = box, color = blue ]
-  node0 -> node1
-  node1 [ shape = box, color = red ]
-  node2 [ shape = box, color = blue ]
-  node2 -> node1
-  node3 [ shape = box, color = blue ]
-  node3 -> node1
+  node0 [ shape = box, color = red ]
+  node1 [ shape = box, color = blue ]
+  node1 -> node0
 }
 Old Blocks:
 Type: int list
