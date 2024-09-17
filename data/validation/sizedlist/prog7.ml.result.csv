@@ -1,2 +1,2 @@
-Result, Bounds, SMT Timeout, Queries, Total Time
-true, 3, 100, 671, 24.66
+Result, Bounds, Resource Limit, Queries, Total Time
+true, 3, 300000, 671, 36.66
