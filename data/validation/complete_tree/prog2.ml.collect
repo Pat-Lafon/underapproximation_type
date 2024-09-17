@@ -465,12 +465,11 @@ let (_x8) = subs _x5 in Node _x8 _2357 _2360 : int tree :
   node15 [ shape = box, color = blue ]
   node15 -> node16
   node15 -> node24
-  node15 -> node17
+  node15 -> node18
   node15 -> node11
   node16 -> node12
-  node16 -> node18
   node16 -> node25
-  node17 [ shape = box, color = red ]
+  node17 [ shape = box, color = green ]
   node18 [ shape = box, color = red ]
   node19 [ shape = box, color = red ]
   node20 -> node21
@@ -580,20 +579,20 @@ digraph poset {
 
   node0 [ label = "_x4:[v:int | true]
 _x5:[v:int | v == s]
-_48126:[v:int | v == (_x5 - 1)]
+_48108:[v:int | v == (_x5 - 1)]
 pathcond_0:[v:unit | ∃x_2, ((x_2 <=> s == 0) ∧ (¬x_2 <=> s > 0) ∧ ¬x_2)]
-_48127:[v:int tree | ∃s_5, (0 <= s_5 ∧ s_5 >= 0 ∧ s_5 < s ∧ s_5 == _48126 ∧ (∃_x43, (depth _x43 s_5 ∧ complete _x43 ∧ v == _x43)))]
+_48109:[v:int tree | ∃s_5, (0 <= s_5 ∧ s_5 >= 0 ∧ s_5 < s ∧ s_5 == _48108 ∧ (∃_x43, (depth _x43 s_5 ∧ complete _x43 ∧ v == _x43)))]
 _x5:[v:int | v == s]
-_48128:[v:int | v == (_x5 - 1)]
+_48110:[v:int | v == (_x5 - 1)]
 pathcond_0:[v:unit | ∃x_2, ((x_2 <=> s == 0) ∧ (¬x_2 <=> s > 0) ∧ ¬x_2)]
-_48129:[v:int tree | ∃s_5, (0 <= s_5 ∧ s_5 >= 0 ∧ s_5 < s ∧ s_5 == _48128 ∧ (∃_x43, (depth _x43 s_5 ∧ complete _x43 ∧ v == _x43)))]
-_x3173:[v:int tree | ∃_x3173, (root _x3173 _x4 ∧ lch _x3173 _48127 ∧ rch _x3173 _48129 ∧ v == _x3173)] 
+_48111:[v:int tree | ∃s_5, (0 <= s_5 ∧ s_5 >= 0 ∧ s_5 < s ∧ s_5 == _48110 ∧ (∃_x43, (depth _x43 s_5 ∧ complete _x43 ∧ v == _x43)))]
+_x3173:[v:int tree | ∃_x3173, (root _x3173 _x4 ∧ lch _x3173 _48109 ∧ rch _x3173 _48111 ∧ v == _x3173)] 
  ⊢ let (_x5) = s in
 let (_x8) = subs _x5 in
-let (_48129) = complete_tree_gen _x8 in
-let (_48127) = complete_tree_gen _x8 in
-let (_x4) = int_gen () in Node _x4 _48127 _48129 : int tree :
-[v:int tree | ∃_x3173, (root _x3173 _x4 ∧ lch _x3173 _48127 ∧ rch _x3173 _48129 ∧ v == _x3173)]
+let (_48111) = complete_tree_gen _x8 in
+let (_48109) = complete_tree_gen _x8 in
+let (_x4) = int_gen () in Node _x4 _48109 _48111 : int tree :
+[v:int tree | ∃_x3173, (root _x3173 _x4 ∧ lch _x3173 _48109 ∧ rch _x3173 _48111 ∧ v == _x3173)]
 " ]
 
   node0 [ shape = box, color = green ]
