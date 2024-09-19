@@ -1,11 +1,18 @@
 module Env = Zzenv
+
 exception FailWithModel of string * Z3.Model.model
 
 let _failwithmodel file line msg model =
   raise (FailWithModel (Printf.sprintf "[%s:%i] %s" file line msg, model))
 
 let ctx =
-  Z3.mk_context [ ("model", "true"); ("proof", "false"); ("timeout", "1999")(* ;  ("rlimit", "10000000") *) ]
+  Z3.mk_context
+    [
+      ("model", "true");
+      ("proof", "false");
+      (*  ("timeout", "1999");  *)
+      ("rlimit", "1000000");
+    ]
 
 let _check axiom q =
   Check.(handle_check_res (fun () -> smt_neg_and_solve ctx axiom q))

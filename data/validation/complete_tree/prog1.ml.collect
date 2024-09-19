@@ -463,12 +463,10 @@ let (_x8) = subs _x5 in Node _x8 _2372 _2375 : int tree :
   node13 [ shape = box, color = red ]
   node14 [ shape = box, color = red ]
   node15 [ shape = box, color = blue ]
+  node15 -> node16
   node15 -> node24
-  node15 -> node18
   node15 -> node17
   node15 -> node11
-  node16 [ shape = box, color = blue ]
-  node16 -> node12
   node16 -> node18
   node16 -> node25
   node17 [ shape = box, color = red ]

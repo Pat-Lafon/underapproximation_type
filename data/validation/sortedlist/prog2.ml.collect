@@ -431,35 +431,35 @@ digraph poset {
 
   node0 [ label = "_x4:[v:int | true]
 _x5:[v:int | v == s]
-_2966:[v:int | v == (_x5 - 1)]
+_2957:[v:int | v == (_x5 - 1)]
 _x6:[v:int | v == x]
-_2967:[v:int | v == (_x6 - 1)]
+_2958:[v:int | v == (_x6 - 1)]
 y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ ¬x <= y)]
-_2968:[v:int list | ∃s_17, (0 <= s_17 ∧ s_17 >= 0 ∧ s_17 < s ∧ s_17 == _2966 ∧ (∃_x158, (len _x158 s_17 ∧ sorted _x158 ∧ (∀u, (hd _x158 u => _2967 <= u)) ∧ v == _x158)))]
-_x527:[v:int list | ∃_x527, (hd _x527 _x4 ∧ tl _x527 _2968 ∧ v == _x527)] 
+_2959:[v:int list | ∃s_17, (0 <= s_17 ∧ s_17 >= 0 ∧ s_17 < s ∧ s_17 == _2957 ∧ (∃_x158, (len _x158 s_17 ∧ sorted _x158 ∧ (∀u, (hd _x158 u => _2958 <= u)) ∧ v == _x158)))]
+_x524:[v:int list | ∃_x524, (hd _x524 _x4 ∧ tl _x524 _2959 ∧ v == _x524)] 
  ⊢ let (_x5) = s in
 let (_x11) = subs _x5 in
 let (_x157) = sorted_list_gen _x11 in
 let (_x6) = x in
 let (_1151) = subs _x6 in
-let (_2968) = _x157 _1151 in let (_x4) = int_gen () in Cons _x4 _2968 : int list :
-[v:int list | ∃_x527, (hd _x527 _x4 ∧ tl _x527 _2968 ∧ v == _x527)]
+let (_2959) = _x157 _1151 in let (_x4) = int_gen () in Cons _x4 _2959 : int list :
+[v:int list | ∃_x524, (hd _x524 _x4 ∧ tl _x524 _2959 ∧ v == _x524)]
 " ]
   node1 [ label = "_x4:[v:int | true]
 _x5:[v:int | v == s]
-_2977:[v:int | v == (_x5 - 1)]
+_2968:[v:int | v == (_x5 - 1)]
 _x6:[v:int | v == x]
 y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ ¬x <= y)]
-_2978:[v:int list | ∃s_9, (0 <= s_9 ∧ s_9 >= 0 ∧ s_9 < s ∧ s_9 == _2977 ∧ (∃_x144, (len _x144 s_9 ∧ sorted _x144 ∧ (∀u, (hd _x144 u => _x6 <= u)) ∧ v == _x144)))]
-_x531:[v:int list | ∃_x531, (hd _x531 _x4 ∧ tl _x531 _2978 ∧ v == _x531)] 
+_2969:[v:int list | ∃s_9, (0 <= s_9 ∧ s_9 >= 0 ∧ s_9 < s ∧ s_9 == _2968 ∧ (∃_x144, (len _x144 s_9 ∧ sorted _x144 ∧ (∀u, (hd _x144 u => _x6 <= u)) ∧ v == _x144)))]
+_x528:[v:int list | ∃_x528, (hd _x528 _x4 ∧ tl _x528 _2969 ∧ v == _x528)] 
  ⊢ let (_x5) = s in
 let (_x11) = subs _x5 in
 let (_x143) = sorted_list_gen _x11 in
 let (_x6) = x in
-let (_2978) = _x143 _x6 in let (_x4) = int_gen () in Cons _x4 _2978 : int list :
-[v:int list | ∃_x531, (hd _x531 _x4 ∧ tl _x531 _2978 ∧ v == _x531)]
+let (_2969) = _x143 _x6 in let (_x4) = int_gen () in Cons _x4 _2969 : int list :
+[v:int list | ∃_x528, (hd _x528 _x4 ∧ tl _x528 _2969 ∧ v == _x528)]
 " ]
 
   node0 [ shape = box, color = blue ]
@@ -575,19 +575,7 @@ let (_x157) = sorted_list_gen _x11 in
 let (_x6) = x in let (_1151) = subs _x6 in _x157 _1151 : int list :
 [v:int list | ∃s_17, (0 <= s_17 ∧ s_17 >= 0 ∧ s_17 < s ∧ s_17 == _x11 ∧ (∃_x158, (len _x158 s_17 ∧ sorted _x158 ∧ (∀u, (hd _x158 u => _1151 <= u)) ∧ v == _x158)))]
 " ]
-  node6 [ label = "_x5:[v:int | v == s]
-_x11:[v:int | v == (_x5 - 1)]
-y:[v:int | true]
-pathcond_1:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ ¬x <= y)]
-_1201:[v:int | v == (y - 1)]
-_x217:[v:int list | ∃s_21, (0 <= s_21 ∧ s_21 >= 0 ∧ s_21 < s ∧ s_21 == _x11 ∧ (∃_x217, (len _x217 s_21 ∧ sorted _x217 ∧ (∀u, (hd _x217 u => _1201 <= u)) ∧ v == _x217)))] 
- ⊢ let (_x5) = s in
-let (_x11) = subs _x5 in
-let (_x216) = sorted_list_gen _x11 in
-let (y) = y in let (_1201) = subs y in _x216 _1201 : int list :
-[v:int list | ∃s_21, (0 <= s_21 ∧ s_21 >= 0 ∧ s_21 < s ∧ s_21 == _x11 ∧ (∃_x217, (len _x217 s_21 ∧ sorted _x217 ∧ (∀u, (hd _x217 u => _1201 <= u)) ∧ v == _x217)))]
-" ]
-  node7 [ label = "_x6:[v:int | v == x]
+  node6 [ label = "_x6:[v:int | v == x]
 y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ ¬x <= y)]
 _1154:[v:int list | emp v]
@@ -597,7 +585,7 @@ _x165:[v:int list | ∃_x165, (hd _x165 _x6 ∧ tl _x165 _1155 ∧ v == _x165)]
 let (_1155) = Cons y _101 in let (_x6) = x in Cons _x6 _1155 : int list :
 [v:int list | ∃_x165, (hd _x165 _x6 ∧ tl _x165 _1155 ∧ v == _x165)]
 " ]
-  node8 [ label = "_x5:[v:int | v == s]
+  node7 [ label = "_x5:[v:int | v == s]
 y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ ¬x <= y)]
 _1156:[v:int list | emp v]
@@ -607,7 +595,7 @@ _x166:[v:int list | ∃_x166, (hd _x166 _x5 ∧ tl _x166 _1157 ∧ v == _x166)]
 let (_1157) = Cons y _101 in let (_x5) = s in Cons _x5 _1157 : int list :
 [v:int list | ∃_x166, (hd _x166 _x5 ∧ tl _x166 _1157 ∧ v == _x166)]
 " ]
-  node9 [ label = "_x4:[v:int | true]
+  node8 [ label = "_x4:[v:int | true]
 y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ ¬x <= y)]
 _1158:[v:int list | emp v]
@@ -617,7 +605,7 @@ _x167:[v:int list | ∃_x167, (hd _x167 _x4 ∧ tl _x167 _1159 ∧ v == _x167)]
 let (_1159) = Cons y _101 in let (_x4) = int_gen () in Cons _x4 _1159 : int list :
 [v:int list | ∃_x167, (hd _x167 _x4 ∧ tl _x167 _1159 ∧ v == _x167)]
 " ]
-  node10 [ label = "y:[v:int | true]
+  node9 [ label = "y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ ¬x <= y)]
 y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ ¬x <= y)]
@@ -627,7 +615,7 @@ _x168:[v:int list | ∃_x168, (hd _x168 y ∧ tl _x168 _1161 ∧ v == _x168)]
  ⊢ let (_101) = Nil  in let (_1161) = Cons y _101 in Cons y _1161 : int list :
 [v:int list | ∃_x168, (hd _x168 y ∧ tl _x168 _1161 ∧ v == _x168)]
 " ]
-  node11 [ label = "y:[v:int | true]
+  node10 [ label = "y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ ¬x <= y)]
 _x46:[v:int | v == (y - 1)]
 _1162:[v:int list | emp v]
@@ -635,7 +623,7 @@ _x169:[v:int list | ∃_x169, (hd _x169 _x46 ∧ tl _x169 _1162 ∧ v == _x169)]
  ⊢ let (_1162) = Nil  in let (y) = y in let (_x46) = subs y in Cons _x46 _1162 : int list :
 [v:int list | ∃_x169, (hd _x169 _x46 ∧ tl _x169 _1162 ∧ v == _x169)]
 " ]
-  node12 [ label = "y:[v:int | true]
+  node11 [ label = "y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ ¬x <= y)]
 _x46:[v:int | v == (y - 1)]
 y:[v:int | true]
@@ -648,7 +636,7 @@ let (_1164) = Cons y _101 in
 let (y) = y in let (_x46) = subs y in Cons _x46 _1164 : int list :
 [v:int list | ∃_x170, (hd _x170 _x46 ∧ tl _x170 _1164 ∧ v == _x170)]
 " ]
-  node13 [ label = "_x5:[v:int | v == s]
+  node12 [ label = "_x5:[v:int | v == s]
 _x11:[v:int | v == (_x5 - 1)]
 y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ ¬x <= y)]
@@ -660,7 +648,7 @@ let (_1166) = Cons y _101 in
 let (_x5) = s in let (_x11) = subs _x5 in Cons _x11 _1166 : int list :
 [v:int list | ∃_x171, (hd _x171 _x11 ∧ tl _x171 _1166 ∧ v == _x171)]
 " ]
-  node14 [ label = "_x6:[v:int | v == x]
+  node13 [ label = "_x6:[v:int | v == x]
 _x10:[v:int | v == (_x6 - 1)]
 y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ ¬x <= y)]
@@ -672,7 +660,7 @@ let (_1168) = Cons y _101 in
 let (_x6) = x in let (_x10) = subs _x6 in Cons _x10 _1168 : int list :
 [v:int list | ∃_x172, (hd _x172 _x10 ∧ tl _x172 _1168 ∧ v == _x172)]
 " ]
-  node15 [ label = "y:[v:int | true]
+  node14 [ label = "y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ ¬x <= y)]
 _1169:[v:int | true]
 _1170:[v:int list | emp v]
@@ -682,7 +670,7 @@ _x173:[v:int list | ∃_x173, (hd _x173 y ∧ tl _x173 _1171 ∧ v == _x173)]
 let (_x4) = int_gen () in let (_1171) = Cons _x4 _32 in Cons y _1171 : int list :
 [v:int list | ∃_x173, (hd _x173 y ∧ tl _x173 _1171 ∧ v == _x173)]
 " ]
-  node16 [ label = "y:[v:int | true]
+  node15 [ label = "y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ ¬x <= y)]
 _x5:[v:int | v == s]
 _1172:[v:int list | emp v]
@@ -692,7 +680,7 @@ _x174:[v:int list | ∃_x174, (hd _x174 y ∧ tl _x174 _1173 ∧ v == _x174)]
 let (_x5) = s in let (_1173) = Cons _x5 _29 in Cons y _1173 : int list :
 [v:int list | ∃_x174, (hd _x174 y ∧ tl _x174 _1173 ∧ v == _x174)]
 " ]
-  node17 [ label = "y:[v:int | true]
+  node16 [ label = "y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ ¬x <= y)]
 _x6:[v:int | v == x]
 _1174:[v:int list | emp v]
@@ -702,7 +690,7 @@ _x175:[v:int list | ∃_x175, (hd _x175 y ∧ tl _x175 _1175 ∧ v == _x175)]
 let (_x6) = x in let (_1175) = Cons _x6 _28 in Cons y _1175 : int list :
 [v:int list | ∃_x175, (hd _x175 y ∧ tl _x175 _1175 ∧ v == _x175)]
 " ]
-  node18 [ label = "y:[v:int | true]
+  node17 [ label = "y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ ¬x <= y)]
 _x46:[v:int | v == (y - 1)]
 _1176:[v:int | true]
@@ -715,7 +703,7 @@ let (_1178) = Cons _x4 _32 in
 let (y) = y in let (_x46) = subs y in Cons _x46 _1178 : int list :
 [v:int list | ∃_x176, (hd _x176 _x46 ∧ tl _x176 _1178 ∧ v == _x176)]
 " ]
-  node19 [ label = "y:[v:int | true]
+  node18 [ label = "y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ ¬x <= y)]
 _x46:[v:int | v == (y - 1)]
 _x5:[v:int | v == s]
@@ -728,7 +716,7 @@ let (_1180) = Cons _x5 _29 in
 let (y) = y in let (_x46) = subs y in Cons _x46 _1180 : int list :
 [v:int list | ∃_x177, (hd _x177 _x46 ∧ tl _x177 _1180 ∧ v == _x177)]
 " ]
-  node20 [ label = "y:[v:int | true]
+  node19 [ label = "y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ ¬x <= y)]
 _x46:[v:int | v == (y - 1)]
 _x6:[v:int | v == x]
@@ -743,42 +731,41 @@ let (y) = y in let (_x46) = subs y in Cons _x46 _1182 : int list :
 " ]
 
   node0 [ shape = box, color = blue ]
-  node0 -> node11
+  node0 -> node10
   node1 [ shape = box, color = red ]
   node2 [ shape = box, color = red ]
   node3 [ shape = box, color = blue ]
-  node3 -> node6
+  node3 -> node4
+  node3 -> node5
   node4 -> node2
   node5 -> node1
-  node6 -> node4
-  node6 -> node5
+  node6 [ shape = box, color = red ]
   node7 [ shape = box, color = red ]
-  node8 [ shape = box, color = red ]
-  node9 [ shape = box, color = blue ]
-  node9 -> node8
-  node9 -> node12
-  node9 -> node10
-  node9 -> node14
-  node9 -> node13
-  node9 -> node7
+  node8 [ shape = box, color = blue ]
+  node8 -> node12
+  node8 -> node6
+  node8 -> node9
+  node8 -> node13
+  node8 -> node11
+  node8 -> node7
+  node9 [ shape = box, color = red ]
   node10 [ shape = box, color = red ]
   node11 [ shape = box, color = red ]
   node12 [ shape = box, color = red ]
   node13 [ shape = box, color = red ]
-  node14 [ shape = box, color = red ]
-  node15 [ shape = box, color = blue ]
-  node15 -> node16
+  node14 [ shape = box, color = blue ]
+  node14 -> node16
+  node14 -> node17
+  node14 -> node9
+  node14 -> node13
+  node14 -> node15
   node15 -> node18
-  node15 -> node10
-  node15 -> node14
-  node15 -> node17
   node16 -> node19
-  node17 -> node20
-  node18 -> node20
-  node18 -> node12
-  node18 -> node19
+  node17 -> node18
+  node17 -> node19
+  node17 -> node11
+  node18 [ shape = box, color = red ]
   node19 [ shape = box, color = red ]
-  node20 [ shape = box, color = red ]
 }
 Type: bool
 digraph poset {
@@ -902,197 +889,200 @@ digraph poset {
 
   node0 [ label = "_x4:[v:int | true]
 _x5:[v:int | v == s]
-_3958:[v:int | v == (_x5 - 1)]
+_3928:[v:int | v == (_x5 - 1)]
 _x6:[v:int | v == x]
-_3959:[v:int | v == (_x6 - 1)]
+_3929:[v:int | v == (_x6 - 1)]
 y:[v:int | true]
 pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
-_3960:[v:int list | ∃s_18, (0 <= s_18 ∧ s_18 >= 0 ∧ s_18 < s ∧ s_18 == _3958 ∧ (∃_x158, (len _x158 s_18 ∧ sorted _x158 ∧ (∀u, (hd _x158 u => _3959 <= u)) ∧ v == _x158)))]
-_x836:[v:int list | ∃_x836, (hd _x836 _x4 ∧ tl _x836 _3960 ∧ v == _x836)] 
+_3930:[v:int list | ∃s_18, (0 <= s_18 ∧ s_18 >= 0 ∧ s_18 < s ∧ s_18 == _3928 ∧ (∃_x158, (len _x158 s_18 ∧ sorted _x158 ∧ (∀u, (hd _x158 u => _3929 <= u)) ∧ v == _x158)))]
+_x826:[v:int list | ∃_x826, (hd _x826 _x4 ∧ tl _x826 _3930 ∧ v == _x826)] 
  ⊢ let (_x5) = s in
 let (_x11) = subs _x5 in
 let (_x157) = sorted_list_gen _x11 in
 let (_x6) = x in
 let (_1151) = subs _x6 in
-let (_3960) = _x157 _1151 in let (_x4) = int_gen () in Cons _x4 _3960 : int list :
-[v:int list | ∃_x836, (hd _x836 _x4 ∧ tl _x836 _3960 ∧ v == _x836)]
+let (_3930) = _x157 _1151 in let (_x4) = int_gen () in Cons _x4 _3930 : int list :
+[v:int list | ∃_x826, (hd _x826 _x4 ∧ tl _x826 _3930 ∧ v == _x826)]
 " ]
   node1 [ label = "_x4:[v:int | true]
 _x5:[v:int | v == s]
-_3964:[v:int | v == (_x5 - 1)]
-_3965:[v:int | true]
-y:[v:int | true]
-pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
-_3966:[v:int list | ∃s_14, (0 <= s_14 ∧ s_14 >= 0 ∧ s_14 < s ∧ s_14 == _3964 ∧ (∃_x148, (len _x148 s_14 ∧ sorted _x148 ∧ (∀u, (hd _x148 u => _3965 <= u)) ∧ v == _x148)))]
-_x838:[v:int list | ∃_x838, (hd _x838 _x4 ∧ tl _x838 _3966 ∧ v == _x838)] 
- ⊢ let (_x5) = s in
-let (_x11) = subs _x5 in
-let (_x147) = sorted_list_gen _x11 in
-let (_1148) = int_gen () in
-let (_3966) = _x147 _1148 in let (_x4) = int_gen () in Cons _x4 _3966 : int list :
-[v:int list | ∃_x838, (hd _x838 _x4 ∧ tl _x838 _3966 ∧ v == _x838)]
-" ]
-  node2 [ label = "_x4:[v:int | true]
-_x5:[v:int | v == s]
-_3969:[v:int | v == (_x5 - 1)]
+_3939:[v:int | v == (_x5 - 1)]
 _x6:[v:int | v == x]
 y:[v:int | true]
 pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
-_3970:[v:int list | ∃s_10, (0 <= s_10 ∧ s_10 >= 0 ∧ s_10 < s ∧ s_10 == _3969 ∧ (∃_x144, (len _x144 s_10 ∧ sorted _x144 ∧ (∀u, (hd _x144 u => _x6 <= u)) ∧ v == _x144)))]
-_x840:[v:int list | ∃_x840, (hd _x840 _x4 ∧ tl _x840 _3970 ∧ v == _x840)] 
+_3940:[v:int list | ∃s_10, (0 <= s_10 ∧ s_10 >= 0 ∧ s_10 < s ∧ s_10 == _3939 ∧ (∃_x144, (len _x144 s_10 ∧ sorted _x144 ∧ (∀u, (hd _x144 u => _x6 <= u)) ∧ v == _x144)))]
+_x830:[v:int list | ∃_x830, (hd _x830 _x4 ∧ tl _x830 _3940 ∧ v == _x830)] 
  ⊢ let (_x5) = s in
 let (_x11) = subs _x5 in
 let (_x143) = sorted_list_gen _x11 in
 let (_x6) = x in
-let (_3970) = _x143 _x6 in let (_x4) = int_gen () in Cons _x4 _3970 : int list :
-[v:int list | ∃_x840, (hd _x840 _x4 ∧ tl _x840 _3970 ∧ v == _x840)]
+let (_3940) = _x143 _x6 in let (_x4) = int_gen () in Cons _x4 _3940 : int list :
+[v:int list | ∃_x830, (hd _x830 _x4 ∧ tl _x830 _3940 ∧ v == _x830)]
 " ]
-  node3 [ label = "y:[v:int | true]
+  node2 [ label = "y:[v:int | true]
 pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
 _x5:[v:int | v == s]
-_4150:[v:int | v == (_x5 - 1)]
+_4120:[v:int | v == (_x5 - 1)]
 _x6:[v:int | v == x]
-_4151:[v:int | v == (_x6 - 1)]
+_4121:[v:int | v == (_x6 - 1)]
 y:[v:int | true]
 pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
-_4152:[v:int list | ∃s_18, (0 <= s_18 ∧ s_18 >= 0 ∧ s_18 < s ∧ s_18 == _4150 ∧ (∃_x158, (len _x158 s_18 ∧ sorted _x158 ∧ (∀u, (hd _x158 u => _4151 <= u)) ∧ v == _x158)))]
-_x893:[v:int list | ∃_x893, (hd _x893 y ∧ tl _x893 _4152 ∧ v == _x893)] 
+_4122:[v:int list | ∃s_18, (0 <= s_18 ∧ s_18 >= 0 ∧ s_18 < s ∧ s_18 == _4120 ∧ (∃_x158, (len _x158 s_18 ∧ sorted _x158 ∧ (∀u, (hd _x158 u => _4121 <= u)) ∧ v == _x158)))]
+_x883:[v:int list | ∃_x883, (hd _x883 y ∧ tl _x883 _4122 ∧ v == _x883)] 
  ⊢ let (_x5) = s in
 let (_x11) = subs _x5 in
 let (_x157) = sorted_list_gen _x11 in
 let (_x6) = x in
-let (_1151) = subs _x6 in let (_4152) = _x157 _1151 in Cons y _4152 : int list :
-[v:int list | ∃_x893, (hd _x893 y ∧ tl _x893 _4152 ∧ v == _x893)]
+let (_1151) = subs _x6 in let (_4122) = _x157 _1151 in Cons y _4122 : int list :
+[v:int list | ∃_x883, (hd _x883 y ∧ tl _x883 _4122 ∧ v == _x883)]
+" ]
+  node3 [ label = "y:[v:int | true]
+pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
+_x5:[v:int | v == s]
+_4126:[v:int | v == (_x5 - 1)]
+_4127:[v:int | true]
+y:[v:int | true]
+pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
+_4128:[v:int list | ∃s_14, (0 <= s_14 ∧ s_14 >= 0 ∧ s_14 < s ∧ s_14 == _4126 ∧ (∃_x148, (len _x148 s_14 ∧ sorted _x148 ∧ (∀u, (hd _x148 u => _4127 <= u)) ∧ v == _x148)))]
+_x885:[v:int list | ∃_x885, (hd _x885 y ∧ tl _x885 _4128 ∧ v == _x885)] 
+ ⊢ let (_x5) = s in
+let (_x11) = subs _x5 in
+let (_x147) = sorted_list_gen _x11 in
+let (_1148) = int_gen () in let (_4128) = _x147 _1148 in Cons y _4128 : int list :
+[v:int list | ∃_x885, (hd _x885 y ∧ tl _x885 _4128 ∧ v == _x885)]
 " ]
   node4 [ label = "y:[v:int | true]
 pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
 _x5:[v:int | v == s]
-_4156:[v:int | v == (_x5 - 1)]
-_4157:[v:int | true]
-y:[v:int | true]
-pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
-_4158:[v:int list | ∃s_14, (0 <= s_14 ∧ s_14 >= 0 ∧ s_14 < s ∧ s_14 == _4156 ∧ (∃_x148, (len _x148 s_14 ∧ sorted _x148 ∧ (∀u, (hd _x148 u => _4157 <= u)) ∧ v == _x148)))]
-_x895:[v:int list | ∃_x895, (hd _x895 y ∧ tl _x895 _4158 ∧ v == _x895)] 
- ⊢ let (_x5) = s in
-let (_x11) = subs _x5 in
-let (_x147) = sorted_list_gen _x11 in
-let (_1148) = int_gen () in let (_4158) = _x147 _1148 in Cons y _4158 : int list :
-[v:int list | ∃_x895, (hd _x895 y ∧ tl _x895 _4158 ∧ v == _x895)]
-" ]
-  node5 [ label = "y:[v:int | true]
-pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
-_x5:[v:int | v == s]
-_4161:[v:int | v == (_x5 - 1)]
+_4131:[v:int | v == (_x5 - 1)]
 _x6:[v:int | v == x]
 y:[v:int | true]
 pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
-_4162:[v:int list | ∃s_10, (0 <= s_10 ∧ s_10 >= 0 ∧ s_10 < s ∧ s_10 == _4161 ∧ (∃_x144, (len _x144 s_10 ∧ sorted _x144 ∧ (∀u, (hd _x144 u => _x6 <= u)) ∧ v == _x144)))]
-_x897:[v:int list | ∃_x897, (hd _x897 y ∧ tl _x897 _4162 ∧ v == _x897)] 
+_4132:[v:int list | ∃s_10, (0 <= s_10 ∧ s_10 >= 0 ∧ s_10 < s ∧ s_10 == _4131 ∧ (∃_x144, (len _x144 s_10 ∧ sorted _x144 ∧ (∀u, (hd _x144 u => _x6 <= u)) ∧ v == _x144)))]
+_x887:[v:int list | ∃_x887, (hd _x887 y ∧ tl _x887 _4132 ∧ v == _x887)] 
  ⊢ let (_x5) = s in
 let (_x11) = subs _x5 in
 let (_x143) = sorted_list_gen _x11 in
-let (_x6) = x in let (_4162) = _x143 _x6 in Cons y _4162 : int list :
-[v:int list | ∃_x897, (hd _x897 y ∧ tl _x897 _4162 ∧ v == _x897)]
+let (_x6) = x in let (_4132) = _x143 _x6 in Cons y _4132 : int list :
+[v:int list | ∃_x887, (hd _x887 y ∧ tl _x887 _4132 ∧ v == _x887)]
+" ]
+  node5 [ label = "y:[v:int | true]
+pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
+_x70:[v:int | v == (y - 1)]
+_x5:[v:int | v == s]
+_4184:[v:int | v == (_x5 - 1)]
+_x6:[v:int | v == x]
+_4185:[v:int | v == (_x6 - 1)]
+y:[v:int | true]
+pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
+_4186:[v:int list | ∃s_18, (0 <= s_18 ∧ s_18 >= 0 ∧ s_18 < s ∧ s_18 == _4184 ∧ (∃_x158, (len _x158 s_18 ∧ sorted _x158 ∧ (∀u, (hd _x158 u => _4185 <= u)) ∧ v == _x158)))]
+_x902:[v:int list | ∃_x902, (hd _x902 _x70 ∧ tl _x902 _4186 ∧ v == _x902)] 
+ ⊢ let (_x5) = s in
+let (_x11) = subs _x5 in
+let (_x157) = sorted_list_gen _x11 in
+let (_x6) = x in
+let (_1151) = subs _x6 in
+let (_4186) = _x157 _1151 in
+let (y) = y in let (_x70) = subs y in Cons _x70 _4186 : int list :
+[v:int list | ∃_x902, (hd _x902 _x70 ∧ tl _x902 _4186 ∧ v == _x902)]
 " ]
   node6 [ label = "y:[v:int | true]
 pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
 _x70:[v:int | v == (y - 1)]
 _x5:[v:int | v == s]
-_4214:[v:int | v == (_x5 - 1)]
+_4195:[v:int | v == (_x5 - 1)]
 _x6:[v:int | v == x]
-_4215:[v:int | v == (_x6 - 1)]
 y:[v:int | true]
 pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
-_4216:[v:int list | ∃s_18, (0 <= s_18 ∧ s_18 >= 0 ∧ s_18 < s ∧ s_18 == _4214 ∧ (∃_x158, (len _x158 s_18 ∧ sorted _x158 ∧ (∀u, (hd _x158 u => _4215 <= u)) ∧ v == _x158)))]
-_x912:[v:int list | ∃_x912, (hd _x912 _x70 ∧ tl _x912 _4216 ∧ v == _x912)] 
+_4196:[v:int list | ∃s_10, (0 <= s_10 ∧ s_10 >= 0 ∧ s_10 < s ∧ s_10 == _4195 ∧ (∃_x144, (len _x144 s_10 ∧ sorted _x144 ∧ (∀u, (hd _x144 u => _x6 <= u)) ∧ v == _x144)))]
+_x906:[v:int list | ∃_x906, (hd _x906 _x70 ∧ tl _x906 _4196 ∧ v == _x906)] 
+ ⊢ let (_x5) = s in
+let (_x11) = subs _x5 in
+let (_x143) = sorted_list_gen _x11 in
+let (_x6) = x in
+let (_4196) = _x143 _x6 in
+let (y) = y in let (_x70) = subs y in Cons _x70 _4196 : int list :
+[v:int list | ∃_x906, (hd _x906 _x70 ∧ tl _x906 _4196 ∧ v == _x906)]
+" ]
+  node7 [ label = "y:[v:int | true]
+pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
+_x70:[v:int | v == (y - 1)]
+_x230:[v:int | v == (_x70 - 1)]
+_x5:[v:int | v == s]
+_4258:[v:int | v == (_x5 - 1)]
+_x6:[v:int | v == x]
+_4259:[v:int | v == (_x6 - 1)]
+y:[v:int | true]
+pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
+_4260:[v:int list | ∃s_18, (0 <= s_18 ∧ s_18 >= 0 ∧ s_18 < s ∧ s_18 == _4258 ∧ (∃_x158, (len _x158 s_18 ∧ sorted _x158 ∧ (∀u, (hd _x158 u => _4259 <= u)) ∧ v == _x158)))]
+_x926:[v:int list | ∃_x926, (hd _x926 _x230 ∧ tl _x926 _4260 ∧ v == _x926)] 
  ⊢ let (_x5) = s in
 let (_x11) = subs _x5 in
 let (_x157) = sorted_list_gen _x11 in
 let (_x6) = x in
 let (_1151) = subs _x6 in
-let (_4216) = _x157 _1151 in
-let (y) = y in let (_x70) = subs y in Cons _x70 _4216 : int list :
-[v:int list | ∃_x912, (hd _x912 _x70 ∧ tl _x912 _4216 ∧ v == _x912)]
-" ]
-  node7 [ label = "y:[v:int | true]
-pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
-_x70:[v:int | v == (y - 1)]
-_x5:[v:int | v == s]
-_4225:[v:int | v == (_x5 - 1)]
-_x6:[v:int | v == x]
-y:[v:int | true]
-pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
-_4226:[v:int list | ∃s_10, (0 <= s_10 ∧ s_10 >= 0 ∧ s_10 < s ∧ s_10 == _4225 ∧ (∃_x144, (len _x144 s_10 ∧ sorted _x144 ∧ (∀u, (hd _x144 u => _x6 <= u)) ∧ v == _x144)))]
-_x916:[v:int list | ∃_x916, (hd _x916 _x70 ∧ tl _x916 _4226 ∧ v == _x916)] 
- ⊢ let (_x5) = s in
-let (_x11) = subs _x5 in
-let (_x143) = sorted_list_gen _x11 in
-let (_x6) = x in
-let (_4226) = _x143 _x6 in
-let (y) = y in let (_x70) = subs y in Cons _x70 _4226 : int list :
-[v:int list | ∃_x916, (hd _x916 _x70 ∧ tl _x916 _4226 ∧ v == _x916)]
+let (_4260) = _x157 _1151 in
+let (y) = y in
+let (_x70) = subs y in let (_x230) = subs _x70 in Cons _x230 _4260 : int list :
+[v:int list | ∃_x926, (hd _x926 _x230 ∧ tl _x926 _4260 ∧ v == _x926)]
 " ]
   node8 [ label = "y:[v:int | true]
 pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
 _x70:[v:int | v == (y - 1)]
 _x230:[v:int | v == (_x70 - 1)]
 _x5:[v:int | v == s]
-_4288:[v:int | v == (_x5 - 1)]
-_x6:[v:int | v == x]
-_4289:[v:int | v == (_x6 - 1)]
+_4264:[v:int | v == (_x5 - 1)]
+_4265:[v:int | true]
 y:[v:int | true]
 pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
-_4290:[v:int list | ∃s_18, (0 <= s_18 ∧ s_18 >= 0 ∧ s_18 < s ∧ s_18 == _4288 ∧ (∃_x158, (len _x158 s_18 ∧ sorted _x158 ∧ (∀u, (hd _x158 u => _4289 <= u)) ∧ v == _x158)))]
-_x936:[v:int list | ∃_x936, (hd _x936 _x230 ∧ tl _x936 _4290 ∧ v == _x936)] 
+_4266:[v:int list | ∃s_14, (0 <= s_14 ∧ s_14 >= 0 ∧ s_14 < s ∧ s_14 == _4264 ∧ (∃_x148, (len _x148 s_14 ∧ sorted _x148 ∧ (∀u, (hd _x148 u => _4265 <= u)) ∧ v == _x148)))]
+_x928:[v:int list | ∃_x928, (hd _x928 _x230 ∧ tl _x928 _4266 ∧ v == _x928)] 
  ⊢ let (_x5) = s in
 let (_x11) = subs _x5 in
-let (_x157) = sorted_list_gen _x11 in
-let (_x6) = x in
-let (_1151) = subs _x6 in
-let (_4290) = _x157 _1151 in
+let (_x147) = sorted_list_gen _x11 in
+let (_1148) = int_gen () in
+let (_4266) = _x147 _1148 in
 let (y) = y in
-let (_x70) = subs y in let (_x230) = subs _x70 in Cons _x230 _4290 : int list :
-[v:int list | ∃_x936, (hd _x936 _x230 ∧ tl _x936 _4290 ∧ v == _x936)]
+let (_x70) = subs y in let (_x230) = subs _x70 in Cons _x230 _4266 : int list :
+[v:int list | ∃_x928, (hd _x928 _x230 ∧ tl _x928 _4266 ∧ v == _x928)]
 " ]
   node9 [ label = "y:[v:int | true]
 pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
 _x70:[v:int | v == (y - 1)]
 _x230:[v:int | v == (_x70 - 1)]
 _x5:[v:int | v == s]
-_4299:[v:int | v == (_x5 - 1)]
+_4269:[v:int | v == (_x5 - 1)]
 _x6:[v:int | v == x]
 y:[v:int | true]
 pathcond_0:[v:unit | ∃x_3, ((x_3 <=> s == 0) ∧ (¬x_3 <=> s > 0) ∧ ¬x_3 ∧ x <= y)]
-_4300:[v:int list | ∃s_10, (0 <= s_10 ∧ s_10 >= 0 ∧ s_10 < s ∧ s_10 == _4299 ∧ (∃_x144, (len _x144 s_10 ∧ sorted _x144 ∧ (∀u, (hd _x144 u => _x6 <= u)) ∧ v == _x144)))]
-_x940:[v:int list | ∃_x940, (hd _x940 _x230 ∧ tl _x940 _4300 ∧ v == _x940)] 
+_4270:[v:int list | ∃s_10, (0 <= s_10 ∧ s_10 >= 0 ∧ s_10 < s ∧ s_10 == _4269 ∧ (∃_x144, (len _x144 s_10 ∧ sorted _x144 ∧ (∀u, (hd _x144 u => _x6 <= u)) ∧ v == _x144)))]
+_x930:[v:int list | ∃_x930, (hd _x930 _x230 ∧ tl _x930 _4270 ∧ v == _x930)] 
  ⊢ let (_x5) = s in
 let (_x11) = subs _x5 in
 let (_x143) = sorted_list_gen _x11 in
 let (_x6) = x in
-let (_4300) = _x143 _x6 in
+let (_4270) = _x143 _x6 in
 let (y) = y in
-let (_x70) = subs y in let (_x230) = subs _x70 in Cons _x230 _4300 : int list :
-[v:int list | ∃_x940, (hd _x940 _x230 ∧ tl _x940 _4300 ∧ v == _x940)]
+let (_x70) = subs y in let (_x230) = subs _x70 in Cons _x230 _4270 : int list :
+[v:int list | ∃_x930, (hd _x930 _x230 ∧ tl _x930 _4270 ∧ v == _x930)]
 " ]
 
   node0 [ shape = box, color = blue ]
-  node0 -> node8
-  node0 -> node2
-  node1 [ shape = box, color = blue ]
-  node1 -> node4
-  node1 -> node6
+  node0 -> node1
+  node0 -> node7
   node1 -> node9
-  node2 -> node9
-  node3 -> node5
-  node4 -> node5
-  node5 [ shape = box, color = red ]
-  node6 -> node3
-  node6 -> node7
-  node7 [ shape = box, color = red ]
+  node2 -> node4
+  node3 [ shape = box, color = blue ]
+  node3 -> node2
+  node4 [ shape = box, color = red ]
+  node5 -> node2
+  node5 -> node6
+  node6 -> node4
+  node7 -> node9
+  node7 -> node5
+  node8 [ shape = box, color = blue ]
   node8 -> node6
-  node8 -> node9
-  node9 -> node5
-  node9 -> node7
+  node9 -> node6
 }
 Old Blocks:
 Type: int

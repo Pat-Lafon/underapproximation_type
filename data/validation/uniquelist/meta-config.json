@@ -17,7 +17,6 @@
     "abd_templates": ["template_emp"],
     "num_quantifier": 0,
     "synth_bound": 1,
-    "synth_timeout": "100",
     "synth_rlimit": 100000,
     "prim_path": {
         "data_type_decls": "data/predefined/data_type_decls.ml",
