@@ -11,7 +11,7 @@ let ctx =
       ("model", "true");
       ("proof", "false");
       (*  ("timeout", "1999");  *)
-      ("rlimit", "1000000");
+      ("rlimit", "10000000");
     ]
 
 let _check axiom q =
