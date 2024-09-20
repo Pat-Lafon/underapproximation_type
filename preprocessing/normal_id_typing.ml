@@ -20,7 +20,7 @@ let bi_typed_id_infer (ctx : t ctx) (x : (t option, string) typed) :
           (layout_ct_opt (get_opt ctx x.x))
           (layout_ct_opt x.ty)
       in
-      _failatwith __FILE__ __LINE__ "die"
+      _failatwith __FILE__ __LINE__ ("die: can't unify" ^ x.x)
 
 let bi_typed_id_check (ctx : t ctx) (x : (t option, string) typed) (ty : t) :
     (t, string) typed =

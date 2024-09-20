@@ -1,0 +1,61 @@
+let rec rbtree_gen = fun inv ->
+  fun color ->
+    fun h ->
+      let (x_37) = sizecheck h in
+      match x_37 with
+      | True ->
+          (match color with
+           | True -> Rbtleaf
+           | False ->
+               let (x_38) = bool_gen () in
+               (match x_38 with
+                | True ->
+                    let (_x7) = h in
+                    let (_x35) = rbtree_gen _x7 in
+                    let (_80) = True in let (_x36) = _x35 _80 in _x36 _x7
+                | False ->
+                    let (x_39) = Rbtleaf in
+                    let (x_40) = int_gen () in
+                    let (x_41) = Rbtleaf in Rbtnode (true, x_41, x_40, x_39)))
+      | False ->
+          (match color with
+           | True ->
+               let (x_42) = subs inv in
+               let (x_43) = rbtree_gen x_42 in
+               let (x_44) = x_43 false in
+               let (x_45) = subs h in
+               let (lt2) = x_44 x_45 in
+               let (x_46) = subs inv in
+               let (x_47) = rbtree_gen x_46 in
+               let (x_48) = x_47 false in
+               let (x_49) = subs h in
+               let (rt2) = x_48 x_49 in
+               let (x_50) = int_gen () in Rbtnode (false, lt2, x_50, rt2)
+           | False ->
+               let (c) = bool_gen () in
+               (match c with
+                | True ->
+                    let (x_51) = subs inv in
+                    let (x_52) = rbtree_gen x_51 in
+                    let (x_53) = x_52 true in
+                    let (lt3) = x_53 h in
+                    let (x_54) = subs inv in
+                    let (x_55) = rbtree_gen x_54 in
+                    let (x_56) = x_55 true in
+                    let (rt3) = x_56 h in
+                    let (x_57) = int_gen () in Rbtnode (true, lt3, x_57, rt3)
+                | False ->
+                    let (x_58) = subs inv in
+                    let (x_59) = subs x_58 in
+                    let (x_60) = rbtree_gen x_59 in
+                    let (x_61) = x_60 false in
+                    let (x_62) = subs h in
+                    let (lt4) = x_61 x_62 in
+                    let (x_63) = subs inv in
+                    let (x_64) = subs x_63 in
+                    let (x_65) = rbtree_gen x_64 in
+                    let (x_66) = x_65 false in
+                    let (x_67) = subs h in
+                    let (rt4) = x_66 x_67 in
+                    let (x_68) = int_gen () in
+                    Rbtnode (false, lt4, x_68, rt4)))

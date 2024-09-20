@@ -1,0 +1,137 @@
+General Collection:
+New Blocks:
+Old Blocks:
+Type: int rbtree
+digraph poset {
+  label = "Partially Ordered Set"
+  size = "8.270000,11.690000"
+  ratio = 0.900000
+  rotate = 0.000000
+  center = 1
+
+  edge [ dir = back ]
+
+  node0 [ label = "_x2:[v:int rbtree | rb_leaf v] 
+ ⊢ Rbtleaf : int rbtree :
+[v:int rbtree | rb_leaf v]
+" ]
+
+  node0 [ shape = box, color = green ]
+}
+Type: bool
+digraph poset {
+  label = "Partially Ordered Set"
+  size = "8.270000,11.690000"
+  ratio = 0.900000
+  rotate = 0.000000
+  center = 1
+
+  edge [ dir = back ]
+
+  node0 [ label = "_x3:[v:bool | true] 
+ ⊢ bool_gen () : bool :
+[v:bool | true]
+" ]
+  node1 [ label = "_x1:[v:bool | ¬v] 
+ ⊢ False : bool :
+[v:bool | ¬v]
+" ]
+  node2 [ label = "_x0:[v:bool | v] 
+ ⊢ True : bool :
+[v:bool | v]
+" ]
+  node3 [ label = "_x6:[v:bool | v == color] 
+ ⊢ color : bool :
+[v:bool | v == color]
+" ]
+
+  node0 [ shape = box, color = blue ]
+  node0 -> node2
+  node0 -> node1
+  node0 -> node3
+  node1 [ shape = box, color = red ]
+  node2 [ shape = box, color = red ]
+  node3 [ shape = box, color = red ]
+}
+Type: int
+digraph poset {
+  label = "Partially Ordered Set"
+  size = "8.270000,11.690000"
+  ratio = 0.900000
+  rotate = 0.000000
+  center = 1
+
+  edge [ dir = back ]
+
+  node0 [ label = "_x4:[v:int | true] 
+ ⊢ int_gen () : int :
+[v:int | true]
+" ]
+  node1 [ label = "_x5:[v:int | v == inv] 
+ ⊢ inv : int :
+[v:int | v == inv]
+" ]
+  node2 [ label = "_x7:[v:int | v == h] 
+ ⊢ h : int :
+[v:int | v == h]
+" ]
+
+  node0 [ shape = box, color = blue ]
+  node0 -> node2
+  node0 -> node1
+  node1 [ shape = box, color = red ]
+  node2 [ shape = box, color = red ]
+}
+Path Specific Collection:
+pathcond_0:[v:unit | ∃x_26, ((x_26 <=> h == 0) ∧ (¬x_26 <=> h > 0) ∧ x_26 ∧ ¬color ∧ (∃x_27, x_27))]
+New Blocks:
+Type: int rbtree
+digraph poset {
+  label = "Partially Ordered Set"
+  size = "8.270000,11.690000"
+  ratio = 0.900000
+  rotate = 0.000000
+  center = 1
+
+  edge [ dir = back ]
+
+  node0 [ label = "_x7:[v:int | v == h]
+_x6:[v:bool | v == color]
+_x7:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_26, ((x_26 <=> h == 0) ∧ (¬x_26 <=> h > 0) ∧ x_26 ∧ ¬color ∧ (∃x_27, x_27))]
+_x28:[v:int rbtree | ∃inv_32, (inv_32 >= 0 ∧ inv_32 < inv ∧ inv_32 == _x7 ∧ (∃h_30, (h_30 >= 0 ∧ (_x6 => (h_30 + h_30) == inv_32) ∧ (¬_x6 => ((h_30 + h_30) + 1) == inv_32) ∧ h_30 == _x7 ∧ (∃_x28, (num_black _x28 h_30 ∧ no_red_red _x28 ∧ (_x6 => ¬rb_root_color _x28 true) ∧ (¬_x6 => (h_30 == 0 => ¬rb_root_color _x28 false)) ∧ v == _x28)))))] 
+ ⊢ let (_x7) = h in
+let (_x26) = rbtree_gen _x7 in
+let (_x6) = color in let (_x27) = _x26 _x6 in _x27 _x7 : int rbtree :
+[v:int rbtree | ∃inv_32, (inv_32 >= 0 ∧ inv_32 < inv ∧ inv_32 == _x7 ∧ (∃h_30, (h_30 >= 0 ∧ (_x6 => (h_30 + h_30) == inv_32) ∧ (¬_x6 => ((h_30 + h_30) + 1) == inv_32) ∧ h_30 == _x7 ∧ (∃_x28, (num_black _x28 h_30 ∧ no_red_red _x28 ∧ (_x6 => ¬rb_root_color _x28 true) ∧ (¬_x6 => (h_30 == 0 => ¬rb_root_color _x28 false)) ∧ v == _x28)))))]
+" ]
+  node1 [ label = "_x0:[v:bool | v]
+_53:[v:int rbtree | rb_leaf v]
+_54:[v:int | true]
+_55:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_26, ((x_26 <=> h == 0) ∧ (¬x_26 <=> h > 0) ∧ x_26 ∧ ¬color ∧ (∃x_27, x_27))]
+_x19:[v:int rbtree | ∃_x19, (rb_root_color _x19 _x0 ∧ rb_root _x19 _54 ∧ rb_lch _x19 _53 ∧ rb_rch _x19 _55 ∧ v == _x19)] 
+ ⊢ let (_55) = Rbtleaf in
+let (_54) = int_gen () in
+let (_53) = Rbtleaf in let (_x0) = True in Rbtnode (_x0, _53, _54, _55) : int rbtree :
+[v:int rbtree | ∃_x19, (rb_root_color _x19 _x0 ∧ rb_root _x19 _54 ∧ rb_lch _x19 _53 ∧ rb_rch _x19 _55 ∧ v == _x19)]
+" ]
+  node2 [ label = "_x3:[v:bool | true]
+_67:[v:int rbtree | rb_leaf v]
+_68:[v:int | true]
+_69:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_26, ((x_26 <=> h == 0) ∧ (¬x_26 <=> h > 0) ∧ x_26 ∧ ¬color ∧ (∃x_27, x_27))]
+_x25:[v:int rbtree | ∃_x25, (rb_root_color _x25 _x3 ∧ rb_root _x25 _68 ∧ rb_lch _x25 _67 ∧ rb_rch _x25 _69 ∧ v == _x25)] 
+ ⊢ let (_69) = Rbtleaf in
+let (_68) = int_gen () in
+let (_67) = Rbtleaf in
+let (_x3) = bool_gen () in Rbtnode (_x3, _67, _68, _69) : int rbtree :
+[v:int rbtree | ∃_x25, (rb_root_color _x25 _x3 ∧ rb_root _x25 _68 ∧ rb_lch _x25 _67 ∧ rb_rch _x25 _69 ∧ v == _x25)]
+" ]
+
+  node0 [ shape = box, color = red ]
+  node1 -> node0
+  node2 [ shape = box, color = blue ]
+  node2 -> node1
+}
+Old Blocks:

@@ -1,0 +1,53 @@
+let rec rbtree_gen = fun inv ->
+  fun color ->
+    fun h ->
+      let (x_26) = sizecheck h in
+      match x_26 with
+      | True ->
+          (match color with
+           | True -> Rbtleaf
+           | False ->
+               let (_x8) = bool_gen () in
+               (match _x8 with
+                | True -> Rbtleaf
+                | False ->
+                    let (_55) = Rbtleaf in
+                    let (_54) = int_gen () in
+                    let (_53) = Rbtleaf in
+                    let (_x0) = True in Rbtnode (_x0, _53, _54, _55)))
+      | False ->
+          let (hh) = subs h in
+          let (rt) = int_gen () in
+          (match color with
+           | True ->
+               let (x_28) = subs inv in
+               let (x_29) = rbtree_gen x_28 in
+               let (x_30) = x_29 false in
+               let (lt2) = x_30 hh in
+               let (x_31) = subs inv in
+               let (x_32) = rbtree_gen x_31 in
+               let (x_33) = x_32 false in
+               let (rt2) = x_33 hh in Rbtnode (false, lt2, rt, rt2)
+           | False ->
+               let (c) = bool_gen () in
+               (match c with
+                | True ->
+                    let (x_34) = subs inv in
+                    let (x_35) = rbtree_gen x_34 in
+                    let (x_36) = x_35 true in
+                    let (lt3) = x_36 h in
+                    let (x_37) = subs inv in
+                    let (x_38) = rbtree_gen x_37 in
+                    let (x_39) = x_38 true in
+                    let (rt3) = x_39 h in Rbtnode (true, lt3, rt, rt3)
+                | False ->
+                    let (x_40) = subs inv in
+                    let (x_41) = subs x_40 in
+                    let (x_42) = rbtree_gen x_41 in
+                    let (x_43) = x_42 false in
+                    let (lt4) = x_43 hh in
+                    let (x_44) = subs inv in
+                    let (x_45) = subs x_44 in
+                    let (x_46) = rbtree_gen x_45 in
+                    let (x_47) = x_46 false in
+                    let (rt4) = x_47 hh in Rbtnode (false, lt4, rt, rt4)))
