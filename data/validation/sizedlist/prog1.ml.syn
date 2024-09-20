@@ -1,11 +1,11 @@
 let rec sized_list_gen = fun s ->
   let (x_7) = sizecheck s in
   match x_7 with
-  | True -> Nil 
+  | True -> Nil
   | False ->
       let (x_8) = bool_gen () in
       (match x_8 with
-       | True -> [] 
+       | True -> []
        | False ->
            let (x_9) = subs s in
            let (x_10) = sized_list_gen x_9 in

@@ -2,7 +2,7 @@ let rec sorted_list_gen = fun s ->
   fun x ->
     let (x_3) = sizecheck s in
     match x_3 with
-    | True -> [] 
+    | True -> []
     | False ->
         let (y) = int_gen () in
         let (x_4) = x <= y in
@@ -11,5 +11,5 @@ let rec sorted_list_gen = fun s ->
              let (_x5) = s in
              let (_x11) = subs _x5 in
              let (_x143) = sorted_list_gen _x11 in
-             let (_x6) = x in let (_4132) = _x143 _x6 in Cons y _4132
+             let (_x6) = x in let (_4182) = _x143 _x6 in Cons (y, _4182)
          | False -> Err)

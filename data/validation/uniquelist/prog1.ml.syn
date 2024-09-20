@@ -1,7 +1,7 @@
 let rec unique_list_gen = fun s ->
   let (x_7) = sizecheck s in
   match x_7 with
-  | True -> Nil 
+  | True -> Nil
   | False ->
       let (x_8) = subs s in
       let (l) = unique_list_gen x_8 in
