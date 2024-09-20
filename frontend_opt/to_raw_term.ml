@@ -34,6 +34,16 @@ and raw_term_to_expr expr =
       in
       desc_to_ocamlexpr
       @@ Pexp_let (flag, [ vb ], typed_raw_term_to_expr letbody)
+  | AppOp ({ x = DtConstructor v; _ }, args) ->
+      (* NOTE: to make the printed code looks clearer, we don't print type of
+         operators. *)
+      let args = List.map (fun x -> typed_raw_term_to_expr x) args in
+
+      desc_to_ocamlexpr
+      @@ Pexp_construct
+           ( Longident.Lident v |> Location.mknoloc,
+             if args = [] then None
+             else Some (desc_to_ocamlexpr @@ Pexp_tuple args) )
   | AppOp (op, args) ->
       (* NOTE: to make the printed code looks clearer, we don't print type of operators. *)
       mk_op_apply (layout_op op.x, List.map typed_raw_term_to_expr args)
@@ -192,7 +202,9 @@ let typed_raw_term_of_expr expr =
                       args = List.map term_force_var args;
                       exp = aux case.pc_rhs;
                     }
-              | _ -> _failatwith __FILE__ __LINE__ "Expected a data constructor in match")
+              | _ ->
+                  _failatwith __FILE__ __LINE__
+                    "Expected a data constructor in match")
             match_cases
         in
         (Match { matched = aux matched; match_cases }) #: None
