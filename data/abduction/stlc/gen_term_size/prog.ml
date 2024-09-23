@@ -23,7 +23,7 @@ val gen_term_no_app : stlc_tyctx -> stlc_ty -> stlc_term *)
 
 let rec gen_term_size (num_arr_tau : int) (num : int) (gamma : stlc_tyctx)
     (tau : stlc_ty) : stlc_term =
-  if num == 0 then gen_term_no_app gamma tau
+  if sizecheck num then gen_term_no_app gamma tau
   else if bool_gen () then
     let (arg_tau : stlc_ty) = gen_type () in
     let (num_app_func : int) = int_range_inex 0 num in

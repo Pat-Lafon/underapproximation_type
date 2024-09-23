@@ -143,6 +143,24 @@ let[@library] Stlc_tyctx_cons =
   let ctx = (true : [%v: stlc_tyctx]) [@over] in
   (stlc_tyctx_hd v ty && stlc_tyctx_tl v ctx : [%v: stlc_tyctx]) [@under]
 
+let[@library] get_num_arr =
+  let s = (true : [%v: stlc_ty]) [@over] in
+  (num_arr s v : [%v: int]) [@under]
+
+let[@library] gen_type =
+  let s = (true : [%v: unit]) [@over] in
+  (true : [%v: stlc_ty]) [@under]
+
+let[@library] vars_with_type =
+  let gamma = (true : [%v: stlc_tyctx]) [@over] in
+  let tau = (true : [%v: stlc_ty]) [@over] in
+  (typing gamma v tau && is_var v : [%v: stlc_term]) [@under]
+
+let[@library] gen_term_no_app =
+  let gamma = (true : [%v: stlc_tyctx]) [@over] in
+  let tau = (true : [%v: stlc_ty]) [@over] in
+  (typing gamma v tau && num_app v 0 : [%v: stlc_term]) [@under]
+
 (* the built-in random generators *)
 
 let[@library] int_range =
