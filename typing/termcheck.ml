@@ -299,22 +299,30 @@ and term_type_infer_app (uctx : uctx) (a : ('t, 't term) typed) :
         let appf, apparg = map2 (value_type_infer uctx) (appf, apparg) in
         (* HACK: safety check here *)
         let () =
-          match get_cur_rec_func_name () with
-          | Some (fname, rec_arg_rty) -> (
-              match appf.x with
-              | VVar x when String.equal fname x.x ->
-                  if sub_rty_bool uctx (rec_arg_rty, apparg.ty) then ()
-                  else (
-                    _warinning_subtyping_error __FILE__ __LINE__
-                      (rec_arg_rty, apparg.ty);
-                    ( Env.show_debug_typing @@ fun _ ->
-                      Pp.printf
-                        "@{<bold>Recursive Safety Check Fails at [%s::%i]:@}\n"
-                        __FILE__ __LINE__ );
-                    raise RecArgCheckFailure)
-              | _ -> ())
-          | _ -> ()
+          match appf.ty with
+          | RtyBaseArr
+              { argcty = Cty { phi = Lit { x = AC (B true); _ }; _ }; _ } ->
+              ()
+          | RtyBaseArr { argcty; _ } ->
+              let rec_arg_rty = RtyBase { ou = false; cty = argcty } in
+
+              (* print_endline (layout_rty appf.ty);
+                 print_endline (layout_rty rec_arg_rty);
+                 print_endline (layout_rty _rec_arg_rty);
+
+                 assert (sub_rty_bool uctx (rec_arg_rty, _rec_arg_rty)); *)
+              if sub_rty_bool uctx (rec_arg_rty, apparg.ty) then ()
+              else (
+                _warinning_subtyping_error __FILE__ __LINE__
+                  (rec_arg_rty, apparg.ty);
+                ( Env.show_debug_typing @@ fun _ ->
+                  Pp.printf
+                    "@{<bold>Recursive Safety Check Fails at [%s::%i]:@}\n"
+                    __FILE__ __LINE__ );
+                raise RecArgCheckFailure)
+          | _ -> _failatwith __FILE__ __LINE__ "unexplected"
         in
+
         let* bindings, retty = arrow_type_apply uctx appf.ty apparg in
         Some (bindings, (CApp { appf; apparg }) #: retty)
     | CAppOp { op; appopargs } ->

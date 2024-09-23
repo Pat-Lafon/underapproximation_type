@@ -426,21 +426,21 @@ let (_x8) = subs _x5 in Node (_x8, _2134, _2138) : int tree :
   node27 [ label = "_x5:[v:int | v == s]
 _x8:[v:int | v == (_x5 - 1)]
 _x5:[v:int | v == s]
-_2356:[v:int tree | leaf v]
-_2357:[v:int tree | leaf v]
-_2358:[v:int tree | ∃_x12, (root _x12 _x5 ∧ lch _x12 _2356 ∧ rch _x12 _2357 ∧ v == _x12)]
+_2346:[v:int tree | leaf v]
+_2347:[v:int tree | leaf v]
+_2348:[v:int tree | ∃_x12, (root _x12 _x5 ∧ lch _x12 _2346 ∧ rch _x12 _2347 ∧ v == _x12)]
 _x5:[v:int | v == s]
-_2359:[v:int tree | leaf v]
-_2360:[v:int tree | leaf v]
-_2361:[v:int tree | ∃_x12, (root _x12 _x5 ∧ lch _x12 _2359 ∧ rch _x12 _2360 ∧ v == _x12)]
-_x42:[v:int tree | ∃_x42, (root _x42 _x8 ∧ lch _x42 _2358 ∧ rch _x42 _2361 ∧ v == _x42)] 
+_2349:[v:int tree | leaf v]
+_2350:[v:int tree | leaf v]
+_2351:[v:int tree | ∃_x12, (root _x12 _x5 ∧ lch _x12 _2349 ∧ rch _x12 _2350 ∧ v == _x12)]
+_x42:[v:int tree | ∃_x42, (root _x42 _x8 ∧ lch _x42 _2348 ∧ rch _x42 _2351 ∧ v == _x42)] 
  ⊢ let (_13) = Leaf in
 let (_12) = Leaf in
 let (_x5) = s in
-let (_2361) = Node (_x5, _12, _13) in
-let (_2358) = Node (_x5, _12, _13) in
-let (_x8) = subs _x5 in Node (_x8, _2358, _2361) : int tree :
-[v:int tree | ∃_x42, (root _x42 _x8 ∧ lch _x42 _2358 ∧ rch _x42 _2361 ∧ v == _x42)]
+let (_2351) = Node (_x5, _12, _13) in
+let (_2348) = Node (_x5, _12, _13) in
+let (_x8) = subs _x5 in Node (_x8, _2348, _2351) : int tree :
+[v:int tree | ∃_x42, (root _x42 _x8 ∧ lch _x42 _2348 ∧ rch _x42 _2351 ∧ v == _x42)]
 " ]
 
   node0 [ shape = box, color = green ]
@@ -585,20 +585,20 @@ digraph poset {
 
   node0 [ label = "_x4:[v:int | true]
 _x5:[v:int | v == s]
-_48147:[v:int | v == (_x5 - 1)]
+_48090:[v:int | v == (_x5 - 1)]
 pathcond_0:[v:unit | ∃x_2, ((x_2 <=> s == 0) ∧ (¬x_2 <=> s > 0) ∧ ¬x_2)]
-_48148:[v:int tree | ∃s_5, (0 <= s_5 ∧ s_5 >= 0 ∧ s_5 < s ∧ s_5 == _48147 ∧ (∃_x43, (depth _x43 s_5 ∧ complete _x43 ∧ v == _x43)))]
+_48091:[v:int tree | ∃s_5, (0 <= s_5 ∧ s_5 >= 0 ∧ s_5 < s ∧ s_5 == _48090 ∧ (∃_x43, (depth _x43 s_5 ∧ complete _x43 ∧ v == _x43)))]
 _x5:[v:int | v == s]
-_48149:[v:int | v == (_x5 - 1)]
+_48092:[v:int | v == (_x5 - 1)]
 pathcond_0:[v:unit | ∃x_2, ((x_2 <=> s == 0) ∧ (¬x_2 <=> s > 0) ∧ ¬x_2)]
-_48150:[v:int tree | ∃s_5, (0 <= s_5 ∧ s_5 >= 0 ∧ s_5 < s ∧ s_5 == _48149 ∧ (∃_x43, (depth _x43 s_5 ∧ complete _x43 ∧ v == _x43)))]
-_x3173:[v:int tree | ∃_x3173, (root _x3173 _x4 ∧ lch _x3173 _48148 ∧ rch _x3173 _48150 ∧ v == _x3173)] 
+_48093:[v:int tree | ∃s_5, (0 <= s_5 ∧ s_5 >= 0 ∧ s_5 < s ∧ s_5 == _48092 ∧ (∃_x43, (depth _x43 s_5 ∧ complete _x43 ∧ v == _x43)))]
+_x3173:[v:int tree | ∃_x3173, (root _x3173 _x4 ∧ lch _x3173 _48091 ∧ rch _x3173 _48093 ∧ v == _x3173)] 
  ⊢ let (_x5) = s in
 let (_x8) = subs _x5 in
-let (_48150) = complete_tree_gen _x8 in
-let (_48148) = complete_tree_gen _x8 in
-let (_x4) = int_gen () in Node (_x4, _48148, _48150) : int tree :
-[v:int tree | ∃_x3173, (root _x3173 _x4 ∧ lch _x3173 _48148 ∧ rch _x3173 _48150 ∧ v == _x3173)]
+let (_48093) = complete_tree_gen _x8 in
+let (_48091) = complete_tree_gen _x8 in
+let (_x4) = int_gen () in Node (_x4, _48091, _48093) : int tree :
+[v:int tree | ∃_x3173, (root _x3173 _x4 ∧ lch _x3173 _48091 ∧ rch _x3173 _48093 ∧ v == _x3173)]
 " ]
 
   node0 [ shape = box, color = green ]
