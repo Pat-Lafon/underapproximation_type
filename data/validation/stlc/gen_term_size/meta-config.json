@@ -19,7 +19,6 @@
     "abd_templates_back": ["template_no_app"],
     "num_quantifier": 0,
     "synth_bound": 1,
-    "synth_timeout": "300",
     "synth_rlimit": 100000,
     "prim_path": {
         "data_type_decls": "data/predefined/data_type_decls.ml",
