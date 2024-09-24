@@ -18,11 +18,12 @@
     "num_quantifier": 0,
     "synth_bound": 3,
     "synth_rlimit": 50000,
+    "comp_path": "components.txt",
     "prim_path": {
         "data_type_decls": "data/predefined/data_type_decls.ml",
         "templates": "data/predefined/templates.ml",
         "normal_typing": "data/predefined/normal_typing.ml",
         "axioms": "data/predefined/axioms.ml",
-        "coverage_typing": "data/validation/complete_tree/builtin_rty.ml"
+        "coverage_typing": "data/predefined/coverage_typing.ml"
     }
 }

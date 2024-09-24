@@ -1,52 +1,6 @@
 General Collection:
 New Blocks:
 Old Blocks:
-Type: int list
-digraph poset {
-  label = "Partially Ordered Set"
-  size = "8.270000,11.690000"
-  ratio = 0.900000
-  rotate = 0.000000
-  center = 1
-
-  edge [ dir = back ]
-
-  node0 [ label = "_x2:[v:int list | emp v] 
- ⊢ Nil : int list :
-[v:int list | emp v]
-" ]
-
-  node0 [ shape = box, color = green ]
-}
-Type: bool
-digraph poset {
-  label = "Partially Ordered Set"
-  size = "8.270000,11.690000"
-  ratio = 0.900000
-  rotate = 0.000000
-  center = 1
-
-  edge [ dir = back ]
-
-  node0 [ label = "_x3:[v:bool | true] 
- ⊢ bool_gen () : bool :
-[v:bool | true]
-" ]
-  node1 [ label = "_x1:[v:bool | ¬v] 
- ⊢ False : bool :
-[v:bool | ¬v]
-" ]
-  node2 [ label = "_x0:[v:bool | v] 
- ⊢ True : bool :
-[v:bool | v]
-" ]
-
-  node0 [ shape = box, color = blue ]
-  node0 -> node2
-  node0 -> node1
-  node1 [ shape = box, color = red ]
-  node2 [ shape = box, color = red ]
-}
 Type: int
 digraph poset {
   label = "Partially Ordered Set"
@@ -57,18 +11,29 @@ digraph poset {
 
   edge [ dir = back ]
 
-  node0 [ label = "_x4:[v:int | true] 
- ⊢ int_gen () : int :
-[v:int | true]
-" ]
-  node1 [ label = "_x5:[v:int | v == s] 
+  node0 [ label = "_x1:[v:int | v == s] 
  ⊢ s : int :
 [v:int | v == s]
 " ]
 
-  node0 [ shape = box, color = blue ]
-  node0 -> node1
-  node1 [ shape = box, color = red ]
+  node0 [ shape = box, color = green ]
+}
+Type: int list
+digraph poset {
+  label = "Partially Ordered Set"
+  size = "8.270000,11.690000"
+  ratio = 0.900000
+  rotate = 0.000000
+  center = 1
+
+  edge [ dir = back ]
+
+  node0 [ label = "_x0:[v:int list | emp v] 
+ ⊢ Nil : int list :
+[v:int list | emp v]
+" ]
+
+  node0 [ shape = box, color = green ]
 }
 Path Specific Collection:
 l:[v:int list | true]
@@ -85,48 +50,16 @@ digraph poset {
 
   edge [ dir = back ]
 
-  node0 [ label = "_x4:[v:int | true]
-_15:[v:int list | emp v]
-l:[v:int list | true]
+  node0 [ label = "l:[v:int list | true]
 x:[v:int | true]
 pathcond_1:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_17, (s_17 >= 0 ∧ s_17 < s ∧ s_17 == (s - 1) ∧ (len l s_17 ∧ uniq l ∧ ¬list_mem l x))))]
-_x10:[v:int list | ∃_x10, (hd _x10 _x4 ∧ tl _x10 _15 ∧ v == _x10)] 
- ⊢ let (_15) = Nil in let (_x4) = int_gen () in Cons (_x4, _15) : int list :
-[v:int list | ∃_x10, (hd _x10 _x4 ∧ tl _x10 _15 ∧ v == _x10)]
-" ]
-  node1 [ label = "l:[v:int list | true]
-x:[v:int | true]
-pathcond_1:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_17, (s_17 >= 0 ∧ s_17 < s ∧ s_17 == (s - 1) ∧ (len l s_17 ∧ uniq l ∧ ¬list_mem l x))))]
-l:[v:int list | true]
-x:[v:int | true]
-pathcond_1:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_17, (s_17 >= 0 ∧ s_17 < s ∧ s_17 == (s - 1) ∧ (len l s_17 ∧ uniq l ∧ ¬list_mem l x))))]
-_x13:[v:int list | ∃_x13, (hd _x13 x ∧ tl _x13 l ∧ v == _x13)] 
- ⊢ Cons (x, l) : int list :
-[v:int list | ∃_x13, (hd _x13 x ∧ tl _x13 l ∧ v == _x13)]
-" ]
-  node2 [ label = "_x4:[v:int | true]
-l:[v:int list | true]
-x:[v:int | true]
-pathcond_1:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_17, (s_17 >= 0 ∧ s_17 < s ∧ s_17 == (s - 1) ∧ (len l s_17 ∧ uniq l ∧ ¬list_mem l x))))]
-_x15:[v:int list | ∃_x15, (hd _x15 _x4 ∧ tl _x15 l ∧ v == _x15)] 
- ⊢ let (_x4) = int_gen () in Cons (_x4, l) : int list :
-[v:int list | ∃_x15, (hd _x15 _x4 ∧ tl _x15 l ∧ v == _x15)]
-" ]
-  node3 [ label = "l:[v:int list | true]
-x:[v:int | true]
-pathcond_1:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_17, (s_17 >= 0 ∧ s_17 < s ∧ s_17 == (s - 1) ∧ (len l s_17 ∧ uniq l ∧ ¬list_mem l x))))]
-_16:[v:int list | emp v]
-_x16:[v:int list | ∃_x16, (hd _x16 x ∧ tl _x16 _16 ∧ v == _x16)] 
- ⊢ let (_16) = Nil in Cons (x, _16) : int list :
-[v:int list | ∃_x16, (hd _x16 x ∧ tl _x16 _16 ∧ v == _x16)]
+_12:[v:int list | emp v]
+_x9:[v:int list | ∃_x9, (hd _x9 x ∧ tl _x9 _12 ∧ v == _x9)] 
+ ⊢ let (_12) = Nil in Cons (x, _12) : int list :
+[v:int list | ∃_x9, (hd _x9 x ∧ tl _x9 _12 ∧ v == _x9)]
 " ]
 
-  node0 [ shape = box, color = blue ]
-  node0 -> node3
-  node1 [ shape = box, color = red ]
-  node2 [ shape = box, color = blue ]
-  node2 -> node1
-  node3 [ shape = box, color = red ]
+  node0 [ shape = box, color = green ]
 }
 Old Blocks:
 Type: int
@@ -181,69 +114,35 @@ digraph poset {
 
   edge [ dir = back ]
 
-  node0 [ label = "_x5:[v:int | v == s]
-_14:[v:int list | emp v]
+  node0 [ label = "_x1:[v:int | v == s]
+_11:[v:int list | emp v]
 l:[v:int list | true]
 x:[v:int | true]
 pathcond_0:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_15, (s_15 >= 0 ∧ s_15 < s ∧ s_15 == (s - 1) ∧ (len l s_15 ∧ uniq l ∧ list_mem l x))))]
-_x9:[v:int list | ∃_x9, (hd _x9 _x5 ∧ tl _x9 _14 ∧ v == _x9)] 
- ⊢ let (_14) = Nil in let (_x5) = s in Cons (_x5, _14) : int list :
-[v:int list | ∃_x9, (hd _x9 _x5 ∧ tl _x9 _14 ∧ v == _x9)]
+_x5:[v:int list | ∃_x5, (hd _x5 _x1 ∧ tl _x5 _11 ∧ v == _x5)] 
+ ⊢ let (_11) = Nil in let (_x1) = s in Cons (_x1, _11) : int list :
+[v:int list | ∃_x5, (hd _x5 _x1 ∧ tl _x5 _11 ∧ v == _x5)]
 " ]
-  node1 [ label = "_x4:[v:int | true]
-_15:[v:int list | emp v]
+  node1 [ label = "_x1:[v:int | v == s]
 l:[v:int list | true]
 x:[v:int | true]
 pathcond_0:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_15, (s_15 >= 0 ∧ s_15 < s ∧ s_15 == (s - 1) ∧ (len l s_15 ∧ uniq l ∧ list_mem l x))))]
-_x10:[v:int list | ∃_x10, (hd _x10 _x4 ∧ tl _x10 _15 ∧ v == _x10)] 
- ⊢ let (_15) = Nil in let (_x4) = int_gen () in Cons (_x4, _15) : int list :
-[v:int list | ∃_x10, (hd _x10 _x4 ∧ tl _x10 _15 ∧ v == _x10)]
+_x12:[v:int list | ∃_x12, (hd _x12 _x1 ∧ tl _x12 l ∧ v == _x12)] 
+ ⊢ let (_x1) = s in Cons (_x1, l) : int list :
+[v:int list | ∃_x12, (hd _x12 _x1 ∧ tl _x12 l ∧ v == _x12)]
 " ]
   node2 [ label = "l:[v:int list | true]
 x:[v:int | true]
 pathcond_0:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_15, (s_15 >= 0 ∧ s_15 < s ∧ s_15 == (s - 1) ∧ (len l s_15 ∧ uniq l ∧ list_mem l x))))]
-l:[v:int list | true]
-x:[v:int | true]
-pathcond_0:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_15, (s_15 >= 0 ∧ s_15 < s ∧ s_15 == (s - 1) ∧ (len l s_15 ∧ uniq l ∧ list_mem l x))))]
-_x18:[v:int list | ∃_x18, (hd _x18 x ∧ tl _x18 l ∧ v == _x18)] 
- ⊢ Cons (x, l) : int list :
-[v:int list | ∃_x18, (hd _x18 x ∧ tl _x18 l ∧ v == _x18)]
-" ]
-  node3 [ label = "_x5:[v:int | v == s]
-l:[v:int list | true]
-x:[v:int | true]
-pathcond_0:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_15, (s_15 >= 0 ∧ s_15 < s ∧ s_15 == (s - 1) ∧ (len l s_15 ∧ uniq l ∧ list_mem l x))))]
-_x19:[v:int list | ∃_x19, (hd _x19 _x5 ∧ tl _x19 l ∧ v == _x19)] 
- ⊢ let (_x5) = s in Cons (_x5, l) : int list :
-[v:int list | ∃_x19, (hd _x19 _x5 ∧ tl _x19 l ∧ v == _x19)]
-" ]
-  node4 [ label = "_x4:[v:int | true]
-l:[v:int list | true]
-x:[v:int | true]
-pathcond_0:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_15, (s_15 >= 0 ∧ s_15 < s ∧ s_15 == (s - 1) ∧ (len l s_15 ∧ uniq l ∧ list_mem l x))))]
-_x20:[v:int list | ∃_x20, (hd _x20 _x4 ∧ tl _x20 l ∧ v == _x20)] 
- ⊢ let (_x4) = int_gen () in Cons (_x4, l) : int list :
-[v:int list | ∃_x20, (hd _x20 _x4 ∧ tl _x20 l ∧ v == _x20)]
-" ]
-  node5 [ label = "l:[v:int list | true]
-x:[v:int | true]
-pathcond_0:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_15, (s_15 >= 0 ∧ s_15 < s ∧ s_15 == (s - 1) ∧ (len l s_15 ∧ uniq l ∧ list_mem l x))))]
-_17:[v:int list | emp v]
-_x21:[v:int list | ∃_x21, (hd _x21 x ∧ tl _x21 _17 ∧ v == _x21)] 
- ⊢ let (_17) = Nil in Cons (x, _17) : int list :
-[v:int list | ∃_x21, (hd _x21 x ∧ tl _x21 _17 ∧ v == _x21)]
+_13:[v:int list | emp v]
+_x13:[v:int list | ∃_x13, (hd _x13 x ∧ tl _x13 _13 ∧ v == _x13)] 
+ ⊢ let (_13) = Nil in Cons (x, _13) : int list :
+[v:int list | ∃_x13, (hd _x13 x ∧ tl _x13 _13 ∧ v == _x13)]
 " ]
 
-  node0 [ shape = box, color = red ]
-  node1 [ shape = box, color = blue ]
-  node1 -> node0
-  node1 -> node5
-  node2 [ shape = box, color = red ]
-  node3 [ shape = box, color = red ]
-  node4 [ shape = box, color = blue ]
-  node4 -> node2
-  node4 -> node3
-  node5 [ shape = box, color = red ]
+  node0 [ shape = box, color = green ]
+  node1 [ shape = box, color = green ]
+  node2 [ shape = box, color = green ]
 }
 Old Blocks:
 Type: int

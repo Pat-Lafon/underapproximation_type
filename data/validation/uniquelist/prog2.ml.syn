@@ -10,4 +10,4 @@ let rec unique_list_gen = fun s ->
       let (x_9) = x_8 x in
       (match x_9 with
        | True -> Err
-       | False -> let (_16) = Nil in Cons (x, _16))
+       | False -> let (_12) = Nil in Cons (x, _12))

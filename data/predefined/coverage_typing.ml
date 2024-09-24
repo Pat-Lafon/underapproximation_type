@@ -221,3 +221,19 @@ let[@library] incr =
   (v == s + 1 : [%v: int]) [@under]
 
 let[@library] dummy = (true : [%v: unit]) [@under]
+
+let[@library] hidden_list_gen =
+  let _ = (true : [%v: unit]) [@over] in
+  (true : [%v: int list]) [@under]
+
+let[@library] hidden_tree_gen =
+  let _ = (true : [%v: unit]) [@over] in
+  (true : [%v: int tree]) [@under]
+
+let[@library] hidden_rbtree_gen =
+  let _ = (true : [%v: unit]) [@over] in
+  (true : [%v: int rbtree]) [@under]
+
+let[@library] hidden_stlc_term_gen =
+  let _ = (true : [%v: unit]) [@over] in
+  (true : [%v: stlc_term]) [@under]
