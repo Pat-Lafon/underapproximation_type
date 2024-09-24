@@ -311,7 +311,8 @@ and term_type_infer_app (uctx : uctx) (a : ('t, 't term) typed) :
                  print_endline (layout_rty _rec_arg_rty);
 
                  assert (sub_rty_bool uctx (rec_arg_rty, _rec_arg_rty)); *)
-              if sub_rty_bool uctx (rec_arg_rty, apparg.ty) then ()
+              let safety_check = sub_rty_bool uctx (rec_arg_rty, apparg.ty) in
+              if !Backend.Check.smt_timeout_flag || safety_check then ()
               else (
                 _warinning_subtyping_error __FILE__ __LINE__
                   (rec_arg_rty, apparg.ty);
