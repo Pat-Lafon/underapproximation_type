@@ -64,6 +64,12 @@ open Yojson.Basic.Util
 
 let load_meta meta_fname =
   let metaj = load_json meta_fname in
+  ((* WARNING: only comment this out if you can get the type inference for stlc
+      prog.ml to work correctly *)
+   (* For some reason, this helps if the config file has more fields than Zhe's
+      work *)
+   let nullout = open_out "/dev/null" in
+   Yojson.Basic.pretty_to_channel nullout metaj);
   let mode =
     match metaj |> member "mode" |> to_string with
     | "debug" ->
