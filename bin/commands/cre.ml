@@ -8,7 +8,7 @@ open Raw_term_to_anf
 
 let parse = Ocaml5_parser.Frontend.parse
 
-let preproress meta_config_file source_file () =
+let preprocess source_file () =
   let prim_path = Env.get_prim_path () in
   let s1 = parse ~sourcefile:prim_path.type_decls in
   let s2 = parse ~sourcefile:prim_path.normal_typing in
@@ -28,16 +28,16 @@ let preproress meta_config_file source_file () =
 
 let print_source_code meta_config_file source_file () =
   let () = Env.load_meta meta_config_file in
-  let _ = preproress meta_config_file source_file () in
+  let _ = preprocess source_file () in
   ()
 
 let subtype_check_ meta_config_file source_file () =
   let () = Env.load_meta meta_config_file in
-  let code = preproress meta_config_file source_file () in
+  let code = preprocess source_file () in
   let prim_path = Env.get_prim_path () in
-  let predefine = preproress meta_config_file prim_path.coverage_typing () in
+  let predefine = preprocess prim_path.coverage_typing () in
   let builtin_ctx = Typing.Itemcheck.gather_uctx predefine in
-  let axioms = preproress meta_config_file prim_path.axioms () in
+  let axioms = preprocess prim_path.axioms () in
   let axioms =
     List.map (fun x -> x.ty) @@ Typing.Itemcheck.gather_axioms axioms
   in
@@ -87,13 +87,13 @@ let handle_lemma axioms =
 
 let type_check_ meta_config_file source_file () =
   let () = Env.load_meta meta_config_file in
-  let code = preproress meta_config_file source_file () in
+  let code = preprocess source_file () in
   let prim_path = Env.get_prim_path () in
-  let predefine = preproress meta_config_file prim_path.coverage_typing () in
+  let predefine = preprocess prim_path.coverage_typing () in
   let builtin_ctx = Typing.Itemcheck.gather_uctx predefine in
-  let axioms = preproress meta_config_file prim_path.axioms () in
+  let axioms = preprocess prim_path.axioms () in
   let axioms = handle_lemma axioms in
-  let templates = preproress meta_config_file prim_path.templates () in
+  let templates = preprocess prim_path.templates () in
   let templates = handle_template templates in
   let () = Inference.Feature.init_template templates in
   let _ = Typing.Itemcheck.struc_check (axioms, builtin_ctx) code in
@@ -101,13 +101,13 @@ let type_check_ meta_config_file source_file () =
 
 let type_infer_inner meta_config_file source_file () =
   let () = Env.load_meta meta_config_file in
-  let code = preproress meta_config_file source_file () in
+  let code = preprocess source_file () in
   let prim_path = Env.get_prim_path () in
-  let predefine = preproress meta_config_file prim_path.coverage_typing () in
+  let predefine = preprocess prim_path.coverage_typing () in
   let builtin_ctx = Typing.Itemcheck.gather_uctx predefine in
-  let axioms = preproress meta_config_file prim_path.axioms () in
+  let axioms = preprocess prim_path.axioms () in
   let axioms = handle_lemma axioms in
-  let templates = preproress meta_config_file prim_path.templates () in
+  let templates = preprocess prim_path.templates () in
   let templates = handle_template templates in
   let () = Inference.Feature.init_template templates in
   let _ = Typing.Itemcheck.struc_infer (axioms, builtin_ctx) code in
