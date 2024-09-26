@@ -53,6 +53,16 @@ digraph poset {
   node0 [ label = "l:[v:int list | true]
 x:[v:int | true]
 pathcond_1:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_17, (s_17 >= 0 ∧ s_17 < s ∧ s_17 == (s - 1) ∧ (len l s_17 ∧ uniq l ∧ ¬list_mem l x))))]
+l:[v:int list | true]
+x:[v:int | true]
+pathcond_1:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_17, (s_17 >= 0 ∧ s_17 < s ∧ s_17 == (s - 1) ∧ (len l s_17 ∧ uniq l ∧ ¬list_mem l x))))]
+_x7:[v:int list | ∃_x7, (hd _x7 x ∧ tl _x7 l ∧ v == _x7)] 
+ ⊢ Cons (x, l) : int list :
+[v:int list | ∃_x7, (hd _x7 x ∧ tl _x7 l ∧ v == _x7)]
+" ]
+  node1 [ label = "l:[v:int list | true]
+x:[v:int | true]
+pathcond_1:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_17, (s_17 >= 0 ∧ s_17 < s ∧ s_17 == (s - 1) ∧ (len l s_17 ∧ uniq l ∧ ¬list_mem l x))))]
 _12:[v:int list | emp v]
 _x9:[v:int list | ∃_x9, (hd _x9 x ∧ tl _x9 _12 ∧ v == _x9)] 
  ⊢ let (_12) = Nil in Cons (x, _12) : int list :
@@ -60,6 +70,7 @@ _x9:[v:int list | ∃_x9, (hd _x9 x ∧ tl _x9 _12 ∧ v == _x9)]
 " ]
 
   node0 [ shape = box, color = green ]
+  node1 [ shape = box, color = green ]
 }
 Old Blocks:
 Type: int
@@ -123,7 +134,17 @@ _x5:[v:int list | ∃_x5, (hd _x5 _x1 ∧ tl _x5 _11 ∧ v == _x5)]
  ⊢ let (_11) = Nil in let (_x1) = s in Cons (_x1, _11) : int list :
 [v:int list | ∃_x5, (hd _x5 _x1 ∧ tl _x5 _11 ∧ v == _x5)]
 " ]
-  node1 [ label = "_x1:[v:int | v == s]
+  node1 [ label = "l:[v:int list | true]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_15, (s_15 >= 0 ∧ s_15 < s ∧ s_15 == (s - 1) ∧ (len l s_15 ∧ uniq l ∧ list_mem l x))))]
+l:[v:int list | true]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_15, (s_15 >= 0 ∧ s_15 < s ∧ s_15 == (s - 1) ∧ (len l s_15 ∧ uniq l ∧ list_mem l x))))]
+_x11:[v:int list | ∃_x11, (hd _x11 x ∧ tl _x11 l ∧ v == _x11)] 
+ ⊢ Cons (x, l) : int list :
+[v:int list | ∃_x11, (hd _x11 x ∧ tl _x11 l ∧ v == _x11)]
+" ]
+  node2 [ label = "_x1:[v:int | v == s]
 l:[v:int list | true]
 x:[v:int | true]
 pathcond_0:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_15, (s_15 >= 0 ∧ s_15 < s ∧ s_15 == (s - 1) ∧ (len l s_15 ∧ uniq l ∧ list_mem l x))))]
@@ -131,7 +152,7 @@ _x12:[v:int list | ∃_x12, (hd _x12 _x1 ∧ tl _x12 l ∧ v == _x12)]
  ⊢ let (_x1) = s in Cons (_x1, l) : int list :
 [v:int list | ∃_x12, (hd _x12 _x1 ∧ tl _x12 l ∧ v == _x12)]
 " ]
-  node2 [ label = "l:[v:int list | true]
+  node3 [ label = "l:[v:int list | true]
 x:[v:int | true]
 pathcond_0:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_15, (s_15 >= 0 ∧ s_15 < s ∧ s_15 == (s - 1) ∧ (len l s_15 ∧ uniq l ∧ list_mem l x))))]
 _13:[v:int list | emp v]
@@ -143,6 +164,7 @@ _x13:[v:int list | ∃_x13, (hd _x13 x ∧ tl _x13 _13 ∧ v == _x13)]
   node0 [ shape = box, color = green ]
   node1 [ shape = box, color = green ]
   node2 [ shape = box, color = green ]
+  node3 [ shape = box, color = green ]
 }
 Old Blocks:
 Type: int

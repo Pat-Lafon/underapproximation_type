@@ -11,5 +11,5 @@ let rec sorted_list_gen = fun s ->
              let (_x1) = s in
              let (_x7) = subs _x1 in
              let (_x62) = sorted_list_gen _x7 in
-             let (_x2) = x in let (_1734) = _x62 _x2 in Cons (y, _1734)
+             let (_x2) = x in let (_1707) = _x62 _x2 in Cons (y, _1707)
          | False -> Err)

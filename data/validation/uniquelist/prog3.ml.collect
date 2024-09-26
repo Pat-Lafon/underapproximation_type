@@ -141,23 +141,24 @@ digraph poset {
   node0 [ label = "l:[v:int list | true]
 x:[v:int | true]
 pathcond_2:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_17, (s_17 >= 0 ∧ s_17 < s ∧ s_17 == (s - 1) ∧ (len l s_17 ∧ uniq l ∧ ¬list_mem l x))))]
+l:[v:int list | true]
+x:[v:int | true]
+pathcond_2:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_17, (s_17 >= 0 ∧ s_17 < s ∧ s_17 == (s - 1) ∧ (len l s_17 ∧ uniq l ∧ ¬list_mem l x))))]
+_x11:[v:int list | ∃_x11, (hd _x11 x ∧ tl _x11 l ∧ v == _x11)] 
+ ⊢ Cons (x, l) : int list :
+[v:int list | ∃_x11, (hd _x11 x ∧ tl _x11 l ∧ v == _x11)]
+" ]
+  node1 [ label = "l:[v:int list | true]
+x:[v:int | true]
+pathcond_2:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_17, (s_17 >= 0 ∧ s_17 < s ∧ s_17 == (s - 1) ∧ (len l s_17 ∧ uniq l ∧ ¬list_mem l x))))]
 _13:[v:int list | emp v]
 _x13:[v:int list | ∃_x13, (hd _x13 x ∧ tl _x13 _13 ∧ v == _x13)] 
  ⊢ let (_13) = Nil in Cons (x, _13) : int list :
 [v:int list | ∃_x13, (hd _x13 x ∧ tl _x13 _13 ∧ v == _x13)]
 " ]
-  node1 [ label = "_x1:[v:int | v == s]
-l:[v:int list | true]
-x:[v:int | true]
-pathcond_2:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_17, (s_17 >= 0 ∧ s_17 < s ∧ s_17 == (s - 1) ∧ (len l s_17 ∧ uniq l ∧ ¬list_mem l x))))]
-_x6:[v:int list | ∃s_18, (s_18 >= 0 ∧ s_18 < s ∧ s_18 == _x1 ∧ (∃_x6, (len _x6 s_18 ∧ uniq _x6 ∧ v == _x6)))] 
- ⊢ let (_x1) = s in unique_list_gen _x1 : int list :
-[v:int list | ∃s_18, (s_18 >= 0 ∧ s_18 < s ∧ s_18 == _x1 ∧ (∃_x6, (len _x6 s_18 ∧ uniq _x6 ∧ v == _x6)))]
-" ]
 
-  node0 [ shape = box, color = blue ]
-  node0 -> node1
-  node1 [ shape = box, color = red ]
+  node0 [ shape = box, color = green ]
+  node1 [ shape = box, color = green ]
 }
 Old Blocks:
 Type: int
