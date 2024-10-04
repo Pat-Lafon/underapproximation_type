@@ -314,6 +314,9 @@ let[@axiom] rbtree_rb_leaf_no_rb_root_color (l : int rbtree) (x : bool) =
 let[@axiom] rbtree_rb_leaf_no_ch (l : int rbtree) (l1 : int rbtree) =
   (rb_leaf l) #==> (not (rb_lch l l1 || rb_rch l l1))
 
+let[@axiom] rbtree_rb_leaf_no_red_red (l : int rbtree) (l1 : int rbtree) =
+  (rb_leaf l) #==> (no_red_red l)
+
 let[@axiom] rbtree_no_rb_leaf_exists_ch (l : int rbtree)
     ((l1 [@exists]) : int rbtree) ((l2 [@exists]) : int rbtree) =
   (not (rb_leaf l)) #==> (rb_lch l l1 && rb_rch l l2)
@@ -345,6 +348,9 @@ let[@axiom] rbtree_num_black_geq_0 (l : int rbtree) (n : int) =
 
 let[@axiom] rbtree_rb_leaf_num_black_0 (l : int rbtree) (n : int) =
   (rb_leaf l && num_black l n) #==> (n == 0)
+
+let[@axiom] rbtree_rb_leaf_num_black_0_second (l : int rbtree) (n : int) =
+  (rb_leaf l) #==> (num_black l 0)
 
 let[@axiom] rbtree_positive_num_black_is_not_rb_leaf (l : int rbtree) (n : int)
     =
