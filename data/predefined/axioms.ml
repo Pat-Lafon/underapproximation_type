@@ -338,6 +338,10 @@ let[@axiom] rbtree_rb_root_color_no_rb_leaf (l : int rbtree) (x : bool) =
 let[@axiom] rbtree_ch_no_rb_leaf (l : int rbtree) (l1 : int rbtree) =
   (rb_lch l l1 || rb_rch l l1) #==> (not (rb_leaf l))
 
+let[@axiom] rbtree_root_lch_rch (l : int rbtree) (x : int) (l1 : int rbtree)
+    (l2 : int rbtree) =
+  (rb_root l x) #==> (rb_lch l l1 && rb_rch l l2)
+
 (** num_black *)
 
 let[@axiom] rbtree_num_black_0_rb_leaf (l : int rbtree) =
@@ -374,6 +378,18 @@ let[@axiom] num_black_root_red_rt_same (v : int rbtree) (rt : int rbtree)
     (h : int) =
   (rb_root_color v true && num_black v h && rb_rch v rt) #==> (num_black rt h)
 
+let[@axiom] num_black_root_from_lt_rt (v : int rbtree) (lt : int rbtree)
+    (rt : int rbtree) (h : int) =
+  (num_black lt h && num_black rt h && rb_rch v rt && rb_lch v lt
+ && rb_root_color v true)
+  #==> (num_black v h)
+
+let[@axiom] num_black_root_from_lt_rt_plus_1 (v : int rbtree) (lt : int rbtree)
+    (rt : int rbtree) (h : int) =
+  (num_black lt h && num_black rt h && rb_rch v rt && rb_lch v lt
+ && rb_root_color v false)
+  #==> (num_black v (h + 1))
+
 let[@axiom] num_black_root_black_0_lt_leaf (v : int rbtree) (lt : int rbtree) =
   (num_black v 0 && rb_lch v lt) #==> (rb_leaf lt)
 
@@ -396,6 +412,20 @@ let[@axiom] no_red_red_root_red_lt_not_red (v : int rbtree) (lt : int rbtree) =
 let[@axiom] no_red_red_root_red_rt_not_red (v : int rbtree) (rt : int rbtree) =
   (no_red_red v && rb_rch v rt && rb_root_color v true)
   #==> (not (rb_root_color rt true))
+
+let[@axiom] no_red_red_given_lt_rt_black_root (v : int rbtree) (lt : int rbtree)
+    (rt : int rbtree) =
+  (no_red_red lt && no_red_red rt && rb_lch v lt && rb_rch v rt
+ && rb_root_color v false)
+  #==> (no_red_red v)
+
+let[@axiom] no_red_red_given_lt_rt_red_root (v : int rbtree) (lt : int rbtree)
+    (rt : int rbtree) =
+  (no_red_red lt && no_red_red rt && rb_lch v lt && rb_rch v rt
+  && (not (rb_root_color lt true))
+  && (not (rb_root_color rt true))
+  && rb_root_color v true)
+  #==> (no_red_red v)
 
 let[@axiom] black_lt_black_num_black_gt_1 (v : int rbtree) (lt : int rbtree)
     (h : int) =

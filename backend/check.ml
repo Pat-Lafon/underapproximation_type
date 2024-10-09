@@ -64,6 +64,8 @@ let smt_solve ctx assertions =
 let extend =
   [
     ("len", [ "hd"; "tl"; "emp" ]);
+    ("rb_root", [ "rb_leaf"; "rb_root_color"; "num_black"; "no_red_red"; "rb_lch"; "rb_rch" ]);
+    ("rb_leaf", [ "rb_root"; "rb_root_color"; "num_black"; "no_red_red"; "rb_lch"; "rb_rch"  ]);
     ( "typing",
       [
         "is_const";
