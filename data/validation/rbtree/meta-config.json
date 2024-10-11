@@ -16,11 +16,11 @@
     "collectfile": ".collect",
     "abd_templates": [
         // "template_rb_leaf",
-                      "template_eq_0",
-                      // "template_num_black_0",
-                      "template_black_root",
-                      "template_red_root"
-                     ],
+        "template_eq_0",
+        "template_num_black_0",
+        // "template_black_root",
+        "template_red_root"
+    ],
     "num_quantifier": 0,
     "synth_bound": 1,
     "synth_rlimit": 4000000,
