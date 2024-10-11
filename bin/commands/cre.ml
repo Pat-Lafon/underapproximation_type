@@ -123,6 +123,17 @@ let type_infer_ meta_config_file source_file () =
   in
   ()
 
+let coq_axioms meta_config_file () =
+  let () = Env.load_meta meta_config_file in
+  let prim_path = Env.get_prim_path () in
+  let axioms : t item list = preprocess prim_path.axioms () in
+
+  print_endline "Axioms:";
+  List.iter
+    (fun x -> Printf.printf "%s\n" (FrontendTyped.layout_item_to_coq x))
+    axioms;
+  ()
+
 let print_erase_code meta_config_file source_file () =
   let () = Env.load_meta meta_config_file in
   let code =
@@ -132,6 +143,14 @@ let print_erase_code meta_config_file source_file () =
   let code = List.map item_erase code in
   let _ = Printf.printf "%s\n" (FrontendRaw.layout_structure code) in
   ()
+
+let input_config message f =
+  Command.basic ~summary:message
+    Command.Let_syntax.(
+      let%map_open meta_config_file =
+        anon ("meta_config_file" %: regular_file)
+      in
+      f meta_config_file)
 
 let input_config_source message f =
   Command.basic ~summary:message
@@ -154,4 +173,5 @@ let test =
       ("type-check", input_config_source "type check" type_check_);
       ("type-infer", input_config_source "type infer" type_infer_);
       ("subtype-check", input_config_source "subtype check" subtype_check_);
+      ("coq-axioms", input_config "coq axioms" coq_axioms);
     ]

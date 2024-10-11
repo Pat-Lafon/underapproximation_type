@@ -52,6 +52,7 @@ module FrontendTyped = struct
     To_raw_term.layout_typed_raw_term (map_raw_term some e.x) #: (some e.ty)
 
   let layout_item item = To_item.layout_item @@ map_item some item
+  let layout_item_to_coq item = To_item.layout_item_to_coq @@ map_item some item
 
   let layout_structure s =
     To_item.layout_structure @@ List.map (map_item some) s

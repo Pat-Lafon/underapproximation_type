@@ -314,7 +314,7 @@ let[@axiom] rbtree_rb_leaf_no_rb_root_color (l : int rbtree) (x : bool) =
 let[@axiom] rbtree_rb_leaf_no_ch (l : int rbtree) (l1 : int rbtree) =
   (rb_leaf l) #==> (not (rb_lch l l1 || rb_rch l l1))
 
-let[@axiom] rbtree_rb_leaf_no_red_red (l : int rbtree) (l1 : int rbtree) =
+let[@axiom] rbtree_rb_leaf_no_red_red (l : int rbtree) =
   (rb_leaf l) #==> (no_red_red l)
 
 let[@axiom] rbtree_no_rb_leaf_exists_ch (l : int rbtree)
@@ -338,8 +338,8 @@ let[@axiom] rbtree_rb_root_color_no_rb_leaf (l : int rbtree) (x : bool) =
 let[@axiom] rbtree_ch_no_rb_leaf (l : int rbtree) (l1 : int rbtree) =
   (rb_lch l l1 || rb_rch l l1) #==> (not (rb_leaf l))
 
-let[@axiom] rbtree_root_lch_rch (l : int rbtree) (x : int) (l1 : int rbtree)
-    (l2 : int rbtree) =
+let[@axiom] rbtree_root_lch_rch (l : int rbtree) (x : int)
+    ((l1 [@exists]) : int rbtree) ((l2 [@exists]) : int rbtree) =
   (rb_root l x) #==> (rb_lch l l1 && rb_rch l l2)
 
 (** num_black *)
@@ -353,7 +353,7 @@ let[@axiom] rbtree_num_black_geq_0 (l : int rbtree) (n : int) =
 let[@axiom] rbtree_rb_leaf_num_black_0 (l : int rbtree) (n : int) =
   (rb_leaf l && num_black l n) #==> (n == 0)
 
-let[@axiom] rbtree_rb_leaf_num_black_0_second (l : int rbtree) (n : int) =
+let[@axiom] rbtree_rb_leaf_num_black_0_second (l : int rbtree) =
   (rb_leaf l) #==> (num_black l 0)
 
 let[@axiom] rbtree_positive_num_black_is_not_rb_leaf (l : int rbtree) (n : int)
@@ -391,10 +391,10 @@ let[@axiom] num_black_root_from_lt_rt_plus_1 (v : int rbtree) (lt : int rbtree)
   #==> (num_black v (h + 1))
 
 let[@axiom] num_black_root_black_0_lt_leaf (v : int rbtree) (lt : int rbtree) =
-  (num_black v 0 && rb_lch v lt) #==> (rb_leaf lt)
+  (no_red_red v && num_black v 0 && rb_lch v lt) #==> (rb_leaf lt)
 
 let[@axiom] num_black_root_black_0_rt_leaf (v : int rbtree) (rt : int rbtree) =
-  (num_black v 0 && rb_rch v rt) #==> (rb_leaf rt)
+  (no_red_red v && num_black v 0 && rb_rch v rt) #==> (rb_leaf rt)
 
 let[@axiom] num_black_root_black_0_rt_red (v : int rbtree) (rt : int rbtree) =
   (num_black v 0 && rb_rch v rt) #==> (rb_root_color v true)
