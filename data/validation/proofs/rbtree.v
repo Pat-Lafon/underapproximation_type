@@ -1,6 +1,8 @@
 Require Import Setoid.
 Require Import Lia.
 
+From Coq Require Export Logic.Classical_Pred_Type.
+
 From MyProject Require Import Tactics.
 
 Inductive RBTree : Type :=
@@ -97,8 +99,6 @@ Lemma rbtree_ch_no_rb_leaf : forall l, (forall l1, ((rb_lch l l1 \/ rb_rch l l1)
   - destruct l. my_inversion H. unfold not. intros. my_inversion H0.
   - destruct l. my_inversion H. unfold not. intros. my_inversion H0.
  Qed. Hint Resolve rbtree_ch_no_rb_leaf: core.
-
-From Coq Require Export Logic.Classical_Pred_Type.
 
 Lemma not_rbtree_root_lch_rch : not (forall l, (forall x, (forall l1, (forall l2, (rb_root l x -> (rb_lch l l1 /\ rb_rch l l2)))))). Proof. intros. apply ex_not_not_all. exists (RBNode (true) (RBLeaf) (1) (RBLeaf)). apply ex_not_not_all. exists 1. apply ex_not_not_all. exists (RBNode (true) (RBLeaf) (1) (RBLeaf)). apply ex_not_not_all. exists (RBNode (true) (RBLeaf) (1) (RBLeaf)). unfold not. intros. destruct H. auto. my_inversion H.
 Qed. Hint Resolve not_rbtree_root_lch_rch: core.
