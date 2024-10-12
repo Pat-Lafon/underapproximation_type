@@ -14,3 +14,5 @@ _build/
 *.output
 *.tmp
 *.ctf
+*.vo*
+*.d
