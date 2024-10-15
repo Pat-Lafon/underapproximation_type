@@ -36,6 +36,9 @@ let[@axiom] list_tl_len_plus_1 (l : int list) (l1 : int list) (n : int) =
 
 (** list_mem *)
 
+let[@axiom] list_hd_leq (l : int list) (x : int) (y : int) =
+  (x <= y && hd l y) #==> (fun (u : int) -> (hd l u) #==> (x <= u))
+
 let[@axiom] list_hd_is_mem (l : int list) (u : int) =
   (hd l u) #==> (list_mem l u)
 
@@ -51,12 +54,16 @@ let[@axiom] list_cons_mem (l : int list) (l1 : int list) (u : int) =
 (** sorted *)
 
 let[@axiom] list_emp_sorted (l : int list) = (emp l) #==> (sorted l)
+let[@axiom] list_single_sorted (l : int list) = (len l 1) #==> (sorted l)
 
 let[@axiom] list_tl_sorted (l : int list) (l1 : int list) =
   (tl l l1 && sorted l) #==> (sorted l1)
 
 let[@axiom] list_hd_sorted (l : int list) (l1 : int list) (x : int) (y : int) =
   (tl l l1 && sorted l) #==> (emp l1 || ((hd l1 y && hd l x) #==> (x <= y)))
+
+let[@axiom] list_sorted_hd (l : int list) (l1 : int list) (x : int) (y : int) =
+  (tl l l1 && sorted l1 && hd l y && hd l1 x && y <= x) #==> (sorted l)
 
 (** unique *)
 

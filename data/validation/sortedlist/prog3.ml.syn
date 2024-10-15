@@ -9,7 +9,7 @@ let rec sorted_list_gen = fun s ->
         (match x_4 with
          | True ->
              let (_x1) = s in
-             let (_x7) = subs _x1 in
-             let (_x62) = sorted_list_gen _x7 in
-             let (_x2) = x in let (_1095) = _x62 _x2 in Cons (y, _1095)
+             let (_x8) = subs _x1 in
+             let (_x78) = sorted_list_gen _x8 in
+             let (_104) = _x78 y in Cons (y, _104)
          | False -> Err)

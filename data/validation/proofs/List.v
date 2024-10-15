@@ -57,9 +57,9 @@ Lemma list_emp_no_tl : forall l, (forall l1, (emp l -> ~tl l l1)). Proof.
 
 
 Lemma list_no_emp_exists_tl : forall l, (exists l1, (~emp l -> tl l l1)). Proof.
-intros. destruct l.
-- econstructor. unfold not. intros. exfalso. apply H. constructor. Unshelve. constructor.
-- repeat econstructor.
+    intros. destruct l.
+    - econstructor. unfold not. intros. exfalso. apply H. constructor. Unshelve. constructor.
+    - repeat econstructor.
 Qed. Hint Resolve list_no_emp_exists_tl: core.
 
 Lemma list_no_emp_exists_hd : forall l, (exists x, (~emp l -> hd l x)). Proof.
@@ -85,6 +85,12 @@ Qed. Hint Resolve list_tl_no_emp: core.
 Lemma list_len_geq_0 : forall l, (forall n, (len l n -> n >= 0)). Proof.
     intros. lia.
 Qed. Hint Resolve list_len_geq_0: core.
+
+Lemma list_hd_leq : forall l, (forall x, (forall y, ((x <= y /\ hd l y) -> (forall u, (hd l u -> x <= u))))). Proof.
+    intros. simp. my_inversion H0; clear H0.
+    -  my_inversion H1.
+    - my_inversion H1.
+ Qed. Hint Resolve list_hd_leq: core.
 
 Lemma list_len_0_emp : forall l, (emp l -> len l 0). Proof.
     intros. my_inversion H. constructor.
@@ -126,6 +132,12 @@ Lemma list_emp_sorted : forall l, (emp l -> sorted l). Proof.
     intros. my_inversion H. constructor.
 Qed. Hint Resolve list_emp_sorted: core.
 
+Lemma list_single_sorted : forall l, (len l 1 -> sorted l). Proof.
+    intros. my_inversion H. my_inversion H2.
+    - constructor.
+    - lia.
+ Qed. Hint Resolve list_single_sorted: core.
+
 Lemma list_tl_sorted : forall l, (forall l1, ((tl l l1 /\ sorted l) -> sorted l1)). Proof.
     intros. simp. my_inversion H. my_inversion H0. constructor.
  Qed. Hint Resolve list_tl_sorted: core.
@@ -137,6 +149,10 @@ Lemma list_hd_sorted : forall l, (forall l1, (forall x, (forall y, ((tl l l1 /\ 
     + my_inversion H2.
     + my_inversion H2.
  Qed. Hint Resolve list_hd_sorted: core.
+
+Lemma list_sorted_hd : forall l, (forall l1, (forall x, (forall y, ((tl l l1 /\ (sorted l1 /\ (hd l y /\ (hd l1 x /\ y <= x)))) -> sorted l)))). Proof.
+    intros. simp. induction l. my_inversion H1. my_inversion H1; clear H1. constructor. my_inversion H; clear H. my_inversion H2. constructor; auto. constructor; auto.
+ Qed. Hint Resolve list_sorted_hd: core.
 
 Lemma list_emp_unique : forall l, (emp l -> uniq l). Proof.
     intros. my_inversion H. constructor.
