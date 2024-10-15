@@ -227,4 +227,4 @@ let rec __get_lam_term_ty file line = function
       match lambody.ty with
       | Some t2 -> Nt.mk_arr t1 t2
       | None -> Nt.mk_arr t1 (__get_lam_term_ty file line lambody.x))
-  | _ -> _failatwith file line "__get_lam_term_ty"
+  | _ -> _failatwith file line "__get_lam_term_ty: not lam "
