@@ -64,8 +64,31 @@ let smt_solve ctx assertions =
 let extend =
   [
     ("len", [ "hd"; "tl"; "emp" ]);
-    ("rb_root", [ "rb_leaf"; "rb_root_color"; "num_black"; "no_red_red"; "rb_lch"; "rb_rch" ]);
-    ("rb_leaf", [ "rb_root"; "rb_root_color"; "num_black"; "no_red_red"; "rb_lch"; "rb_rch"  ]);
+    ( "rb_root",
+      [
+        "rb_leaf";
+        "rb_root_color";
+        "num_black";
+        "no_red_red";
+        "rb_lch";
+        "rb_rch";
+      ] );
+    ( "rb_leaf",
+      [
+        "rb_root";
+        "rb_root_color";
+        "num_black";
+        "no_red_red";
+        "rb_lch";
+        "rb_rch";
+      ] );
+    ( "num_black",
+      [
+        "rb_root"; "rb_root_color"; "rb_leaf"; "no_red_red"; "rb_lch"; "rb_rch";
+      ] );
+    ( "no_red_red",
+      [ "rb_root"; "rb_root_color"; "rb_leaf"; "num_black"; "rb_lch"; "rb_rch" ]
+    );
     ( "typing",
       [
         "is_const";
