@@ -1,12 +1,10 @@
 let[@assert] rty1 =
   let s = (0 <= v : [%v: int]) [@over] in
-  (fun ((x [@exists]) : int) ((s_15 [@exists]) : int) ((l [@exists]) : int list)
-       ((x_6 [@exists]) : bool) ->
-     (iff x_6 (s == 0)
-     && iff (not x_6) (s > 0)
-     && (not x_6) && s_15 >= 0 && s_15 < s
+  (fun ((x [@exists]) : int) ((s_15 [@exists]) : int) ((l [@exists]) : int list) ->
+     s > 0 && s_15 >= 0 && s_15 < s
      && s_15 == s - 1
-     && len l s_15 && uniq l && list_mem l x)
+     && len l s_15 && uniq l
+     && (not (list_mem l x))
      && (not (emp v))
      && len v s && uniq v
     : [%v: int list])
