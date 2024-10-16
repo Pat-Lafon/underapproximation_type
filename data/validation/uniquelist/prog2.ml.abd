@@ -1,1 +1,1 @@
-[v:int list | ¬emp v ∧ len v s ∧ uniq v]
+[v:int list | not emp v && len v s && uniq v]

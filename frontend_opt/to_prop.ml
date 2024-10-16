@@ -78,9 +78,9 @@ let psetting =
   {
     sym_true = "⊤";
     sym_false = "⊥";
-    sym_and = " ∧ ";
-    sym_or = " ∨ ";
-    sym_not = "¬";
+    sym_and = " && ";
+    sym_or = " || ";
+    sym_not = "not ";
     sym_implies = "=>";
     sym_iff = "<=>";
     sym_forall = "∀";

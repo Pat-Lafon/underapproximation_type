@@ -30,7 +30,7 @@ val len : 'a list -> int -> bool
 val emp : 'a list -> bool
 val hd : 'a list -> 'a -> bool
 val tl : 'a list -> 'a list -> bool
-val list_mem : 'a list -> 'a -> bool
+val list_mem : int list -> int -> bool
 val sorted : 'a list -> bool
 val uniq : 'a list -> bool
 

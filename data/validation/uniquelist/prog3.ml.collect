@@ -1,201 +1,105 @@
-General Collection:
-New Blocks:
-Old Blocks:
-Type: int
-digraph poset {
-  label = "Partially Ordered Set"
-  size = "8.270000,11.690000"
-  ratio = 0.900000
-  rotate = 0.000000
-  center = 1
-
-  edge [ dir = back ]
-
-  node0 [ label = "_x1:[v:int | v == s] 
- ⊢ s : int :
-[v:int | v == s]
-" ]
-
-  node0 [ shape = box, color = green ]
-}
-Type: int list
-digraph poset {
-  label = "Partially Ordered Set"
-  size = "8.270000,11.690000"
-  ratio = 0.900000
-  rotate = 0.000000
-  center = 1
-
-  edge [ dir = back ]
-
-  node0 [ label = "_x0:[v:int list | emp v] 
- ⊢ Nil : int list :
-[v:int list | emp v]
-" ]
-
-  node0 [ shape = box, color = green ]
-}
 Path Specific Collection:
+In Path:
 l:[v:int list | true]
 x:[v:int | true]
-pathcond_1:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_15, (s_15 >= 0 ∧ s_15 < s ∧ s_15 == (s - 1) ∧ (len l s_15 ∧ uniq l ∧ list_mem l x))))]
-New Blocks:
-Type: int list
-digraph poset {
-  label = "Partially Ordered Set"
-  size = "8.270000,11.690000"
-  ratio = 0.900000
-  rotate = 0.000000
-  center = 1
-
-  edge [ dir = back ]
-
-  node0 [ label = "_x1:[v:int | v == s]
-_11:[v:int list | emp v]
+pathcond_1:[v:unit | ∃x_6, ((x_6 <=> s == 0) && (not x_6 <=> s > 0) && not x_6 && (∃s_15, (s_15 >= 0 && s_15 < s && s_15 == (s - 1) && (len l s_15 && uniq l && list_mem l x))))]
+Cost: 2
+Type: (Ty_constructor(list(Ty_int)))
+_x0:[v:int list | emp v]
 l:[v:int list | true]
 x:[v:int | true]
-pathcond_1:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_15, (s_15 >= 0 ∧ s_15 < s ∧ s_15 == (s - 1) ∧ (len l s_15 ∧ uniq l ∧ list_mem l x))))]
-_x5:[v:int list | ∃_x5, (hd _x5 _x1 ∧ tl _x5 _11 ∧ v == _x5)] 
- ⊢ let (_11) = Nil in let (_x1) = s in Cons (_x1, _11) : int list :
-[v:int list | ∃_x5, (hd _x5 _x1 ∧ tl _x5 _11 ∧ v == _x5)]
-" ]
-  node1 [ label = "l:[v:int list | true]
-x:[v:int | true]
-pathcond_1:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_15, (s_15 >= 0 ∧ s_15 < s ∧ s_15 == (s - 1) ∧ (len l s_15 ∧ uniq l ∧ list_mem l x))))]
+pathcond_1:[v:unit | ∃x_6, ((x_6 <=> s == 0) && (not x_6 <=> s > 0) && not x_6 && (∃s_15, (s_15 >= 0 && s_15 < s && s_15 == (s - 1) && (len l s_15 && uniq l && list_mem l x))))] 
+ ⊢ _x0 as Nil : int list :
+[v:int list | emp v]
+
+Cost: 4
+Type: (Ty_constructor(list(Ty_int)))
+_x1:[v:int | v == s]
 l:[v:int list | true]
 x:[v:int | true]
-pathcond_1:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_15, (s_15 >= 0 ∧ s_15 < s ∧ s_15 == (s - 1) ∧ (len l s_15 ∧ uniq l ∧ list_mem l x))))]
-_x7:[v:int list | ∃_x7, (hd _x7 x ∧ tl _x7 l ∧ v == _x7)] 
- ⊢ Cons (x, l) : int list :
-[v:int list | ∃_x7, (hd _x7 x ∧ tl _x7 l ∧ v == _x7)]
-" ]
-  node2 [ label = "_x1:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_6, ((x_6 <=> s == 0) && (not x_6 <=> s > 0) && not x_6 && (∃s_15, (s_15 >= 0 && s_15 < s && s_15 == (s - 1) && (len l s_15 && uniq l && list_mem l x))))]
+_x6:[v:int list | ∃s_19, (s_19 >= 0 && s_19 < s && s_19 == _x1 && (∃_x6, (len _x6 s_19 && uniq _x6 && v == _x6)))] 
+ ⊢ _x6 as let (_x1) = s in unique_list_gen _x1 : int list :
+[v:int list | ∃s_19, (s_19 >= 0 && s_19 < s && s_19 == _x1 && (∃_x6, (len _x6 s_19 && uniq _x6 && v == _x6)))]
+
 l:[v:int list | true]
 x:[v:int | true]
-pathcond_1:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_15, (s_15 >= 0 ∧ s_15 < s ∧ s_15 == (s - 1) ∧ (len l s_15 ∧ uniq l ∧ list_mem l x))))]
-_x8:[v:int list | ∃_x8, (hd _x8 _x1 ∧ tl _x8 l ∧ v == _x8)] 
- ⊢ let (_x1) = s in Cons (_x1, l) : int list :
-[v:int list | ∃_x8, (hd _x8 _x1 ∧ tl _x8 l ∧ v == _x8)]
-" ]
+pathcond_1:[v:unit | ∃x_6, ((x_6 <=> s == 0) && (not x_6 <=> s > 0) && not x_6 && (∃s_15, (s_15 >= 0 && s_15 < s && s_15 == (s - 1) && (len l s_15 && uniq l && list_mem l x))))]
+_x5:[v:int list | ∃s_18, (s_18 >= 0 && s_18 < s && s_18 == x && (∃_x5, (len _x5 s_18 && uniq _x5 && v == _x5)))] 
+ ⊢ _x5 as let (x) = x in unique_list_gen x : int list :
+[v:int list | ∃s_18, (s_18 >= 0 && s_18 < s && s_18 == x && (∃_x5, (len _x5 s_18 && uniq _x5 && v == _x5)))]
 
-  node0 [ shape = box, color = green ]
-  node1 [ shape = box, color = green ]
-  node2 [ shape = box, color = green ]
-}
-Old Blocks:
-Type: int
-digraph poset {
-  label = "Partially Ordered Set"
-  size = "8.270000,11.690000"
-  ratio = 0.900000
-  rotate = 0.000000
-  center = 1
-
-  edge [ dir = back ]
-
-  node0 [ label = "l:[v:int list | true]
+Cost: 1
+Type: Ty_int
+l:[v:int list | true]
 x:[v:int | true]
-pathcond_1:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_15, (s_15 >= 0 ∧ s_15 < s ∧ s_15 == (s - 1) ∧ (len l s_15 ∧ uniq l ∧ list_mem l x))))] 
- ⊢ x : int :
+pathcond_1:[v:unit | ∃x_6, ((x_6 <=> s == 0) && (not x_6 <=> s > 0) && not x_6 && (∃s_15, (s_15 >= 0 && s_15 < s && s_15 == (s - 1) && (len l s_15 && uniq l && list_mem l x))))] 
+ ⊢ x as x : int :
 [v:int | true]
-" ]
 
-  node0 [ shape = box, color = green ]
-}
-Type: int list
-digraph poset {
-  label = "Partially Ordered Set"
-  size = "8.270000,11.690000"
-  ratio = 0.900000
-  rotate = 0.000000
-  center = 1
-
-  edge [ dir = back ]
-
-  node0 [ label = "l:[v:int list | true]
+_x1:[v:int | v == s]
+l:[v:int list | true]
 x:[v:int | true]
-pathcond_1:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_15, (s_15 >= 0 ∧ s_15 < s ∧ s_15 == (s - 1) ∧ (len l s_15 ∧ uniq l ∧ list_mem l x))))] 
- ⊢ l : int list :
+pathcond_1:[v:unit | ∃x_6, ((x_6 <=> s == 0) && (not x_6 <=> s > 0) && not x_6 && (∃s_15, (s_15 >= 0 && s_15 < s && s_15 == (s - 1) && (len l s_15 && uniq l && list_mem l x))))] 
+ ⊢ _x1 as s : int :
+[v:int | v == s]
+
+Type: (Ty_constructor(list(Ty_int)))
+l:[v:int list | true]
+x:[v:int | true]
+pathcond_1:[v:unit | ∃x_6, ((x_6 <=> s == 0) && (not x_6 <=> s > 0) && not x_6 && (∃s_15, (s_15 >= 0 && s_15 < s && s_15 == (s - 1) && (len l s_15 && uniq l && list_mem l x))))] 
+ ⊢ l as l : int list :
 [v:int list | true]
-" ]
 
-  node0 [ shape = box, color = green ]
-}
-pathcond_0:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ x_6)]
-New Blocks:
-Old Blocks:
+In Path:
 l:[v:int list | true]
 x:[v:int | true]
-pathcond_2:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_17, (s_17 >= 0 ∧ s_17 < s ∧ s_17 == (s - 1) ∧ (len l s_17 ∧ uniq l ∧ ¬list_mem l x))))]
-New Blocks:
-Type: int list
-digraph poset {
-  label = "Partially Ordered Set"
-  size = "8.270000,11.690000"
-  ratio = 0.900000
-  rotate = 0.000000
-  center = 1
-
-  edge [ dir = back ]
-
-  node0 [ label = "l:[v:int list | true]
-x:[v:int | true]
-pathcond_2:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_17, (s_17 >= 0 ∧ s_17 < s ∧ s_17 == (s - 1) ∧ (len l s_17 ∧ uniq l ∧ ¬list_mem l x))))]
+pathcond_2:[v:unit | ∃x_6, ((x_6 <=> s == 0) && (not x_6 <=> s > 0) && not x_6 && (∃s_17, (s_17 >= 0 && s_17 < s && s_17 == (s - 1) && (len l s_17 && uniq l && not list_mem l x))))]
+Cost: 2
+Type: (Ty_constructor(list(Ty_int)))
+_x0:[v:int list | emp v]
 l:[v:int list | true]
 x:[v:int | true]
-pathcond_2:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_17, (s_17 >= 0 ∧ s_17 < s ∧ s_17 == (s - 1) ∧ (len l s_17 ∧ uniq l ∧ ¬list_mem l x))))]
-_x11:[v:int list | ∃_x11, (hd _x11 x ∧ tl _x11 l ∧ v == _x11)] 
- ⊢ Cons (x, l) : int list :
-[v:int list | ∃_x11, (hd _x11 x ∧ tl _x11 l ∧ v == _x11)]
-" ]
-  node1 [ label = "l:[v:int list | true]
+pathcond_2:[v:unit | ∃x_6, ((x_6 <=> s == 0) && (not x_6 <=> s > 0) && not x_6 && (∃s_17, (s_17 >= 0 && s_17 < s && s_17 == (s - 1) && (len l s_17 && uniq l && not list_mem l x))))] 
+ ⊢ _x0 as Nil : int list :
+[v:int list | emp v]
+
+Cost: 4
+Type: (Ty_constructor(list(Ty_int)))
+_x1:[v:int | v == s]
+l:[v:int list | true]
 x:[v:int | true]
-pathcond_2:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_17, (s_17 >= 0 ∧ s_17 < s ∧ s_17 == (s - 1) ∧ (len l s_17 ∧ uniq l ∧ ¬list_mem l x))))]
-_13:[v:int list | emp v]
-_x13:[v:int list | ∃_x13, (hd _x13 x ∧ tl _x13 _13 ∧ v == _x13)] 
- ⊢ let (_13) = Nil in Cons (x, _13) : int list :
-[v:int list | ∃_x13, (hd _x13 x ∧ tl _x13 _13 ∧ v == _x13)]
-" ]
+pathcond_2:[v:unit | ∃x_6, ((x_6 <=> s == 0) && (not x_6 <=> s > 0) && not x_6 && (∃s_17, (s_17 >= 0 && s_17 < s && s_17 == (s - 1) && (len l s_17 && uniq l && not list_mem l x))))]
+_x8:[v:int list | ∃s_21, (s_21 >= 0 && s_21 < s && s_21 == _x1 && (∃_x8, (len _x8 s_21 && uniq _x8 && v == _x8)))] 
+ ⊢ _x8 as let (_x1) = s in unique_list_gen _x1 : int list :
+[v:int list | ∃s_21, (s_21 >= 0 && s_21 < s && s_21 == _x1 && (∃_x8, (len _x8 s_21 && uniq _x8 && v == _x8)))]
 
-  node0 [ shape = box, color = green ]
-  node1 [ shape = box, color = green ]
-}
-Old Blocks:
-Type: int
-digraph poset {
-  label = "Partially Ordered Set"
-  size = "8.270000,11.690000"
-  ratio = 0.900000
-  rotate = 0.000000
-  center = 1
-
-  edge [ dir = back ]
-
-  node0 [ label = "l:[v:int list | true]
+l:[v:int list | true]
 x:[v:int | true]
-pathcond_2:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_17, (s_17 >= 0 ∧ s_17 < s ∧ s_17 == (s - 1) ∧ (len l s_17 ∧ uniq l ∧ ¬list_mem l x))))] 
- ⊢ x : int :
+pathcond_2:[v:unit | ∃x_6, ((x_6 <=> s == 0) && (not x_6 <=> s > 0) && not x_6 && (∃s_17, (s_17 >= 0 && s_17 < s && s_17 == (s - 1) && (len l s_17 && uniq l && not list_mem l x))))]
+_x7:[v:int list | ∃s_20, (s_20 >= 0 && s_20 < s && s_20 == x && (∃_x7, (len _x7 s_20 && uniq _x7 && v == _x7)))] 
+ ⊢ _x7 as let (x) = x in unique_list_gen x : int list :
+[v:int list | ∃s_20, (s_20 >= 0 && s_20 < s && s_20 == x && (∃_x7, (len _x7 s_20 && uniq _x7 && v == _x7)))]
+
+Cost: 1
+Type: Ty_int
+l:[v:int list | true]
+x:[v:int | true]
+pathcond_2:[v:unit | ∃x_6, ((x_6 <=> s == 0) && (not x_6 <=> s > 0) && not x_6 && (∃s_17, (s_17 >= 0 && s_17 < s && s_17 == (s - 1) && (len l s_17 && uniq l && not list_mem l x))))] 
+ ⊢ x as x : int :
 [v:int | true]
-" ]
 
-  node0 [ shape = box, color = green ]
-}
-Type: int list
-digraph poset {
-  label = "Partially Ordered Set"
-  size = "8.270000,11.690000"
-  ratio = 0.900000
-  rotate = 0.000000
-  center = 1
-
-  edge [ dir = back ]
-
-  node0 [ label = "l:[v:int list | true]
+_x1:[v:int | v == s]
+l:[v:int list | true]
 x:[v:int | true]
-pathcond_2:[v:unit | ∃x_6, ((x_6 <=> s == 0) ∧ (¬x_6 <=> s > 0) ∧ ¬x_6 ∧ (∃s_17, (s_17 >= 0 ∧ s_17 < s ∧ s_17 == (s - 1) ∧ (len l s_17 ∧ uniq l ∧ ¬list_mem l x))))] 
- ⊢ l : int list :
-[v:int list | true]
-" ]
+pathcond_2:[v:unit | ∃x_6, ((x_6 <=> s == 0) && (not x_6 <=> s > 0) && not x_6 && (∃s_17, (s_17 >= 0 && s_17 < s && s_17 == (s - 1) && (len l s_17 && uniq l && not list_mem l x))))] 
+ ⊢ _x1 as s : int :
+[v:int | v == s]
 
-  node0 [ shape = box, color = green ]
-}
+Type: (Ty_constructor(list(Ty_int)))
+l:[v:int list | true]
+x:[v:int | true]
+pathcond_2:[v:unit | ∃x_6, ((x_6 <=> s == 0) && (not x_6 <=> s > 0) && not x_6 && (∃s_17, (s_17 >= 0 && s_17 < s && s_17 == (s - 1) && (len l s_17 && uniq l && not list_mem l x))))] 
+ ⊢ l as l : int list :
+[v:int list | true]
+
