@@ -22,7 +22,7 @@
         "template_red_root"
     ],
     "num_quantifier": 0,
-    "synth_bound": 1,
+    "synth_bound": 30,
     "synth_rlimit": 4000000,
     "comp_path": "components.txt",
     "prim_path": {
