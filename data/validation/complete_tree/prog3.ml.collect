@@ -1,586 +1,509 @@
-General Collection:
-New Blocks:
-Old Blocks:
-Type: int tree
-digraph poset {
-  label = "Partially Ordered Set"
-  size = "8.270000,11.690000"
-  ratio = 0.900000
-  rotate = 0.000000
-  center = 1
-
-  edge [ dir = back ]
-
-  node0 [ label = "_x0:[v:int tree | leaf v] 
- ⊢ Leaf : int tree :
-[v:int tree | leaf v]
-" ]
-  node1 [ label = "_x2:[v:int | v == s]
-_3:[v:int tree | leaf v]
-_4:[v:int tree | leaf v]
-_x7:[v:int tree | ∃_x7, (root _x7 _x2 ∧ lch _x7 _3 ∧ rch _x7 _4 ∧ v == _x7)] 
- ⊢ let (_4) = Leaf in let (_3) = Leaf in let (_x2) = s in Node (_x2, _3, _4) : int tree :
-[v:int tree | ∃_x7, (root _x7 _x2 ∧ lch _x7 _3 ∧ rch _x7 _4 ∧ v == _x7)]
-" ]
-  node2 [ label = "_x1:[v:int | true]
-_5:[v:int tree | leaf v]
-_6:[v:int tree | leaf v]
-_x8:[v:int tree | ∃_x8, (root _x8 _x1 ∧ lch _x8 _5 ∧ rch _x8 _6 ∧ v == _x8)] 
- ⊢ let (_6) = Leaf in
-let (_5) = Leaf in let (_x1) = int_gen () in Node (_x1, _5, _6) : int tree :
-[v:int tree | ∃_x8, (root _x8 _x1 ∧ lch _x8 _5 ∧ rch _x8 _6 ∧ v == _x8)]
-" ]
-  node3 [ label = "_x2:[v:int | v == s]
-_26:[v:int tree | leaf v]
-_27:[v:int | true]
-_28:[v:int tree | leaf v]
-_29:[v:int tree | leaf v]
-_30:[v:int tree | ∃_x8, (root _x8 _27 ∧ lch _x8 _28 ∧ rch _x8 _29 ∧ v == _x8)]
-_x12:[v:int tree | ∃_x12, (root _x12 _x2 ∧ lch _x12 _26 ∧ rch _x12 _30 ∧ v == _x12)] 
- ⊢ let (_6) = Leaf in
-let (_5) = Leaf in
-let (_x1) = int_gen () in
-let (_30) = Node (_x1, _5, _6) in
-let (_26) = Leaf in let (_x2) = s in Node (_x2, _26, _30) : int tree :
-[v:int tree | ∃_x12, (root _x12 _x2 ∧ lch _x12 _26 ∧ rch _x12 _30 ∧ v == _x12)]
-" ]
-  node4 [ label = "_x2:[v:int | v == s]
-_31:[v:int tree | leaf v]
-_x2:[v:int | v == s]
-_32:[v:int tree | leaf v]
-_33:[v:int tree | leaf v]
-_34:[v:int tree | ∃_x7, (root _x7 _x2 ∧ lch _x7 _32 ∧ rch _x7 _33 ∧ v == _x7)]
-_x13:[v:int tree | ∃_x13, (root _x13 _x2 ∧ lch _x13 _31 ∧ rch _x13 _34 ∧ v == _x13)] 
- ⊢ let (_4) = Leaf in
-let (_3) = Leaf in
-let (_x2) = s in
-let (_34) = Node (_x2, _3, _4) in let (_31) = Leaf in Node (_x2, _31, _34) : int tree :
-[v:int tree | ∃_x13, (root _x13 _x2 ∧ lch _x13 _31 ∧ rch _x13 _34 ∧ v == _x13)]
-" ]
-  node5 [ label = "_x1:[v:int | true]
-_40:[v:int tree | leaf v]
-_41:[v:int | true]
-_42:[v:int tree | leaf v]
-_43:[v:int tree | leaf v]
-_44:[v:int tree | ∃_x8, (root _x8 _41 ∧ lch _x8 _42 ∧ rch _x8 _43 ∧ v == _x8)]
-_x14:[v:int tree | ∃_x14, (root _x14 _x1 ∧ lch _x14 _40 ∧ rch _x14 _44 ∧ v == _x14)] 
- ⊢ let (_6) = Leaf in
-let (_5) = Leaf in
-let (_x1) = int_gen () in
-let (_44) = Node (_x1, _5, _6) in let (_40) = Leaf in Node (_x1, _40, _44) : int tree :
-[v:int tree | ∃_x14, (root _x14 _x1 ∧ lch _x14 _40 ∧ rch _x14 _44 ∧ v == _x14)]
-" ]
-  node6 [ label = "_x1:[v:int | true]
-_59:[v:int tree | leaf v]
-_x2:[v:int | v == s]
-_60:[v:int tree | leaf v]
-_61:[v:int tree | leaf v]
-_62:[v:int tree | ∃_x7, (root _x7 _x2 ∧ lch _x7 _60 ∧ rch _x7 _61 ∧ v == _x7)]
-_x15:[v:int tree | ∃_x15, (root _x15 _x1 ∧ lch _x15 _59 ∧ rch _x15 _62 ∧ v == _x15)] 
- ⊢ let (_4) = Leaf in
-let (_3) = Leaf in
-let (_x2) = s in
-let (_62) = Node (_x2, _3, _4) in
-let (_59) = Leaf in let (_x1) = int_gen () in Node (_x1, _59, _62) : int tree :
-[v:int tree | ∃_x15, (root _x15 _x1 ∧ lch _x15 _59 ∧ rch _x15 _62 ∧ v == _x15)]
-" ]
-  node7 [ label = "_x2:[v:int | v == s]
-_81:[v:int | true]
-_82:[v:int tree | leaf v]
-_83:[v:int tree | leaf v]
-_84:[v:int tree | ∃_x8, (root _x8 _81 ∧ lch _x8 _82 ∧ rch _x8 _83 ∧ v == _x8)]
-_85:[v:int tree | leaf v]
-_x16:[v:int tree | ∃_x16, (root _x16 _x2 ∧ lch _x16 _84 ∧ rch _x16 _85 ∧ v == _x16)] 
- ⊢ let (_85) = Leaf in
-let (_6) = Leaf in
-let (_5) = Leaf in
-let (_x1) = int_gen () in
-let (_84) = Node (_x1, _5, _6) in let (_x2) = s in Node (_x2, _84, _85) : int tree :
-[v:int tree | ∃_x16, (root _x16 _x2 ∧ lch _x16 _84 ∧ rch _x16 _85 ∧ v == _x16)]
-" ]
-  node8 [ label = "_x2:[v:int | v == s]
-_x2:[v:int | v == s]
-_110:[v:int tree | leaf v]
-_111:[v:int tree | leaf v]
-_112:[v:int tree | ∃_x7, (root _x7 _x2 ∧ lch _x7 _110 ∧ rch _x7 _111 ∧ v == _x7)]
-_113:[v:int tree | leaf v]
-_x17:[v:int tree | ∃_x17, (root _x17 _x2 ∧ lch _x17 _112 ∧ rch _x17 _113 ∧ v == _x17)] 
- ⊢ let (_113) = Leaf in
-let (_4) = Leaf in
-let (_3) = Leaf in
-let (_x2) = s in let (_112) = Node (_x2, _3, _4) in Node (_x2, _112, _113) : int tree :
-[v:int tree | ∃_x17, (root _x17 _x2 ∧ lch _x17 _112 ∧ rch _x17 _113 ∧ v == _x17)]
-" ]
-  node9 [ label = "_x1:[v:int | true]
-_139:[v:int | true]
-_140:[v:int tree | leaf v]
-_141:[v:int tree | leaf v]
-_142:[v:int tree | ∃_x8, (root _x8 _139 ∧ lch _x8 _140 ∧ rch _x8 _141 ∧ v == _x8)]
-_143:[v:int tree | leaf v]
-_x18:[v:int tree | ∃_x18, (root _x18 _x1 ∧ lch _x18 _142 ∧ rch _x18 _143 ∧ v == _x18)] 
- ⊢ let (_143) = Leaf in
-let (_6) = Leaf in
-let (_5) = Leaf in
-let (_x1) = int_gen () in
-let (_142) = Node (_x1, _5, _6) in Node (_x1, _142, _143) : int tree :
-[v:int tree | ∃_x18, (root _x18 _x1 ∧ lch _x18 _142 ∧ rch _x18 _143 ∧ v == _x18)]
-" ]
-  node10 [ label = "_x1:[v:int | true]
-_x2:[v:int | v == s]
-_191:[v:int tree | leaf v]
-_192:[v:int tree | leaf v]
-_193:[v:int tree | ∃_x7, (root _x7 _x2 ∧ lch _x7 _191 ∧ rch _x7 _192 ∧ v == _x7)]
-_194:[v:int tree | leaf v]
-_x19:[v:int tree | ∃_x19, (root _x19 _x1 ∧ lch _x19 _193 ∧ rch _x19 _194 ∧ v == _x19)] 
- ⊢ let (_194) = Leaf in
-let (_4) = Leaf in
-let (_3) = Leaf in
-let (_x2) = s in
-let (_193) = Node (_x2, _3, _4) in
-let (_x1) = int_gen () in Node (_x1, _193, _194) : int tree :
-[v:int tree | ∃_x19, (root _x19 _x1 ∧ lch _x19 _193 ∧ rch _x19 _194 ∧ v == _x19)]
-" ]
-  node11 [ label = "_x2:[v:int | v == s]
-_237:[v:int | true]
-_238:[v:int tree | leaf v]
-_239:[v:int tree | leaf v]
-_240:[v:int tree | ∃_x8, (root _x8 _237 ∧ lch _x8 _238 ∧ rch _x8 _239 ∧ v == _x8)]
-_241:[v:int | true]
-_242:[v:int tree | leaf v]
-_243:[v:int tree | leaf v]
-_244:[v:int tree | ∃_x8, (root _x8 _241 ∧ lch _x8 _242 ∧ rch _x8 _243 ∧ v == _x8)]
-_x20:[v:int tree | ∃_x20, (root _x20 _x2 ∧ lch _x20 _240 ∧ rch _x20 _244 ∧ v == _x20)] 
- ⊢ let (_6) = Leaf in
-let (_5) = Leaf in
-let (_x1) = int_gen () in
-let (_244) = Node (_x1, _5, _6) in
-let (_240) = Node (_x1, _5, _6) in let (_x2) = s in Node (_x2, _240, _244) : int tree :
-[v:int tree | ∃_x20, (root _x20 _x2 ∧ lch _x20 _240 ∧ rch _x20 _244 ∧ v == _x20)]
-" ]
-  node12 [ label = "_x2:[v:int | v == s]
-_317:[v:int | true]
-_318:[v:int tree | leaf v]
-_319:[v:int tree | leaf v]
-_320:[v:int tree | ∃_x8, (root _x8 _317 ∧ lch _x8 _318 ∧ rch _x8 _319 ∧ v == _x8)]
-_x2:[v:int | v == s]
-_321:[v:int tree | leaf v]
-_322:[v:int tree | leaf v]
-_323:[v:int tree | ∃_x7, (root _x7 _x2 ∧ lch _x7 _321 ∧ rch _x7 _322 ∧ v == _x7)]
-_x21:[v:int tree | ∃_x21, (root _x21 _x2 ∧ lch _x21 _320 ∧ rch _x21 _323 ∧ v == _x21)] 
- ⊢ let (_4) = Leaf in
-let (_3) = Leaf in
-let (_x2) = s in
-let (_323) = Node (_x2, _3, _4) in
-let (_6) = Leaf in
-let (_5) = Leaf in
-let (_x1) = int_gen () in
-let (_320) = Node (_x1, _5, _6) in Node (_x2, _320, _323) : int tree :
-[v:int tree | ∃_x21, (root _x21 _x2 ∧ lch _x21 _320 ∧ rch _x21 _323 ∧ v == _x21)]
-" ]
-  node13 [ label = "_x2:[v:int | v == s]
-_x2:[v:int | v == s]
-_396:[v:int tree | leaf v]
-_397:[v:int tree | leaf v]
-_398:[v:int tree | ∃_x7, (root _x7 _x2 ∧ lch _x7 _396 ∧ rch _x7 _397 ∧ v == _x7)]
-_399:[v:int | true]
-_400:[v:int tree | leaf v]
-_401:[v:int tree | leaf v]
-_402:[v:int tree | ∃_x8, (root _x8 _399 ∧ lch _x8 _400 ∧ rch _x8 _401 ∧ v == _x8)]
-_x22:[v:int tree | ∃_x22, (root _x22 _x2 ∧ lch _x22 _398 ∧ rch _x22 _402 ∧ v == _x22)] 
- ⊢ let (_6) = Leaf in
-let (_5) = Leaf in
-let (_x1) = int_gen () in
-let (_402) = Node (_x1, _5, _6) in
-let (_4) = Leaf in
-let (_3) = Leaf in
-let (_x2) = s in let (_398) = Node (_x2, _3, _4) in Node (_x2, _398, _402) : int tree :
-[v:int tree | ∃_x22, (root _x22 _x2 ∧ lch _x22 _398 ∧ rch _x22 _402 ∧ v == _x22)]
-" ]
-  node14 [ label = "_x2:[v:int | v == s]
-_x2:[v:int | v == s]
-_483:[v:int tree | leaf v]
-_484:[v:int tree | leaf v]
-_485:[v:int tree | ∃_x7, (root _x7 _x2 ∧ lch _x7 _483 ∧ rch _x7 _484 ∧ v == _x7)]
-_x2:[v:int | v == s]
-_486:[v:int tree | leaf v]
-_487:[v:int tree | leaf v]
-_488:[v:int tree | ∃_x7, (root _x7 _x2 ∧ lch _x7 _486 ∧ rch _x7 _487 ∧ v == _x7)]
-_x23:[v:int tree | ∃_x23, (root _x23 _x2 ∧ lch _x23 _485 ∧ rch _x23 _488 ∧ v == _x23)] 
- ⊢ let (_4) = Leaf in
-let (_3) = Leaf in
-let (_x2) = s in
-let (_488) = Node (_x2, _3, _4) in
-let (_485) = Node (_x2, _3, _4) in Node (_x2, _485, _488) : int tree :
-[v:int tree | ∃_x23, (root _x23 _x2 ∧ lch _x23 _485 ∧ rch _x23 _488 ∧ v == _x23)]
-" ]
-  node15 [ label = "_x1:[v:int | true]
-_574:[v:int | true]
-_575:[v:int tree | leaf v]
-_576:[v:int tree | leaf v]
-_577:[v:int tree | ∃_x8, (root _x8 _574 ∧ lch _x8 _575 ∧ rch _x8 _576 ∧ v == _x8)]
-_578:[v:int | true]
-_579:[v:int tree | leaf v]
-_580:[v:int tree | leaf v]
-_581:[v:int tree | ∃_x8, (root _x8 _578 ∧ lch _x8 _579 ∧ rch _x8 _580 ∧ v == _x8)]
-_x24:[v:int tree | ∃_x24, (root _x24 _x1 ∧ lch _x24 _577 ∧ rch _x24 _581 ∧ v == _x24)] 
- ⊢ let (_6) = Leaf in
-let (_5) = Leaf in
-let (_x1) = int_gen () in
-let (_581) = Node (_x1, _5, _6) in
-let (_577) = Node (_x1, _5, _6) in Node (_x1, _577, _581) : int tree :
-[v:int tree | ∃_x24, (root _x24 _x1 ∧ lch _x24 _577 ∧ rch _x24 _581 ∧ v == _x24)]
-" ]
-  node16 [ label = "_x1:[v:int | true]
-_710:[v:int | true]
-_711:[v:int tree | leaf v]
-_712:[v:int tree | leaf v]
-_713:[v:int tree | ∃_x8, (root _x8 _710 ∧ lch _x8 _711 ∧ rch _x8 _712 ∧ v == _x8)]
-_x2:[v:int | v == s]
-_714:[v:int tree | leaf v]
-_715:[v:int tree | leaf v]
-_716:[v:int tree | ∃_x7, (root _x7 _x2 ∧ lch _x7 _714 ∧ rch _x7 _715 ∧ v == _x7)]
-_x25:[v:int tree | ∃_x25, (root _x25 _x1 ∧ lch _x25 _713 ∧ rch _x25 _716 ∧ v == _x25)] 
- ⊢ let (_4) = Leaf in
-let (_3) = Leaf in
-let (_x2) = s in
-let (_716) = Node (_x2, _3, _4) in
-let (_6) = Leaf in
-let (_5) = Leaf in
-let (_x1) = int_gen () in
-let (_713) = Node (_x1, _5, _6) in Node (_x1, _713, _716) : int tree :
-[v:int tree | ∃_x25, (root _x25 _x1 ∧ lch _x25 _713 ∧ rch _x25 _716 ∧ v == _x25)]
-" ]
-  node17 [ label = "_x1:[v:int | true]
-_x2:[v:int | v == s]
-_834:[v:int tree | leaf v]
-_835:[v:int tree | leaf v]
-_836:[v:int tree | ∃_x7, (root _x7 _x2 ∧ lch _x7 _834 ∧ rch _x7 _835 ∧ v == _x7)]
-_837:[v:int | true]
-_838:[v:int tree | leaf v]
-_839:[v:int tree | leaf v]
-_840:[v:int tree | ∃_x8, (root _x8 _837 ∧ lch _x8 _838 ∧ rch _x8 _839 ∧ v == _x8)]
-_x26:[v:int tree | ∃_x26, (root _x26 _x1 ∧ lch _x26 _836 ∧ rch _x26 _840 ∧ v == _x26)] 
- ⊢ let (_6) = Leaf in
-let (_5) = Leaf in
-let (_x1) = int_gen () in
-let (_840) = Node (_x1, _5, _6) in
-let (_4) = Leaf in
-let (_3) = Leaf in
-let (_x2) = s in let (_836) = Node (_x2, _3, _4) in Node (_x1, _836, _840) : int tree :
-[v:int tree | ∃_x26, (root _x26 _x1 ∧ lch _x26 _836 ∧ rch _x26 _840 ∧ v == _x26)]
-" ]
-  node18 [ label = "_x1:[v:int | true]
-_x2:[v:int | v == s]
-_967:[v:int tree | leaf v]
-_968:[v:int tree | leaf v]
-_969:[v:int tree | ∃_x7, (root _x7 _x2 ∧ lch _x7 _967 ∧ rch _x7 _968 ∧ v == _x7)]
-_x2:[v:int | v == s]
-_970:[v:int tree | leaf v]
-_971:[v:int tree | leaf v]
-_972:[v:int tree | ∃_x7, (root _x7 _x2 ∧ lch _x7 _970 ∧ rch _x7 _971 ∧ v == _x7)]
-_x27:[v:int tree | ∃_x27, (root _x27 _x1 ∧ lch _x27 _969 ∧ rch _x27 _972 ∧ v == _x27)] 
- ⊢ let (_4) = Leaf in
-let (_3) = Leaf in
-let (_x2) = s in
-let (_972) = Node (_x2, _3, _4) in
-let (_969) = Node (_x2, _3, _4) in
-let (_x1) = int_gen () in Node (_x1, _969, _972) : int tree :
-[v:int tree | ∃_x27, (root _x27 _x1 ∧ lch _x27 _969 ∧ rch _x27 _972 ∧ v == _x27)]
-" ]
-  node19 [ label = "_x2:[v:int | v == s]
-_x5:[v:int | v == (_x2 - 1)]
-_1102:[v:int tree | leaf v]
-_1103:[v:int tree | leaf v]
-_x28:[v:int tree | ∃_x28, (root _x28 _x5 ∧ lch _x28 _1102 ∧ rch _x28 _1103 ∧ v == _x28)] 
- ⊢ let (_1103) = Leaf in
-let (_1102) = Leaf in
-let (_x2) = s in let (_x5) = subs _x2 in Node (_x5, _1102, _1103) : int tree :
-[v:int tree | ∃_x28, (root _x28 _x5 ∧ lch _x28 _1102 ∧ rch _x28 _1103 ∧ v == _x28)]
-" ]
-  node20 [ label = "_x2:[v:int | v == s]
-_x5:[v:int | v == (_x2 - 1)]
-_1168:[v:int tree | leaf v]
-_1169:[v:int | true]
-_1170:[v:int tree | leaf v]
-_1171:[v:int tree | leaf v]
-_1172:[v:int tree | ∃_x8, (root _x8 _1169 ∧ lch _x8 _1170 ∧ rch _x8 _1171 ∧ v == _x8)]
-_x29:[v:int tree | ∃_x29, (root _x29 _x5 ∧ lch _x29 _1168 ∧ rch _x29 _1172 ∧ v == _x29)] 
- ⊢ let (_6) = Leaf in
-let (_5) = Leaf in
-let (_x1) = int_gen () in
-let (_1172) = Node (_x1, _5, _6) in
-let (_1168) = Leaf in
-let (_x2) = s in let (_x5) = subs _x2 in Node (_x5, _1168, _1172) : int tree :
-[v:int tree | ∃_x29, (root _x29 _x5 ∧ lch _x29 _1168 ∧ rch _x29 _1172 ∧ v == _x29)]
-" ]
-  node21 [ label = "_x2:[v:int | v == s]
-_x5:[v:int | v == (_x2 - 1)]
-_1292:[v:int tree | leaf v]
-_x2:[v:int | v == s]
-_1293:[v:int tree | leaf v]
-_1294:[v:int tree | leaf v]
-_1295:[v:int tree | ∃_x7, (root _x7 _x2 ∧ lch _x7 _1293 ∧ rch _x7 _1294 ∧ v == _x7)]
-_x30:[v:int tree | ∃_x30, (root _x30 _x5 ∧ lch _x30 _1292 ∧ rch _x30 _1295 ∧ v == _x30)] 
- ⊢ let (_4) = Leaf in
-let (_3) = Leaf in
-let (_x2) = s in
-let (_1295) = Node (_x2, _3, _4) in
-let (_1292) = Leaf in let (_x5) = subs _x2 in Node (_x5, _1292, _1295) : int tree :
-[v:int tree | ∃_x30, (root _x30 _x5 ∧ lch _x30 _1292 ∧ rch _x30 _1295 ∧ v == _x30)]
-" ]
-  node22 [ label = "_x2:[v:int | v == s]
-_x5:[v:int | v == (_x2 - 1)]
-_1411:[v:int | true]
-_1412:[v:int tree | leaf v]
-_1413:[v:int tree | leaf v]
-_1414:[v:int tree | ∃_x8, (root _x8 _1411 ∧ lch _x8 _1412 ∧ rch _x8 _1413 ∧ v == _x8)]
-_1415:[v:int tree | leaf v]
-_x31:[v:int tree | ∃_x31, (root _x31 _x5 ∧ lch _x31 _1414 ∧ rch _x31 _1415 ∧ v == _x31)] 
- ⊢ let (_1415) = Leaf in
-let (_6) = Leaf in
-let (_5) = Leaf in
-let (_x1) = int_gen () in
-let (_1414) = Node (_x1, _5, _6) in
-let (_x2) = s in let (_x5) = subs _x2 in Node (_x5, _1414, _1415) : int tree :
-[v:int tree | ∃_x31, (root _x31 _x5 ∧ lch _x31 _1414 ∧ rch _x31 _1415 ∧ v == _x31)]
-" ]
-  node23 [ label = "_x2:[v:int | v == s]
-_x5:[v:int | v == (_x2 - 1)]
-_x2:[v:int | v == s]
-_1549:[v:int tree | leaf v]
-_1550:[v:int tree | leaf v]
-_1551:[v:int tree | ∃_x7, (root _x7 _x2 ∧ lch _x7 _1549 ∧ rch _x7 _1550 ∧ v == _x7)]
-_1552:[v:int tree | leaf v]
-_x32:[v:int tree | ∃_x32, (root _x32 _x5 ∧ lch _x32 _1551 ∧ rch _x32 _1552 ∧ v == _x32)] 
- ⊢ let (_1552) = Leaf in
-let (_4) = Leaf in
-let (_3) = Leaf in
-let (_x2) = s in
-let (_1551) = Node (_x2, _3, _4) in
-let (_x5) = subs _x2 in Node (_x5, _1551, _1552) : int tree :
-[v:int tree | ∃_x32, (root _x32 _x5 ∧ lch _x32 _1551 ∧ rch _x32 _1552 ∧ v == _x32)]
-" ]
-  node24 [ label = "_x2:[v:int | v == s]
-_x5:[v:int | v == (_x2 - 1)]
-_1680:[v:int | true]
-_1681:[v:int tree | leaf v]
-_1682:[v:int tree | leaf v]
-_1683:[v:int tree | ∃_x8, (root _x8 _1680 ∧ lch _x8 _1681 ∧ rch _x8 _1682 ∧ v == _x8)]
-_1684:[v:int | true]
-_1685:[v:int tree | leaf v]
-_1686:[v:int tree | leaf v]
-_1687:[v:int tree | ∃_x8, (root _x8 _1684 ∧ lch _x8 _1685 ∧ rch _x8 _1686 ∧ v == _x8)]
-_x33:[v:int tree | ∃_x33, (root _x33 _x5 ∧ lch _x33 _1683 ∧ rch _x33 _1687 ∧ v == _x33)] 
- ⊢ let (_6) = Leaf in
-let (_5) = Leaf in
-let (_x1) = int_gen () in
-let (_1687) = Node (_x1, _5, _6) in
-let (_1683) = Node (_x1, _5, _6) in
-let (_x2) = s in let (_x5) = subs _x2 in Node (_x5, _1683, _1687) : int tree :
-[v:int tree | ∃_x33, (root _x33 _x5 ∧ lch _x33 _1683 ∧ rch _x33 _1687 ∧ v == _x33)]
-" ]
-  node25 [ label = "_x2:[v:int | v == s]
-_x5:[v:int | v == (_x2 - 1)]
-_1898:[v:int | true]
-_1899:[v:int tree | leaf v]
-_1900:[v:int tree | leaf v]
-_1901:[v:int tree | ∃_x8, (root _x8 _1898 ∧ lch _x8 _1899 ∧ rch _x8 _1900 ∧ v == _x8)]
-_x2:[v:int | v == s]
-_1902:[v:int tree | leaf v]
-_1903:[v:int tree | leaf v]
-_1904:[v:int tree | ∃_x7, (root _x7 _x2 ∧ lch _x7 _1902 ∧ rch _x7 _1903 ∧ v == _x7)]
-_x34:[v:int tree | ∃_x34, (root _x34 _x5 ∧ lch _x34 _1901 ∧ rch _x34 _1904 ∧ v == _x34)] 
- ⊢ let (_4) = Leaf in
-let (_3) = Leaf in
-let (_x2) = s in
-let (_1904) = Node (_x2, _3, _4) in
-let (_6) = Leaf in
-let (_5) = Leaf in
-let (_x1) = int_gen () in
-let (_1901) = Node (_x1, _5, _6) in
-let (_x5) = subs _x2 in Node (_x5, _1901, _1904) : int tree :
-[v:int tree | ∃_x34, (root _x34 _x5 ∧ lch _x34 _1901 ∧ rch _x34 _1904 ∧ v == _x34)]
-" ]
-  node26 [ label = "_x2:[v:int | v == s]
-_x5:[v:int | v == (_x2 - 1)]
-_x2:[v:int | v == s]
-_2132:[v:int tree | leaf v]
-_2133:[v:int tree | leaf v]
-_2134:[v:int tree | ∃_x7, (root _x7 _x2 ∧ lch _x7 _2132 ∧ rch _x7 _2133 ∧ v == _x7)]
-_2135:[v:int | true]
-_2136:[v:int tree | leaf v]
-_2137:[v:int tree | leaf v]
-_2138:[v:int tree | ∃_x8, (root _x8 _2135 ∧ lch _x8 _2136 ∧ rch _x8 _2137 ∧ v == _x8)]
-_x35:[v:int tree | ∃_x35, (root _x35 _x5 ∧ lch _x35 _2134 ∧ rch _x35 _2138 ∧ v == _x35)] 
- ⊢ let (_6) = Leaf in
-let (_5) = Leaf in
-let (_x1) = int_gen () in
-let (_2138) = Node (_x1, _5, _6) in
-let (_4) = Leaf in
-let (_3) = Leaf in
-let (_x2) = s in
-let (_2134) = Node (_x2, _3, _4) in
-let (_x5) = subs _x2 in Node (_x5, _2134, _2138) : int tree :
-[v:int tree | ∃_x35, (root _x35 _x5 ∧ lch _x35 _2134 ∧ rch _x35 _2138 ∧ v == _x35)]
-" ]
-  node27 [ label = "_x2:[v:int | v == s]
-_x5:[v:int | v == (_x2 - 1)]
-_x2:[v:int | v == s]
-_2356:[v:int tree | leaf v]
-_2357:[v:int tree | leaf v]
-_2358:[v:int tree | ∃_x7, (root _x7 _x2 ∧ lch _x7 _2356 ∧ rch _x7 _2357 ∧ v == _x7)]
-_x2:[v:int | v == s]
-_2359:[v:int tree | leaf v]
-_2360:[v:int tree | leaf v]
-_2361:[v:int tree | ∃_x7, (root _x7 _x2 ∧ lch _x7 _2359 ∧ rch _x7 _2360 ∧ v == _x7)]
-_x36:[v:int tree | ∃_x36, (root _x36 _x5 ∧ lch _x36 _2358 ∧ rch _x36 _2361 ∧ v == _x36)] 
- ⊢ let (_4) = Leaf in
-let (_3) = Leaf in
-let (_x2) = s in
-let (_2361) = Node (_x2, _3, _4) in
-let (_2358) = Node (_x2, _3, _4) in
-let (_x5) = subs _x2 in Node (_x5, _2358, _2361) : int tree :
-[v:int tree | ∃_x36, (root _x36 _x5 ∧ lch _x36 _2358 ∧ rch _x36 _2361 ∧ v == _x36)]
-" ]
-
-  node0 [ shape = box, color = green ]
-  node1 [ shape = box, color = red ]
-  node2 [ shape = box, color = blue ]
-  node2 -> node1
-  node2 -> node19
-  node3 -> node4
-  node4 [ shape = box, color = red ]
-  node5 [ shape = box, color = blue ]
-  node5 -> node20
-  node5 -> node6
-  node5 -> node3
-  node6 [ shape = box, color = red ]
-  node7 -> node8
-  node8 [ shape = box, color = red ]
-  node9 [ shape = box, color = blue ]
-  node9 -> node10
-  node9 -> node22
-  node9 -> node7
-  node10 [ shape = box, color = red ]
-  node11 -> node12
-  node11 -> node13
-  node12 -> node14
-  node13 [ shape = box, color = red ]
-  node14 [ shape = box, color = red ]
-  node15 [ shape = box, color = blue ]
-  node15 -> node16
-  node15 -> node24
-  node15 -> node17
-  node15 -> node11
-  node16 -> node12
-  node16 -> node18
-  node16 -> node25
-  node16 -> node27
-  node17 [ shape = box, color = red ]
-  node18 [ shape = box, color = red ]
-  node19 [ shape = box, color = red ]
-  node20 -> node21
-  node21 [ shape = box, color = red ]
-  node22 -> node23
-  node23 [ shape = box, color = red ]
-  node24 -> node26
-  node24 -> node25
-  node25 -> node27
-  node26 [ shape = box, color = red ]
-  node27 [ shape = box, color = red ]
-}
-Type: int
-digraph poset {
-  label = "Partially Ordered Set"
-  size = "8.270000,11.690000"
-  ratio = 0.900000
-  rotate = 0.000000
-  center = 1
-
-  edge [ dir = back ]
-
-  node0 [ label = "_x2:[v:int | v == s]
-_x5:[v:int | v == (_x2 - 1)]
-_x11:[v:int | v == (_x5 - 1)] 
- ⊢ let (_x2) = s in let (_x5) = subs _x2 in subs _x5 : int :
-[v:int | v == (_x5 - 1)]
-" ]
-  node1 [ label = "_x2:[v:int | v == s]
-_x5:[v:int | v == (_x2 - 1)] 
- ⊢ let (_x2) = s in subs _x2 : int :
-[v:int | v == (_x2 - 1)]
-" ]
-  node2 [ label = "_x1:[v:int | true] 
- ⊢ int_gen () : int :
-[v:int | true]
-" ]
-  node3 [ label = "_x2:[v:int | v == s] 
- ⊢ s : int :
-[v:int | v == s]
-" ]
-
-  node0 [ shape = box, color = red ]
-  node1 [ shape = box, color = red ]
-  node2 [ shape = box, color = blue ]
-  node2 -> node0
-  node2 -> node1
-  node2 -> node3
-  node3 [ shape = box, color = red ]
-}
 Path Specific Collection:
-pathcond_0:[v:unit | ∃x_2, ((x_2 <=> s == 0) ∧ (¬x_2 <=> s > 0) ∧ x_2)]
-New Blocks:
-Old Blocks:
-pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) ∧ (¬x_2 <=> s > 0) ∧ ¬x_2)]
-New Blocks:
-Type: int tree
-digraph poset {
-  label = "Partially Ordered Set"
-  size = "8.270000,11.690000"
-  ratio = 0.900000
-  rotate = 0.000000
-  center = 1
-
-  edge [ dir = back ]
-
-  node0 [ label = "_x1:[v:int | true]
+In Path:
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+Cost: 5
+Type: Ty_int
 _x2:[v:int | v == s]
-_48136:[v:int | v == (_x2 - 1)]
-pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) ∧ (¬x_2 <=> s > 0) ∧ ¬x_2)]
-_48137:[v:int tree | ∃s_5, (0 <= s_5 ∧ s_5 >= 0 ∧ s_5 < s ∧ s_5 == _48136 ∧ (∃_x37, (depth _x37 s_5 ∧ complete _x37 ∧ v == _x37)))]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x7:[v:int | v == (_x2 - 1)] 
+ ⊢ _x7 as let (_x2) = s in subs _x2 : int :
+[v:int | v == (_x2 - 1)]
+
+Cost: 13
+Type: Ty_int
 _x2:[v:int | v == s]
-_48138:[v:int | v == (_x2 - 1)]
-pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) ∧ (¬x_2 <=> s > 0) ∧ ¬x_2)]
-_48139:[v:int tree | ∃s_5, (0 <= s_5 ∧ s_5 >= 0 ∧ s_5 < s ∧ s_5 == _48138 ∧ (∃_x37, (depth _x37 s_5 ∧ complete _x37 ∧ v == _x37)))]
-_x3167:[v:int tree | ∃_x3167, (root _x3167 _x1 ∧ lch _x3167 _48137 ∧ rch _x3167 _48139 ∧ v == _x3167)] 
- ⊢ let (_x2) = s in
-let (_x5) = subs _x2 in
-let (_48139) = complete_tree_gen _x5 in
-let (_48137) = complete_tree_gen _x5 in
-let (_x1) = int_gen () in Node (_x1, _48137, _48139) : int tree :
-[v:int tree | ∃_x3167, (root _x3167 _x1 ∧ lch _x3167 _48137 ∧ rch _x3167 _48139 ∧ v == _x3167)]
-" ]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x7:[v:int | v == (_x2 - 1)]
+_x10:[v:int | v == (_x7 - 1)]
+_x14:[v:int | v == (_x10 - 1)] 
+ ⊢ _x14 as let (_x2) = s in let (_x7) = subs _x2 in let (_x10) = subs _x7 in subs _x10 : int :
+[v:int | v == (_x10 - 1)]
 
-  node0 [ shape = box, color = green ]
-}
-Old Blocks:
-Type: int tree
-digraph poset {
-  label = "Partially Ordered Set"
-  size = "8.270000,11.690000"
-  ratio = 0.900000
-  rotate = 0.000000
-  center = 1
+Type: (Ty_constructor(tree(Ty_int)))
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x7:[v:int | v == (_x2 - 1)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x15:[v:int tree | ∃_x15, (root _x15 _x7 && lch _x15 _x0 && rch _x15 _x0 && v == _x15)] 
+ ⊢ _x15 as let (_x0) = Leaf in
+let (_x2) = s in let (_x7) = subs _x2 in Node (_x7, _x0, _x0) : int tree :
+[v:int tree | ∃_x15, (root _x15 _x7 && lch _x15 _x0 && rch _x15 _x0 && v == _x15)]
 
-  edge [ dir = back ]
+Cost: 15
+Type: (Ty_constructor(tree(Ty_int)))
+_3:[v:int | true]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_10:[v:int | v == (_x2 - 1)]
+_11:[v:int tree | ∃s_4, (0 <= s_4 && s_4 >= 0 && s_4 < s && s_4 == _10 && (∃_x9, (depth _x9 s_4 && complete _x9 && v == _x9)))]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x19:[v:int tree | ∃_x19, (root _x19 _3 && lch _x19 _11 && rch _x19 _x0 && v == _x19)] 
+ ⊢ _x19 as let (_x0) = Leaf in
+let (_x2) = s in
+let (_x7) = subs _x2 in
+let (_11) = complete_tree_gen _x7 in
+let (_3) = int_gen () in Node (_3, _11, _x0) : int tree :
+[v:int tree | ∃_x19, (root _x19 _3 && lch _x19 _11 && rch _x19 _x0 && v == _x19)]
 
-  node0 [ label = "_x2:[v:int | v == s]
-_x5:[v:int | v == (_x2 - 1)]
-pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) ∧ (¬x_2 <=> s > 0) ∧ ¬x_2)]
-_x37:[v:int tree | ∃s_5, (0 <= s_5 ∧ s_5 >= 0 ∧ s_5 < s ∧ s_5 == _x5 ∧ (∃_x37, (depth _x37 s_5 ∧ complete _x37 ∧ v == _x37)))] 
- ⊢ let (_x2) = s in let (_x5) = subs _x2 in complete_tree_gen _x5 : int tree :
-[v:int tree | ∃s_5, (0 <= s_5 ∧ s_5 >= 0 ∧ s_5 < s ∧ s_5 == _x5 ∧ (∃_x37, (depth _x37 s_5 ∧ complete _x37 ∧ v == _x37)))]
-" ]
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_8:[v:int | v == (_x2 - 1)]
+_9:[v:int tree | ∃s_4, (0 <= s_4 && s_4 >= 0 && s_4 < s && s_4 == _8 && (∃_x9, (depth _x9 s_4 && complete _x9 && v == _x9)))]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x18:[v:int tree | ∃_x18, (root _x18 _x2 && lch _x18 _9 && rch _x18 _x0 && v == _x18)] 
+ ⊢ _x18 as let (_x0) = Leaf in
+let (_x2) = s in
+let (_x7) = subs _x2 in
+let (_9) = complete_tree_gen _x7 in Node (_x2, _9, _x0) : int tree :
+[v:int tree | ∃_x18, (root _x18 _x2 && lch _x18 _9 && rch _x18 _x0 && v == _x18)]
 
-  node0 [ shape = box, color = green ]
-}
+_3:[v:int | true]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_6:[v:int | v == (_x2 - 1)]
+_7:[v:int tree | ∃s_4, (0 <= s_4 && s_4 >= 0 && s_4 < s && s_4 == _6 && (∃_x9, (depth _x9 s_4 && complete _x9 && v == _x9)))]
+_x17:[v:int tree | ∃_x17, (root _x17 _3 && lch _x17 _x0 && rch _x17 _7 && v == _x17)] 
+ ⊢ _x17 as let (_x2) = s in
+let (_x7) = subs _x2 in
+let (_7) = complete_tree_gen _x7 in
+let (_x0) = Leaf in let (_3) = int_gen () in Node (_3, _x0, _7) : int tree :
+[v:int tree | ∃_x17, (root _x17 _3 && lch _x17 _x0 && rch _x17 _7 && v == _x17)]
+
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_4:[v:int | v == (_x2 - 1)]
+_5:[v:int tree | ∃s_4, (0 <= s_4 && s_4 >= 0 && s_4 < s && s_4 == _4 && (∃_x9, (depth _x9 s_4 && complete _x9 && v == _x9)))]
+_x16:[v:int tree | ∃_x16, (root _x16 _x2 && lch _x16 _x0 && rch _x16 _5 && v == _x16)] 
+ ⊢ _x16 as let (_x2) = s in
+let (_x7) = subs _x2 in
+let (_5) = complete_tree_gen _x7 in let (_x0) = Leaf in Node (_x2, _x0, _5) : int tree :
+[v:int tree | ∃_x16, (root _x16 _x2 && lch _x16 _x0 && rch _x16 _5 && v == _x16)]
+
+Cost: 16
+Type: (Ty_constructor(tree(Ty_int)))
+_3:[v:int | true]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_23:[v:int tree | ∃_x11, (root _x11 _x2 && lch _x11 _x0 && rch _x11 _x0 && v == _x11)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x27:[v:int tree | ∃_x27, (root _x27 _3 && lch _x27 _23 && rch _x27 _x0 && v == _x27)] 
+ ⊢ _x27 as let (_x0) = Leaf in
+let (_x2) = s in
+let (_23) = Node (_x2, _x0, _x0) in
+let (_3) = int_gen () in Node (_3, _23, _x0) : int tree :
+[v:int tree | ∃_x27, (root _x27 _3 && lch _x27 _23 && rch _x27 _x0 && v == _x27)]
+
+_3:[v:int | true]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_21:[v:int | true]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_22:[v:int tree | ∃_x12, (root _x12 _21 && lch _x12 _x0 && rch _x12 _x0 && v == _x12)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x26:[v:int tree | ∃_x26, (root _x26 _3 && lch _x26 _22 && rch _x26 _x0 && v == _x26)] 
+ ⊢ _x26 as let (_x0) = Leaf in
+let (_3) = int_gen () in
+let (_22) = Node (_3, _x0, _x0) in Node (_3, _22, _x0) : int tree :
+[v:int tree | ∃_x26, (root _x26 _3 && lch _x26 _22 && rch _x26 _x0 && v == _x26)]
+
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_20:[v:int tree | ∃_x11, (root _x11 _x2 && lch _x11 _x0 && rch _x11 _x0 && v == _x11)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x25:[v:int tree | ∃_x25, (root _x25 _x2 && lch _x25 _20 && rch _x25 _x0 && v == _x25)] 
+ ⊢ _x25 as let (_x0) = Leaf in
+let (_x2) = s in let (_20) = Node (_x2, _x0, _x0) in Node (_x2, _20, _x0) : int tree :
+[v:int tree | ∃_x25, (root _x25 _x2 && lch _x25 _20 && rch _x25 _x0 && v == _x25)]
+
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_18:[v:int | true]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_19:[v:int tree | ∃_x12, (root _x12 _18 && lch _x12 _x0 && rch _x12 _x0 && v == _x12)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x24:[v:int tree | ∃_x24, (root _x24 _x2 && lch _x24 _19 && rch _x24 _x0 && v == _x24)] 
+ ⊢ _x24 as let (_x0) = Leaf in
+let (_3) = int_gen () in
+let (_19) = Node (_3, _x0, _x0) in let (_x2) = s in Node (_x2, _19, _x0) : int tree :
+[v:int tree | ∃_x24, (root _x24 _x2 && lch _x24 _19 && rch _x24 _x0 && v == _x24)]
+
+_3:[v:int | true]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_17:[v:int tree | ∃_x11, (root _x11 _x2 && lch _x11 _x0 && rch _x11 _x0 && v == _x11)]
+_x23:[v:int tree | ∃_x23, (root _x23 _3 && lch _x23 _x0 && rch _x23 _17 && v == _x23)] 
+ ⊢ _x23 as let (_x0) = Leaf in
+let (_x2) = s in
+let (_17) = Node (_x2, _x0, _x0) in
+let (_3) = int_gen () in Node (_3, _x0, _17) : int tree :
+[v:int tree | ∃_x23, (root _x23 _3 && lch _x23 _x0 && rch _x23 _17 && v == _x23)]
+
+_3:[v:int | true]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_15:[v:int | true]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_16:[v:int tree | ∃_x12, (root _x12 _15 && lch _x12 _x0 && rch _x12 _x0 && v == _x12)]
+_x22:[v:int tree | ∃_x22, (root _x22 _3 && lch _x22 _x0 && rch _x22 _16 && v == _x22)] 
+ ⊢ _x22 as let (_x0) = Leaf in
+let (_3) = int_gen () in
+let (_16) = Node (_3, _x0, _x0) in Node (_3, _x0, _16) : int tree :
+[v:int tree | ∃_x22, (root _x22 _3 && lch _x22 _x0 && rch _x22 _16 && v == _x22)]
+
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_14:[v:int tree | ∃_x11, (root _x11 _x2 && lch _x11 _x0 && rch _x11 _x0 && v == _x11)]
+_x21:[v:int tree | ∃_x21, (root _x21 _x2 && lch _x21 _x0 && rch _x21 _14 && v == _x21)] 
+ ⊢ _x21 as let (_x0) = Leaf in
+let (_x2) = s in let (_14) = Node (_x2, _x0, _x0) in Node (_x2, _x0, _14) : int tree :
+[v:int tree | ∃_x21, (root _x21 _x2 && lch _x21 _x0 && rch _x21 _14 && v == _x21)]
+
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_12:[v:int | true]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_13:[v:int tree | ∃_x12, (root _x12 _12 && lch _x12 _x0 && rch _x12 _x0 && v == _x12)]
+_x20:[v:int tree | ∃_x20, (root _x20 _x2 && lch _x20 _x0 && rch _x20 _13 && v == _x20)] 
+ ⊢ _x20 as let (_x0) = Leaf in
+let (_3) = int_gen () in
+let (_13) = Node (_3, _x0, _x0) in let (_x2) = s in Node (_x2, _x0, _13) : int tree :
+[v:int tree | ∃_x20, (root _x20 _x2 && lch _x20 _x0 && rch _x20 _13 && v == _x20)]
+
+Cost: 20
+Type: (Ty_constructor(tree(Ty_int)))
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x7:[v:int | v == (_x2 - 1)]
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_41:[v:int tree | ∃_x11, (root _x11 _x2 && lch _x11 _x0 && rch _x11 _x0 && v == _x11)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x40:[v:int tree | ∃_x40, (root _x40 _x7 && lch _x40 _41 && rch _x40 _x0 && v == _x40)] 
+ ⊢ _x40 as let (_x0) = Leaf in
+let (_x2) = s in
+let (_41) = Node (_x2, _x0, _x0) in
+let (_x7) = subs _x2 in Node (_x7, _41, _x0) : int tree :
+[v:int tree | ∃_x40, (root _x40 _x7 && lch _x40 _41 && rch _x40 _x0 && v == _x40)]
+
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x7:[v:int | v == (_x2 - 1)]
+_39:[v:int | true]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_40:[v:int tree | ∃_x12, (root _x12 _39 && lch _x12 _x0 && rch _x12 _x0 && v == _x12)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x39:[v:int tree | ∃_x39, (root _x39 _x7 && lch _x39 _40 && rch _x39 _x0 && v == _x39)] 
+ ⊢ _x39 as let (_x0) = Leaf in
+let (_3) = int_gen () in
+let (_40) = Node (_3, _x0, _x0) in
+let (_x2) = s in let (_x7) = subs _x2 in Node (_x7, _40, _x0) : int tree :
+[v:int tree | ∃_x39, (root _x39 _x7 && lch _x39 _40 && rch _x39 _x0 && v == _x39)]
+
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x7:[v:int | v == (_x2 - 1)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_38:[v:int tree | ∃_x11, (root _x11 _x2 && lch _x11 _x0 && rch _x11 _x0 && v == _x11)]
+_x38:[v:int tree | ∃_x38, (root _x38 _x7 && lch _x38 _x0 && rch _x38 _38 && v == _x38)] 
+ ⊢ _x38 as let (_x0) = Leaf in
+let (_x2) = s in
+let (_38) = Node (_x2, _x0, _x0) in
+let (_x7) = subs _x2 in Node (_x7, _x0, _38) : int tree :
+[v:int tree | ∃_x38, (root _x38 _x7 && lch _x38 _x0 && rch _x38 _38 && v == _x38)]
+
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x7:[v:int | v == (_x2 - 1)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_36:[v:int | true]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_37:[v:int tree | ∃_x12, (root _x12 _36 && lch _x12 _x0 && rch _x12 _x0 && v == _x12)]
+_x37:[v:int tree | ∃_x37, (root _x37 _x7 && lch _x37 _x0 && rch _x37 _37 && v == _x37)] 
+ ⊢ _x37 as let (_x0) = Leaf in
+let (_3) = int_gen () in
+let (_37) = Node (_3, _x0, _x0) in
+let (_x2) = s in let (_x7) = subs _x2 in Node (_x7, _x0, _37) : int tree :
+[v:int tree | ∃_x37, (root _x37 _x7 && lch _x37 _x0 && rch _x37 _37 && v == _x37)]
+
+_3:[v:int | true]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_34:[v:int | v == (_x2 - 1)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_35:[v:int tree | ∃_x15, (root _x15 _34 && lch _x15 _x0 && rch _x15 _x0 && v == _x15)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x36:[v:int tree | ∃_x36, (root _x36 _3 && lch _x36 _35 && rch _x36 _x0 && v == _x36)] 
+ ⊢ _x36 as let (_x0) = Leaf in
+let (_x2) = s in
+let (_x7) = subs _x2 in
+let (_35) = Node (_x7, _x0, _x0) in
+let (_3) = int_gen () in Node (_3, _35, _x0) : int tree :
+[v:int tree | ∃_x36, (root _x36 _3 && lch _x36 _35 && rch _x36 _x0 && v == _x36)]
+
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_32:[v:int | v == (_x2 - 1)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_33:[v:int tree | ∃_x15, (root _x15 _32 && lch _x15 _x0 && rch _x15 _x0 && v == _x15)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x35:[v:int tree | ∃_x35, (root _x35 _x2 && lch _x35 _33 && rch _x35 _x0 && v == _x35)] 
+ ⊢ _x35 as let (_x0) = Leaf in
+let (_x2) = s in
+let (_x7) = subs _x2 in
+let (_33) = Node (_x7, _x0, _x0) in Node (_x2, _33, _x0) : int tree :
+[v:int tree | ∃_x35, (root _x35 _x2 && lch _x35 _33 && rch _x35 _x0 && v == _x35)]
+
+_3:[v:int | true]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_30:[v:int | v == (_x2 - 1)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_31:[v:int tree | ∃_x15, (root _x15 _30 && lch _x15 _x0 && rch _x15 _x0 && v == _x15)]
+_x34:[v:int tree | ∃_x34, (root _x34 _3 && lch _x34 _x0 && rch _x34 _31 && v == _x34)] 
+ ⊢ _x34 as let (_x0) = Leaf in
+let (_x2) = s in
+let (_x7) = subs _x2 in
+let (_31) = Node (_x7, _x0, _x0) in
+let (_3) = int_gen () in Node (_3, _x0, _31) : int tree :
+[v:int tree | ∃_x34, (root _x34 _3 && lch _x34 _x0 && rch _x34 _31 && v == _x34)]
+
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_28:[v:int | v == (_x2 - 1)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_29:[v:int tree | ∃_x15, (root _x15 _28 && lch _x15 _x0 && rch _x15 _x0 && v == _x15)]
+_x33:[v:int tree | ∃_x33, (root _x33 _x2 && lch _x33 _x0 && rch _x33 _29 && v == _x33)] 
+ ⊢ _x33 as let (_x0) = Leaf in
+let (_x2) = s in
+let (_x7) = subs _x2 in
+let (_29) = Node (_x7, _x0, _x0) in Node (_x2, _x0, _29) : int tree :
+[v:int tree | ∃_x33, (root _x33 _x2 && lch _x33 _x0 && rch _x33 _29 && v == _x33)]
+
+Cost: 2
+Type: (Ty_constructor(tree(Ty_int)))
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)] 
+ ⊢ _x0 as Leaf : int tree :
+[v:int tree | leaf v]
+
+Cost: 9
+Type: Ty_int
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x7:[v:int | v == (_x2 - 1)]
+_x10:[v:int | v == (_x7 - 1)] 
+ ⊢ _x10 as let (_x2) = s in let (_x7) = subs _x2 in subs _x7 : int :
+[v:int | v == (_x7 - 1)]
+
+Type: (Ty_constructor(tree(Ty_int)))
+_3:[v:int | true]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x12:[v:int tree | ∃_x12, (root _x12 _3 && lch _x12 _x0 && rch _x12 _x0 && v == _x12)] 
+ ⊢ _x12 as let (_x0) = Leaf in let (_3) = int_gen () in Node (_3, _x0, _x0) : int tree :
+[v:int tree | ∃_x12, (root _x12 _3 && lch _x12 _x0 && rch _x12 _x0 && v == _x12)]
+
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x11:[v:int tree | ∃_x11, (root _x11 _x2 && lch _x11 _x0 && rch _x11 _x0 && v == _x11)] 
+ ⊢ _x11 as let (_x0) = Leaf in let (_x2) = s in Node (_x2, _x0, _x0) : int tree :
+[v:int tree | ∃_x11, (root _x11 _x2 && lch _x11 _x0 && rch _x11 _x0 && v == _x11)]
+
+Cost: 8
+Type: (Ty_constructor(tree(Ty_int)))
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x7:[v:int | v == (_x2 - 1)]
+_x9:[v:int tree | ∃s_4, (0 <= s_4 && s_4 >= 0 && s_4 < s && s_4 == _x7 && (∃_x9, (depth _x9 s_4 && complete _x9 && v == _x9)))] 
+ ⊢ _x9 as let (_x2) = s in let (_x7) = subs _x2 in complete_tree_gen _x7 : int tree :
+[v:int tree | ∃s_4, (0 <= s_4 && s_4 >= 0 && s_4 < s && s_4 == _x7 && (∃_x9, (depth _x9 s_4 && complete _x9 && v == _x9)))]
+
+Cost: 17
+Type: Ty_int
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x7:[v:int | v == (_x2 - 1)]
+_x10:[v:int | v == (_x7 - 1)]
+_x14:[v:int | v == (_x10 - 1)]
+_x29:[v:int | v == (_x14 - 1)] 
+ ⊢ _x29 as let (_x2) = s in
+let (_x7) = subs _x2 in
+let (_x10) = subs _x7 in let (_x14) = subs _x10 in subs _x14 : int :
+[v:int | v == (_x14 - 1)]
+
+Type: (Ty_constructor(tree(Ty_int)))
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x7:[v:int | v == (_x2 - 1)]
+_x10:[v:int | v == (_x7 - 1)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x30:[v:int tree | ∃_x30, (root _x30 _x10 && lch _x30 _x0 && rch _x30 _x0 && v == _x30)] 
+ ⊢ _x30 as let (_x0) = Leaf in
+let (_x2) = s in
+let (_x7) = subs _x2 in let (_x10) = subs _x7 in Node (_x10, _x0, _x0) : int tree :
+[v:int tree | ∃_x30, (root _x30 _x10 && lch _x30 _x0 && rch _x30 _x0 && v == _x30)]
+
+Cost: 1
+Type: Ty_int
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)] 
+ ⊢ _x2 as s : int :
+[v:int | v == s]
+
+_3:[v:int | true]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)] 
+ ⊢ _3 as int_gen () : int :
+[v:int | true]
+
+Cost: 19
+Type: (Ty_constructor(tree(Ty_int)))
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x7:[v:int | v == (_x2 - 1)]
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_26:[v:int | v == (_x2 - 1)]
+_27:[v:int tree | ∃s_4, (0 <= s_4 && s_4 >= 0 && s_4 < s && s_4 == _26 && (∃_x9, (depth _x9 s_4 && complete _x9 && v == _x9)))]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x32:[v:int tree | ∃_x32, (root _x32 _x7 && lch _x32 _27 && rch _x32 _x0 && v == _x32)] 
+ ⊢ _x32 as let (_x0) = Leaf in
+let (_x2) = s in
+let (_x7) = subs _x2 in
+let (_27) = complete_tree_gen _x7 in Node (_x7, _27, _x0) : int tree :
+[v:int tree | ∃_x32, (root _x32 _x7 && lch _x32 _27 && rch _x32 _x0 && v == _x32)]
+
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x7:[v:int | v == (_x2 - 1)]
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_x2:[v:int | v == s]
+pathcond_1:[v:unit | ∃x_2, ((x_2 <=> s == 0) && (not x_2 <=> s > 0) && not x_2)]
+_24:[v:int | v == (_x2 - 1)]
+_25:[v:int tree | ∃s_4, (0 <= s_4 && s_4 >= 0 && s_4 < s && s_4 == _24 && (∃_x9, (depth _x9 s_4 && complete _x9 && v == _x9)))]
+_x31:[v:int tree | ∃_x31, (root _x31 _x7 && lch _x31 _x0 && rch _x31 _25 && v == _x31)] 
+ ⊢ _x31 as let (_x2) = s in
+let (_x7) = subs _x2 in
+let (_25) = complete_tree_gen _x7 in let (_x0) = Leaf in Node (_x7, _x0, _25) : int tree :
+[v:int tree | ∃_x31, (root _x31 _x7 && lch _x31 _x0 && rch _x31 _25 && v == _x31)]
+

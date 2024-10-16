@@ -1,1 +1,1 @@
-[v:int tree | leaf v ∧ depth v s ∧ complete v]
+[v:int tree | leaf v && depth v s && complete v]

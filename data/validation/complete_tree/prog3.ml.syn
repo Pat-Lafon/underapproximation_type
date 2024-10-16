@@ -4,7 +4,7 @@ let rec complete_tree_gen = fun s ->
   | True -> Leaf
   | False ->
       let (_x2) = s in
-      let (_x5) = subs _x2 in
-      let (_48139) = complete_tree_gen _x5 in
-      let (_48137) = complete_tree_gen _x5 in
-      let (_x1) = int_gen () in Node (_x1, _48137, _48139)
+      let (_x7) = subs _x2 in
+      let (_49) = complete_tree_gen _x7 in
+      let (_47) = complete_tree_gen _x7 in
+      let (_3) = int_gen () in Node (_3, _47, _49)

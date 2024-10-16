@@ -16,8 +16,8 @@
     "collectfile": ".collect",
     "abd_templates": ["template_leaf"],
     "num_quantifier": 0,
-    "synth_bound": 3,
-    "synth_rlimit": 50000,
+    "synth_bound": 24,
+    "synth_rlimit": 1000000,
     "comp_path": "components.txt",
     "prim_path": {
         "data_type_decls": "data/predefined/data_type_decls.ml",

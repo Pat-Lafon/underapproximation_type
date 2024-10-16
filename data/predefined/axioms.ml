@@ -173,11 +173,24 @@ let[@axiom] tree_heap_root_rt_rch_root (l : int tree) (l1 : int tree) (x : int)
 
 (** complete *)
 
+let[@axiom] tree_complete_leaf (l : int tree) = (leaf l) #==> (complete l)
+let[@axiom] tree_depth_leaf (l : int tree) = (leaf l) #==> (depth l 0)
+
 let[@axiom] tree_complete_lch_complete (l : int tree) (l1 : int tree) =
   (lch l l1 && complete l) #==> (complete l1)
 
 let[@axiom] tree_complete_rch_complete (l : int tree) (l1 : int tree) =
   (rch l l1 && complete l) #==> (complete l1)
+
+let[@axiom] tree_complete_node (l : int tree) (l1 : int tree) (l2 : int tree)
+    (n : int) =
+  (complete l1 && complete l2 && depth l1 n && depth l2 n && lch l l1
+ && rch l l2)
+  #==> (complete l)
+
+let[@axiom] tree_depth_node (l : int tree) (l1 : int tree) (l2 : int tree)
+    (n : int) =
+  (depth l1 n && depth l2 n && lch l l1 && rch l l2) #==> (depth l (n + 1))
 
 let[@axiom] tree_complete_lch_depth_minus_1 (l : int tree) (l1 : int tree)
     (n : int) =
@@ -319,7 +332,7 @@ let[@axiom] leftisthp_leftisthp_depth_ch_leftisthp_depth_minus_1
 
 (** basic *)
 
-let[@axiom] rbtree_leaf_is_leaf (l : int rbtree) (l2: int rbtree) =
+let[@axiom] rbtree_leaf_is_leaf (l : int rbtree) (l2 : int rbtree) =
   (rb_leaf l && rb_leaf l2) #==> (l == l2)
 
 let[@axiom] rbtree_rb_leaf_no_rb_root (l : int rbtree) (x : int) =
@@ -414,7 +427,7 @@ let[@axiom] num_black_root_black_0_rt_leaf (v : int rbtree) (rt : int rbtree) =
   (no_red_red v && num_black v 0 && rb_rch v rt) #==> (rb_leaf rt)
 
 (* let[@axiom] num_black_root_red (v : int_rbtree) =
-  (num_black v 0 && rb_root_color v true) #==>  *)
+   (num_black v 0 && rb_root_color v true) #==> *)
 
 let[@axiom] num_black_root_black_0_rt_red (v : int rbtree) (rt : int rbtree) =
   (num_black v 0 && rb_rch v rt) #==> (rb_root_color v true)
