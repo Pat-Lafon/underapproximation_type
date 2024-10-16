@@ -16,3 +16,6 @@ _build/
 *.ctf
 *.vo*
 *.d
+
+
+test.v
