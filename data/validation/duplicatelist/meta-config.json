@@ -16,7 +16,7 @@
     "collectfile": ".collect",
     "abd_templates": ["template_emp"],
     "num_quantifier": 0,
-    "synth_bound": 3,
+    "synth_bound": 30,
     "synth_rlimit": 100000,
     "comp_path": "components.txt",
     "prim_path": {

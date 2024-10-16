@@ -47,6 +47,9 @@ Hint Constructors num_black: core.
 Hint Constructors no_red_red: core.
 Hint Unfold not: core.
 
+Lemma rbtree_leaf_is_leaf : forall l, (forall l2, ((rb_leaf l /\ rb_leaf l2) -> l = l2)). Proof.
+  intros. simp. my_inversion H. my_inversion H0.
+ Qed. Hint Resolve rbtree_leaf_is_leaf: core.
 
 Lemma rbtree_rb_leaf_no_rb_root : forall l, (forall x, (rb_leaf l -> ~rb_root l x)).
 Proof.

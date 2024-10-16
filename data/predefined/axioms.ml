@@ -75,6 +75,13 @@ let[@axiom] list_tl_unique (l : int list) (l1 : int list) =
 let[@axiom] list_hd_unique (l : int list) (l1 : int list) (x : int) =
   (tl l l1 && uniq l && hd l x) #==> (not (list_mem l1 x))
 
+let[@axiom] list_unique_hd_tl (l : int list) ((l1 [@exists]) : int list)
+    ((x [@exists]) : int) =
+  (uniq l && not (emp l)) #==> (hd l x && tl l l1 && not (list_mem l1 x))
+
+let[@axiom] list_hd_tl_unique (l : int list) (l1 : int list) (x : int) =
+  (tl l l1 && uniq l1 && hd l x && not (list_mem l1 x)) #==> (uniq l)
+
 (** int tree *)
 
 (** basic *)
@@ -312,6 +319,9 @@ let[@axiom] leftisthp_leftisthp_depth_ch_leftisthp_depth_minus_1
 
 (** basic *)
 
+let[@axiom] rbtree_leaf_is_leaf (l : int rbtree) (l2: int rbtree) =
+  (rb_leaf l && rb_leaf l2) #==> (l == l2)
+
 let[@axiom] rbtree_rb_leaf_no_rb_root (l : int rbtree) (x : int) =
   (rb_leaf l) #==> (not (rb_root l x))
 
@@ -402,6 +412,9 @@ let[@axiom] num_black_root_black_0_lt_leaf (v : int rbtree) (lt : int rbtree) =
 
 let[@axiom] num_black_root_black_0_rt_leaf (v : int rbtree) (rt : int rbtree) =
   (no_red_red v && num_black v 0 && rb_rch v rt) #==> (rb_leaf rt)
+
+(* let[@axiom] num_black_root_red (v : int_rbtree) =
+  (num_black v 0 && rb_root_color v true) #==>  *)
 
 let[@axiom] num_black_root_black_0_rt_red (v : int rbtree) (rt : int rbtree) =
   (num_black v 0 && rb_rch v rt) #==> (rb_root_color v true)

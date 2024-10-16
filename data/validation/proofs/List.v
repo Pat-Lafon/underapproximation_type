@@ -173,3 +173,19 @@ Lemma not_list_hd_unique : not (forall l, (forall l1, (forall x, ((tl l l1 /\ (u
     - unfold not. intro. my_inversion H2.
     - clear H. clear H1. my_inversion H0. unfold not. intro. my_inversion H.
  Qed. Hint Resolve list_hd_unique: core.
+
+Lemma list_hd_tl_unique : forall l, (forall l1, (forall x, ((tl l l1 /\ (uniq l1 /\ (hd l x /\ ~list_mem l1 x))) -> uniq l))). Proof.
+    intros. simp. my_inversion H; clear H. my_inversion H1.
+    - auto.
+    - constructor; auto.
+ Qed. Hint Resolve list_hd_tl_unique: core.
+
+ Lemma list_unique_hd_tl : forall l, (exists l1, (exists x, ((uniq l /\ ~emp l) -> (hd l x /\ (tl l l1 /\ ~list_mem l1 x))))). Proof.
+    intros. destruct l.
+    - repeat econstructor; destruct H; unfold not in H0; exfalso; apply H0; constructor. Unshelve. constructor. constructor.
+    - eexists. exists n. intro. split.
+        + auto. Unshelve. auto.
+        + split.
+            * auto.
+            * unfold not. intro. my_inversion H. my_inversion H1. my_inversion H0.
+  Qed. Hint Resolve list_unique_hd_tl: core.

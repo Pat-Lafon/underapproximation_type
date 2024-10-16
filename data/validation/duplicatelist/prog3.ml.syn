@@ -6,5 +6,5 @@ let rec duplicate_list_gen = fun s ->
     | False ->
         let (_x1) = s in
         let (_x6) = subs _x1 in
-        let (_x37) = duplicate_list_gen _x6 in
-        let (_x2) = x in let (_785) = _x37 _x2 in Cons (_x2, _785)
+        let (_x27) = duplicate_list_gen _x6 in
+        let (_x2) = x in let (_25) = _x27 _x2 in Cons (_x2, _25)
