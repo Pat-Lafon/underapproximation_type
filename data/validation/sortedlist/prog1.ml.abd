@@ -1,1 +1,1 @@
-[v:int list | emp v ∧ len v s ∧ sorted v ∧ (∀u, (hd v u => x <= u))]
+[v:int list | emp v && len v s && sorted v && (∀u, (hd v u => x <= u))]

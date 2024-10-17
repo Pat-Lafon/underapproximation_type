@@ -3,11 +3,11 @@ let rec sized_list_gen = fun s ->
   match x_3 with
   | True -> Nil
   | False ->
-      let (_x57) = bool_gen () in
-      (match _x57 with
+      let (_x23) = bool_gen () in
+      (match _x23 with
        | True ->
            let (_x2) = s in
-           let (_x6) = subs _x2 in
-           let (_462) = sized_list_gen _x6 in
-           let (_x1) = int_gen () in Cons (_x1, _462)
+           let (_x8) = subs _x2 in
+           let (_22) = sized_list_gen _x8 in
+           let (_11) = int_gen () in Cons (_11, _22)
        | False -> Nil)

@@ -1,22 +1,22 @@
 Path Specific Collection:
 In Path:
-pathcond_0:[v:unit | ∃x_7, ((x_7 <=> s == 0) ∧ (¬x_7 <=> s > 0) ∧ x_7)]
+pathcond_0:[v:unit | ∃x_7, ((x_7 <=> s == 0) && (not x_7 <=> s > 0) && x_7)]
 Cost: 1
 Type: Ty_int
 _x2:[v:int | v == x]
-pathcond_0:[v:unit | ∃x_7, ((x_7 <=> s == 0) ∧ (¬x_7 <=> s > 0) ∧ x_7)] 
+pathcond_0:[v:unit | ∃x_7, ((x_7 <=> s == 0) && (not x_7 <=> s > 0) && x_7)] 
  ⊢ _x2 as x : int :
 [v:int | v == x]
 
 _x1:[v:int | v == s]
-pathcond_0:[v:unit | ∃x_7, ((x_7 <=> s == 0) ∧ (¬x_7 <=> s > 0) ∧ x_7)] 
+pathcond_0:[v:unit | ∃x_7, ((x_7 <=> s == 0) && (not x_7 <=> s > 0) && x_7)] 
  ⊢ _x1 as s : int :
 [v:int | v == s]
 
 Cost: 2
 Type: (Ty_constructor(list(Ty_int)))
 _x0:[v:int list | emp v]
-pathcond_0:[v:unit | ∃x_7, ((x_7 <=> s == 0) ∧ (¬x_7 <=> s > 0) ∧ x_7)] 
+pathcond_0:[v:unit | ∃x_7, ((x_7 <=> s == 0) && (not x_7 <=> s > 0) && x_7)] 
  ⊢ _x0 as Nil : int list :
 [v:int list | emp v]
 
