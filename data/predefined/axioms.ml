@@ -115,9 +115,11 @@ let[@axiom] tree_leaf_depth_0 (l : int tree) (n : int) =
 let[@axiom] tree_positive_depth_is_not_leaf (l : int tree) (n : int) =
   (depth l n && n > 0) #==> (not (leaf l))
 
-let[@axiom] tree_ch_depth_ex (l : int tree) (l1 : int tree) (n : int)
-    ((n1 [@exists]) : int) =
-  ((lch l l1 || rch l l1) && depth l n) #==> (depth l1 n1)
+let[@axiom] tree_depth_exists (l : int tree) ((n [@exists]) : int) = depth l n
+
+(* let[@axiom] tree_ch_depth_ex (l : int tree) (l1 : int tree) (n : int)
+     ((n1 [@exists]) : int) =
+   ((lch l l1 || rch l l1) && depth l n) #==> (depth l1 n1) *)
 
 let[@axiom] tree_ch_depth_minus_1 (l : int tree) (l1 : int tree) (n : int)
     (n1 : int) =
@@ -479,7 +481,7 @@ let[@axiom] stlc_num_arr_geq_0 (tau : stlc_ty) (n : int) =
 
 let[@axiom] stlc_num_arr_arr (tau : stlc_ty) (tau_body : stlc_ty) (m : int) =
   (stlc_ty_arr2 tau tau_body)
-  #==> (iff (num_arr tau_body (m - 1)) (num_arr tau m))
+  #==> (iff (num_arr tau_body m) (num_arr tau (m + 1)))
 
 let[@axiom] stlc_const_num_app_0 (v : stlc_term) (n : int) =
   (is_const v && num_app v n) #==> (n == 0)
@@ -567,7 +569,8 @@ let[@axiom] stlc_abd_typing_rev (gamma : stlc_tyctx) (v : stlc_term)
     (tau : stlc_ty) (ty : stlc_ty) (body : stlc_term) (body_ty : stlc_ty)
     (gamma1 : stlc_tyctx) =
   (typing gamma v tau && stlc_abs_ty v ty && stlc_abs_body v body
- && stlc_tyctx_hd gamma1 ty && stlc_tyctx_tl gamma1 gamma)
+ && stlc_ty_arr1 tau ty && stlc_ty_arr2 tau body_ty && stlc_tyctx_hd gamma1 ty
+ && stlc_tyctx_tl gamma1 gamma)
   #==> (typing gamma1 body body_ty)
 
 let[@axiom] stlc_const_typing_nat (gamma : stlc_tyctx) (v : stlc_term)
