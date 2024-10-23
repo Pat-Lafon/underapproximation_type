@@ -18,6 +18,7 @@
     "abd_templates": ["template_no_app", "template_is_const", "template_is_var", "template_is_abs", "template_is_app"],
     "abd_templates_back": ["template_no_app"],
     "num_quantifier": 0,
+    "abduce_rlimit": 3000000,
     "synth_bound": 1,
     "synth_rlimit": 100000,
     "comp_path": "components.txt",

@@ -16,6 +16,7 @@
     "collectfile": ".collect",
     "abd_templates": ["template_leaf"],
     "num_quantifier": 0,
+    "abduce_rlimit": 3000000,
     "synth_bound": 24,
     "synth_rlimit": 1000000,
     "comp_path": "components.txt",
