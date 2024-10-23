@@ -9,10 +9,7 @@ let rec rbtree_gen = fun inv ->
            | False ->
                let (x_38) = bool_gen () in
                (match x_38 with
-                | True ->
-                    let (_x7) = h in
-                    let (_x35) = rbtree_gen _x7 in
-                    let (_80) = True in let (_x36) = _x35 _80 in _x36 _x7
+                | True -> Rbtleaf
                 | False ->
                     let (x_39) = Rbtleaf in
                     let (x_40) = int_gen () in
