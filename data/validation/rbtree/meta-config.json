@@ -5,7 +5,7 @@
         // "preprocess",
         // "ntyping",
         // "typing",
-        "queries",
+        // "queries",
         "result",
         "never-use"
     ],
@@ -22,9 +22,10 @@
         "template_red_root"
     ],
     "num_quantifier": 0,
-    "abduce_rlimit": 3000000,
+    "abduce_rlimit": 300000000,
     "synth_bound": 1,
-    "synth_rlimit": 250000000,
+    "synth_rlimit": 2000000,
+    "use_missing_coverage_file": true,
     "comp_path": "components.txt",
     "prim_path": {
         "data_type_decls": "data/predefined/data_type_decls.ml",

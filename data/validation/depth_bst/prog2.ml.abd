@@ -1,0 +1,1 @@
+[v:int tree | ((leaf v) && not (d == 0)) && (∀u, ((tree_mem v u) => ((lo < u) && (u < hi)))) && (bst v) && (∃n, ((depth v n) && (n <= d)))]

@@ -1,7 +1,7 @@
 let rec size_bst_gen (d : int) (lo : int) (hi : int) : int tree =
-  if d == 0 then Leaf
+  if sizecheck d then Leaf
   else if bool_gen () then Leaf
-  else if lo + 1 < hi then Err
+  else if incr lo < hi then Err
   else Exn
 
 let[@assert] size_bst_gen =
