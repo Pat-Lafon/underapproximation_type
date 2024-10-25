@@ -130,6 +130,9 @@ let[@axiom] tree_depth_0_is_leaf (l : int tree) (n : int) =
 
 (** tree_mem *)
 
+let[@axiom] tree_leaf_mem (l : int tree) (x : int) =
+  (leaf l) #==> (not (tree_mem l x))
+
 let[@axiom] tree_root_mem (l : int tree) (x : int) =
   (root l x) #==> (tree_mem l x)
 
@@ -156,6 +159,13 @@ let[@axiom] tree_bst_lch_mem_lt_root (l : int tree) (l1 : int tree) (x : int)
 let[@axiom] tree_bst_rch_mem_gt_root (l : int tree) (l1 : int tree) (x : int)
     (y : int) =
   (bst l && rch l l1 && root l x && tree_mem l1 y) #==> (x < y)
+
+let[@axiom] tree_node_bst (l : int tree) (l1 : int tree) (l2 : int tree)
+    (x : int) =
+  (bst l1 && bst l2 && lch l l1 && rch l l2 && root l x
+  && (fun (y1 : int) -> (tree_mem l1 y1) #==> (y1 < x))
+  && fun (y2 : int) -> (tree_mem l2 y2) #==> (x < y2))
+  #==> (bst l)
 
 (** heap *)
 

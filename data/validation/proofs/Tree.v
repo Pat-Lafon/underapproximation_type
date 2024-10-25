@@ -146,6 +146,12 @@ Lemma tree_bst_rch_bst : forall l, (forall l1, ((rch l l1 /\ bst l) -> bst l1)).
     - my_inversion H.
  Qed. Hint Resolve tree_bst_rch_bst: core.
 
+Lemma tree_leaf_mem : forall l, (forall x, ((leaf l) -> ~(tree_mem l x))). Proof.
+    intros. destruct l.
+    - unfold not. intro. my_inversion H0.
+    - my_inversion H.
+ Qed. Hint Resolve tree_leaf_mem: core.
+
 Lemma tree_bst_lch_mem_lt_root : forall l, (forall l1, (forall x, (forall y, ((bst l /\ (lch l l1 /\ (root l x /\ tree_mem l1 y))) -> y < x)))). Proof.
     intros. simp.
     - my_inversion H.
@@ -160,9 +166,16 @@ Lemma tree_bst_rch_mem_gt_root : forall l, (forall l1, (forall x, (forall y, ((b
         + my_inversion H1; clear H1. my_inversion H0; clear H0. apply H4. auto.
  Qed. Hint Resolve tree_bst_rch_mem_gt_root: core.
 
- Lemma tree_root_mem : forall l, (forall x, (root l x -> tree_mem l x)). Proof.
+Lemma tree_node_bst : forall l, (forall l1, (forall l2, (forall x, (((bst l1) /\ ((bst l2) /\ ((lch l l1) /\ ((rch l l2) /\ ((root l x) /\ ((forall y1, ((tree_mem l1 y1) -> (y1 < x))) /\ (forall y2, ((tree_mem l2 y2) -> (x < y2))))))))) -> (bst l))))). Proof.
+    intros. simp. destruct l.
+    - my_inversion H3.
+    - my_inversion H1; clear H1. my_inversion H2; clear H2. my_inversion H3; clear H3. constructor; auto.
+Qed. Hint Resolve tree_node_bst: core.
+
+Lemma tree_root_mem : forall l, (forall x, (root l x -> tree_mem l x)).
+Proof.
     intros. my_inversion H. auto.
-  Qed. Hint Resolve tree_root_mem: core.
+Qed. Hint Resolve tree_root_mem: core.
 
 Lemma tree_mem_lch_mem : forall l, (forall l1, (forall x, ((lch l l1 /\ tree_mem l1 x) -> tree_mem l x))). Proof.
     intros. simp. my_inversion H; clear H. auto.
