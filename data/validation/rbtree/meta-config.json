@@ -22,7 +22,7 @@
         "template_red_root"
     ],
     "num_quantifier": 0,
-    "abduce_rlimit": 300000000,
+    "abduce_rlimit": 350000000,
     "synth_bound": 1,
     "synth_rlimit": 2000000,
     "use_missing_coverage_file": true,
