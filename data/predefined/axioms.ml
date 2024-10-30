@@ -112,6 +112,9 @@ let[@axiom] tree_depth_geq_0 (l : int tree) (n : int) = (depth l n) #==> (n >= 0
 let[@axiom] tree_leaf_depth_0 (l : int tree) (n : int) =
   (leaf l && depth l n) #==> (n == 0)
 
+let[@axiom] tree_leaf_depth_0_alt (l : int tree) (n : int) =
+  (leaf l) #==> (depth l 0)
+
 let[@axiom] tree_positive_depth_is_not_leaf (l : int tree) (n : int) =
   (depth l n && n > 0) #==> (not (leaf l))
 
@@ -121,12 +124,19 @@ let[@axiom] tree_depth_exists (l : int tree) ((n [@exists]) : int) = depth l n
      ((n1 [@exists]) : int) =
    ((lch l l1 || rch l l1) && depth l n) #==> (depth l1 n1) *)
 
-let[@axiom] tree_ch_depth_minus_1 (l : int tree) (l1 : int tree) (n : int)
+let[@axiom] tree_lch_depth_minus_1 (l : int tree) (l1 : int tree) (n : int)
     (n1 : int) =
-  ((lch l l1 || rch l l1) && depth l n && depth l1 n1) #==> (n1 <= n - 1)
+  (lch l l1 && depth l n && depth l1 n1) #==> (n1 <= n - 1)
+
+let[@axiom] tree_rch_depth_minus_1 (l : int tree) (l1 : int tree) (n : int)
+    (n1 : int) =
+  (rch l l1 && depth l n && depth l1 n1) #==> (n1 <= n - 1)
 
 let[@axiom] tree_depth_0_is_leaf (l : int tree) (n : int) =
   (depth l n && n == 0) #==> (leaf l)
+
+let[@axiom] tree_depth_0_is_leaf_alt (l : int tree) (n : int) =
+  (depth l 0) #==> (leaf l)
 
 (** tree_mem *)
 
@@ -141,6 +151,11 @@ let[@axiom] tree_mem_lch_mem (l : int tree) (l1 : int tree) (x : int) =
 
 let[@axiom] tree_mem_rch_mem (l : int tree) (l1 : int tree) (x : int) =
   (rch l l1 && tree_mem l1 x) #==> (tree_mem l x)
+
+let[@axiom] tree_mem_destruct (l : int tree) (l1 : int tree) (l2 : int tree)
+    (x : int) =
+  (tree_mem l x && lch l l1 && rch l l2)
+  #==> (root l x || tree_mem l1 x || tree_mem l2 x)
 
 (** bst *)
 
@@ -201,8 +216,10 @@ let[@axiom] tree_complete_node (l : int tree) (l1 : int tree) (l2 : int tree)
   #==> (complete l)
 
 let[@axiom] tree_depth_node (l : int tree) (l1 : int tree) (l2 : int tree)
-    (n : int) =
-  (depth l1 n && depth l2 n && lch l l1 && rch l l2) #==> (depth l (n + 1))
+    (n1 : int) (n2 : int) =
+  (depth l1 n1 && depth l2 n2 && lch l l1 && rch l l2)
+  #==> (((n1 > n2) #==> (depth l (n1 + 1)))
+       && ((n2 >= n1) #==> (depth l (n2 + 1))))
 
 let[@axiom] tree_complete_lch_depth_minus_1 (l : int tree) (l1 : int tree)
     (n : int) =
