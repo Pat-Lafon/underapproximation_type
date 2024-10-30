@@ -1,0 +1,29 @@
+let rec size_bst_gen = fun d ->
+  fun lo ->
+    fun hi ->
+      let (x_13) = sizecheck d in
+      match x_13 with
+      | True -> Leaf
+      | False ->
+          let (x_14) = bool_gen () in
+          (match x_14 with
+           | True -> Leaf
+           | False ->
+               let (x_15) = incr lo in
+               let (x_16) = x_15 < hi in
+               (match x_16 with
+                | True ->
+                    let (x_17) = int_range lo in
+                    let (x) = x_17 hi in
+                    (match true with
+                     | True ->
+                         let (x_18) = subs d in
+                         let (x_19) = size_bst_gen x_18 in
+                         let (x_20) = x_19 lo in
+                         let (lt) = x_20 x in
+                         let (x_21) = subs d in
+                         let (x_22) = size_bst_gen x_21 in
+                         let (x_23) = x_22 x in
+                         let (rt) = x_23 hi in Node (x, lt, rt)
+                     | False -> Err)
+                | False -> Err))
