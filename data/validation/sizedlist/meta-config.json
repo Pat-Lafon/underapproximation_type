@@ -19,7 +19,7 @@
     "abduce_rlimit": 3000000,
     "synth_bound": 30,
     "synth_rlimit": 300000,
-    "use_missing_coverage_file": true,
+    "use_missing_coverage_file": false,
     "comp_path" : "components.txt",
     "prim_path": {
         "data_type_decls": "data/predefined/data_type_decls.ml",
