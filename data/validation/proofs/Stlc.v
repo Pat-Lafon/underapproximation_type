@@ -123,6 +123,9 @@ Hint Constructors stlc_app1: core.
 Hint Constructors stlc_app2: core.
 Hint Constructors stlc_ty_nat: core.
 Hint Constructors stlc_ty_arr2: core.
+Hint Constructors stlc_tyctx_hd: core.
+Hint Constructors stlc_tyctx_tl: core.
+Hint Constructors typing: core.
 Hint Unfold not: core.
 
 Lemma stlc_num_arr_geq_0 : forall tau, (forall n, (num_arr tau n -> n >= 0)). Proof.
@@ -250,6 +253,19 @@ Lemma stlc_term_abs_typing_arr : forall gamma, (forall v, (forall tau, (forall t
 Unshelve. all: repeat constructor.
 Qed. Hint Resolve stlc_term_abs_typing_arr: core.
 
+Lemma stlc_typing_gamma_abd :
+forall gamma gamma1 v tau tau1 tau2 body,
+    stlc_ty_arr1 tau tau1
+    /\ stlc_ty_arr2 tau tau2
+    /\ stlc_abs_ty v tau1
+    /\ stlc_abs_body v body
+    /\ stlc_tyctx_hd gamma1 tau1
+    /\ stlc_tyctx_tl gamma1 gamma
+    /\ typing gamma1 body tau2-> typing gamma v tau
+. Proof.
+    intros. simp. my_inversion H0; clear H0. my_inversion H1; clear H1.  my_inversion H; clear H. econstructor. my_inversion H3; clear H3. my_inversion H4; clear H4. my_inversion H2; clear H2.
+Qed. Hint Resolve stlc_typing_gamma_abd: core.
+
 Lemma stlc_typing_app_tau_destruct : forall gamma, (forall v, (forall tau, (forall t1, (forall t2, ((typing gamma v tau /\ (stlc_app1 v t1 /\ stlc_app2 v t2)) -> (exists func_ty, (exists arg_ty, (stlc_ty_arr1 func_ty arg_ty /\ (stlc_ty_arr2 func_ty tau /\ (typing gamma t1 func_ty /\ typing gamma t2 arg_ty)))))))))). Proof.
     intros. simp. my_inversion H0; clear H0. my_inversion H1; clear H1. my_inversion H. repeat econstructor; eauto.
 Qed. Hint Resolve stlc_typing_app_tau_destruct: core.
@@ -280,7 +296,6 @@ Lemma stlc_num_app_app_rev : forall v, (forall t1, (forall t2, (forall n, ((stlc
     - my_inversion H0.
 Qed. Hint Resolve stlc_num_app_app_rev: core.
 
-(* TODO update STLC axioms *)
 Lemma stlc_abd_typing_rev : forall gamma, (forall v, (forall tau, (forall ty, (forall body, (forall body_ty, (forall gamma1, ((typing gamma v tau /\ stlc_ty_arr1 tau ty /\ stlc_ty_arr2 tau body_ty /\ (stlc_abs_ty v ty /\ (stlc_abs_body v body /\ (stlc_tyctx_hd gamma1 ty /\ stlc_tyctx_tl gamma1 gamma)))) -> typing gamma1 body body_ty))))))). Proof.
     intros. simp. my_inversion H0; clear H0. my_inversion H1; clear H1. my_inversion H2; clear H2. my_inversion H4; clear H4. my_inversion H5; clear H5. my_inversion H3; clear H3. my_inversion H.
 Qed. Hint Resolve stlc_abd_typing_rev: core.

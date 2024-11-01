@@ -563,6 +563,14 @@ let[@axiom] stlc_term_abs_typing_arr (gamma : stlc_tyctx) (v : stlc_term)
   (stlc_abs_ty v ty && stlc_abs_body v body && typing gamma v tau)
   #==> (stlc_ty_arr1 tau ty && stlc_ty_arr2 tau body_ty)
 
+let[@axiom] stlc_typing_gamma_abd (gamma : stlc_tyctx) (gamma1 : stlc_tyctx)
+    (v : stlc_term) (tau : stlc_ty) (tau1 : stlc_ty) (tau2 : stlc_ty)
+    (body : stlc_term) =
+  (stlc_ty_arr1 tau tau1 && stlc_ty_arr2 tau tau2 && stlc_abs_ty v tau1
+ && stlc_abs_body v body && stlc_tyctx_hd gamma1 tau1
+ && stlc_tyctx_tl gamma1 gamma && typing gamma1 body tau2)
+  #==> (typing gamma v tau)
+
 let[@axiom] stlc_typing_app_tau_destruct (gamma : stlc_tyctx) (v : stlc_term)
     (tau : stlc_ty) (t1 : stlc_term) (t2 : stlc_term) =
   (typing gamma v tau && stlc_app1 v t1 && stlc_app2 v t2)
