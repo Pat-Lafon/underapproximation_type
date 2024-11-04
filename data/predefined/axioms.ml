@@ -579,6 +579,15 @@ let[@axiom] stlc_typing_app_tau_destruct (gamma : stlc_tyctx) (v : stlc_term)
   && stlc_ty_arr2 func_ty tau && typing gamma t1 func_ty
   && typing gamma t2 arg_ty)
 
+let[@axiom] stlc_typing_gamma_app (gamma : stlc_tyctx) (v : stlc_term)
+    (tau : stlc_ty) (func : stlc_term) (arg : stlc_term) (func_ty : stlc_ty)
+    (arg_ty : stlc_ty) =
+  (stlc_app1 v func && stlc_app2 v arg
+  && stlc_ty_arr1 func_ty arg_ty
+  && stlc_ty_arr2 func_ty tau && typing gamma func func_ty
+  && typing gamma arg arg_ty)
+  #==> (typing gamma v tau)
+
 let[@axiom] stlc_tyctx_cons (ty : stlc_ty) (gamma : stlc_tyctx)
     ((v [@exists]) : stlc_tyctx) =
   stlc_tyctx_hd v ty && stlc_tyctx_tl v gamma
@@ -594,6 +603,11 @@ let[@axiom] stlc_num_app_abs_body_eq_rev (v : stlc_term) (body : stlc_term)
     (n : int) =
   (stlc_abs_body v body && num_app body n) #==> (num_app v n)
 
+let[@axiom] stlc_num_app_app (v : stlc_term) (t1 : stlc_term) (t2 : stlc_term)
+    (n1 : int) (n2 : int) =
+  (stlc_app1 v t1 && stlc_app2 v t2 && num_app t1 n1 && num_app t2 n2)
+  #==> (fun ((n [@exists]) : int) -> n1 + n2 + 1 == n && num_app v n)
+
 let[@axiom] stlc_num_app_app_rev (v : stlc_term) (t1 : stlc_term)
     (t2 : stlc_term) (n : int) =
   (stlc_app1 v t1 && stlc_app2 v t2 && num_app v n)
@@ -606,6 +620,13 @@ let[@axiom] stlc_abd_typing_rev (gamma : stlc_tyctx) (v : stlc_term)
   (typing gamma v tau && stlc_abs_ty v ty && stlc_abs_body v body
  && stlc_ty_arr1 tau ty && stlc_ty_arr2 tau body_ty && stlc_tyctx_hd gamma1 ty
  && stlc_tyctx_tl gamma1 gamma)
+  #==> (typing gamma1 body body_ty)
+
+let[@axiom] stlc_abd_typing_rev (gamma : stlc_tyctx) (v : stlc_term)
+    (tau : stlc_ty) (ty : stlc_ty) (body : stlc_term) (body_ty : stlc_ty)
+    (gamma1 : stlc_tyctx) =
+  (typing gamma v tau && stlc_abs_ty v ty && stlc_abs_body v body
+ && stlc_tyctx_hd gamma1 ty && stlc_tyctx_tl gamma1 gamma)
   #==> (typing gamma1 body body_ty)
 
 let[@axiom] stlc_const_typing_nat (gamma : stlc_tyctx) (v : stlc_term)
