@@ -270,6 +270,11 @@ Lemma stlc_typing_app_tau_destruct : forall gamma, (forall v, (forall tau, (fora
     intros. simp. my_inversion H0; clear H0. my_inversion H1; clear H1. my_inversion H. repeat econstructor; eauto.
 Qed. Hint Resolve stlc_typing_app_tau_destruct: core.
 
+Lemma stlc_typing_gamma_app : forall gamma, (forall v, (forall tau, (forall func, (forall arg, (forall func_ty, (forall arg_ty, (((stlc_app1 v func) /\ ((stlc_app2 v arg) /\ ((stlc_ty_arr1 func_ty arg_ty) /\ ((stlc_ty_arr2 func_ty tau) /\ ((typing gamma func func_ty) /\ (typing gamma arg arg_ty)))))) -> (typing gamma v tau)))))))). Proof.
+    intros. simp. my_inversion H; clear H. my_inversion H0; clear H0. my_inversion H1; clear H1. my_inversion H2; clear H2. econstructor; eauto.
+Qed. Hint Resolve stlc_typing_gamma_app: core.
+
+
 Lemma stlc_tyctx_cons : forall ty, (forall gamma, (exists v, (stlc_tyctx_hd v ty /\ stlc_tyctx_tl v gamma))). Proof.
     intros. destruct gamma.
     - repeat econstructor.
@@ -288,6 +293,11 @@ Lemma stlc_num_app_abs_body_eq_rev : forall v, (forall body, (forall n, ((stlc_a
     intros. simp. my_inversion H. auto.
  Qed. Hint Resolve stlc_num_app_abs_body_eq_rev: core.
 
+Lemma stlc_num_app_app : forall v, (forall t1, (forall t2, (forall n1, (forall n2, (((stlc_app1 v t1) /\ ((stlc_app2 v t2) /\ ((num_app t1 n1) /\ (num_app t2 n2)))) -> (exists n, ((((n1 + n2) + 1) = n) /\ (num_app v n)))))))). Proof.
+    intros. simp. my_inversion H; clear H. my_inversion H0; clear H0. eexists. assert (1 + n1 + n2 = n1 + n2 + 1). lia.
+    split. eauto. rewrite <- H. eauto.
+Qed. Hint Resolve stlc_num_app_app: core.
+
 Lemma stlc_num_app_app_rev : forall v, (forall t1, (forall t2, (forall n, ((stlc_app1 v t1 /\ (stlc_app2 v t2 /\ num_app v n)) -> (exists m1, (exists m2, (num_app t1 m1 /\ (num_app t2 m2 /\ (m1 + m2) = (n - 1))))))))). Proof.
     intros. simp. my_inversion H1; clear H1.
     - my_inversion H0.
@@ -299,7 +309,6 @@ Qed. Hint Resolve stlc_num_app_app_rev: core.
 Lemma stlc_abd_typing_rev : forall gamma, (forall v, (forall tau, (forall ty, (forall body, (forall body_ty, (forall gamma1, ((typing gamma v tau /\ stlc_ty_arr1 tau ty /\ stlc_ty_arr2 tau body_ty /\ (stlc_abs_ty v ty /\ (stlc_abs_body v body /\ (stlc_tyctx_hd gamma1 ty /\ stlc_tyctx_tl gamma1 gamma)))) -> typing gamma1 body body_ty))))))). Proof.
     intros. simp. my_inversion H0; clear H0. my_inversion H1; clear H1. my_inversion H2; clear H2. my_inversion H4; clear H4. my_inversion H5; clear H5. my_inversion H3; clear H3. my_inversion H.
 Qed. Hint Resolve stlc_abd_typing_rev: core.
-
 
 Lemma stlc_const_typing_nat : forall gamma, (forall v, (forall tau, ((is_const v /\ typing gamma v tau) -> stlc_ty_nat tau))). Proof.
     intros. simp.
