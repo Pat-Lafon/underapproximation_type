@@ -10,6 +10,6 @@ let rec sorted_list_gen = fun s ->
          | True ->
              let (_x1) = s in
              let (_x8) = subs _x1 in
-             let (_x78) = sorted_list_gen _x8 in
-             let (_104) = _x78 y in Cons (y, _104)
+             let (_x12) = sorted_list_gen _x8 in
+             let (_86) = _x12 y in Cons (y, _86)
          | False -> Err)
