@@ -397,9 +397,17 @@ let[@axiom] rbtree_rb_root_color_no_rb_leaf (l : int rbtree) (x : bool) =
 let[@axiom] rbtree_ch_no_rb_leaf (l : int rbtree) (l1 : int rbtree) =
   (rb_lch l l1 || rb_rch l l1) #==> (not (rb_leaf l))
 
-let[@axiom] rbtree_root_lch_rch (l : int rbtree) (x : int)
-    ((l1 [@exists]) : int rbtree) ((l2 [@exists]) : int rbtree) =
-  (rb_root l x) #==> (rb_lch l l1 && rb_rch l l2)
+(* let[@axiom] rbtree_root_lch_rch (l : int rbtree) (x : int)
+     ((l1 [@exists]) : int rbtree) ((l2 [@exists]) : int rbtree) =
+   (rb_root l x) #==> (rb_lch l l1 && rb_rch l l2) *)
+
+(* let[@axiom] rbtree_root_lch (l : int rbtree) (x : int)
+       ((l1 [@exists]) : int rbtree) =
+     (rb_root l x) #==> (rb_lch l l1)
+
+   let[@axiom] rbtree_root_rch (l : int rbtree) (x : int)
+       ((l1 [@exists]) : int rbtree) =
+     (rb_root l x) #==> (rb_rch l l1) *)
 
 (** num_black *)
 
@@ -510,14 +518,17 @@ let[@axiom] stlc_num_arr_arr (tau : stlc_ty) (tau_body : stlc_ty) (m : int) =
   (stlc_ty_arr2 tau tau_body)
   #==> (iff (num_arr tau_body m) (num_arr tau (m + 1)))
 
-let[@axiom] stlc_const_num_app_0 (v : stlc_term) (n : int) =
-  (is_const v && num_app v n) #==> (n == 0)
+let[@axiom] stlc_const_num_app_0 (v : stlc_term) =
+  (is_const v) #==> (num_app v 0)
 
-let[@axiom] stlc_var_num_app_0 (v : stlc_term) (n : int) =
-  (is_var v && num_app v n) #==> (n == 0)
+let[@axiom] stlc_var_num_app_0 (v : stlc_term) = (is_var v) #==> (num_app v 0)
 
 let[@axiom] stlc_num_app_gt_0_is_abs_or_app (v : stlc_term) (n : int) =
   (num_app v n && n > 0) #==> (is_abs v || is_app v)
+
+let[@axiom] stlc_num_app_gt_0_is_abs_or_app (v : stlc_term)
+    ((n [@exists]) : int) =
+  (is_app v) #==> (num_app v n && n > 0)
 
 let[@axiom] stlc_typing_num_arr (gamma : stlc_tyctx) (v : stlc_term)
     (tau : stlc_ty) ((n [@exists]) : int) =
@@ -543,25 +554,35 @@ let[@axiom] stlc_id_is_var (v : stlc_term) (id : int) =
 let[@axiom] stlc_const_is_const (v : stlc_term) (c : int) =
   (stlc_const v c) #==> (is_const v)
 
-let[@axiom] stlc_term_destruct1 (term : stlc_term) ((c [@exists]) : int) =
-  (is_const term) #==> (stlc_const term c)
+(* let[@axiom] stlc_term_destruct1 (term : stlc_term) ((c [@exists]) : int) =
+   (is_const term) #==> (stlc_const term c) *)
 
 let[@axiom] stlc_term_destruct2 (term : stlc_term) ((c [@exists]) : int) =
   (is_var term) #==> (stlc_id term c)
 
-let[@axiom] stlc_term_destruct3 (term : stlc_term) ((t1 [@exists]) : stlc_term)
-    ((t2 [@exists]) : stlc_term) =
-  (is_app term) #==> (stlc_app1 term t1 && stlc_app2 term t2)
+let[@axiom] stlc_term_destruct3_1 (term : stlc_term)
+    ((t1 [@exists]) : stlc_term) ((t2 [@exists]) : stlc_term) =
+  (is_app term) #==> (stlc_app1 term t1)
 
-let[@axiom] stlc_term_destruct4 (term : stlc_term) ((ty [@exists]) : stlc_ty)
+let[@axiom] stlc_term_destruct3_2 (term : stlc_term)
+    ((t1 [@exists]) : stlc_term) ((t2 [@exists]) : stlc_term) =
+  (is_app term) #==> (stlc_app2 term t2)
+
+let[@axiom] stlc_term_destruct4_ty (term : stlc_term) ((ty [@exists]) : stlc_ty)
+    =
+  (is_abs term) #==> (stlc_abs_ty term ty)
+
+let[@axiom] stlc_term_destruct4 (term : stlc_term)
     ((body [@exists]) : stlc_term) =
-  (is_abs term) #==> (stlc_abs_ty term ty && stlc_abs_body term body)
+  (is_abs term) #==> (stlc_abs_body term body)
 
-let[@axiom] stlc_term_abs_typing_arr (gamma : stlc_tyctx) (v : stlc_term)
-    (tau : stlc_ty) (ty : stlc_ty) (body : stlc_term)
-    ((body_ty [@exists]) : stlc_ty) =
-  (stlc_abs_ty v ty && stlc_abs_body v body && typing gamma v tau)
-  #==> (stlc_ty_arr1 tau ty && stlc_ty_arr2 tau body_ty)
+let[@axiom] stlc_term_abs_typing_arr_1 (gamma : stlc_tyctx) (v : stlc_term)
+    (tau : stlc_ty) (ty : stlc_ty) =
+  (stlc_abs_ty v ty && typing gamma v tau) #==> (stlc_ty_arr1 tau ty)
+
+let[@axiom] stlc_term_abs_typing_arr_2 (gamma : stlc_tyctx) (v : stlc_term)
+    (tau : stlc_ty) (body : stlc_term) ((body_ty [@exists]) : stlc_ty) =
+  (stlc_abs_body v body && typing gamma v tau) #==> (stlc_ty_arr2 tau body_ty)
 
 let[@axiom] stlc_typing_gamma_abd (gamma : stlc_tyctx) (gamma1 : stlc_tyctx)
     (v : stlc_term) (tau : stlc_ty) (tau1 : stlc_ty) (tau2 : stlc_ty)
@@ -603,10 +624,21 @@ let[@axiom] stlc_num_app_abs_body_eq_rev (v : stlc_term) (body : stlc_term)
     (n : int) =
   (stlc_abs_body v body && num_app body n) #==> (num_app v n)
 
-let[@axiom] stlc_num_app_app (v : stlc_term) (t1 : stlc_term) (t2 : stlc_term)
+(* TODO: This is an axiom of concern *)
+(* let[@axiom] stlc_num_app_app (v : stlc_term) (t1 : stlc_term) (t2 : stlc_term) =
+   (stlc_app1 v t1 && stlc_app2 v t2)
+   #==> (fun ((n [@exists]) : int) ((n1 [@exists]) : int) ((n2 [@exists]) : int)
+     -> n1 + n2 + 1 == n && num_app t1 n1 && num_app t2 n2 && num_app v n) *)
+
+(* let[@axiom] stlc_num_app_app (v : stlc_term) (t1 : stlc_term) (t2 : stlc_term)
+     (n1 : int) (n2 : int) =
+   (stlc_app1 v t1 && stlc_app2 v t2 && num_app t1 n1 && num_app t2 n2)
+   #==> (num_app v (1 + n1 + n2)) *)
+
+(* let[@axiom] stlc_num_app_app (v : stlc_term) (t1 : stlc_term) (t2 : stlc_term)
     (n1 : int) (n2 : int) =
   (stlc_app1 v t1 && stlc_app2 v t2 && num_app t1 n1 && num_app t2 n2)
-  #==> (fun ((n [@exists]) : int) -> n1 + n2 + 1 == n && num_app v n)
+  #==> (fun ((n [@exists]) : int) -> n == 1 + n1 + n2 && num_app v n) *)
 
 let[@axiom] stlc_num_app_app_rev (v : stlc_term) (t1 : stlc_term)
     (t2 : stlc_term) (n : int) =
@@ -618,23 +650,24 @@ let[@axiom] stlc_abd_typing_rev (gamma : stlc_tyctx) (v : stlc_term)
     (tau : stlc_ty) (ty : stlc_ty) (body : stlc_term) (body_ty : stlc_ty)
     (gamma1 : stlc_tyctx) =
   (typing gamma v tau && stlc_abs_ty v ty && stlc_abs_body v body
- && stlc_ty_arr1 tau ty && stlc_ty_arr2 tau body_ty && stlc_tyctx_hd gamma1 ty
- && stlc_tyctx_tl gamma1 gamma)
-  #==> (typing gamma1 body body_ty)
-
-let[@axiom] stlc_abd_typing_rev (gamma : stlc_tyctx) (v : stlc_term)
-    (tau : stlc_ty) (ty : stlc_ty) (body : stlc_term) (body_ty : stlc_ty)
-    (gamma1 : stlc_tyctx) =
-  (typing gamma v tau && stlc_abs_ty v ty && stlc_abs_body v body
  && stlc_tyctx_hd gamma1 ty && stlc_tyctx_tl gamma1 gamma)
   #==> (typing gamma1 body body_ty)
+
+(* TODO: This is an axiom of concern *)
+let[@axiom] stlc_abd_typing (gamma : stlc_tyctx) (v : stlc_term) (tau : stlc_ty)
+    (ty : stlc_ty) (body : stlc_term) (body_ty : stlc_ty) (gamma1 : stlc_tyctx)
+    =
+  (typing gamma1 body body_ty && stlc_abs_ty v ty && stlc_abs_body v body
+ && stlc_ty_arr1 tau ty && stlc_ty_arr2 tau body_ty && stlc_tyctx_hd gamma1 ty
+ && stlc_tyctx_tl gamma1 gamma)
+  #==> (typing gamma v tau)
 
 let[@axiom] stlc_const_typing_nat (gamma : stlc_tyctx) (v : stlc_term)
     (tau : stlc_ty) =
   (is_const v && typing gamma v tau) #==> (stlc_ty_nat tau)
 
-let[@axiom] stlc_const_num_app_0 (v : stlc_term) (n : int) =
-  (is_const v && num_app v n) #==> (n == 0)
+(* let[@axiom] stlc_const_num_app_0 (v : stlc_term) (n : int) =
+   (is_const v && num_app v n) #==> (n == 0) *)
 
 let[@axiom] stlc_app_num_app_geq_0 (v : stlc_term) (n : int) =
   (is_app v && num_app v n) #==> (n > 0)

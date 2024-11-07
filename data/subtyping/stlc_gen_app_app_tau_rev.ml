@@ -3,19 +3,7 @@ let[@assert] rty1 =
   let num = (v >= 0 : [%v: int]) [@over] in
   let gamma = (true : [%v: stlc_tyctx]) [@over] in
   let tau = (num_arr v num_arr_tau : [%v: stlc_ty]) [@over] in
-  (fun ((func [@exists]) : stlc_term) ((arg [@exists]) : stlc_term)
-       ((n [@exists]) : int) ->
-     num > 0 && typing gamma v tau && num_app v n && n <= num
-     && stlc_app1 v func && stlc_app2 v arg
-    : [%v: stlc_term])
-    [@under]
-
-let[@assert] rty2 =
-  let num_arr_tau = (v >= 0 : [%v: int]) [@over] in
-  let num = (v >= 0 : [%v: int]) [@over] in
-  let gamma = (true : [%v: stlc_tyctx]) [@over] in
-  let tau = (num_arr v num_arr_tau : [%v: stlc_ty]) [@over] in
-  (num > 0 && fun ((arg_ty [@exists]) : stlc_ty) ->
+  (num > 0 (* && fun ((arg_ty [@exists]) : stlc_ty) ->
    0 <= num && fun ((num_app_func [@exists]) : int) ->
    0 <= num_app_func && num_app_func < num
    && fun ((b_2 [@exists]) : int) ->
@@ -44,6 +32,18 @@ let[@assert] rty2 =
    && fun ((arg [@exists]) : stlc_term) ->
    (fun ((n [@exists]) : int) ->
      typing gamma arg arg_tau && num_app arg n && n <= num_app_arg)
-   && stlc_app1 v func && stlc_app2 v arg
+   && stlc_app1 v func && stlc_app2 v arg *)
+    : [%v: stlc_term])
+    [@under]
+
+let[@assert] rty2 =
+  let num_arr_tau = (v >= 0 : [%v: int]) [@over] in
+  let num = (v >= 0 : [%v: int]) [@over] in
+  let gamma = (true : [%v: stlc_tyctx]) [@over] in
+  let tau = (num_arr v num_arr_tau : [%v: stlc_ty]) [@over] in
+  (fun ((func [@exists]) : stlc_term) ((arg [@exists]) : stlc_term)
+       ((n [@exists]) : int) ->
+     num > 0 && typing gamma v tau && num_app v n && n <= num
+     && stlc_app1 v func && stlc_app2 v arg
     : [%v: stlc_term])
     [@under]

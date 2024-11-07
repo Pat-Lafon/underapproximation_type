@@ -48,6 +48,30 @@ let smt_solve ctx assertions =
   (* let () = failwith "zz" in *)
   (* let () = exit 0 in *)
   let _ = Goal.add g assertions in
+
+  (*
+  The following tactics seem to be useful in atleast one case of stlc
+    (apply ctx-simplify)
+    (apply simplify)
+    (apply snf)
+    (apply qe)
+    (apply nra)
+  *)
+(*   let ctx_simp = Tactic.mk_tactic ctx "ctx-simplify" in
+  let simp = Tactic.mk_tactic ctx "simplify" in
+  let snf = Tactic.mk_tactic ctx "snf" in
+  let qe = Tactic.mk_tactic ctx "qe" in
+  let nra = Tactic.mk_tactic ctx "nra" in
+
+  let get_goal ar =
+    assert (Tactic.ApplyResult.get_num_subgoals ar = 1);
+    Tactic.ApplyResult.get_subgoal ar 0
+  in
+  let g = Tactic.apply ctx_simp g None |> get_goal in
+  let g = Tactic.apply simp g None |> get_goal in
+  let g = Tactic.apply snf g None |> get_goal in
+  let g = Tactic.apply qe g None |> get_goal in
+  let g = Tactic.apply nra g None |> get_goal in *)
   (* let g = Goal.simplify g None in *)
   (* let g = *)
   (*   Tactic.(ApplyResult.get_subgoal (apply (mk_tactic ctx "snf") g None) 0) *)
@@ -58,6 +82,8 @@ let smt_solve ctx assertions =
   (*   @@ Goal.get_formulas g *)
   (* in *)
   let _ = Solver.add solver (get_formulas g) in
+
+(*   Solver.to_string solver |> print_endline; *)
   let _, res = Sugar.clock (fun () -> solver_result solver) in
   res
 
@@ -145,16 +171,17 @@ let smt_neg_and_solve ctx axioms vc =
       axioms
   in
 
-  (* let () = Printf.printf "Num of axioms: %i\n" (List.length axioms) in *)
+  (*   let () = Printf.printf "Num of axioms: %i\n" (List.length axioms) in *)
+
   (* let () = List.iter (fun a -> Printf.printf "%s\n" (layout_prop a)) axioms in *)
 
   (* let () = failwith "end" in *)
   let assertions = List.map (Propencoding.to_z3 ctx) (axioms @ [ Not vc ]) in
-  (*
-  let () =
-    List.iter (fun a -> Printf.printf "%s\n" (Expr.to_string a)) assertions
-  in
- *)
+
+  (* let () =
+       List.iter (fun a -> Printf.printf "%s\n" (Expr.to_string a)) assertions
+     in *)
+  (*   print_endline "End Axioms"; *)
   let time_t, res = Sugar.clock (fun () -> smt_solve ctx assertions) in
   let () =
     Env.show_debug_stat @@ fun _ -> Pp.printf "Z3 solving time: %0.4fs\n" time_t
