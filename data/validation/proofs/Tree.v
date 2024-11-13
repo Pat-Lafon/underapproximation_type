@@ -39,9 +39,22 @@ Inductive tree_mem : Tree -> nat -> Prop :=
 | BstNode_root : forall l v r, tree_mem (Node l v r) v
 | BstNode_child : forall l v c r, (tree_mem l c \/ tree_mem r c) -> tree_mem (Node l v r) c.
 
-Inductive bst : Tree -> Prop :=
+Inductive lower_bound : Tree -> nat -> Prop :=
+| LowerBoundBaseCase : forall r x y, bst (Node Leaf x r) -> y < x -> lower_bound (Node Leaf x r) y
+| LowerBoundRecursiveCase : forall l l1 x, bst l -> not (leaf l1) -> lch l l1 -> lower_bound l1 x -> lower_bound l x
+
+with upper_bound : Tree -> nat -> Prop :=
+| UpperBoundBaseCase : forall l x y, bst (Node l x Leaf) -> y > x -> upper_bound (Node l x Leaf) y
+| UpperBoundRecursiveCase : forall l l1 x, bst l -> not (leaf l1) -> rch l l1 -> upper_bound l1 x -> upper_bound l x
+
+with bst : Tree -> Prop :=
 | BstLeaf : bst Leaf
-| BstNode : forall x l r, (forall lo, tree_mem l lo -> lo < x) -> (forall hi, tree_mem r hi -> x < hi) -> bst l -> bst r -> bst (Node l x r).
+| BstNode : forall x l r, (
+
+    (not (leaf l)) -> upper_bound l x
+   ) -> (
+    (not (leaf r)) -> lower_bound r x) -> bst l -> bst r -> bst (Node l x r).
+
 
 Hint Constructors leaf: core.
 Hint Constructors root: core.
@@ -51,6 +64,8 @@ Hint Constructors depth: core.
 Hint Constructors complete: core.
 Hint Constructors tree_mem: core.
 Hint Constructors bst: core.
+Hint Constructors lower_bound : core.
+Hint Constructors upper_bound : core.
 Hint Unfold not: core.
 
 Lemma tree_complete_leaf : forall l, (leaf l -> complete l). Proof.
@@ -152,7 +167,7 @@ Lemma tree_leaf_mem : forall l, (forall x, ((leaf l) -> ~(tree_mem l x))). Proof
     - my_inversion H.
  Qed. Hint Resolve tree_leaf_mem: core.
 
-Lemma tree_bst_lch_mem_lt_root : forall l, (forall l1, (forall x, (forall y, ((bst l /\ (lch l l1 /\ (root l x /\ tree_mem l1 y))) -> y < x)))). Proof.
+(* Lemma tree_bst_lch_mem_lt_root : forall l, (forall l1, (forall x, (forall y, ((bst l /\ (lch l l1 /\ (root l x /\ tree_mem l1 y))) -> y < x)))). Proof.
     intros. simp.
     - my_inversion H.
         + my_inversion H1.
@@ -164,13 +179,27 @@ Lemma tree_bst_rch_mem_gt_root : forall l, (forall l1, (forall x, (forall y, ((b
     - my_inversion H.
         + my_inversion H1.
         + my_inversion H1; clear H1. my_inversion H0; clear H0. apply H4. auto.
- Qed. Hint Resolve tree_bst_rch_mem_gt_root: core.
+ Qed. Hint Resolve tree_bst_rch_mem_gt_root: core. *)
 
-Lemma tree_node_bst : forall l, (forall l1, (forall l2, (forall x, (((bst l1) /\ ((bst l2) /\ ((lch l l1) /\ ((rch l l2) /\ ((root l x) /\ ((forall y1, ((tree_mem l1 y1) -> (y1 < x))) /\ (forall y2, ((tree_mem l2 y2) -> (x < y2))))))))) -> (bst l))))). Proof.
+(* Lemma tree_bst_lch_mem_lt_root : forall l, (forall l1, (forall x, (((bst l) /\ ((lch l l1) /\ (root l x))) -> (forall y, ((tree_mem l1 y) -> (y < x)))))). Proof.
+    intros. simp. my_inversion H1; clear H1. my_inversion H; clear H. my_inversion H2; clear H2. apply H5. auto.
+ Qed. Hint Resolve tree_bst_lch_mem_lt_root: core. *)
+
+(* Lemma tree_bst_lch_mem_lt_root_2 : forall l, (forall l1, (exists x, (((bst l) /\ ((lch l l1) /\ (forall y, ((tree_mem l y) -> (x < y))))) -> (forall z, ((tree_mem l1 z) -> (x < z)))))). Proof.
+    intros. eexists. intros. simp. my_inversion H; clear H; my_inversion H1; clear H1. apply H2. clear H2. constructor. left. auto. Unshelve. constructor.
+ Qed. Hint Resolve tree_bst_lch_mem_lt_root_2: core. *)
+
+Lemma tree_node_bst : forall l, (forall l1, (forall l2, (forall x, (((bst l1) /\ ((bst l2) /\ ((lch l l1) /\ ((rch l l2) /\ ((root l x) /\ ((~(leaf l1) -> (upper_bound l1 x)) /\ (~(leaf l2) -> (lower_bound l2 x)))))))) -> (bst l))))). Proof.
+ intros. simp. destruct l.
+ - my_inversion H1.
+ - constructor; my_inversion H1; clear H1; my_inversion H2; clear H2; my_inversion H3; clear H3; auto.
+Qed. Hint Resolve tree_node_bst: core.
+
+(* Lemma tree_node_bst : forall l, (forall l1, (forall l2, (forall x, (((bst l1) /\ ((bst l2) /\ ((lch l l1) /\ ((rch l l2) /\ ((root l x) /\ ((forall y1, ((tree_mem l1 y1) -> (y1 < x))) /\ (forall y2, ((tree_mem l2 y2) -> (x < y2))))))))) -> (bst l))))). Proof.
     intros. simp. destruct l.
     - my_inversion H3.
     - my_inversion H1; clear H1. my_inversion H2; clear H2. my_inversion H3; clear H3. constructor; auto.
-Qed. Hint Resolve tree_node_bst: core.
+Qed. Hint Resolve tree_node_bst: core. *)
 
 Lemma tree_root_mem : forall l, (forall x, (root l x -> tree_mem l x)).
 Proof.
@@ -267,3 +296,96 @@ Qed. Hint Resolve tree_depth_0_is_leaf: core.
 Lemma tree_depth_0_is_leaf_alt : forall l, (((depth l 0) -> leaf l)). Proof.
     intros. simp.
 Qed. Hint Resolve tree_depth_0_is_leaf: core.
+
+Lemma tree_depth_rch : forall l, (forall l1, (forall n, (((rch l l1) /\ (depth l n)) -> (exists n1, ((depth l1 n1) /\ ((n1 + 1) <= n)))))). Proof.
+    intros. simp. my_inversion H; clear H. my_inversion H0; clear H0. eexists. split. eauto. lia.
+ Qed. Hint Resolve tree_depth_rch: core.
+
+Lemma tree_depth_lch : forall l, (forall l1, (forall n, (((lch l l1) /\ (depth l n)) -> (exists n1, ((depth l1 n1) /\ ((n1 + 1) <= n)))))). Proof.
+    intros. simp. my_inversion H. my_inversion H0. eexists. split. eauto. lia.
+ Qed. Hint Resolve tree_depth_lch: core.
+
+
+Lemma tree_lower_bound_base : forall l, (forall l1, (forall x, (forall y, (((bst l /\ root l x) /\ ((lch l l1) /\ ((leaf l1) /\ (y < x)))) -> (lower_bound l y))))). Proof.
+   intros. simp. my_inversion H0; clear H0. my_inversion H; clear H. my_inversion H1; clear H1. my_inversion H3; clear H3. econstructor; auto.
+ Qed. Hint Resolve tree_lower_bound_base: core.
+
+Lemma tree_lower_bound_other : forall l, (forall l1, (forall x, (((root l x) /\ ((bst l /\ lch l l1) /\ (~(leaf l1) /\ (lower_bound l1 x)))) -> (lower_bound l x)))). Proof.
+    intros. simp.
+Qed. Hint Resolve tree_lower_bound_other: core.
+
+Lemma tree_lower_bound_destruct : forall l, (forall l1, (forall x, (((lower_bound l x) /\ ((lch l l1) /\ ~(leaf l1))) -> (lower_bound l1 x)))). Proof.
+    intros. simp. my_inversion H0; clear H0. my_inversion H; clear H.
+    - unfold not in H1. exfalso. apply H1. constructor.
+    - my_inversion H3.
+ Qed. Hint Resolve tree_lower_bound_destruct: core.
+
+Lemma tree_upper_bound_base : forall l, (forall l1, (forall x, (forall y, (((bst l /\ root l x) /\ ((rch l l1) /\ ((leaf l1) /\ (y > x)))) -> (upper_bound l y))))). Proof.
+    intros. simp. my_inversion H3; clear H3. my_inversion H0; clear H0. my_inversion H1; clear H1. constructor; auto.
+ Qed. Hint Resolve tree_upper_bound_base: core.
+
+Lemma tree_upper_bound_other : forall l, (forall l1, (forall x, (((bst l /\ root l x) /\ ((rch l l1) /\ (~(leaf l1) /\ (upper_bound l1 x)))) -> (upper_bound l x)))). Proof.
+    intros. simp.
+Qed. Hint Resolve tree_upper_bound_other: core.
+
+Lemma tree_upper_bound_destruct : forall l, (forall l1, (forall x, (((upper_bound l x) /\ ((rch l l1) /\ ~(leaf l1))) -> (upper_bound l1 x)))). Proof.
+    intros. simp.  my_inversion H0; clear H0.  my_inversion H; clear H.
+    - unfold not in H1. exfalso. apply H1. constructor.
+    - my_inversion H0; clear H0.
+     my_inversion H3; clear H3.
+Qed. Hint Resolve tree_upper_bound_destruct: core.
+
+Lemma upper_bound_helper : forall l x y, upper_bound l x /\  x < y -> upper_bound l y.
+Proof.
+    intros. simp. induction l.
+    - my_inversion H. my_inversion H3.
+    - my_inversion H; clear H.
+        + my_inversion H5; clear H5. econstructor; eauto. lia.
+        + my_inversion H3; clear H3. eapply UpperBoundRecursiveCase; eauto.
+Qed. Hint Resolve  upper_bound_helper: core.
+
+Lemma lower_bound_helper : forall l x y, lower_bound l x /\  x > y -> lower_bound l y.
+Proof.
+    intros. simp. induction l.
+    - my_inversion H. my_inversion H3.
+    - my_inversion H; clear H.
+        + my_inversion H5; clear H5. econstructor; eauto. lia.
+        + my_inversion H3; clear H3. eapply LowerBoundRecursiveCase; eauto.
+Qed. Hint Resolve  lower_bound_helper: core.
+
+Lemma node_lower_helper : forall l x r y, lower_bound (Node l x r) y -> x > y
+with node_upper_helper : forall l x r y, upper_bound (Node l x r) y -> x < y.
+Proof.
+    - intro l. induction l.
+        + intros. my_inversion H. auto. my_inversion H2. my_inversion H3. my_inversion H6.
+        + intros. my_inversion H; clear H. my_inversion H2; clear H2. apply IHl1 in H3. my_inversion H0. assert (upper_bound (Node l1 v l2) x). apply H5. clear H5. unfold not. intro. my_inversion H.
+         eapply node_upper_helper in H. lia.
+    - intro. intro. intro. generalize dependent l. generalize dependent x. induction r.
+        + intros. my_inversion H. auto. my_inversion H2; clear H2. my_inversion H. auto.
+        unfold not in H1. exfalso. apply H1. constructor.
+        + intros. my_inversion H; clear H. my_inversion H2; clear H2. apply node_upper_helper in H3. my_inversion H0. assert (lower_bound (Node r1 v r2) x). apply H6. unfold not. intro. my_inversion H. eapply node_lower_helper in H. lia.
+Qed.
+
+
+Lemma upper_lower_separate_by_atleast_one : forall l, (forall x, (forall y, (((bst l) /\ ((upper_bound l x) /\ (lower_bound l y))) -> ((y + 1) < x)))). Proof.
+    intro. induction l.
+    - intros. simp. my_inversion H1. my_inversion H4.
+    - intros. simp. assert (y < v). eapply node_lower_helper; eauto. assert (v < x). eapply node_upper_helper; eauto. lia.
+ Qed. Hint Resolve upper_lower_separate_by_atleast_one: core.
+
+ Lemma tree_lower_bound_destruct_2 : forall l, (forall l1, (forall x, (((bst l /\ root l x) /\ ((rch l l1) /\ ~(leaf l1))) -> (lower_bound l1 x)))). Proof.
+    intros. simp. my_inversion H0; clear H0. my_inversion H2; clear H2. my_inversion H. auto.
+  Qed. Hint Resolve tree_lower_bound_destruct_2: core.
+
+  Lemma tree_lower_bound_root : forall l, (forall x, (forall y, (((bst l /\ root l x) /\ (lower_bound l y)) -> (y < x)))). Proof.
+    intros. simp. my_inversion H1; clear H1. my_inversion H; clear H. my_inversion H0; clear H0. my_inversion H2; clear H2. apply H4 in H1. clear H4. assert (y + 1 < x). eapply upper_lower_separate_by_atleast_one; eauto. lia.
+   Qed. Hint Resolve tree_lower_bound_root: core.
+
+Lemma tree_upper_bound_destruct_2 : forall l, (forall l1, (forall x, (((bst l) /\ ((root l x) /\ ((lch l l1) /\ ~(leaf l1)))) -> (upper_bound l1 x)))). Proof.
+    intros. simp. my_inversion H1; clear H1. my_inversion H0; clear H0. my_inversion H. apply H4 in H2; clear H4. auto.
+ Qed. Hint Resolve tree_upper_bound_destruct_2: core.
+
+Lemma tree_upper_bound_root : forall l, (forall x, (forall y, (((bst l) /\ ((root l x) /\ (upper_bound l y))) -> (y > x)))). Proof.
+   intros. simp. my_inversion H1; clear H1; my_inversion H; clear H; my_inversion H0; clear H0.
+    my_inversion H4; clear H4. apply H6 in H3; clear H6. assert (y > x + 1).  eapply upper_lower_separate_by_atleast_one; eauto. lia.
+ Qed. Hint Resolve tree_upper_bound_root: core.

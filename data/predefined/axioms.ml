@@ -92,9 +92,11 @@ let[@axiom] tree_leaf_no_root (l : int tree) (x : int) =
 let[@axiom] tree_leaf_no_ch (l : int tree) (l1 : int tree) =
   (leaf l) #==> (not (lch l l1 || rch l l1))
 
-let[@axiom] tree_no_leaf_exists_ch (l : int tree) ((l1 [@exists]) : int tree)
-    ((l2 [@exists]) : int tree) =
-  (not (leaf l)) #==> (lch l l1 && rch l l2)
+let[@axiom] tree_no_leaf_exists_lch (l : int tree) ((l1 [@exists]) : int tree) =
+  (not (leaf l)) #==> (lch l l1)
+
+let[@axiom] tree_no_leaf_exists_rch (l : int tree) ((l2 [@exists]) : int tree) =
+  (not (leaf l)) #==> (rch l l2)
 
 let[@axiom] tree_no_leaf_exists_root (l : int tree) ((x [@exists]) : int) =
   (not (leaf l)) #==> (root l x)
@@ -102,8 +104,26 @@ let[@axiom] tree_no_leaf_exists_root (l : int tree) ((x [@exists]) : int) =
 let[@axiom] tree_root_no_leaf (l : int tree) (x : int) =
   (root l x) #==> (not (leaf l))
 
-let[@axiom] tree_ch_no_leaf (l : int tree) (l1 : int tree) =
-  (lch l l1 || rch l l1) #==> (not (leaf l))
+let[@axiom] tree_lch_no_leaf (l : int tree) (l1 : int tree) =
+  (lch l l1) #==> (not (leaf l))
+
+let[@axiom] tree_rch_no_leaf (l : int tree) (l1 : int tree) =
+  (rch l l1) #==> (not (leaf l))
+
+let[@axiom] tree_root_unique (l : int tree) (x : int) (y : int) =
+  (root l x && root l y) #==> (x == y)
+
+let[@axiom] tree_lch_unique (l : int tree) (l1 : int tree) (l2 : int tree) =
+  (lch l l1 && lch l l2) #==> (l1 == l2)
+
+let[@axiom] tree_rch_unique (l : int tree) (l1 : int tree) (l2 : int tree) =
+  (rch l l1 && rch l l2) #==> (l1 == l2)
+
+let[@axiom] tree_leaf_unique (l : int tree) (l1 : int tree) =
+  (leaf l && leaf l1) #==> (l == l1)
+
+let[@axiom] tree_leaf_or_root (l : int tree) =
+  leaf l || fun ((x [@exists]) : int) -> root l x
 
 (** depth *)
 
@@ -118,7 +138,7 @@ let[@axiom] tree_leaf_depth_0_alt (l : int tree) (n : int) =
 let[@axiom] tree_positive_depth_is_not_leaf (l : int tree) (n : int) =
   (depth l n && n > 0) #==> (not (leaf l))
 
-let[@axiom] tree_depth_exists (l : int tree) ((n [@exists]) : int) = depth l n
+(* let[@axiom] tree_depth_exists (l : int tree) ((n [@exists]) : int) = depth l n *)
 
 (* let[@axiom] tree_ch_depth_ex (l : int tree) (l1 : int tree) (n : int)
      ((n1 [@exists]) : int) =
@@ -132,11 +152,45 @@ let[@axiom] tree_rch_depth_minus_1 (l : int tree) (l1 : int tree) (n : int)
     (n1 : int) =
   (rch l l1 && depth l n && depth l1 n1) #==> (n1 <= n - 1)
 
+let[@axiom] tree_lch_depth_minus_1 (l : int tree) (l1 : int tree) (n : int)
+    (n1 : int) =
+  (lch l l1 && depth l n && depth l1 n1) #==> (n1 <= n - 1)
+
+let[@axiom] tree_lch_depth_minus_1 (l : int tree) (l1 : int tree) (n : int)
+    (n1 : int) =
+  (lch l l1 && depth l n && n1 <= n - 1 && n1 >= 0) #==> (depth l1 n1)
+
+let[@axiom] tree_rch_depth_minus_1_alt (l : int tree) (l1 : int tree) (n : int)
+    (n1 : int) =
+  (rch l l1 && depth l n && n1 <= n - 1 && n1 >= 0) #==> (depth l1 n1)
+
+(* let[@axiom] tree_depth_rch (l : int tree) (l1 : int tree) (n : int) (n1 : int) =
+     (rch l l1 && depth l1 n1 && depth l n) #==> (n1 < n)
+
+   let[@axiom] tree_depth_lch (l : int tree) (l1 : int tree) (n : int) (n1 : int) =
+     (lch l l1 && depth l1 n1 && depth l n) #==> (n1 < n) *)
+
 let[@axiom] tree_depth_0_is_leaf (l : int tree) (n : int) =
   (depth l n && n == 0) #==> (leaf l)
 
 let[@axiom] tree_depth_0_is_leaf_alt (l : int tree) (n : int) =
   (depth l 0) #==> (leaf l)
+
+(* let[@axiom] tree_depth_node (l : int tree) (l1 : int tree) (l2 : int tree)
+     (n1 : int) (n2 : int) =
+   (depth l1 n1 && depth l2 n2 && lch l l1 && rch l l2)
+   #==> (((n1 > n2) #==> (depth l (n1 + 1)))
+        && ((n2 >= n1) #==> (depth l (n2 + 1)))) *)
+
+let[@axiom] tree_depth_node_lch (l : int tree) (l1 : int tree) (l2 : int tree)
+    (n1 : int) (n2 : int) =
+  (depth l1 n1 && depth l2 n2 && lch l l1 && rch l l2 && n1 >= n2)
+  #==> (depth l (n1 + 1))
+
+let[@axiom] tree_depth_node_rch (l : int tree) (l1 : int tree) (l2 : int tree)
+    (n1 : int) (n2 : int) =
+  (depth l1 n1 && depth l2 n2 && lch l l1 && rch l l2 && n2 >= n1)
+  #==> (depth l (n2 + 1))
 
 (** tree_mem *)
 
@@ -171,16 +225,72 @@ let[@axiom] tree_bst_lch_mem_lt_root (l : int tree) (l1 : int tree) (x : int)
     (y : int) =
   (bst l && lch l l1 && root l x && tree_mem l1 y) #==> (y < x)
 
+(* let[@axiom] tree_bst_lch_mem_lt_root_2 (l : int tree) (l1 : int tree)
+     ((x [@exists]) : int) =
+   (bst l && lch l l1 && fun (y : int) -> (tree_mem l y) #==> (x < y))
+   #==> (fun (z : int) -> (tree_mem l1 z) #==> (x < z)) *)
+
 let[@axiom] tree_bst_rch_mem_gt_root (l : int tree) (l1 : int tree) (x : int)
     (y : int) =
   (bst l && rch l l1 && root l x && tree_mem l1 y) #==> (x < y)
 
+(* let[@axiom] tree_node_bst (l : int tree) (l1 : int tree) (l2 : int tree)
+     (x : int) =
+   (bst l1 && bst l2 && lch l l1 && rch l l2 && root l x
+   && (fun (y1 : int) -> (tree_mem l1 y1) #==> (y1 < x))
+   && fun (y2 : int) -> (tree_mem l2 y2) #==> (x < y2))
+   #==> (bst l) *)
+
 let[@axiom] tree_node_bst (l : int tree) (l1 : int tree) (l2 : int tree)
     (x : int) =
   (bst l1 && bst l2 && lch l l1 && rch l l2 && root l x
-  && (fun (y1 : int) -> (tree_mem l1 y1) #==> (y1 < x))
-  && fun (y2 : int) -> (tree_mem l2 y2) #==> (x < y2))
+  && ((not (leaf l1)) #==> (upper_bound l1 x))
+  && ((not (leaf l2)) #==> (lower_bound l2 x)))
   #==> (bst l)
+
+(** Lower/upper bounds*)
+
+let[@axiom] tree_lower_bound_base (l : int tree) (l1 : int tree) (x : int)
+    (y : int) =
+  (bst l && root l x && lch l l1 && leaf l1 && y < x) #==> (lower_bound l y)
+
+let[@axiom] tree_lower_bound_other (l : int tree) (l1 : int tree) (x : int)
+    (y : int) =
+  (bst l && root l x && lch l l1 && (not (leaf l1)) && lower_bound l1 y && y < x)
+  #==> (lower_bound l y)
+
+let[@axiom] tree_lower_bound_destruct (l : int tree) (l1 : int tree) (x : int) =
+  (lower_bound l x && lch l l1 && not (leaf l1)) #==> (lower_bound l1 x)
+
+let[@axiom] tree_lower_bound_destruct_2 (l : int tree) (l1 : int tree) (x : int)
+    =
+  (bst l && root l x && rch l l1 && not (leaf l1)) #==> (lower_bound l1 x)
+
+let[@axiom] tree_lower_bound_root (l : int tree) (x : int) (y : int) =
+  (bst l && root l x && lower_bound l y) #==> (y < x)
+
+let[@axiom] tree_upper_bound_base (l : int tree) (l1 : int tree) (x : int)
+    (y : int) =
+  (bst l && root l x && rch l l1 && leaf l1 && y > x) #==> (upper_bound l y)
+
+let[@axiom] tree_upper_bound_other (l : int tree) (l1 : int tree) (x : int)
+    (y : int) =
+  (bst l && root l x && rch l l1 && (not (leaf l1)) && upper_bound l1 y && y > x)
+  #==> (upper_bound l y)
+
+let[@axiom] tree_upper_bound_destruct (l : int tree) (l1 : int tree) (x : int) =
+  (upper_bound l x && rch l l1 && not (leaf l1)) #==> (upper_bound l1 x)
+
+let[@axiom] tree_upper_bound_destruct_2 (l : int tree) (l1 : int tree) (x : int)
+    =
+  (bst l && root l x && lch l l1 && not (leaf l1)) #==> (upper_bound l1 x)
+
+let[@axiom] tree_upper_bound_root (l : int tree) (x : int) (y : int) =
+  (bst l && root l x && upper_bound l y) #==> (y > x)
+
+let[@axiom] upper_lower_separate_by_atleast_one (l : int tree) (x : int)
+    (y : int) =
+  (bst l && upper_bound l x && lower_bound l y) #==> (y + 1 < x)
 
 (** heap *)
 
@@ -214,12 +324,6 @@ let[@axiom] tree_complete_node (l : int tree) (l1 : int tree) (l2 : int tree)
   (complete l1 && complete l2 && depth l1 n && depth l2 n && lch l l1
  && rch l l2)
   #==> (complete l)
-
-let[@axiom] tree_depth_node (l : int tree) (l1 : int tree) (l2 : int tree)
-    (n1 : int) (n2 : int) =
-  (depth l1 n1 && depth l2 n2 && lch l l1 && rch l l2)
-  #==> (((n1 > n2) #==> (depth l (n1 + 1)))
-       && ((n2 >= n1) #==> (depth l (n2 + 1))))
 
 let[@axiom] tree_complete_lch_depth_minus_1 (l : int tree) (l1 : int tree)
     (n : int) =
@@ -514,9 +618,17 @@ let[@axiom] black_rt_black_num_black_gt_1 (v : int rbtree) (rt : int rbtree)
 let[@axiom] stlc_num_arr_geq_0 (tau : stlc_ty) (n : int) =
   (num_arr tau n) #==> (n >= 0)
 
-let[@axiom] stlc_num_arr_arr (tau : stlc_ty) (tau_body : stlc_ty) (m : int) =
-  (stlc_ty_arr2 tau tau_body)
-  #==> (iff (num_arr tau_body m) (num_arr tau (m + 1)))
+let[@axiom] stlc_num_arr_unique (tau : stlc_ty) (n1 : int) (n2 : int) =
+  (num_arr tau n1 && num_arr tau n2) #==> (n1 == n2)
+
+let[@axiom] stlc_num_app_unique (v : stlc_term) (n1 : int) (n2 : int) =
+  (num_app v n1 && num_app v n2) #==> (n1 == n2)
+
+let[@axiom] stlc_num_arr_arr_1 (tau : stlc_ty) (tau_body : stlc_ty) (m : int) =
+  (stlc_ty_arr2 tau tau_body && num_arr tau_body m) #==> (num_arr tau (m + 1))
+
+let[@axiom] stlc_num_arr_arr_2 (tau : stlc_ty) (tau_body : stlc_ty) (m : int) =
+  (stlc_ty_arr2 tau tau_body && num_arr tau (m + 1)) #==> (num_arr tau_body m)
 
 let[@axiom] stlc_const_num_app_0 (v : stlc_term) =
   (is_const v) #==> (num_app v 0)
@@ -530,9 +642,8 @@ let[@axiom] stlc_num_app_gt_0_is_abs_or_app (v : stlc_term)
     ((n [@exists]) : int) =
   (is_app v) #==> (num_app v n && n > 0)
 
-let[@axiom] stlc_typing_num_arr (gamma : stlc_tyctx) (v : stlc_term)
-    (tau : stlc_ty) ((n [@exists]) : int) =
-  (typing gamma v tau) #==> (num_arr tau n)
+let[@axiom] stlc_typing_num_arr (tau : stlc_ty) ((n [@exists]) : int) =
+  num_arr tau n
 
 let[@axiom] stlc_term_4_cases (v : stlc_term) =
   is_const v || is_var v || is_abs v || is_app v
@@ -561,11 +672,11 @@ let[@axiom] stlc_term_destruct2 (term : stlc_term) ((c [@exists]) : int) =
   (is_var term) #==> (stlc_id term c)
 
 let[@axiom] stlc_term_destruct3_1 (term : stlc_term)
-    ((t1 [@exists]) : stlc_term) ((t2 [@exists]) : stlc_term) =
+    ((t1 [@exists]) : stlc_term) =
   (is_app term) #==> (stlc_app1 term t1)
 
 let[@axiom] stlc_term_destruct3_2 (term : stlc_term)
-    ((t1 [@exists]) : stlc_term) ((t2 [@exists]) : stlc_term) =
+    ((t2 [@exists]) : stlc_term) =
   (is_app term) #==> (stlc_app2 term t2)
 
 let[@axiom] stlc_term_destruct4_ty (term : stlc_term) ((ty [@exists]) : stlc_ty)
@@ -576,9 +687,28 @@ let[@axiom] stlc_term_destruct4 (term : stlc_term)
     ((body [@exists]) : stlc_term) =
   (is_abs term) #==> (stlc_abs_body term body)
 
+let[@axiom] stlc_is_abs_ty (term : stlc_term) (ty : stlc_ty) =
+  (stlc_abs_ty term ty) #==> (is_abs term)
+
+let[@axiom] stlc_is_abs_body (term : stlc_term) (body : stlc_term) =
+  (stlc_abs_body term body) #==> (is_abs term)
+
+let[@axiom] stlc_is_app_1 (term : stlc_term) (t1 : stlc_term) =
+  (stlc_app1 term t1) #==> (is_app term)
+
+let[@axiom] stlc_is_app_2 (term : stlc_term) (t2 : stlc_term) =
+  (stlc_app2 term t2) #==> (is_app term)
+
 let[@axiom] stlc_term_abs_typing_arr_1 (gamma : stlc_tyctx) (v : stlc_term)
     (tau : stlc_ty) (ty : stlc_ty) =
   (stlc_abs_ty v ty && typing gamma v tau) #==> (stlc_ty_arr1 tau ty)
+
+let[@axiom] stlc_typing_arr_term_abs_1 (gamma : stlc_tyctx) (v : stlc_term)
+    (tau : stlc_ty) (ty : stlc_ty) =
+  ((not (is_var v))
+  && (not (is_app v))
+  && stlc_ty_arr1 tau ty && typing gamma v tau)
+  #==> (stlc_abs_ty v ty)
 
 let[@axiom] stlc_term_abs_typing_arr_2 (gamma : stlc_tyctx) (v : stlc_term)
     (tau : stlc_ty) (body : stlc_term) ((body_ty [@exists]) : stlc_ty) =
@@ -613,6 +743,9 @@ let[@axiom] stlc_tyctx_cons (ty : stlc_ty) (gamma : stlc_tyctx)
     ((v [@exists]) : stlc_tyctx) =
   stlc_tyctx_hd v ty && stlc_tyctx_tl v gamma
 
+let[@axiom] stlc_num_app_exists (v : stlc_term) ((n [@exists]) : int) =
+  num_app v n
+
 let[@axiom] stlc_num_app_geq_0 (v : stlc_term) (n : int) =
   (num_app v n) #==> (0 <= n)
 
@@ -630,21 +763,51 @@ let[@axiom] stlc_num_app_abs_body_eq_rev (v : stlc_term) (body : stlc_term)
    #==> (fun ((n [@exists]) : int) ((n1 [@exists]) : int) ((n2 [@exists]) : int)
      -> n1 + n2 + 1 == n && num_app t1 n1 && num_app t2 n2 && num_app v n) *)
 
+let[@axiom] stlc_num_app_app (v : stlc_term) (t1 : stlc_term) (t2 : stlc_term)
+    (n1 : int) (n2 : int) =
+  (stlc_app1 v t1 && stlc_app2 v t2 && num_app t1 n1 && num_app t2 n2)
+  #==> (num_app v (1 + n1 + n2))
+
 (* let[@axiom] stlc_num_app_app (v : stlc_term) (t1 : stlc_term) (t2 : stlc_term)
      (n1 : int) (n2 : int) =
    (stlc_app1 v t1 && stlc_app2 v t2 && num_app t1 n1 && num_app t2 n2)
-   #==> (num_app v (1 + n1 + n2)) *)
+   #==> (fun ((n [@exists]) : int) -> n == 1 + n1 + n2 && num_app v n) *)
 
-(* let[@axiom] stlc_num_app_app (v : stlc_term) (t1 : stlc_term) (t2 : stlc_term)
-    (n1 : int) (n2 : int) =
-  (stlc_app1 v t1 && stlc_app2 v t2 && num_app t1 n1 && num_app t2 n2)
-  #==> (fun ((n [@exists]) : int) -> n == 1 + n1 + n2 && num_app v n) *)
+(* let[@axiom] stlc_num_app_app_rev_1 (v : stlc_term) (t1 : stlc_term)
+     (t2 : stlc_term) (n : int) =
+   (stlc_app1 v t1 && stlc_app2 v t2 && num_app v n)
+   #==> (fun ((m1 [@exists]) : int) ((m2 [@exists]) : int) ->
+   num_app t1 m1 && num_app t2 m2 && m1 + m2 == n - 1) *)
 
 let[@axiom] stlc_num_app_app_rev (v : stlc_term) (t1 : stlc_term)
-    (t2 : stlc_term) (n : int) =
-  (stlc_app1 v t1 && stlc_app2 v t2 && num_app v n)
-  #==> (fun ((m1 [@exists]) : int) ((m2 [@exists]) : int) ->
-  num_app t1 m1 && num_app t2 m2 && m1 + m2 == n - 1)
+    (t2 : stlc_term) (n : int) (m1 : int) (m2 : int) =
+  (stlc_app1 v t1 && stlc_app2 v t2 && num_app t1 m1 && num_app t2 m2
+ && num_app v n)
+  #==> (1 + m1 + m2 == n)
+
+let[@axiom] stlc_num_app_app_rev_2 (v : stlc_term) (t1 : stlc_term)
+    (t2 : stlc_term) (n : int) (m1 : int) (m2 : int) =
+  (stlc_app1 v t1 && stlc_app2 v t2 && num_app t1 m1 && num_app t2 m2
+ && num_app v n)
+  #==> (m2 == n - m1 - 1)
+
+(* let[@axiom] stlc_num_app_app_rev_bounds_1 (v : stlc_term) (t1 : stlc_term)
+     (n : int) (m1 : int) =
+   (stlc_app1 v t1 && num_app t1 m1 && num_app v n) #==> (m1 < n) *)
+
+let[@axiom] stlc_num_app_app_rev_bounds_1 (v : stlc_term) (t1 : stlc_term)
+    (n : int) =
+  (stlc_app1 v t1 && num_app v n) #==> (fun ((m1 [@exists]) : int) ->
+  m1 < n && num_app t1 m1)
+
+let[@axiom] stlc_num_app_app_rev_bounds_2 (v : stlc_term) (t2 : stlc_term)
+    (n : int) (m2 : int) =
+  (stlc_app2 v t2 && num_app t2 m2 && num_app v n) #==> (m2 < n)
+
+(* let[@axiom] stlc_num_app_app_rev_bounds_2 (v : stlc_term) (t2 : stlc_term)
+     (n : int) =
+   (stlc_app2 v t2 && num_app v n) #==> (fun ((m2 [@exists]) : int) ->
+   m2 < n && num_app t2 m2) *)
 
 let[@axiom] stlc_abd_typing_rev (gamma : stlc_tyctx) (v : stlc_term)
     (tau : stlc_ty) (ty : stlc_ty) (body : stlc_term) (body_ty : stlc_ty)

@@ -3,7 +3,7 @@ let[@assert] rty1 =
   let lo = (true : [%v: int]) [@over] in
   let hi = (lo < v : [%v: int]) [@over] in
   (d > 0
-   && (fun (u : int) -> (tree_mem v u) #==> (lo < u && u < hi))
+   && ((not (leaf v)) #==> (lower_bound v lo && upper_bound v hi))
    && bst v
    && (not (leaf v))
    && fun ((n [@exists]) : int) -> depth v n && n <= d
@@ -22,16 +22,14 @@ let[@assert] rty2 =
      && 0 <= d - 1
      && d - 1 >= 0
      && d - 1 < d
-     && (fun (u : int) -> (tree_mem lt u) #==> (lo < u && u < x))
+     && ((not (leaf lt)) #==> (lower_bound lt lo && upper_bound lt x))
      && bst lt
-     && (not (leaf lt))
      && (fun ((n [@exists]) : int) -> depth lt n && n <= d - 1 && n > 0)
      && 0 <= d_2 && d_2 >= 0 && d_2 < d
      && d_2 == d - 1
      && x < hi
-     && (fun (u : int) -> (tree_mem rt u) #==> (x < u && u < hi))
+     && ((not (leaf rt)) #==> (lower_bound rt x && upper_bound rt hi))
      && bst rt
-     && (not (leaf rt))
      && (fun ((n [@exists]) : int) -> depth rt n && n <= d_2 && n > 0)
      && root v x && lch v lt && rch v rt
     : [%v: int tree])

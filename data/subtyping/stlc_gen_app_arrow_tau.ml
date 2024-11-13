@@ -11,11 +11,10 @@ let[@assert] rty1 =
    && (num_arr_tau2 < num_arr_tau || num < num)
    && fun ((x_4 [@exists]) : stlc_tyctx) ->
    stlc_tyctx_hd x_4 tau1 && stlc_tyctx_tl x_4 gamma
-   && fun ((tau_0 [@exists]) : stlc_ty) ->
-   num_arr tau_0 num_arr_tau2 && tau_0 == tau2
+   && num_arr tau2 num_arr_tau2
    && fun ((body [@exists]) : stlc_term) ->
-   typing x_4 body tau_0 && num_app body num && stlc_abs_ty v tau1
-   && stlc_abs_body v body
+   typing x_4 body tau2  &&
+   num_app body num && stlc_abs_ty v tau1 && stlc_abs_body v body
     : [%v: stlc_term])
     [@under]
 
