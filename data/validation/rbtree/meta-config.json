@@ -25,7 +25,7 @@
     "abduce_rlimit": 20000000,
     "synth_bound": 40,
     "synth_rlimit": 2000000,
-    "type_rlimit": 30000000,
+    "type_rlimit": 80000000,
     "use_missing_coverage_file": false,
     "comp_path": "components.txt",
     "prim_path": {
