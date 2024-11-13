@@ -1,10 +1,15 @@
+(* val get_num_arr : stlc_ty -> int
+   val gen_type : unit -> stlc_ty
+   val vars_with_type : stlc_tyctx -> stlc_ty -> stlc_term
+   val gen_term_no_app : stlc_tyctx -> stlc_ty -> stlc_term *)
+
 let rec gen_term_size (num_arr_tau : int) (num : int) (gamma : stlc_tyctx)
     (tau : stlc_ty) : stlc_term =
-  if sizecheck num then Err
+  if sizecheck num then gen_term_no_app gamma tau
   else if bool_gen () then
     let (arg_tau : stlc_ty) = gen_type () in
     let (num_app_func : int) = int_range_inex 0 num in
-    let (num_app_arg : int) = int_range_inex 0 (num - num_app_func) in
+    let (num_app_arg : int) = subs (num - num_app_func) in
     let (func_ty : stlc_ty) = Stlc_ty_arr (arg_tau, tau) in
     let (num_arr_func_ty : int) = get_num_arr func_ty in
     let (func : stlc_term) =
@@ -16,15 +21,7 @@ let rec gen_term_size (num_arr_tau : int) (num : int) (gamma : stlc_tyctx)
       gen_term_size num_arr_arg_ty num_app_arg gamma arg_tau
     in
     Stlc_app (func, arg)
-  else
-    match tau with
-    | Stlc_ty_nat -> Err
-    | Stlc_ty_arr (tau1, tau2) ->
-        let (num_arr_tau2 : int) = get_num_arr tau2 in
-        let (body : stlc_term) =
-          gen_term_size num_arr_tau2 num (Stlc_tyctx_cons (tau1, gamma)) tau2
-        in
-        Stlc_abs (tau1, body)
+  else match tau with Stlc_ty_nat -> Err | Stlc_ty_arr (tau1, tau2) -> Err
 
 let[@assert] gen_term_size =
   let num_arr_tau = (v >= 0 : [%v: int]) [@over] in

@@ -1,10 +1,10 @@
 let rec gen_term_size (num_arr_tau : int) (num : int) (gamma : stlc_tyctx)
     (tau : stlc_ty) : stlc_term =
-  if sizecheck num then gen_term_no_app gamma tau
+  if sizecheck num then Err
   else if bool_gen () then
     let (arg_tau : stlc_ty) = gen_type () in
     let (num_app_func : int) = int_range_inex 0 num in
-    let (num_app_arg : int) = int_range_inex 0 (num - num_app_func) in
+    let (num_app_arg : int) = subs (num - num_app_func) in
     let (func_ty : stlc_ty) = Stlc_ty_arr (arg_tau, tau) in
     let (num_arr_func_ty : int) = get_num_arr func_ty in
     let (func : stlc_term) =
