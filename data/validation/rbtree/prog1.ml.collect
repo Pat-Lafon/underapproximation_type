@@ -1,34 +1,34 @@
 Path Specific Collection:
 In Path:
-pathcond_0:[v:unit | ∃x_0, (((x_0) <=> (h == 0)) && (not (x_0) <=> (h > 0)) && (x_0) && (color))]
+pathcond_0:[v:unit | ∃x_37, (((x_37) <=> (h == 0)) && (not (x_37) <=> (h > 0)) && (x_37) && (color))]
 Cost: 1
 Type: Ty_int
 _x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_0, (((x_0) <=> (h == 0)) && (not (x_0) <=> (h > 0)) && (x_0) && (color))] 
+pathcond_0:[v:unit | ∃x_37, (((x_37) <=> (h == 0)) && (not (x_37) <=> (h > 0)) && (x_37) && (color))] 
  ⊢ _x6 as h : int :
 [v:int | v == h]
 
-_42:[v:int | true]
-pathcond_0:[v:unit | ∃x_0, (((x_0) <=> (h == 0)) && (not (x_0) <=> (h > 0)) && (x_0) && (color))] 
- ⊢ _42 as int_gen () : int :
+_48:[v:int | true]
+pathcond_0:[v:unit | ∃x_37, (((x_37) <=> (h == 0)) && (not (x_37) <=> (h > 0)) && (x_37) && (color))] 
+ ⊢ _48 as int_gen () : int :
 [v:int | true]
 
 Type: Ty_bool
 _x5:[v:bool | v == color]
-pathcond_0:[v:unit | ∃x_0, (((x_0) <=> (h == 0)) && (not (x_0) <=> (h > 0)) && (x_0) && (color))] 
+pathcond_0:[v:unit | ∃x_37, (((x_37) <=> (h == 0)) && (not (x_37) <=> (h > 0)) && (x_37) && (color))] 
  ⊢ _x5 as color : bool :
 [v:bool | v == color]
 
-Cost: 2
+Cost: 5
 Type: Ty_bool
 _x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_0, (((x_0) <=> (h == 0)) && (not (x_0) <=> (h > 0)) && (x_0) && (color))] 
+pathcond_0:[v:unit | ∃x_37, (((x_37) <=> (h == 0)) && (not (x_37) <=> (h > 0)) && (x_37) && (color))] 
  ⊢ _x1 as False : bool :
 [v:bool | not (v)]
 
 Type: (Ty_constructor(rbtree(Ty_int)))
 _x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_0, (((x_0) <=> (h == 0)) && (not (x_0) <=> (h > 0)) && (x_0) && (color))] 
+pathcond_0:[v:unit | ∃x_37, (((x_37) <=> (h == 0)) && (not (x_37) <=> (h > 0)) && (x_37) && (color))] 
  ⊢ _x2 as Rbtleaf : int rbtree :
 [v:int rbtree | rb_leaf v]
 
