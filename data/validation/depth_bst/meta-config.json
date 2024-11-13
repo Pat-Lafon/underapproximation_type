@@ -16,9 +16,10 @@
     "collectfile": ".collect",
     "abd_templates": ["template_leaf", "template_eq_0"],
     "num_quantifier": 0,
-    "abduce_rlimit": 800000000,
+    "abduce_rlimit": 6000000,
     "synth_bound": 24,
-    "synth_rlimit": 3000000,
+    "synth_rlimit": 2000000,
+    "type_rlimit": 6000000,
     "use_missing_coverage_file": false,
     "comp_path": "components.txt",
     "prim_path": {

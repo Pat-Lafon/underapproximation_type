@@ -2,11 +2,7 @@ let rec size_bst_gen (d : int) (lo : int) (hi : int) : int tree =
   if sizecheck d then Leaf
   else if incr lo < hi then
     let (x : int) = int_range lo hi in
-    if bool_gen () then
-      let (lt : int tree) = size_bst_gen (subs d) lo x in
-      let (rt : int tree) = size_bst_gen (subs d) x hi in
-      Node (x, lt, rt)
-    else Err
+    if bool_gen () then Err else Leaf
   else Leaf
 
 let[@assert] size_bst_gen =

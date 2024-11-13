@@ -1,0 +1,190 @@
+Path Specific Collection:
+In Path:
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+Cost: 5
+Type: (Ty_constructor(tree(Ty_int)))
+_x0:[v:int tree | leaf v]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))] 
+ ⊢ _x0 as Leaf : int tree :
+[v:int tree | leaf v]
+
+Cost: 6
+Type: Ty_int
+_x1:[v:int | v == d]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+_x203:[v:int | v == (_x1 - 1)] 
+ ⊢ _x203 as let (_x1) = d in subs _x1 : int :
+[v:int | v == (_x1 - 1)]
+
+_x2:[v:int | v == lo]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+_x202:[v:int | v == (_x2 - 1)] 
+ ⊢ _x202 as let (_x2) = lo in subs _x2 : int :
+[v:int | v == (_x2 - 1)]
+
+_x3:[v:int | v == hi]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+_x201:[v:int | v == (_x3 - 1)] 
+ ⊢ _x201 as let (_x3) = hi in subs _x3 : int :
+[v:int | v == (_x3 - 1)]
+
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+_x200:[v:int | v == (x - 1)] 
+ ⊢ _x200 as let (x) = x in subs x : int :
+[v:int | v == (x - 1)]
+
+Cost: 14
+Type: (Ty_constructor(tree(Ty_int)))
+_x1:[v:int | v == d]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+_x203:[v:int | v == (_x1 - 1)]
+_x2:[v:int | v == lo]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+_146:[v:int | v == (_x2 - 1)]
+_x3:[v:int | v == hi]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+_x993:[v:int tree | ∃d_23, ((0 <= d_23) && (d_23 >= 0) && (d_23 < d) && (d_23 == _x203) && (∃hi_5, ((_146 < hi_5) && (hi_5 == _x3) && (∃_x993, ((not (leaf _x993) => (lower_bound _x993 _146)) && (not (leaf _x993) => (upper_bound _x993 hi_5)) && (bst _x993) && (∃n, ((depth _x993 n) && (n <= d_23))) && (v == _x993))))))] 
+ ⊢ _x993 as let (_x1) = d in
+let (_x203) = subs _x1 in
+let (_x991) = size_bst_gen _x203 in
+let (_x2) = lo in
+let (_146) = subs _x2 in
+let (_x992) = _x991 _146 in let (_x3) = hi in _x992 _x3 : int tree :
+[v:int tree | ∃d_23, ((0 <= d_23) && (d_23 >= 0) && (d_23 < d) && (d_23 == _x203) && (∃hi_5, ((_146 < hi_5) && (hi_5 == _x3) && (∃_x993, ((not (leaf _x993) => (lower_bound _x993 _146)) && (not (leaf _x993) => (upper_bound _x993 hi_5)) && (bst _x993) && (∃n, ((depth _x993 n) && (n <= d_23))) && (v == _x993))))))]
+
+_x1:[v:int | v == d]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+_x203:[v:int | v == (_x1 - 1)]
+_x2:[v:int | v == lo]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+_145:[v:int | v == (_x2 - 1)]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+_x990:[v:int tree | ∃d_22, ((0 <= d_22) && (d_22 >= 0) && (d_22 < d) && (d_22 == _x203) && (∃hi_4, ((_145 < hi_4) && (hi_4 == x) && (∃_x990, ((not (leaf _x990) => (lower_bound _x990 _145)) && (not (leaf _x990) => (upper_bound _x990 hi_4)) && (bst _x990) && (∃n, ((depth _x990 n) && (n <= d_22))) && (v == _x990))))))] 
+ ⊢ _x990 as let (_x1) = d in
+let (_x203) = subs _x1 in
+let (_x988) = size_bst_gen _x203 in
+let (_x2) = lo in
+let (_145) = subs _x2 in let (_x989) = _x988 _145 in let (x) = x in _x989 x : int tree :
+[v:int tree | ∃d_22, ((0 <= d_22) && (d_22 >= 0) && (d_22 < d) && (d_22 == _x203) && (∃hi_4, ((_145 < hi_4) && (hi_4 == x) && (∃_x990, ((not (leaf _x990) => (lower_bound _x990 _145)) && (not (leaf _x990) => (upper_bound _x990 hi_4)) && (bst _x990) && (∃n, ((depth _x990 n) && (n <= d_22))) && (v == _x990))))))]
+
+Cost: 11
+Type: Ty_int
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+_x200:[v:int | v == (x - 1)]
+_x783:[v:int | v == (_x200 - 1)] 
+ ⊢ _x783 as let (x) = x in let (_x200) = subs x in subs _x200 : int :
+[v:int | v == (_x200 - 1)]
+
+_x3:[v:int | v == hi]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+_x201:[v:int | v == (_x3 - 1)]
+_x782:[v:int | v == (_x201 - 1)] 
+ ⊢ _x782 as let (_x3) = hi in let (_x201) = subs _x3 in subs _x201 : int :
+[v:int | v == (_x201 - 1)]
+
+_x2:[v:int | v == lo]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+_x202:[v:int | v == (_x2 - 1)]
+_x781:[v:int | v == (_x202 - 1)] 
+ ⊢ _x781 as let (_x2) = lo in let (_x202) = subs _x2 in subs _x202 : int :
+[v:int | v == (_x202 - 1)]
+
+_x1:[v:int | v == d]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+_x203:[v:int | v == (_x1 - 1)]
+_x780:[v:int | v == (_x203 - 1)] 
+ ⊢ _x780 as let (_x1) = d in let (_x203) = subs _x1 in subs _x203 : int :
+[v:int | v == (_x203 - 1)]
+
+Cost: 1
+Type: Ty_int
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))] 
+ ⊢ x as x : int :
+[v:int | true]
+
+_x3:[v:int | v == hi]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))] 
+ ⊢ _x3 as hi : int :
+[v:int | v == hi]
+
+_x2:[v:int | v == lo]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))] 
+ ⊢ _x2 as lo : int :
+[v:int | v == lo]
+
+_x1:[v:int | v == d]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))] 
+ ⊢ _x1 as d : int :
+[v:int | v == d]
+
+Cost: 9
+Type: (Ty_constructor(tree(Ty_int)))
+_x1:[v:int | v == d]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+_x203:[v:int | v == (_x1 - 1)]
+_x2:[v:int | v == lo]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+_x3:[v:int | v == hi]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+_x233:[v:int tree | ∃d_11, ((0 <= d_11) && (d_11 >= 0) && (d_11 < d) && (d_11 == _x203) && (∃hi_2, ((_x2 < hi_2) && (hi_2 == _x3) && (∃_x233, ((not (leaf _x233) => (lower_bound _x233 _x2)) && (not (leaf _x233) => (upper_bound _x233 hi_2)) && (bst _x233) && (∃n, ((depth _x233 n) && (n <= d_11))) && (v == _x233))))))] 
+ ⊢ _x233 as let (_x1) = d in
+let (_x203) = subs _x1 in
+let (_x231) = size_bst_gen _x203 in
+let (_x2) = lo in let (_x232) = _x231 _x2 in let (_x3) = hi in _x232 _x3 : int tree :
+[v:int tree | ∃d_11, ((0 <= d_11) && (d_11 >= 0) && (d_11 < d) && (d_11 == _x203) && (∃hi_2, ((_x2 < hi_2) && (hi_2 == _x3) && (∃_x233, ((not (leaf _x233) => (lower_bound _x233 _x2)) && (not (leaf _x233) => (upper_bound _x233 hi_2)) && (bst _x233) && (∃n, ((depth _x233 n) && (n <= d_11))) && (v == _x233))))))]
+
+_x1:[v:int | v == d]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+_x203:[v:int | v == (_x1 - 1)]
+_x2:[v:int | v == lo]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+_x230:[v:int tree | ∃d_10, ((0 <= d_10) && (d_10 >= 0) && (d_10 < d) && (d_10 == _x203) && (∃hi_1, ((_x2 < hi_1) && (hi_1 == x) && (∃_x230, ((not (leaf _x230) => (lower_bound _x230 _x2)) && (not (leaf _x230) => (upper_bound _x230 hi_1)) && (bst _x230) && (∃n, ((depth _x230 n) && (n <= d_10))) && (v == _x230))))))] 
+ ⊢ _x230 as let (_x1) = d in
+let (_x203) = subs _x1 in
+let (_x228) = size_bst_gen _x203 in
+let (_x2) = lo in let (_x229) = _x228 _x2 in let (x) = x in _x229 x : int tree :
+[v:int tree | ∃d_10, ((0 <= d_10) && (d_10 >= 0) && (d_10 < d) && (d_10 == _x203) && (∃hi_1, ((_x2 < hi_1) && (hi_1 == x) && (∃_x230, ((not (leaf _x230) => (lower_bound _x230 _x2)) && (not (leaf _x230) => (upper_bound _x230 hi_1)) && (bst _x230) && (∃n, ((depth _x230 n) && (n <= d_10))) && (v == _x230))))))]
+
+_x1:[v:int | v == d]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+_x203:[v:int | v == (_x1 - 1)]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+_x3:[v:int | v == hi]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_6, (((x_6) <=> (d == 0)) && (not (x_6) <=> (d > 0)) && not (x_6) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_10, not (x_10))))))]
+_x209:[v:int tree | ∃d_3, ((0 <= d_3) && (d_3 >= 0) && (d_3 < d) && (d_3 == _x203) && (∃hi_0, ((x < hi_0) && (hi_0 == _x3) && (∃_x209, ((not (leaf _x209) => (lower_bound _x209 x)) && (not (leaf _x209) => (upper_bound _x209 hi_0)) && (bst _x209) && (∃n, ((depth _x209 n) && (n <= d_3))) && (v == _x209))))))] 
+ ⊢ _x209 as let (_x1) = d in
+let (_x203) = subs _x1 in
+let (_x207) = size_bst_gen _x203 in
+let (x) = x in let (_x208) = _x207 x in let (_x3) = hi in _x208 _x3 : int tree :
+[v:int tree | ∃d_3, ((0 <= d_3) && (d_3 >= 0) && (d_3 < d) && (d_3 == _x203) && (∃hi_0, ((x < hi_0) && (hi_0 == _x3) && (∃_x209, ((not (leaf _x209) => (lower_bound _x209 x)) && (not (leaf _x209) => (upper_bound _x209 hi_0)) && (bst _x209) && (∃n, ((depth _x209 n) && (n <= d_3))) && (v == _x209))))))]
+

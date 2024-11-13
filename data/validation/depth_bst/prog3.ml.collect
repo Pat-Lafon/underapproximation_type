@@ -1,0 +1,27 @@
+Path Specific Collection:
+In Path:
+pathcond_0:[v:unit | ∃x_13, (((x_13) <=> (d == 0)) && (not (x_13) <=> (d > 0)) && not (x_13) && not ((lo + 1) < hi))]
+Cost: 1
+Type: Ty_int
+_x3:[v:int | v == hi]
+pathcond_0:[v:unit | ∃x_13, (((x_13) <=> (d == 0)) && (not (x_13) <=> (d > 0)) && not (x_13) && not ((lo + 1) < hi))] 
+ ⊢ _x3 as hi : int :
+[v:int | v == hi]
+
+_x2:[v:int | v == lo]
+pathcond_0:[v:unit | ∃x_13, (((x_13) <=> (d == 0)) && (not (x_13) <=> (d > 0)) && not (x_13) && not ((lo + 1) < hi))] 
+ ⊢ _x2 as lo : int :
+[v:int | v == lo]
+
+_x1:[v:int | v == d]
+pathcond_0:[v:unit | ∃x_13, (((x_13) <=> (d == 0)) && (not (x_13) <=> (d > 0)) && not (x_13) && not ((lo + 1) < hi))] 
+ ⊢ _x1 as d : int :
+[v:int | v == d]
+
+Cost: 5
+Type: (Ty_constructor(tree(Ty_int)))
+_x0:[v:int tree | leaf v]
+pathcond_0:[v:unit | ∃x_13, (((x_13) <=> (d == 0)) && (not (x_13) <=> (d > 0)) && not (x_13) && not ((lo + 1) < hi))] 
+ ⊢ _x0 as Leaf : int tree :
+[v:int tree | leaf v]
+

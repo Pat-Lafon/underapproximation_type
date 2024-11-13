@@ -1,0 +1,37 @@
+Path Specific Collection:
+In Path:
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_13, (((x_13) <=> (d == 0)) && (not (x_13) <=> (d > 0)) && not (x_13) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_17, not (x_17))))))]
+Cost: 1
+Type: Ty_int
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_13, (((x_13) <=> (d == 0)) && (not (x_13) <=> (d > 0)) && not (x_13) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_17, not (x_17))))))] 
+ ⊢ x as x : int :
+[v:int | true]
+
+_x3:[v:int | v == hi]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_13, (((x_13) <=> (d == 0)) && (not (x_13) <=> (d > 0)) && not (x_13) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_17, not (x_17))))))] 
+ ⊢ _x3 as hi : int :
+[v:int | v == hi]
+
+_x2:[v:int | v == lo]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_13, (((x_13) <=> (d == 0)) && (not (x_13) <=> (d > 0)) && not (x_13) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_17, not (x_17))))))] 
+ ⊢ _x2 as lo : int :
+[v:int | v == lo]
+
+_x1:[v:int | v == d]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_13, (((x_13) <=> (d == 0)) && (not (x_13) <=> (d > 0)) && not (x_13) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_17, not (x_17))))))] 
+ ⊢ _x1 as d : int :
+[v:int | v == d]
+
+Cost: 5
+Type: (Ty_constructor(tree(Ty_int)))
+_x0:[v:int tree | leaf v]
+x:[v:int | true]
+pathcond_0:[v:unit | ∃x_13, (((x_13) <=> (d == 0)) && (not (x_13) <=> (d > 0)) && not (x_13) && ((lo + 1) < hi) && (∃b_15, (((1 + lo) < b_15) && (b_15 == hi) && ((lo < x) && (x < b_15) && (∃x_17, not (x_17))))))] 
+ ⊢ _x0 as Leaf : int tree :
+[v:int tree | leaf v]
+
