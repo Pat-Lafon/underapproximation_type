@@ -17,8 +17,9 @@
     "abd_templates": ["template_emp"],
     "num_quantifier": 0,
     "abduce_rlimit": 3000000,
-    "synth_bound": 30,
-    "synth_rlimit": 300000,
+    "synth_bound": 50,
+    "synth_rlimit": 600000,
+    "type_rlimit": 3000000,
     "comp_path": "components.txt",
     "prim_path": {
         "data_type_decls": "data/predefined/data_type_decls.ml",

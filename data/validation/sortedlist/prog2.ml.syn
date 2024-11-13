@@ -1,15 +1,15 @@
 let rec sorted_list_gen = fun s ->
   fun x ->
-    let (x_3) = sizecheck s in
-    match x_3 with
+    let (xccc3) = sizecheck s in
+    match xccc3 with
     | True -> []
     | False ->
         let (y) = int_gen () in
-        let (x_4) = x <= y in
-        (match x_4 with
+        let (xccc4) = x <= y in
+        (match xccc4 with
          | True ->
              let (_x1) = s in
              let (_x11) = subs _x1 in
              let (_x48) = sorted_list_gen _x11 in
-             let (_104) = _x48 y in Cons (y, _104)
+             let (ccc104) = _x48 y in Cons (y, ccc104)
          | False -> Err)
