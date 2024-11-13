@@ -44,34 +44,8 @@ let smt_solve ctx assertions =
   (* let _ = printf "check\n" in *)
   let solver = mk_solver ctx None in
   let g = mk_goal ctx true false false in
-  (* let () = Printf.printf "Q: %s\n" @@ Frontend.coq_layout vc in *)
-  (* let () = failwith "zz" in *)
-  (* let () = exit 0 in *)
   let _ = Goal.add g assertions in
 
-  (*
-  The following tactics seem to be useful in atleast one case of stlc
-    (apply ctx-simplify)
-    (apply simplify)
-    (apply snf)
-    (apply qe)
-    (apply nra)
-  *)
-(*   let ctx_simp = Tactic.mk_tactic ctx "ctx-simplify" in
-  let simp = Tactic.mk_tactic ctx "simplify" in
-  let snf = Tactic.mk_tactic ctx "snf" in
-  let qe = Tactic.mk_tactic ctx "qe" in
-  let nra = Tactic.mk_tactic ctx "nra" in
-
-  let get_goal ar =
-    assert (Tactic.ApplyResult.get_num_subgoals ar = 1);
-    Tactic.ApplyResult.get_subgoal ar 0
-  in
-  let g = Tactic.apply ctx_simp g None |> get_goal in
-  let g = Tactic.apply simp g None |> get_goal in
-  let g = Tactic.apply snf g None |> get_goal in
-  let g = Tactic.apply qe g None |> get_goal in
-  let g = Tactic.apply nra g None |> get_goal in *)
   (* let g = Goal.simplify g None in *)
   (* let g = *)
   (*   Tactic.(ApplyResult.get_subgoal (apply (mk_tactic ctx "snf") g None) 0) *)
@@ -142,10 +116,6 @@ let query_counter = ref 0
 
 let smt_neg_and_solve ctx axioms vc =
   query_counter := !query_counter + 1;
-  (* let () = *)
-  (*   Env.show_debug_queries @@ fun _ -> *)
-  (*   Printf.printf "Query: %s\n" @@ Language.Rty.layout_prop vc *)
-  (* in *)
   let open Language.FrontendTyped in
   let current_mps = prop_get_mp vc in
   let current_mps =
