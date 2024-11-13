@@ -33,8 +33,8 @@ let rec eq_prop eq (a : 't prop) (b : 't prop) : bool =
       typed_eq String.equal a0 b0 && eq_prop eq a1 b1
   | _ -> false
 
-(** TODO: Ideally, test that these two are equivalent *)
-(** Probably not fully true because typed_eq is suspicious *)
+(** TODO: Ideally, test that these two are equivalent
+  * Probably not fully true because typed_eq is suspicious *)
 let _sexp_eq_prop p1 p2 =
   Sexplib.Sexp.equal
     (sexp_of_prop Nt.sexp_of_t p1)
@@ -116,3 +116,110 @@ let typed_subst_prop_instance x instance e =
 (* force *)
 let prop_force_typed_lit_opt prop =
   match prop with Lit lit -> Some lit | _ -> None
+
+let rec eq_prop_under_alpha_equivalence_helper
+    (mapping : (string * string) list) (a : 't prop) (b : 't prop) : bool =
+  match (a, b) with
+  | Lit a, Lit b ->
+      eq_lit_helper Constant.equal_constant
+        (fun s1 s2 : bool ->
+          if String.equal s1 s2 then true
+          else (
+            Printf.printf "s1: %s, s2: %s" s1 s2;
+
+            match List.assoc_opt s1 mapping with
+            | Some s1' ->
+                Printf.printf "s1': %s" s1';
+                String.equal s1' s2
+            | None -> false))
+        a.x b.x
+  | Implies (a0, a1), Implies (b0, b1) ->
+      eq_prop_under_alpha_equivalence_helper mapping a0 b0
+      && eq_prop_under_alpha_equivalence_helper mapping a1 b1
+  | Ite (a0, a1, a2), Ite (b0, b1, b2) ->
+      eq_prop_under_alpha_equivalence_helper mapping a0 b0
+      && eq_prop_under_alpha_equivalence_helper mapping a1 b1
+      && eq_prop_under_alpha_equivalence_helper mapping a2 b2
+  | Not a, Not b -> eq_prop_under_alpha_equivalence_helper mapping a b
+  | And a, And b ->
+      List.length a = List.length b
+      && List.for_all2 (eq_prop_under_alpha_equivalence_helper mapping) a b
+  | Or a, Or b ->
+      List.length a = List.length b
+      && List.for_all2 (eq_prop_under_alpha_equivalence_helper mapping) a b
+  | Iff (a0, a1), Iff (b0, b1) ->
+      eq_prop_under_alpha_equivalence_helper mapping a0 b0
+      && eq_prop_under_alpha_equivalence_helper mapping a1 b1
+  | Forall { qv = a0; body = a1 }, Forall { qv = b0; body = b1 }
+    when typed_eq String.equal a0 b0 ->
+      eq_prop_under_alpha_equivalence_helper mapping a1 b1
+  | Exists { qv = a0; body = a1 }, Exists { qv = b0; body = b1 }
+    when typed_eq String.equal a0 b0 ->
+      eq_prop_under_alpha_equivalence_helper mapping a1 b1
+  | Forall { qv = a0; body = a1 }, Forall { qv = b0; body = b1 } ->
+      eq_prop_under_alpha_equivalence_helper ((a0.x, b0.x) :: mapping) a1 b1
+  | Exists { qv = a0; body = a1 }, Exists { qv = b0; body = b1 } ->
+      eq_prop_under_alpha_equivalence_helper ((a0.x, b0.x) :: mapping) a1 b1
+  | _ -> false
+
+let eq_prop_under_alpha_equivalence (a : 't prop) (b : 't prop) : bool =
+  eq_prop_under_alpha_equivalence_helper [] a b
+
+let rec simplify prop =
+  match prop with
+  | Lit _ -> prop
+  | Implies (p, q) -> (
+      match (simplify p, simplify q) with
+      | Lit { x = AC (B true); _ }, q -> q
+      | p, Lit { x = AC (B true); _ } -> p
+      | Lit { x = AC (B false); _ }, _ ->
+          Lit { x = AC (B true); ty = Nt.Ty_bool }
+      | _, Lit { x = AC (B false); _ } ->
+          Lit { x = AC (B true); ty = Nt.Ty_bool }
+      | p, q -> Implies (p, q))
+  | And [] -> Lit { x = AC (B true); ty = Ty_bool }
+  | And [ p ] -> simplify p
+  | And ps -> (
+      let ps = List.map simplify ps in
+      let ps =
+        List.filter
+          (fun p -> not (p = Lit { x = AC (B true); ty = Nt.Ty_bool }))
+          ps
+      in
+      match ps with
+      | [] -> Lit { x = AC (B true); ty = Ty_bool }
+      | [ p ] -> p
+      | _ -> And ps)
+  | Or [] -> Lit { x = AC (B false); ty = Ty_bool }
+  | Or [ p ] -> simplify p
+  | Or ps -> (
+      let ps = List.map simplify ps in
+      let ps =
+        List.filter
+          (fun p -> not (p = Lit { x = AC (B false); ty = Nt.Ty_bool }))
+          ps
+      in
+      match ps with
+      | [] -> Lit { x = AC (B false); ty = Ty_bool }
+      | [ p ] -> p
+      | _ -> Or ps)
+  | Iff (p, q) -> simplify (And [ Implies (p, q); Implies (q, p) ])
+  | Not p -> (
+      match simplify p with
+      | Lit { x = AC (B true); _ } -> Lit { x = AC (B false); ty = Ty_bool }
+      | Lit { x = AC (B false); _ } -> Lit { x = AC (B true); ty = Ty_bool }
+      | Not p -> p
+      | p -> Not p)
+  | Ite (c, t, e) -> (
+      match simplify c with
+      | Lit { x = AC (B true); _ } -> simplify t
+      | Lit { x = AC (B false); _ } -> simplify e
+      | c -> Ite (c, simplify t, simplify e))
+  | Forall { qv; body } -> Forall { qv; body = simplify body }
+  | Exists { qv; body = Lit { x = Lit.AVar { x; _ }; _ } }
+    when String.equal x qv.x ->
+      Lit { x = AC (B true); ty = Ty_bool }
+  | Exists { qv; body = Not (Lit { x = Lit.AVar { x; _ }; _ }) }
+    when String.equal x qv.x ->
+      Lit { x = AC (B true); ty = Ty_bool }
+  | Exists { qv; body } -> Exists { qv; body = simplify body }
