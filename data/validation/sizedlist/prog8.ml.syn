@@ -1,6 +1,6 @@
 let rec sized_list_gen = fun s ->
-  let (x_2) = sizecheck s in
-  match x_2 with
+  let (xccc2) = sizecheck s in
+  match xccc2 with
   | True -> []
   | False ->
       let (_x14) = bool_gen () in
@@ -8,6 +8,6 @@ let rec sized_list_gen = fun s ->
        | True ->
            let (_x2) = s in
            let (_x5) = subs _x2 in
-           let (_6) = sized_list_gen _x5 in
-           let (_2) = int_gen () in Cons (_2, _6)
+           let (ccc6) = sized_list_gen _x5 in
+           let (ccc2) = int_gen () in Cons (ccc2, ccc6)
        | False -> Nil)

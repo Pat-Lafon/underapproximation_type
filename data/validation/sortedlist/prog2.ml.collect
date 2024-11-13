@@ -16,6 +16,20 @@ _x1:[v:int | v == s]
 y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && not (x <= y))]
 _x8:[v:int | v == (_x1 - 1)]
+y:[v:int | true]
+pathcond_1:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && not (x <= y))]
+_31:[v:int | v == (y - 1)]
+_x119:[v:int list | ∃s_22, ((0 <= s_22) && (s_22 >= 0) && (s_22 < s) && (s_22 == _x8) && (∃_x119, ((len _x119 s_22) && (sorted _x119) && (∀u, ((hd _x119 u) => (_31 <= u))) && (v == _x119))))] 
+ ⊢ _x119 as let (_x1) = s in
+let (_x8) = subs _x1 in
+let (_x118) = sorted_list_gen _x8 in
+let (y) = y in let (_31) = subs y in _x118 _31 : int list :
+[v:int list | ∃s_22, ((0 <= s_22) && (s_22 >= 0) && (s_22 < s) && (s_22 == _x8) && (∃_x119, ((len _x119 s_22) && (sorted _x119) && (∀u, ((hd _x119 u) => (_31 <= u))) && (v == _x119))))]
+
+_x1:[v:int | v == s]
+y:[v:int | true]
+pathcond_1:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && not (x <= y))]
+_x8:[v:int | v == (_x1 - 1)]
 _x2:[v:int | v == x]
 y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && not (x <= y))]
