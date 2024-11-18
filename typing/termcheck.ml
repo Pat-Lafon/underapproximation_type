@@ -34,14 +34,16 @@ let apply_rec_arg2 arg1 param1 arg2 =
       Cty { nty = Nt.int_ty; phi }
   | None -> _failatwith __FILE__ __LINE__ "die"
 
-let _cur_rec_func_name : (string * t cty) option ref = ref None
-let init_cur_rec_func_name (fname, cty) = _cur_rec_func_name := Some (fname, cty)
+let _cur_rec_func_name : (string * t cty * t) option ref = ref None
+
+let init_cur_rec_func_name (fname, cty, ret_ty) =
+  _cur_rec_func_name := Some (fname, cty, ret_ty)
 
 exception RecArgCheckFailure
 
 let get_cur_rec_func_name () =
   match !_cur_rec_func_name with
-  | Some (fname, cty) -> Some (fname, RtyBase { ou = false; cty })
+  | Some (fname, cty, _) -> Some (fname, RtyBase { ou = false; cty })
   | None -> None
 
 let _warinning_subtyping_error file line (rty1, rty2) =
@@ -176,7 +178,9 @@ and value_type_check (uctx : uctx) (a : (t, t value) typed) (rty : t rty) :
         | _ -> _failatwith __FILE__ __LINE__ "die"
       else
         let rec_constraint_cty = apply_rec_arg1 arg #: fixarg.ty in
-        let () = init_cur_rec_func_name (fixname.x, rec_constraint_cty) in
+        let () =
+          init_cur_rec_func_name (fixname.x, rec_constraint_cty, ret_nty)
+        in
         let rty' =
           let a = { x = Rename.unique arg; ty = fixarg.ty } in
           RtyBaseArr
