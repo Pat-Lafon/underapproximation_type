@@ -221,18 +221,18 @@ let[@axiom] tree_bst_lch_bst (l : int tree) (l1 : int tree) =
 let[@axiom] tree_bst_rch_bst (l : int tree) (l1 : int tree) =
   (rch l l1 && bst l) #==> (bst l1)
 
-let[@axiom] tree_bst_lch_mem_lt_root (l : int tree) (l1 : int tree) (x : int)
-    (y : int) =
-  (bst l && lch l l1 && root l x && tree_mem l1 y) #==> (y < x)
+(* let[@axiom] tree_bst_lch_mem_lt_root (l : int tree) (l1 : int tree) (x : int)
+     (y : int) =
+   (bst l && lch l l1 && root l x && tree_mem l1 y) #==> (y < x) *)
 
 (* let[@axiom] tree_bst_lch_mem_lt_root_2 (l : int tree) (l1 : int tree)
      ((x [@exists]) : int) =
    (bst l && lch l l1 && fun (y : int) -> (tree_mem l y) #==> (x < y))
    #==> (fun (z : int) -> (tree_mem l1 z) #==> (x < z)) *)
 
-let[@axiom] tree_bst_rch_mem_gt_root (l : int tree) (l1 : int tree) (x : int)
-    (y : int) =
-  (bst l && rch l l1 && root l x && tree_mem l1 y) #==> (x < y)
+(* let[@axiom] tree_bst_rch_mem_gt_root (l : int tree) (l1 : int tree) (x : int)
+     (y : int) =
+   (bst l && rch l l1 && root l x && tree_mem l1 y) #==> (x < y) *)
 
 (* let[@axiom] tree_node_bst (l : int tree) (l1 : int tree) (l2 : int tree)
      (x : int) =
@@ -270,8 +270,8 @@ let[@axiom] tree_lower_bound_root (l : int tree) (x : int) (y : int) =
   (bst l && root l x && lower_bound l y) #==> (y < x)
 
 let[@axiom] tree_upper_bound_base (l : int tree) (l1 : int tree) (x : int)
-    (y : int) =
-  (bst l && root l x && rch l l1 && leaf l1 && y > x) #==> (upper_bound l y)
+       (y : int) =
+     (bst l && root l x && rch l l1 && leaf l1 && y > x) #==> (upper_bound l y)
 
 let[@axiom] tree_upper_bound_other (l : int tree) (l1 : int tree) (x : int)
     (y : int) =

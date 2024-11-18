@@ -8,11 +8,19 @@ pathcond_0:[v:unit | ∃x_25, (((x_25) <=> (h == 0)) && (not (x_25) <=> (h > 0))
  ⊢ _x0 as True : bool :
 [v:bool | v]
 
-Type: (Ty_constructor(rbtree(Ty_int)))
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_25, (((x_25) <=> (h == 0)) && (not (x_25) <=> (h > 0)) && not (x_25) && not (color) && (∃c, (c)))] 
- ⊢ _x2 as Rbtleaf : int rbtree :
-[v:int rbtree | rb_leaf v]
+Cost: 6
+Type: Ty_int
+_x4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_25, (((x_25) <=> (h == 0)) && (not (x_25) <=> (h > 0)) && not (x_25) && not (color) && (∃c, (c)))]
+_x41:[v:int | v == (_x4 - 1)] 
+ ⊢ _x41 as let (_x4) = inv in subs _x4 : int :
+[v:int | v == (_x4 - 1)]
+
+_x6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_25, (((x_25) <=> (h == 0)) && (not (x_25) <=> (h > 0)) && not (x_25) && not (color) && (∃c, (c)))]
+_x40:[v:int | v == (_x6 - 1)] 
+ ⊢ _x40 as let (_x6) = h in subs _x6 : int :
+[v:int | v == (_x6 - 1)]
 
 Cost: 11
 Type: Ty_int
@@ -29,6 +37,13 @@ _x41:[v:int | v == (_x4 - 1)]
 _x106:[v:int | v == (_x41 - 1)] 
  ⊢ _x106 as let (_x4) = inv in let (_x41) = subs _x4 in subs _x41 : int :
 [v:int | v == (_x41 - 1)]
+
+Cost: 10
+Type: (Ty_constructor(rbtree(Ty_int)))
+_x2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_25, (((x_25) <=> (h == 0)) && (not (x_25) <=> (h > 0)) && not (x_25) && not (color) && (∃c, (c)))] 
+ ⊢ _x2 as Rbtleaf : int rbtree :
+[v:int rbtree | rb_leaf v]
 
 Cost: 1
 Type: Ty_int
@@ -52,18 +67,4 @@ _x5:[v:bool | v == color]
 pathcond_0:[v:unit | ∃x_25, (((x_25) <=> (h == 0)) && (not (x_25) <=> (h > 0)) && not (x_25) && not (color) && (∃c, (c)))] 
  ⊢ _x5 as color : bool :
 [v:bool | v == color]
-
-Cost: 6
-Type: Ty_int
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_25, (((x_25) <=> (h == 0)) && (not (x_25) <=> (h > 0)) && not (x_25) && not (color) && (∃c, (c)))]
-_x41:[v:int | v == (_x4 - 1)] 
- ⊢ _x41 as let (_x4) = inv in subs _x4 : int :
-[v:int | v == (_x4 - 1)]
-
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_25, (((x_25) <=> (h == 0)) && (not (x_25) <=> (h > 0)) && not (x_25) && not (color) && (∃c, (c)))]
-_x40:[v:int | v == (_x6 - 1)] 
- ⊢ _x40 as let (_x6) = h in subs _x6 : int :
-[v:int | v == (_x6 - 1)]
 

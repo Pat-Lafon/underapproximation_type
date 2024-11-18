@@ -8,12 +8,6 @@ pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0))
  ⊢ _x0 as True : bool :
 [v:bool | v]
 
-Type: (Ty_constructor(rbtree(Ty_int)))
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))] 
- ⊢ _x2 as Rbtleaf : int rbtree :
-[v:int rbtree | rb_leaf v]
-
 Cost: 6
 Type: Ty_int
 _x6:[v:int | v == h]
@@ -32,6 +26,19 @@ _x128:[v:int | v == (_x88 - 1)]
  ⊢ _x128 as let (_x6) = h in let (_x40) = subs _x6 in let (_x88) = subs _x40 in subs _x88 : int :
 [v:int | v == (_x88 - 1)]
 
+Cost: 21
+Type: Ty_int
+_x6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
+_x40:[v:int | v == (_x6 - 1)]
+_x88:[v:int | v == (_x40 - 1)]
+_x128:[v:int | v == (_x88 - 1)]
+_x174:[v:int | v == (_x128 - 1)] 
+ ⊢ _x174 as let (_x6) = h in
+let (_x40) = subs _x6 in
+let (_x88) = subs _x40 in let (_x128) = subs _x88 in subs _x128 : int :
+[v:int | v == (_x128 - 1)]
+
 Cost: 11
 Type: Ty_int
 _x6:[v:int | v == h]
@@ -41,20 +48,27 @@ _x88:[v:int | v == (_x40 - 1)]
  ⊢ _x88 as let (_x6) = h in let (_x40) = subs _x6 in subs _x40 : int :
 [v:int | v == (_x40 - 1)]
 
-Cost: 17
+Cost: 10
+Type: (Ty_constructor(rbtree(Ty_int)))
+_x2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))] 
+ ⊢ _x2 as Rbtleaf : int rbtree :
+[v:int rbtree | rb_leaf v]
+
+Cost: 27
 Type: (Ty_constructor(rbtree(Ty_int)))
 _x5:[v:bool | v == color]
 pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
 _x2:[v:int rbtree | rb_leaf v]
 pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
-_66:[v:int | true]
+_119:[v:int | true]
 pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
 _x2:[v:int rbtree | rb_leaf v]
 pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
-_x131:[v:int rbtree | ∃_x131, ((rb_root_color _x131 _x5) && (rb_root _x131 _66) && (rb_lch _x131 _x2) && (rb_rch _x131 _x2) && (v == _x131))] 
- ⊢ _x131 as let (_x2) = Rbtleaf in
-let (_66) = int_gen () in let (_x5) = color in Rbtnode (_x5, _x2, _66, _x2) : int rbtree :
-[v:int rbtree | ∃_x131, ((rb_root_color _x131 _x5) && (rb_root _x131 _66) && (rb_lch _x131 _x2) && (rb_rch _x131 _x2) && (v == _x131))]
+_x229:[v:int rbtree | ∃_x229, ((rb_root_color _x229 _x5) && (rb_root _x229 _119) && (rb_lch _x229 _x2) && (rb_rch _x229 _x2) && (v == _x229))] 
+ ⊢ _x229 as let (_x2) = Rbtleaf in
+let (_119) = int_gen () in let (_x5) = color in Rbtnode (_x5, _x2, _119, _x2) : int rbtree :
+[v:int rbtree | ∃_x229, ((rb_root_color _x229 _x5) && (rb_root _x229 _119) && (rb_lch _x229 _x2) && (rb_rch _x229 _x2) && (v == _x229))]
 
 _x5:[v:bool | v == color]
 pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
@@ -64,10 +78,10 @@ _x4:[v:int | v == inv]
 pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
 _x2:[v:int rbtree | rb_leaf v]
 pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
-_x130:[v:int rbtree | ∃_x130, ((rb_root_color _x130 _x5) && (rb_root _x130 _x4) && (rb_lch _x130 _x2) && (rb_rch _x130 _x2) && (v == _x130))] 
- ⊢ _x130 as let (_x2) = Rbtleaf in
+_x228:[v:int rbtree | ∃_x228, ((rb_root_color _x228 _x5) && (rb_root _x228 _x4) && (rb_lch _x228 _x2) && (rb_rch _x228 _x2) && (v == _x228))] 
+ ⊢ _x228 as let (_x2) = Rbtleaf in
 let (_x4) = inv in let (_x5) = color in Rbtnode (_x5, _x2, _x4, _x2) : int rbtree :
-[v:int rbtree | ∃_x130, ((rb_root_color _x130 _x5) && (rb_root _x130 _x4) && (rb_lch _x130 _x2) && (rb_rch _x130 _x2) && (v == _x130))]
+[v:int rbtree | ∃_x228, ((rb_root_color _x228 _x5) && (rb_root _x228 _x4) && (rb_lch _x228 _x2) && (rb_rch _x228 _x2) && (v == _x228))]
 
 _x5:[v:bool | v == color]
 pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
@@ -77,10 +91,25 @@ _x6:[v:int | v == h]
 pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
 _x2:[v:int rbtree | rb_leaf v]
 pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
-_x129:[v:int rbtree | ∃_x129, ((rb_root_color _x129 _x5) && (rb_root _x129 _x6) && (rb_lch _x129 _x2) && (rb_rch _x129 _x2) && (v == _x129))] 
- ⊢ _x129 as let (_x2) = Rbtleaf in
+_x227:[v:int rbtree | ∃_x227, ((rb_root_color _x227 _x5) && (rb_root _x227 _x6) && (rb_lch _x227 _x2) && (rb_rch _x227 _x2) && (v == _x227))] 
+ ⊢ _x227 as let (_x2) = Rbtleaf in
 let (_x6) = h in let (_x5) = color in Rbtnode (_x5, _x2, _x6, _x2) : int rbtree :
-[v:int rbtree | ∃_x129, ((rb_root_color _x129 _x5) && (rb_root _x129 _x6) && (rb_lch _x129 _x2) && (rb_rch _x129 _x2) && (v == _x129))]
+[v:int rbtree | ∃_x227, ((rb_root_color _x227 _x5) && (rb_root _x227 _x6) && (rb_lch _x227 _x2) && (rb_rch _x227 _x2) && (v == _x227))]
+
+Cost: 26
+Type: Ty_int
+_x6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
+_x40:[v:int | v == (_x6 - 1)]
+_x88:[v:int | v == (_x40 - 1)]
+_x128:[v:int | v == (_x88 - 1)]
+_x174:[v:int | v == (_x128 - 1)]
+_x226:[v:int | v == (_x174 - 1)] 
+ ⊢ _x226 as let (_x6) = h in
+let (_x40) = subs _x6 in
+let (_x88) = subs _x40 in
+let (_x128) = subs _x88 in let (_x174) = subs _x128 in subs _x174 : int :
+[v:int | v == (_x174 - 1)]
 
 Cost: 1
 Type: Ty_int

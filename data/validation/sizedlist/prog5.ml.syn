@@ -3,8 +3,8 @@ let rec sized_list_gen = fun s ->
   match xccc3 with
   | True -> []
   | False ->
-      let (_x15) = bool_gen () in
-      (match _x15 with
+      let (_x13) = bool_gen () in
+      (match _x13 with
        | True ->
            let (_x2) = s in
            let (_x6) = subs _x2 in

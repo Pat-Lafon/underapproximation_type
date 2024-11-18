@@ -5,7 +5,7 @@
         // "preprocess",
         // "ntyping",
         // "typing",
-        // "queries",
+        "queries",
         "result",
         "never-use"
     ],
@@ -18,8 +18,8 @@
     "num_quantifier": 0,
     "abduce_rlimit": 6000000,
     "synth_bound": 24,
-    "synth_rlimit": 2000000,
-    "type_rlimit": 6000000,
+    "synth_rlimit": 6000000,
+    "type_rlimit": 20000000,
     "use_missing_coverage_file": false,
     "comp_path": "components.txt",
     "prim_path": {

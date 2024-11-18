@@ -25,7 +25,7 @@ pathcond_1:[v:unit | ∃x_6, (((x_6) <=> (s == 0)) && (not (x_6) <=> (s > 0)) &&
  ⊢ l as l : int list :
 [v:int list | true]
 
-Cost: 5
+Cost: 10
 Type: (Ty_constructor(list(Ty_int)))
 _x0:[v:int list | emp v]
 l:[v:int list | true]
@@ -60,7 +60,7 @@ pathcond_2:[v:unit | ∃x_6, (((x_6) <=> (s == 0)) && (not (x_6) <=> (s > 0)) &&
  ⊢ l as l : int list :
 [v:int list | true]
 
-Cost: 5
+Cost: 10
 Type: (Ty_constructor(list(Ty_int)))
 _x0:[v:int list | emp v]
 l:[v:int list | true]

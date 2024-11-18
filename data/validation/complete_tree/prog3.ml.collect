@@ -1,13 +1,6 @@
 Path Specific Collection:
 In Path:
 pathcond_1:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))]
-Cost: 5
-Type: (Ty_constructor(tree(Ty_int)))
-_x0:[v:int tree | leaf v]
-pathcond_1:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))] 
- ⊢ _x0 as Leaf : int tree :
-[v:int tree | leaf v]
-
 Cost: 6
 Type: Ty_int
 _x2:[v:int | v == s]
@@ -26,27 +19,6 @@ _x10:[v:int | v == (_x8 - 1)]
  ⊢ _x10 as let (_x2) = s in let (_x5) = subs _x2 in let (_x8) = subs _x5 in subs _x8 : int :
 [v:int | v == (_x8 - 1)]
 
-Type: (Ty_constructor(tree(Ty_int)))
-_3:[v:int | true]
-pathcond_1:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))]
-_x0:[v:int tree | leaf v]
-pathcond_1:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))]
-_x0:[v:int tree | leaf v]
-pathcond_1:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))]
-_x12:[v:int tree | ∃_x12, ((root _x12 _3) && (lch _x12 _x0) && (rch _x12 _x0) && (v == _x12))] 
- ⊢ _x12 as let (_x0) = Leaf in let (_3) = int_gen () in Node (_3, _x0, _x0) : int tree :
-[v:int tree | ∃_x12, ((root _x12 _3) && (lch _x12 _x0) && (rch _x12 _x0) && (v == _x12))]
-
-_x2:[v:int | v == s]
-pathcond_1:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))]
-_x0:[v:int tree | leaf v]
-pathcond_1:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))]
-_x0:[v:int tree | leaf v]
-pathcond_1:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))]
-_x11:[v:int tree | ∃_x11, ((root _x11 _x2) && (lch _x11 _x0) && (rch _x11 _x0) && (v == _x11))] 
- ⊢ _x11 as let (_x0) = Leaf in let (_x2) = s in Node (_x2, _x0, _x0) : int tree :
-[v:int tree | ∃_x11, ((root _x11 _x2) && (lch _x11 _x0) && (rch _x11 _x0) && (v == _x11))]
-
 Cost: 7
 Type: (Ty_constructor(tree(Ty_int)))
 _x2:[v:int | v == s]
@@ -64,6 +36,13 @@ _x5:[v:int | v == (_x2 - 1)]
 _x8:[v:int | v == (_x5 - 1)] 
  ⊢ _x8 as let (_x2) = s in let (_x5) = subs _x2 in subs _x5 : int :
 [v:int | v == (_x5 - 1)]
+
+Cost: 10
+Type: (Ty_constructor(tree(Ty_int)))
+_x0:[v:int tree | leaf v]
+pathcond_1:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))] 
+ ⊢ _x0 as Leaf : int tree :
+[v:int tree | leaf v]
 
 Cost: 1
 Type: Ty_int

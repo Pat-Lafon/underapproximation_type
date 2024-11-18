@@ -12,8 +12,8 @@ let rec rbtree_gen = fun inv ->
                 | True -> Rbtleaf
                 | False ->
                     let (_x2) = Rbtleaf in
-                    let (ccc88) = int_gen () in
-                    let (_x0) = True in Rbtnode (_x0, _x2, ccc88, _x2)))
+                    let (ccc165) = int_gen () in
+                    let (_x0) = True in Rbtnode (_x0, _x2, ccc165, _x2)))
       | False ->
           (match color with
            | True ->

@@ -1,13 +1,6 @@
 Path Specific Collection:
 In Path:
 pathcond_0:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))]
-Cost: 5
-Type: (Ty_constructor(list(Ty_int)))
-_x0:[v:int list | emp v]
-pathcond_0:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))] 
- ⊢ _x0 as Nil : int list :
-[v:int list | emp v]
-
 Cost: 6
 Type: Ty_int
 _x2:[v:int | v == s]
@@ -34,22 +27,12 @@ _x8:[v:int | v == (_x5 - 1)]
  ⊢ _x8 as let (_x2) = s in let (_x5) = subs _x2 in subs _x5 : int :
 [v:int | v == (_x5 - 1)]
 
+Cost: 10
 Type: (Ty_constructor(list(Ty_int)))
-_2:[v:int | true]
-pathcond_0:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))]
 _x0:[v:int list | emp v]
-pathcond_0:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))]
-_x10:[v:int list | ∃_x10, ((hd _x10 _2) && (tl _x10 _x0) && (v == _x10))] 
- ⊢ _x10 as let (_x0) = Nil in let (_2) = int_gen () in Cons (_2, _x0) : int list :
-[v:int list | ∃_x10, ((hd _x10 _2) && (tl _x10 _x0) && (v == _x10))]
-
-_x2:[v:int | v == s]
-pathcond_0:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))]
-_x0:[v:int list | emp v]
-pathcond_0:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))]
-_x9:[v:int list | ∃_x9, ((hd _x9 _x2) && (tl _x9 _x0) && (v == _x9))] 
- ⊢ _x9 as let (_x0) = Nil in let (_x2) = s in Cons (_x2, _x0) : int list :
-[v:int list | ∃_x9, ((hd _x9 _x2) && (tl _x9 _x0) && (v == _x9))]
+pathcond_0:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))] 
+ ⊢ _x0 as Nil : int list :
+[v:int list | emp v]
 
 Cost: 1
 Type: Ty_int

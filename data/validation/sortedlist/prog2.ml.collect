@@ -2,30 +2,8 @@ Path Specific Collection:
 In Path:
 y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && not (x <= y))]
-Cost: 5
-Type: (Ty_constructor(list(Ty_int)))
-_x0:[v:int list | emp v]
-y:[v:int | true]
-pathcond_1:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && not (x <= y))] 
- ⊢ _x0 as Nil : int list :
-[v:int list | emp v]
-
 Cost: 13
 Type: (Ty_constructor(list(Ty_int)))
-_x1:[v:int | v == s]
-y:[v:int | true]
-pathcond_1:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && not (x <= y))]
-_x8:[v:int | v == (_x1 - 1)]
-y:[v:int | true]
-pathcond_1:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && not (x <= y))]
-_31:[v:int | v == (y - 1)]
-_x119:[v:int list | ∃s_22, ((0 <= s_22) && (s_22 >= 0) && (s_22 < s) && (s_22 == _x8) && (∃_x119, ((len _x119 s_22) && (sorted _x119) && (∀u, ((hd _x119 u) => (_31 <= u))) && (v == _x119))))] 
- ⊢ _x119 as let (_x1) = s in
-let (_x8) = subs _x1 in
-let (_x118) = sorted_list_gen _x8 in
-let (y) = y in let (_31) = subs y in _x118 _31 : int list :
-[v:int list | ∃s_22, ((0 <= s_22) && (s_22 >= 0) && (s_22 < s) && (s_22 == _x8) && (∃_x119, ((len _x119 s_22) && (sorted _x119) && (∀u, ((hd _x119 u) => (_31 <= u))) && (v == _x119))))]
-
 _x1:[v:int | v == s]
 y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && not (x <= y))]
@@ -34,12 +12,12 @@ _x2:[v:int | v == x]
 y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && not (x <= y))]
 _30:[v:int | v == (_x2 - 1)]
-_x117:[v:int list | ∃s_21, ((0 <= s_21) && (s_21 >= 0) && (s_21 < s) && (s_21 == _x8) && (∃_x117, ((len _x117 s_21) && (sorted _x117) && (∀u, ((hd _x117 u) => (_30 <= u))) && (v == _x117))))] 
- ⊢ _x117 as let (_x1) = s in
+_x111:[v:int list | ∃s_21, ((0 <= s_21) && (s_21 >= 0) && (s_21 < s) && (s_21 == _x8) && (∃_x111, ((len _x111 s_21) && (sorted _x111) && (∀u, ((hd _x111 u) => (_30 <= u))) && (v == _x111))))] 
+ ⊢ _x111 as let (_x1) = s in
 let (_x8) = subs _x1 in
-let (_x116) = sorted_list_gen _x8 in
-let (_x2) = x in let (_30) = subs _x2 in _x116 _30 : int list :
-[v:int list | ∃s_21, ((0 <= s_21) && (s_21 >= 0) && (s_21 < s) && (s_21 == _x8) && (∃_x117, ((len _x117 s_21) && (sorted _x117) && (∀u, ((hd _x117 u) => (_30 <= u))) && (v == _x117))))]
+let (_x110) = sorted_list_gen _x8 in
+let (_x2) = x in let (_30) = subs _x2 in _x110 _30 : int list :
+[v:int list | ∃s_21, ((0 <= s_21) && (s_21 >= 0) && (s_21 < s) && (s_21 == _x8) && (∃_x111, ((len _x111 s_21) && (sorted _x111) && (∀u, ((hd _x111 u) => (_30 <= u))) && (v == _x111))))]
 
 _x1:[v:int | v == s]
 y:[v:int | true]
@@ -49,11 +27,11 @@ _x1:[v:int | v == s]
 y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && not (x <= y))]
 _29:[v:int | v == (_x1 - 1)]
-_x115:[v:int list | ∃s_20, ((0 <= s_20) && (s_20 >= 0) && (s_20 < s) && (s_20 == _x8) && (∃_x115, ((len _x115 s_20) && (sorted _x115) && (∀u, ((hd _x115 u) => (_29 <= u))) && (v == _x115))))] 
- ⊢ _x115 as let (_x1) = s in
+_x109:[v:int list | ∃s_20, ((0 <= s_20) && (s_20 >= 0) && (s_20 < s) && (s_20 == _x8) && (∃_x109, ((len _x109 s_20) && (sorted _x109) && (∀u, ((hd _x109 u) => (_29 <= u))) && (v == _x109))))] 
+ ⊢ _x109 as let (_x1) = s in
 let (_x8) = subs _x1 in
-let (_x114) = sorted_list_gen _x8 in let (_29) = subs _x1 in _x114 _29 : int list :
-[v:int list | ∃s_20, ((0 <= s_20) && (s_20 >= 0) && (s_20 < s) && (s_20 == _x8) && (∃_x115, ((len _x115 s_20) && (sorted _x115) && (∀u, ((hd _x115 u) => (_29 <= u))) && (v == _x115))))]
+let (_x108) = sorted_list_gen _x8 in let (_29) = subs _x1 in _x108 _29 : int list :
+[v:int list | ∃s_20, ((0 <= s_20) && (s_20 >= 0) && (s_20 < s) && (s_20 == _x8) && (∃_x109, ((len _x109 s_20) && (sorted _x109) && (∀u, ((hd _x109 u) => (_29 <= u))) && (v == _x109))))]
 
 Cost: 6
 Type: Ty_int
@@ -141,35 +119,13 @@ _x84:[v:int | v == (_x8 - 1)]
  ⊢ _x84 as let (_x1) = s in let (_x8) = subs _x1 in subs _x8 : int :
 [v:int | v == (_x8 - 1)]
 
+Cost: 10
 Type: (Ty_constructor(list(Ty_int)))
-_x1:[v:int | v == s]
-y:[v:int | true]
-pathcond_1:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && not (x <= y))]
 _x0:[v:int list | emp v]
 y:[v:int | true]
-pathcond_1:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && not (x <= y))]
-_x92:[v:int list | ∃_x92, ((hd _x92 _x1) && (tl _x92 _x0) && (v == _x92))] 
- ⊢ _x92 as let (_x0) = Nil in let (_x1) = s in Cons (_x1, _x0) : int list :
-[v:int list | ∃_x92, ((hd _x92 _x1) && (tl _x92 _x0) && (v == _x92))]
-
-_x2:[v:int | v == x]
-y:[v:int | true]
-pathcond_1:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && not (x <= y))]
-_x0:[v:int list | emp v]
-y:[v:int | true]
-pathcond_1:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && not (x <= y))]
-_x91:[v:int list | ∃_x91, ((hd _x91 _x2) && (tl _x91 _x0) && (v == _x91))] 
- ⊢ _x91 as let (_x0) = Nil in let (_x2) = x in Cons (_x2, _x0) : int list :
-[v:int list | ∃_x91, ((hd _x91 _x2) && (tl _x91 _x0) && (v == _x91))]
-
-y:[v:int | true]
-pathcond_1:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && not (x <= y))]
-_x0:[v:int list | emp v]
-y:[v:int | true]
-pathcond_1:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && not (x <= y))]
-_x90:[v:int list | ∃_x90, ((hd _x90 y) && (tl _x90 _x0) && (v == _x90))] 
- ⊢ _x90 as let (_x0) = Nil in Cons (y, _x0) : int list :
-[v:int list | ∃_x90, ((hd _x90 y) && (tl _x90 _x0) && (v == _x90))]
+pathcond_1:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && not (x <= y))] 
+ ⊢ _x0 as Nil : int list :
+[v:int list | emp v]
 
 Cost: 1
 Type: Ty_int
@@ -193,14 +149,6 @@ pathcond_1:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) &&
 In Path:
 y:[v:int | true]
 pathcond_0:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && (x <= y))]
-Cost: 5
-Type: (Ty_constructor(list(Ty_int)))
-_x0:[v:int list | emp v]
-y:[v:int | true]
-pathcond_0:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && (x <= y))] 
- ⊢ _x0 as Nil : int list :
-[v:int list | emp v]
-
 Cost: 13
 Type: (Ty_constructor(list(Ty_int)))
 _x1:[v:int | v == s]
@@ -211,12 +159,12 @@ _x2:[v:int | v == x]
 y:[v:int | true]
 pathcond_0:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && (x <= y))]
 _57:[v:int | v == (_x2 - 1)]
-_x171:[v:int list | ∃s_24, ((0 <= s_24) && (s_24 >= 0) && (s_24 < s) && (s_24 == _x11) && (∃_x171, ((len _x171 s_24) && (sorted _x171) && (∀u, ((hd _x171 u) => (_57 <= u))) && (v == _x171))))] 
- ⊢ _x171 as let (_x1) = s in
+_x165:[v:int list | ∃s_24, ((0 <= s_24) && (s_24 >= 0) && (s_24 < s) && (s_24 == _x11) && (∃_x165, ((len _x165 s_24) && (sorted _x165) && (∀u, ((hd _x165 u) => (_57 <= u))) && (v == _x165))))] 
+ ⊢ _x165 as let (_x1) = s in
 let (_x11) = subs _x1 in
-let (_x170) = sorted_list_gen _x11 in
-let (_x2) = x in let (_57) = subs _x2 in _x170 _57 : int list :
-[v:int list | ∃s_24, ((0 <= s_24) && (s_24 >= 0) && (s_24 < s) && (s_24 == _x11) && (∃_x171, ((len _x171 s_24) && (sorted _x171) && (∀u, ((hd _x171 u) => (_57 <= u))) && (v == _x171))))]
+let (_x164) = sorted_list_gen _x11 in
+let (_x2) = x in let (_57) = subs _x2 in _x164 _57 : int list :
+[v:int list | ∃s_24, ((0 <= s_24) && (s_24 >= 0) && (s_24 < s) && (s_24 == _x11) && (∃_x165, ((len _x165 s_24) && (sorted _x165) && (∀u, ((hd _x165 u) => (_57 <= u))) && (v == _x165))))]
 
 _x1:[v:int | v == s]
 y:[v:int | true]
@@ -226,11 +174,11 @@ _x1:[v:int | v == s]
 y:[v:int | true]
 pathcond_0:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && (x <= y))]
 _56:[v:int | v == (_x1 - 1)]
-_x169:[v:int list | ∃s_23, ((0 <= s_23) && (s_23 >= 0) && (s_23 < s) && (s_23 == _x11) && (∃_x169, ((len _x169 s_23) && (sorted _x169) && (∀u, ((hd _x169 u) => (_56 <= u))) && (v == _x169))))] 
- ⊢ _x169 as let (_x1) = s in
+_x163:[v:int list | ∃s_23, ((0 <= s_23) && (s_23 >= 0) && (s_23 < s) && (s_23 == _x11) && (∃_x163, ((len _x163 s_23) && (sorted _x163) && (∀u, ((hd _x163 u) => (_56 <= u))) && (v == _x163))))] 
+ ⊢ _x163 as let (_x1) = s in
 let (_x11) = subs _x1 in
-let (_x168) = sorted_list_gen _x11 in let (_56) = subs _x1 in _x168 _56 : int list :
-[v:int list | ∃s_23, ((0 <= s_23) && (s_23 >= 0) && (s_23 < s) && (s_23 == _x11) && (∃_x169, ((len _x169 s_23) && (sorted _x169) && (∀u, ((hd _x169 u) => (_56 <= u))) && (v == _x169))))]
+let (_x162) = sorted_list_gen _x11 in let (_56) = subs _x1 in _x162 _56 : int list :
+[v:int list | ∃s_23, ((0 <= s_23) && (s_23 >= 0) && (s_23 < s) && (s_23 == _x11) && (∃_x163, ((len _x163 s_23) && (sorted _x163) && (∀u, ((hd _x163 u) => (_56 <= u))) && (v == _x163))))]
 
 Cost: 6
 Type: Ty_int
@@ -305,35 +253,13 @@ _x87:[v:int | v == (_x11 - 1)]
  ⊢ _x87 as let (_x1) = s in let (_x11) = subs _x1 in subs _x11 : int :
 [v:int | v == (_x11 - 1)]
 
+Cost: 10
 Type: (Ty_constructor(list(Ty_int)))
-_x1:[v:int | v == s]
-y:[v:int | true]
-pathcond_0:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && (x <= y))]
 _x0:[v:int list | emp v]
 y:[v:int | true]
-pathcond_0:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && (x <= y))]
-_x95:[v:int list | ∃_x95, ((hd _x95 _x1) && (tl _x95 _x0) && (v == _x95))] 
- ⊢ _x95 as let (_x0) = Nil in let (_x1) = s in Cons (_x1, _x0) : int list :
-[v:int list | ∃_x95, ((hd _x95 _x1) && (tl _x95 _x0) && (v == _x95))]
-
-_x2:[v:int | v == x]
-y:[v:int | true]
-pathcond_0:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && (x <= y))]
-_x0:[v:int list | emp v]
-y:[v:int | true]
-pathcond_0:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && (x <= y))]
-_x94:[v:int list | ∃_x94, ((hd _x94 _x2) && (tl _x94 _x0) && (v == _x94))] 
- ⊢ _x94 as let (_x0) = Nil in let (_x2) = x in Cons (_x2, _x0) : int list :
-[v:int list | ∃_x94, ((hd _x94 _x2) && (tl _x94 _x0) && (v == _x94))]
-
-y:[v:int | true]
-pathcond_0:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && (x <= y))]
-_x0:[v:int list | emp v]
-y:[v:int | true]
-pathcond_0:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && (x <= y))]
-_x93:[v:int list | ∃_x93, ((hd _x93 y) && (tl _x93 _x0) && (v == _x93))] 
- ⊢ _x93 as let (_x0) = Nil in Cons (y, _x0) : int list :
-[v:int list | ∃_x93, ((hd _x93 y) && (tl _x93 _x0) && (v == _x93))]
+pathcond_0:[v:unit | ∃x_3, (((x_3) <=> (s == 0)) && (not (x_3) <=> (s > 0)) && not (x_3) && (x <= y))] 
+ ⊢ _x0 as Nil : int list :
+[v:int list | emp v]
 
 Cost: 1
 Type: Ty_int
