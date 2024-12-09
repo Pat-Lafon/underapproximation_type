@@ -223,3 +223,10 @@ let rec simplify prop =
     when String.equal x qv.x ->
       Lit { x = AC (B true); ty = Ty_bool }
   | Exists { qv; body } -> Exists { qv; body = simplify body }
+
+let from_lit {x; ty} =
+  Lit
+    (Lit.AAppOp
+       ( "==" #: (Nt.Ty_arrow (ty, Nt.Ty_arrow (ty, Nt.Ty_bool))),
+         [ (Lit.AVar "v" #: ty) #: ty; (Lit.AVar x #: ty) #: ty ] ))
+    #: Nt.Ty_bool
