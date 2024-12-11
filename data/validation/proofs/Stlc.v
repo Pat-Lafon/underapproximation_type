@@ -139,6 +139,24 @@ Lemma stlc_num_arr_arr : forall tau, (forall tau_body, (forall m, (stlc_ty_arr2 
     - intro. my_inversion H0. assert (n2 = m). lia. subst. auto.
  Qed. Hint Resolve stlc_num_arr_arr: core.
 
+Lemma stlc_num_arr_arr_1 : forall tau, (forall tau_body, (forall m, (((stlc_ty_arr2 tau tau_body) /\ (num_arr tau_body m)) -> (num_arr tau (m + 1))))). Proof.
+    intros. my_inversion H; clear H. my_inversion H0; clear H0. econstructor. eauto.
+ Qed. Hint Resolve stlc_num_arr_arr_1: core.
+
+
+Lemma stlc_num_arr_arr_2 : forall tau, (forall tau_body, (forall m, (((stlc_ty_arr2 tau tau_body) /\ (num_arr tau (m + 1))) -> (num_arr tau_body m)))). Proof.
+    intros. my_inversion H. clear H. my_inversion H0; clear H0. my_inversion H1. assert (n2 = m). lia. subst. auto.
+ Qed. Hint Resolve stlc_num_arr_arr_2: core.
+
+Lemma stlc_is_abs_num_arr_ge_zero : forall v, (forall tau, (forall gamma, (exists n, (((is_abs v) /\ ((typing gamma v tau) /\ (num_arr tau n))) -> (n >= 1))))). Proof.
+    intros. eexists. intros. destruct H. destruct H0. my_inversion H; clear
+    H. my_inversion H1; clear H1. my_inversion H0. lia. Unshelve. constructor.
+ Qed. Hint Resolve stlc_is_abs_num_arr_ge_zero: core.
+
+Lemma stlc_is_abs_num_arr_ge_zero_2 : forall v, (forall tau, (forall gamma, ( (((typing gamma v tau) /\ (num_arr tau 0)) -> ~(is_abs v))))). Proof.
+    intros. destruct H. unfold not. intros. my_inversion H1; clear H1. my_inversion H0; clear H0. my_inversion H. assert (n2 + 1 = 0 -> False). lia.  apply H0. auto.
+ Qed. Hint Resolve stlc_is_abs_num_arr_ge_zero: core.
+
 Lemma stlc_const_num_app_0 : forall v, (forall n, ((is_const v /\ num_app v n) -> n = 0)). Proof.
     intros. simp. destruct v; my_inversion H. my_inversion H0.
 Qed. Hint Resolve stlc_const_num_app_0: core.
@@ -162,7 +180,7 @@ Lemma simple_num_arr : forall tau, (exists n, num_arr tau n). Proof.
 Qed.
 
 Lemma stlc_typing_num_arr : ( (forall tau, (exists n, ( num_arr tau n)))). Proof.
-    intros. eapply simple_num_arr. 
+    intros. eapply simple_num_arr.
 Qed. Hint Resolve stlc_typing_num_arr: core.
 
 Lemma stlc_term_4_cases : forall v, (is_const v \/ (is_var v \/ (is_abs v \/ is_app v))). Proof.

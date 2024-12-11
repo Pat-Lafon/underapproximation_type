@@ -270,8 +270,8 @@ let[@axiom] tree_lower_bound_root (l : int tree) (x : int) (y : int) =
   (bst l && root l x && lower_bound l y) #==> (y < x)
 
 let[@axiom] tree_upper_bound_base (l : int tree) (l1 : int tree) (x : int)
-       (y : int) =
-     (bst l && root l x && rch l l1 && leaf l1 && y > x) #==> (upper_bound l y)
+    (y : int) =
+  (bst l && root l x && rch l l1 && leaf l1 && y > x) #==> (upper_bound l y)
 
 let[@axiom] tree_upper_bound_other (l : int tree) (l1 : int tree) (x : int)
     (y : int) =
@@ -615,20 +615,39 @@ let[@axiom] black_rt_black_num_black_gt_1 (v : int rbtree) (rt : int rbtree)
 
 (** STLC *)
 
+let[@axiom] stlc_num_arr_exists (tau : stlc_ty) ((n [@exists]) : int) =
+  num_arr tau n
+
 let[@axiom] stlc_num_arr_geq_0 (tau : stlc_ty) (n : int) =
   (num_arr tau n) #==> (n >= 0)
 
 let[@axiom] stlc_num_arr_unique (tau : stlc_ty) (n1 : int) (n2 : int) =
   (num_arr tau n1 && num_arr tau n2) #==> (n1 == n2)
 
+(* let[@axiom] stlc_is_abs_num_arr_ge_zero (v : stlc_term) (tau : stlc_ty) (gamma : stlc_tyctx) (n [@exists]: int) =
+   (is_abs v && typing gamma v tau && num_arr tau n ) #==> (n >= 1) *)
+
+let[@axiom] stlc_is_abs_num_arr_ge_zero (v : stlc_term) (tau : stlc_ty)
+    (gamma : stlc_tyctx) =
+  (typing gamma v tau && num_arr tau 0) #==> (not (is_abs v))
+
 let[@axiom] stlc_num_app_unique (v : stlc_term) (n1 : int) (n2 : int) =
   (num_app v n1 && num_app v n2) #==> (n1 == n2)
 
-let[@axiom] stlc_num_arr_arr_1 (tau : stlc_ty) (tau_body : stlc_ty) (m : int) =
+let[@axiom] stlc_num_arr_arr_2_1 (tau : stlc_ty) (tau_body : stlc_ty) (m : int)
+    =
   (stlc_ty_arr2 tau tau_body && num_arr tau_body m) #==> (num_arr tau (m + 1))
 
-let[@axiom] stlc_num_arr_arr_2 (tau : stlc_ty) (tau_body : stlc_ty) (m : int) =
+let[@axiom] stlc_num_arr_2_geq_1 (tau : stlc_ty) (tau_body : stlc_ty) (m : int)
+    =
+  (stlc_ty_arr2 tau tau_body && num_arr tau m) #==> (m >= 1)
+
+let[@axiom] stlc_num_arr_arr_2_2 (tau : stlc_ty) (tau_body : stlc_ty) (m : int)
+    =
   (stlc_ty_arr2 tau tau_body && num_arr tau (m + 1)) #==> (num_arr tau_body m)
+
+let[@axiom] stlc_num_arr_arr_1_1 (tau : stlc_ty) (ty : stlc_ty) =
+  (stlc_ty_arr1 tau ty) #==> (num_arr ty 0)
 
 let[@axiom] stlc_const_num_app_0 (v : stlc_term) =
   (is_const v) #==> (num_app v 0)
@@ -637,6 +656,9 @@ let[@axiom] stlc_var_num_app_0 (v : stlc_term) = (is_var v) #==> (num_app v 0)
 
 let[@axiom] stlc_num_app_gt_0_is_abs_or_app (v : stlc_term) (n : int) =
   (num_app v n && n > 0) #==> (is_abs v || is_app v)
+
+let[@axiom] stlc_num_app_gt_0_is_abs_or_app (v : stlc_term) =
+  (num_app v 0) #==> (not (is_app v))
 
 let[@axiom] stlc_num_app_gt_0_is_abs_or_app (v : stlc_term)
     ((n [@exists]) : int) =
