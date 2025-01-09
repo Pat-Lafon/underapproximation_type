@@ -3,8 +3,8 @@ let[@assert] rty1 =
   let num = (v >= 0 : [%v: int]) [@over] in
   let gamma = (true : [%v: stlc_tyctx]) [@over] in
   let tau = (num_arr v num_arr_tau : [%v: stlc_ty]) [@over] in
-  (fun ((func [@exists]) : stlc_term) ((arg [@exists]) : stlc_term) ->
-     num > 0 && num_app v num && stlc_app1 v func && stlc_app2 v arg
+  (
+     num > 0 && num_app v num && is_app v
     : [%v: stlc_term])
     [@under]
 
