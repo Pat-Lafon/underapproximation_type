@@ -96,11 +96,20 @@ let tpedvar_to_z3 ctx (tp, name) =
         | Dt | Int -> Integer.mk_const_s ctx name
         | Bool -> Boolean.mk_const_s ctx name))
 
+let unique_counter = ref 0
+
+let unique_symbol ctx () : Symbol.symbol =
+  let i = !unique_counter in
+  unique_counter := i + 1;
+  Symbol.mk_string ctx (Printf.sprintf "unique_%d" i)
+
 let make_forall ctx qv body =
   if List.length qv == 0 then body
   else
     Quantifier.expr_of_quantifier
-      (Quantifier.mk_forall_const ctx qv body (Some 1) [] [] None None)
+      (Quantifier.mk_forall_const ctx qv body (Some 1) [] []
+         (Some (unique_symbol ctx ()))
+         None)
 
 let make_exists ctx qv body =
   if List.length qv == 0 then body
