@@ -1,0 +1,40 @@
+Path Specific Collection:
+In Path:
+pathcond_0:[v:unit | ∃x_0, (((x_0) <=> (num == 0)) && (not (x_0) <=> (num > 0)) && (x_0))]
+Cost: 1
+Type: Ty_int
+_x2:[v:int | v == num]
+pathcond_0:[v:unit | ∃x_0, (((x_0) <=> (num == 0)) && (not (x_0) <=> (num > 0)) && (x_0))] 
+ ⊢ _x2 as num : int :
+[v:int | v == num]
+
+_x1:[v:int | v == num_arr_tau]
+pathcond_0:[v:unit | ∃x_0, (((x_0) <=> (num == 0)) && (not (x_0) <=> (num > 0)) && (x_0))] 
+ ⊢ _x1 as num_arr_tau : int :
+[v:int | v == num_arr_tau]
+
+Type: (Ty_constructor(stlc_tyctx()))
+_x3:[v:stlc_tyctx | v == gamma]
+pathcond_0:[v:unit | ∃x_0, (((x_0) <=> (num == 0)) && (not (x_0) <=> (num > 0)) && (x_0))] 
+ ⊢ _x3 as gamma : stlc_tyctx :
+[v:stlc_tyctx | v == gamma]
+
+Type: (Ty_constructor(stlc_ty()))
+_x4:[v:stlc_ty | v == tau]
+pathcond_0:[v:unit | ∃x_0, (((x_0) <=> (num == 0)) && (not (x_0) <=> (num > 0)) && (x_0))] 
+ ⊢ _x4 as tau : stlc_ty :
+[v:stlc_ty | v == tau]
+
+_12:[v:stlc_ty | true]
+pathcond_0:[v:unit | ∃x_0, (((x_0) <=> (num == 0)) && (not (x_0) <=> (num > 0)) && (x_0))] 
+ ⊢ _12 as gen_type () : stlc_ty :
+[v:stlc_ty | true]
+
+Cost: 6
+Type: Ty_int
+_12:[v:stlc_ty | true]
+pathcond_0:[v:unit | ∃x_0, (((x_0) <=> (num == 0)) && (not (x_0) <=> (num > 0)) && (x_0))]
+_x10:[v:int | ∃_x10, ((num_arr _12 _x10) && (v == _x10))] 
+ ⊢ _x10 as let (_12) = gen_type () in get_num_arr _12 : int :
+[v:int | ∃_x10, ((num_arr _12 _x10) && (v == _x10))]
+
