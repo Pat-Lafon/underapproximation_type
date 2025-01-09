@@ -32,8 +32,6 @@ let feature_id_to_vec (num_features : int) id =
   in
   aux (0, []) id
 
-let stlc_list_num = [ "num_app" ]
-let stlc_list = [ "is_const"; "is_var"; "is_abs"; "is_app" ]
 
 let feature_vec_to_prop (ftab : feature_tab) vec =
   let props =
