@@ -187,6 +187,8 @@ let rec simplify prop =
           ps
       in
       match ps with
+      | x when List.mem (Lit { x = AC (B false); ty = Nt.Ty_bool }) x ->
+          Lit { x = AC (B false); ty = Ty_bool }
       | [] -> Lit { x = AC (B true); ty = Ty_bool }
       | [ p ] -> p
       | _ -> And ps)
@@ -200,6 +202,8 @@ let rec simplify prop =
           ps
       in
       match ps with
+      | x when List.mem (Lit { x = AC (B true); ty = Nt.Ty_bool }) x ->
+          Lit { x = AC (B true); ty = Ty_bool }
       | [] -> Lit { x = AC (B false); ty = Ty_bool }
       | [ p ] -> p
       | _ -> Or ps)
@@ -216,17 +220,21 @@ let rec simplify prop =
       | Lit { x = AC (B false); _ } -> simplify e
       | c -> Ite (c, simplify t, simplify e))
   | Forall { qv; body } -> Forall { qv; body = simplify body }
-  | Exists { qv; body = Lit { x = Lit.AVar { x; _ }; _ } }
-    when String.equal x qv.x ->
-      Lit { x = AC (B true); ty = Ty_bool }
-  | Exists { qv; body = Not (Lit { x = Lit.AVar { x; _ }; _ }) }
-    when String.equal x qv.x ->
-      Lit { x = AC (B true); ty = Ty_bool }
-  | Exists { qv; body } -> Exists { qv; body = simplify body }
+  | Exists { qv; body } -> (
+      match simplify body with
+      | Lit { x = AC (B true); _ } -> Lit { x = AC (B true); ty = Ty_bool }
+      | Lit { x = AC (B false); _ } -> Lit { x = AC (B false); ty = Ty_bool }
+      | Lit { x = Lit.AVar { x; _ }; _ } when String.equal x qv.x ->
+          Lit { x = AC (B true); ty = Ty_bool }
+      | Not (Lit { x = Lit.AVar { x; _ }; _ }) when String.equal x qv.x ->
+          Lit { x = AC (B true); ty = Ty_bool }
+      | body -> Exists { qv; body })
 
-let from_lit {x; ty} =
+let from_lit { x; ty } =
   Lit
     (Lit.AAppOp
        ( "==" #: (Nt.Ty_arrow (ty, Nt.Ty_arrow (ty, Nt.Ty_bool))),
          [ (Lit.AVar "v" #: ty) #: ty; (Lit.AVar x #: ty) #: ty ] ))
     #: Nt.Ty_bool
+
+let from_const c = Lit (Lit.AC c) #: (Constant.constant_to_nt c)
