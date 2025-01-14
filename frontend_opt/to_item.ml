@@ -63,7 +63,11 @@ let ocaml_structure_item_to_item structure =
                  if_rec = get_if_rec flag;
                  body;
                }
-         | _ -> _failatwith __FILE__ __LINE__ "wrong syntax")
+         | _ ->
+             _failatwith __FILE__ __LINE__
+               ("wrong syntax: "
+               ^ (value_binding.pvb_attributes |> List.map (fun x -> x.attr_name.txt)
+                 |> String.concat ", ")))
   | Pstr_attribute _ -> None
   | _ ->
       let () =
@@ -102,8 +106,8 @@ let layout_item = function
 
 let layout_item_to_coq = function
   | MAxiom { name; prop } ->
-      spf "Lemma %s : %s. Proof. Qed. Hint Resolve %s: core." name (layout_prop_to_coq prop)
-        name
+      spf "Lemma %s : %s. Proof. Qed. Hint Resolve %s: core." name
+        (layout_prop_to_coq prop) name
   | _ -> _failatwith __FILE__ __LINE__ "not implemented"
 
 let layout_structure l = spf "%s\n" (List.split_by "\n" layout_item l)
