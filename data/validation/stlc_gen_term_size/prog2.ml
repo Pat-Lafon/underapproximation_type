@@ -6,7 +6,11 @@ val gen_term_no_app : stlc_tyctx -> stlc_ty -> stlc_term *)
 let rec gen_term_size (num_arr_tau : int) (num : int) (gamma : stlc_tyctx)
     (tau : stlc_ty) : stlc_term =
   if sizecheck num then gen_term_no_app gamma tau
-  else if bool_gen () then Err
+  else if bool_gen () then
+    let (arg_tau : stlc_ty) = gen_type () in
+    if true then
+      Err
+    else Err
   else
     match tau with
     | Stlc_ty_nat -> Err
