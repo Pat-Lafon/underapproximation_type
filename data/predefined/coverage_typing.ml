@@ -190,6 +190,20 @@ let[@library] int_range_inex =
   let b = (a <= v : [%v: int]) [@over] in
   (a <= v && v < b : [%v: int]) [@under]
 
+(* This is int_range_inex except the first argument is zero
+     * Additionally I've strengthened the precondition on b so that the resulting
+   coverage must not be empty *)
+let[@library] int_range_inex_zero =
+   let b = (v >= 0 : [%v: int]) [@over] in
+   (0 <= v && v < b : [%v: int]) [@under]
+
+(* This is subtraction except I've built in that the result must not be
+   negative and the minus 1 is built in *)
+let[@library] difference_inex =
+  let a = (true : [%v: int]) [@over] in
+  let b = (v <= a : [%v: int]) [@over] in
+  (v == (a - b) - 1 : [%v: int]) [@under]
+
 let[@library] increment =
   let n = (true : [%v: int]) [@over] in
   (v == n + 1 : [%v: int]) [@under]

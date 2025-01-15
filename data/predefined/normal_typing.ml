@@ -15,6 +15,8 @@ val int_gen : unit -> int
 val nat_gen : unit -> int
 val int_range_inc : int -> int -> int
 val int_range_inex : int -> int -> int
+val int_range_inex_zero : int -> int
+val difference_inex : int -> int -> int
 val increment : int -> int
 val decrement : int -> int
 val lt_eq_one : int -> bool
