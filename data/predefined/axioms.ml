@@ -649,7 +649,7 @@ let[@axiom] stlc_num_arr_arr_1_1 (tau : stlc_ty) (ty : stlc_ty) =
 (* let[@axiom] stlc_const_num_app_0 (v : stlc_term) =
   (is_const v) #==> (num_app v 0) *)
 
-let[@axiom] stlc_var_num_app_0 (v : stlc_term) = (is_var v) #==> (num_app v 0)
+(* let[@axiom] stlc_var_num_app_0 (v : stlc_term) = (is_var v) #==> (num_app v 0) *)
 
 (* let[@axiom] stlc_num_app_0_is_const_or_var (v : stlc_term) =
   (num_app v 0) #==> (is_const v || is_var v)
@@ -671,51 +671,51 @@ let[@axiom] stlc_num_app_non_0_is_app_or_abs (v : stlc_term) (n : int) =
    let[@axiom] stlc_term_disjoint6 (v : stlc_term) = not (is_abs v && is_app v)
 *)
 
-let[@axiom] stlc_is_const_disjoint1 (v : stlc_term) =
+(* let[@axiom] stlc_is_const_disjoint1 (v : stlc_term) =
   (is_const v) #==> (not (is_var v))
 
 let[@axiom] stlc_is_const_disjoint2 (v : stlc_term) =
   (is_const v) #==> (not (is_abs v))
 
 let[@axiom] stlc_is_const_disjoint3 (v : stlc_term) =
-  (is_const v) #==> (not (is_app v))
+  (is_const v) #==> (not (is_app v)) *)
 
-let[@axiom] stlc_is_var_disjoint1 (v : stlc_term) =
-  (is_var v) #==> (not (is_const v))
+(* let[@axiom] stlc_is_var_disjoint1 (v : stlc_term) =
+  (is_var v) #==> (not (is_const v)) *)
 
 (* let[@axiom] stlc_is_var_disjoint2 (v : stlc_term) =
   (is_var v) #==> (not (is_abs v)) *)
 
-let[@axiom] stlc_is_var_disjoint3 (v : stlc_term) =
-  (is_var v) #==> (not (is_app v))
+(* let[@axiom] stlc_is_var_disjoint3 (v : stlc_term) =
+  (is_var v) #==> (not (is_app v)) *)
 
-let[@axiom] stlc_is_abs_disjoint1 (v : stlc_term) =
+(* let[@axiom] stlc_is_abs_disjoint1 (v : stlc_term) =
   (is_abs v) #==> (not (is_const v))
 
 let[@axiom] stlc_is_abs_disjoint2 (v : stlc_term) =
-  (is_abs v) #==> (not (is_var v))
+  (is_abs v) #==> (not (is_var v)) *)
 
 let[@axiom] stlc_is_abs_disjoint3 (v : stlc_term) =
   (is_abs v) #==> (not (is_app v))
 
-let[@axiom] stlc_is_app_disjoint1 (v : stlc_term) =
+(* let[@axiom] stlc_is_app_disjoint1 (v : stlc_term) =
   (is_app v) #==> (not (is_const v))
 
 let[@axiom] stlc_is_app_disjoint2 (v : stlc_term) =
-  (is_app v) #==> (not (is_var v))
+  (is_app v) #==> (not (is_var v)) *)
 
 let[@axiom] stlc_is_app_disjoint3 (v : stlc_term) =
   (is_app v) #==> (not (is_abs v))
 
-let[@axiom] stlc_term_const_typing_nat (gamma : stlc_tyctx) (v : stlc_term)
+(* let[@axiom] stlc_term_const_typing_nat (gamma : stlc_tyctx) (v : stlc_term)
     (tau : stlc_ty) =
-  (is_const v && typing gamma v tau) #==> (stlc_ty_nat tau)
+  (is_const v && typing gamma v tau) #==> (stlc_ty_nat tau) *)
 
 (* let[@axiom] stlc_id_is_var (v : stlc_term) (id : int) =
   (stlc_id v id) #==> (is_var v) *)
 
-let[@axiom] stlc_const_is_const (v : stlc_term) (c : int) =
-  (stlc_const v c) #==> (is_const v)
+(* let[@axiom] stlc_const_is_const (v : stlc_term) (c : int) =
+  (stlc_const v c) #==> (is_const v) *)
 
 (* let[@axiom] stlc_term_destruct1 (term : stlc_term) ((c [@exists]) : int) =
    (is_const term) #==> (stlc_const term c) *)
@@ -748,8 +748,8 @@ let[@axiom] stlc_is_abs_body (term : stlc_term) (body : stlc_term) =
 let[@axiom] stlc_is_app_1 (term : stlc_term) (t1 : stlc_term) =
   (stlc_app1 term t1) #==> (is_app term)
 
-let[@axiom] stlc_is_app_2 (term : stlc_term) (t2 : stlc_term) =
-  (stlc_app2 term t2) #==> (is_app term)
+(* let[@axiom] stlc_is_app_2 (term : stlc_term) (t2 : stlc_term) =
+  (stlc_app2 term t2) #==> (is_app term) *)
 
 let[@axiom] stlc_term_abs_typing_arr_1 (gamma : stlc_tyctx) (v : stlc_term)
     (tau : stlc_ty) (ty : stlc_ty) =
@@ -847,16 +847,16 @@ let[@axiom] stlc_num_app_abs_body_eq (v : stlc_term) (body : stlc_term)
 let[@axiom] stlc_num_app_app_rev_2 (v : stlc_term) (t1 : stlc_term)
     (t2 : stlc_term) (n : int) (m1 : int) =
   (stlc_app1 v t1 && stlc_app2 v t2 && num_app t1 m1 && num_app v n)
-  #==> (fun ((m2 [@exists]) : int) -> m2 == n - m1 - 1 && num_app t2 m2)
+  #==> (num_app t2 (n - m1 - 1))
 
 (* let[@axiom] stlc_num_app_app_rev_bounds_1 (v : stlc_term) (t1 : stlc_term)
      (n : int) (m1 : int) =
    (stlc_app1 v t1 && num_app t1 m1 && num_app v n) #==> (m1 < n) *)
 
-let[@axiom] stlc_num_app_app_rev_bounds_1 (v : stlc_term) (t1 : stlc_term)
+(* let[@axiom] stlc_num_app_app_rev_bounds_1 (v : stlc_term) (t1 : stlc_term)
     (n : int) =
   (stlc_app1 v t1 && num_app v n) #==> (fun ((m1 [@exists]) : int) ->
-  m1 < n && num_app t1 m1)
+  m1 < n && num_app t1 m1) *)
 
 (* let[@axiom] stlc_num_app_app_rev_bounds_2 (v : stlc_term) (t2 : stlc_term)
      (n : int) (m2 : int) =
