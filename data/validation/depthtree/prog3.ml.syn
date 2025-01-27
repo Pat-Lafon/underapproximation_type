@@ -1,0 +1,11 @@
+let rec depth_tree_gen = fun s ->
+  let (xccc3) = sizecheck s in
+  match xccc3 with
+  | True -> Leaf
+  | False ->
+      let (idx3) = bool_gen () in
+      (match idx3 with
+       | True -> Leaf
+       | False ->
+           let (idx0) = Leaf in
+           let (idx1ccc0) = int_gen () in Node (idx1ccc0, idx0, idx0))

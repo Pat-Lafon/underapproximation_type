@@ -1,48 +1,57 @@
 Path Specific Collection:
 In Path:
-pathcond_0:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))]
-Cost: 6
+pathcond_0:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && not (x_2))]
+Cost: 16
 Type: Ty_int
-_x2:[v:int | v == s]
-pathcond_0:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))]
-_x5:[v:int | v == (_x2 - 1)] 
- ⊢ _x5 as let (_x2) = s in subs _x2 : int :
-[v:int | v == (_x2 - 1)]
+idx2:[v:int | v == s]
+pathcond_0:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && not (x_2))]
+idx5_0:[v:int | v == (idx2 - 1)] 
+ ⊢ idx5_0 as let (idx2) = s in subs idx2 : int :
+[v:int | v == (idx2 - 1)]
 
-Cost: 7
+Cost: 21
 Type: (Ty_constructor(list(Ty_int)))
-_x2:[v:int | v == s]
-pathcond_0:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))]
-_x5:[v:int | v == (_x2 - 1)]
-_x7:[v:int list | ∃s_4, ((0 <= s_4) && (s_4 >= 0) && (s_4 < s) && (s_4 == _x5) && (∃_x7, ((∃n, ((len _x7 n) && (n <= s_4))) && (v == _x7))))] 
- ⊢ _x7 as let (_x2) = s in let (_x5) = subs _x2 in sized_list_gen _x5 : int list :
-[v:int list | ∃s_4, ((0 <= s_4) && (s_4 >= 0) && (s_4 < s) && (s_4 == _x5) && (∃_x7, ((∃n, ((len _x7 n) && (n <= s_4))) && (v == _x7))))]
+idx1_0:[v:int | true]
+pathcond_0:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && not (x_2))]
+idx0:[v:int list | emp v]
+pathcond_0:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && not (x_2))]
+idx9_0:[v:int list | ∃idx9, ((hd idx9 idx1_0) && (tl idx9 idx0) && (v == idx9))] 
+ ⊢ idx9_0 as let (idx0) = Nil in let (idx1_0) = int_gen () in Cons (idx1_0, idx0) : int list :
+[v:int list | ∃idx9, ((hd idx9 idx1_0) && (tl idx9 idx0) && (v == idx9))]
 
-Cost: 11
-Type: Ty_int
-_x2:[v:int | v == s]
-pathcond_0:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))]
-_x5:[v:int | v == (_x2 - 1)]
-_x8:[v:int | v == (_x5 - 1)] 
- ⊢ _x8 as let (_x2) = s in let (_x5) = subs _x2 in subs _x5 : int :
-[v:int | v == (_x5 - 1)]
+idx2:[v:int | v == s]
+pathcond_0:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && not (x_2))]
+idx0:[v:int list | emp v]
+pathcond_0:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && not (x_2))]
+idx8_0:[v:int list | ∃idx8, ((hd idx8 idx2) && (tl idx8 idx0) && (v == idx8))] 
+ ⊢ idx8_0 as let (idx0) = Nil in let (idx2) = s in Cons (idx2, idx0) : int list :
+[v:int list | ∃idx8, ((hd idx8 idx2) && (tl idx8 idx0) && (v == idx8))]
+
+Cost: 17
+Type: (Ty_constructor(list(Ty_int)))
+idx2:[v:int | v == s]
+pathcond_0:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && not (x_2))]
+idx5_0:[v:int | v == (idx2 - 1)]
+idx7_0:[v:int list | ∃s_4, ((0 <= s_4) && (s_4 >= 0) && (s_4 < s) && (s_4 == idx5_0) && (∃idx7, ((∃n, ((len idx7 n) && (n <= s_4))) && (v == idx7))))] 
+ ⊢ idx7_0 as let (idx2) = s in let (idx5_0) = subs idx2 in sized_list_gen idx5_0 : int list :
+[v:int list | ∃s_4, ((0 <= s_4) && (s_4 >= 0) && (s_4 < s) && (s_4 == idx5_0) && (∃idx7, ((∃n, ((len idx7 n) && (n <= s_4))) && (v == idx7))))]
 
 Cost: 10
 Type: (Ty_constructor(list(Ty_int)))
-_x0:[v:int list | emp v]
-pathcond_0:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))] 
- ⊢ _x0 as Nil : int list :
+idx0:[v:int list | emp v]
+pathcond_0:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && not (x_2))] 
+ ⊢ idx0 as Nil : int list :
 [v:int list | emp v]
 
 Cost: 1
 Type: Ty_int
-_x2:[v:int | v == s]
-pathcond_0:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))] 
- ⊢ _x2 as s : int :
+idx2:[v:int | v == s]
+pathcond_0:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && not (x_2))] 
+ ⊢ idx2 as s : int :
 [v:int | v == s]
 
-_2:[v:int | true]
-pathcond_0:[v:unit | ∃x_2, (((x_2) <=> (s == 0)) && (not (x_2) <=> (s > 0)) && not (x_2))] 
- ⊢ _2 as int_gen () : int :
+idx1_0:[v:int | true]
+pathcond_0:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && not (x_2))] 
+ ⊢ idx1_0 as int_gen () : int :
 [v:int | true]
 

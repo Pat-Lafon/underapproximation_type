@@ -5,7 +5,7 @@
         // "preprocess",
         // "ntyping",
         // "typing",
-        "queries",
+        // "queries",
         "result",
         "never-use"
     ],
@@ -17,7 +17,7 @@
     "abd_templates": ["template_leaf", "template_eq_0"],
     "num_quantifier": 0,
     "abduce_rlimit": 6000000,
-    "synth_bound": 24,
+    "synth_bound": 100,
     "synth_rlimit": 6000000,
     "type_rlimit": 20000000,
     "use_missing_coverage_file": false,

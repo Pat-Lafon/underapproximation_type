@@ -12,7 +12,7 @@ let solver_result solver =
   | UNSATISFIABLE -> SmtUnsat
   | UNKNOWN ->
       (* raise (InterExn "time out!") *)
-      (* Printf.printf "\ttimeout\n"; *)
+      Printf.printf "\ttimeout\n";
       Timeout
   | SATISFIABLE -> (
       match Solver.get_model solver with
@@ -57,7 +57,7 @@ let smt_solve ctx assertions =
   (* in *)
   let _ = Solver.add solver (get_formulas g) in
 
-(*   Solver.to_string solver |> print_endline; *)
+  (* Solver.to_string solver |> print_endline; *)
   let _, res = Sugar.clock (fun () -> solver_result solver) in
   res
 

@@ -8,4 +8,6 @@ let rec unique_list_gen = fun s ->
       let (x) = int_gen () in
       let (xccc8) = list_mem l in
       let (xccc9) = xccc8 x in
-      (match xccc9 with | True -> Err | False -> Cons (x, l))
+      (match xccc9 with
+       | True -> Err
+       | False -> let (idx7) = l in let (idx8) = x in Cons (idx8, idx7))

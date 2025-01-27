@@ -4,7 +4,7 @@ let rec duplicate_list_gen = fun s ->
     match xccc2 with
     | True -> Nil
     | False ->
-        let (_x1) = s in
-        let (_x6) = subs _x1 in
-        let (_x7) = duplicate_list_gen _x6 in
-        let (_x2) = x in let (ccc21) = _x7 _x2 in Cons (_x2, ccc21)
+        let (idx1) = s in
+        let (idx6ccc0) = subs idx1 in
+        let (idx7) = duplicate_list_gen idx6ccc0 in
+        let (idx2) = x in let (idx8ccc1) = idx7 idx2 in Cons (idx2, idx8ccc1)

@@ -3,8 +3,8 @@ let rec complete_tree_gen = fun s ->
   match xccc2 with
   | True -> Leaf
   | False ->
-      let (_x2) = s in
-      let (_x5) = subs _x2 in
-      let (ccc11) = complete_tree_gen _x5 in
-      let (ccc9) = complete_tree_gen _x5 in
-      let (ccc3) = int_gen () in Node (ccc3, ccc9, ccc11)
+      let (idx0) = Leaf in
+      let (idx2) = s in
+      let (idx5ccc0) = subs idx2 in
+      let (idx7ccc2) = complete_tree_gen idx5ccc0 in
+      let (idx1ccc0) = int_gen () in Node (idx1ccc0, idx7ccc2, idx0)

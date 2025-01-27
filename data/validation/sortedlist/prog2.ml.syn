@@ -8,8 +8,9 @@ let rec sorted_list_gen = fun s ->
         let (xccc4) = x <= y in
         (match xccc4 with
          | True ->
-             let (_x1) = s in
-             let (_x11) = subs _x1 in
-             let (_x48) = sorted_list_gen _x11 in
-             let (ccc104) = _x48 y in Cons (y, ccc104)
+             let (idx1) = s in
+             let (idx13ccc0) = subs idx1 in
+             let (idx50) = sorted_list_gen idx13ccc0 in
+             let (idx6) = y in
+             let (idx51ccc1) = idx50 idx6 in Cons (idx6, idx51ccc1)
          | False -> Err)
