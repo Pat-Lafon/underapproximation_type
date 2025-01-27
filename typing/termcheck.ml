@@ -15,8 +15,8 @@ let apply_rec_arg1 arg =
     List.find_opt (fun (name, _) -> String.equal name "rec_arg") !_rec_arg
   with
   | Some (_, p) ->
-      let arg = (AVar arg) #: arg.ty in
-      let param = (AVar default_v #: Nt.int_ty) #: Nt.int_ty in
+      let arg = (AVar arg)#:arg.ty in
+      let param = (AVar default_v#:Nt.int_ty)#:Nt.int_ty in
       let phi = apply_pi_prop (apply_pi_prop p arg) param in
       Cty { nty = Nt.int_ty; phi }
   | None -> _failatwith __FILE__ __LINE__ "die"
@@ -27,9 +27,9 @@ let apply_rec_arg2 arg1 param1 arg2 =
   with
   | Some (_, p) ->
       let arg1, param1, arg2 =
-        map3 (fun x -> (AVar x) #: x.ty) (arg1, param1, arg2)
+        map3 (fun x -> (AVar x)#:x.ty) (arg1, param1, arg2)
       in
-      let param2 = (AVar default_v #: Nt.int_ty) #: Nt.int_ty in
+      let param2 = (AVar default_v#:Nt.int_ty)#:Nt.int_ty in
       let phi = List.fold_left apply_pi_prop p [ arg1; param1; arg2; param2 ] in
       Cty { nty = Nt.int_ty; phi }
   | None -> _failatwith __FILE__ __LINE__ "die"
@@ -88,11 +88,11 @@ let rec value_type_infer (uctx : uctx) (a : (t, t value) typed) :
           | RtyTuple _ -> _failatwith __FILE__ __LINE__ "unimp"
           | RtyBase _ -> mk_rty_var_eq_var a.ty (default_v, id.x)
         in
-        (VVar id.x #: rty) #: rty
-    | VConst U -> (VConst U) #: (prop_to_rty false Nt.unit_ty mk_true)
+        (VVar id.x#:rty)#:rty
+    | VConst U -> (VConst U)#:(prop_to_rty false Nt.unit_ty mk_true)
     | VConst c ->
         let rty = mk_rty_var_eq_c a.ty (default_v, c) in
-        (VConst c) #: rty
+        (VConst c)#:rty
     | VLam _ | VFix _ | VTu _ -> _failatwith __FILE__ __LINE__ "unimp"
   in
   (* let () = pprint_simple_typectx_infer uctx (layout_typed_value a, res.ty) in *)
@@ -110,21 +110,17 @@ and value_type_check (uctx : uctx) (a : (t, t value) typed) (rty : t rty) :
         _warinning_typing_error __FILE__ __LINE__ (layout_typed_value a, rty);
         None)
   | VLam { lamarg; body }, RtyBaseArr { argcty; arg; retty } ->
-      let body =
-        body #-> (subst_term_instance lamarg.x (VVar arg #: lamarg.ty))
-      in
+      let body = body#->(subst_term_instance lamarg.x (VVar arg#:lamarg.ty)) in
       let argrty = RtyBase { ou = true; cty = argcty } in
-      let* body =
-        term_type_check (add_to_right uctx arg #: argrty) body retty
-      in
-      let lamarg = arg #: argrty in
-      Some (VLam { lamarg; body }) #: rty
+      let* body = term_type_check (add_to_right uctx arg#:argrty) body retty in
+      let lamarg = arg#:argrty in
+      Some (VLam { lamarg; body })#:rty
   | VLam { lamarg; body }, RtyArrArr { argrty; retty } ->
       let* body =
-        term_type_check (add_to_right uctx lamarg.x #: argrty) body retty
+        term_type_check (add_to_right uctx lamarg.x#:argrty) body retty
       in
-      let lamarg = lamarg.x #: argrty in
-      Some (VLam { lamarg; body }) #: rty
+      let lamarg = lamarg.x#:argrty in
+      Some (VLam { lamarg; body })#:rty
   | VLam _, _ -> _failatwith __FILE__ __LINE__ ""
   | VFix { fixname; fixarg; body }, RtyBaseArr { argcty; arg; retty } ->
       let _, ret_nty = Nt.destruct_arr_tp fixname.ty in
@@ -135,9 +131,9 @@ and value_type_check (uctx : uctx) (a : (t, t value) typed) (rty : t rty) :
             RtyBaseArr { argcty = argcty1; arg = arg1; retty } ) ->
             let rty' =
               let arg' = { x = Rename.unique arg; ty = fixarg.ty } in
-              let arg = arg #: fixarg.ty in
+              let arg = arg#:fixarg.ty in
               let arg1' = { x = Rename.unique arg1; ty = lamarg.ty } in
-              let arg1 = arg1 #: lamarg.ty in
+              let arg1 = arg1#:lamarg.ty in
               let rec_constraint_cty = apply_rec_arg2 arg arg' arg1 in
               RtyBaseArr
                 {
@@ -154,30 +150,38 @@ and value_type_check (uctx : uctx) (a : (t, t value) typed) (rty : t rty) :
                       };
                 }
             in
-            let binding = arg #: (RtyBase { ou = true; cty = argcty }) in
-            let binding1 = arg1 #: (RtyBase { ou = true; cty = argcty1 }) in
+            let binding = arg#:(RtyBase { ou = true; cty = argcty }) in
+            let binding1 = arg1#:(RtyBase { ou = true; cty = argcty1 }) in
             let body =
-              body
-              #-> (subst_term_instance fixarg.x (VVar arg #: fixarg.ty))
-              #-> (subst_term_instance lamarg.x (VVar arg1 #: fixarg.ty))
+              body#->(subst_term_instance fixarg.x (VVar arg#:fixarg.ty))#->(subst_term_instance
+                                                                               lamarg
+                                                                                .x
+                                                                               (VVar
+                                                                                arg1
+                                                                                #:
+                                                                                fixarg
+                                                                                .ty))
             in
             let* body' =
               term_type_check
-                (add_to_rights uctx [ binding; binding1; fixname.x #: rty' ])
+                (add_to_rights uctx [ binding; binding1; fixname.x#:rty' ])
                 body retty
             in
             let lam =
-              (VLam { lamarg = binding1; body = body' })
-              #: (RtyBaseArr { argcty = argcty1; arg = arg1; retty })
+              (VLam { lamarg = binding1; body = body' })#:(RtyBaseArr
+                                                             {
+                                                               argcty = argcty1;
+                                                               arg = arg1;
+                                                               retty;
+                                                             })
             in
-            let clam = (CVal lam) #: lam.ty in
+            let clam = (CVal lam)#:lam.ty in
             Some
-              (VFix
-                 { fixname = fixname.x #: rty; fixarg = binding; body = clam })
-              #: rty
+              (VFix { fixname = fixname.x#:rty; fixarg = binding; body = clam })#:
+                                                                                rty
         | _ -> _failatwith __FILE__ __LINE__ "die"
       else
-        let rec_constraint_cty = apply_rec_arg1 arg #: fixarg.ty in
+        let rec_constraint_cty = apply_rec_arg1 arg#:fixarg.ty in
         let () =
           init_cur_rec_func_name (fixname.x, rec_constraint_cty, ret_nty)
         in
@@ -190,18 +194,17 @@ and value_type_check (uctx : uctx) (a : (t, t value) typed) (rty : t rty) :
               retty = subst_rty_instance arg (AVar a) retty;
             }
         in
-        let binding = arg #: (RtyBase { ou = true; cty = argcty }) in
+        let binding = arg#:(RtyBase { ou = true; cty = argcty }) in
         let body =
-          body #-> (subst_term_instance fixarg.x (VVar arg #: fixarg.ty))
+          body#->(subst_term_instance fixarg.x (VVar arg#:fixarg.ty))
         in
         let* body' =
           term_type_check
-            (add_to_rights uctx [ binding; fixname.x #: rty' ])
+            (add_to_rights uctx [ binding; fixname.x#:rty' ])
             body retty
         in
         Some
-          (VFix { fixname = fixname.x #: rty; fixarg = binding; body = body' })
-          #: rty
+          (VFix { fixname = fixname.x#:rty; fixarg = binding; body = body' })#:rty
   | VFix _, _ -> _failatwith __FILE__ __LINE__ ""
   | VTu _, _ -> _failatwith __FILE__ __LINE__ ""
 
@@ -219,10 +222,10 @@ and match_case_type_infer (uctx : uctx) (matched : (t, t value) typed)
             match rty with
             | RtyBaseArr { argcty; arg; retty } ->
                 let retty = subst_rty_instance arg (AVar x) retty in
-                let x = x.x #: (RtyBase { ou = false; cty = argcty }) in
+                let x = x.x#:(RtyBase { ou = false; cty = argcty }) in
                 (args @ [ x ], retty)
             | RtyArrArr { argrty; retty } ->
-                let x = x.x #: argrty in
+                let x = x.x#:argrty in
                 (args @ [ x ], retty)
             | _ -> _failatwith __FILE__ __LINE__ "die")
           ([], constructor_rty) args
@@ -237,17 +240,16 @@ and match_case_type_infer (uctx : uctx) (matched : (t, t value) typed)
             RtyBase { ou = false; cty = Cty { nty = Nt.unit_ty; phi } }
         | _ -> _failatwith __FILE__ __LINE__ "die"
       in
-      let dummy = (Rename.unique "dummy") #: retty in
+      let dummy = (Rename.unique "dummy")#:retty in
       let bindings = args @ [ dummy ] in
       let* exp = term_type_infer (add_to_rights uctx bindings) exp in
       (* let _ = *)
       (*   Printf.printf "exists %s\n" *)
       (*   @@ List.split_by_comma (fun x -> x.x) bindings *)
       (* in *)
-      let exp = exp.x #: (exists_rtys_to_rty bindings exp.ty) in
+      let exp = exp.x#:(exists_rtys_to_rty bindings exp.ty) in
       Some
-        (CMatchcase
-           { constructor = constructor.x #: constructor_rty; args; exp })
+        (CMatchcase { constructor = constructor.x#:constructor_rty; args; exp })
 
 and arrow_type_apply (uctx : uctx) appf_rty apparg =
   match appf_rty with
@@ -255,7 +257,7 @@ and arrow_type_apply (uctx : uctx) appf_rty apparg =
       (* NOTE: we need to capture the constraint from the argument type *)
       (* let argrty = and_cty_to_rty argcty apparg.ty in *)
       let argrty =
-        mk_rty_var_eq_v (default_v, apparg.x #: (erase_rty apparg.ty))
+        mk_rty_var_eq_v (default_v, apparg.x#:(erase_rty apparg.ty))
       in
       let argrty = and_cty_to_rty argcty argrty in
       if is_nonempty_rty uctx argrty then
@@ -266,7 +268,7 @@ and arrow_type_apply (uctx : uctx) appf_rty apparg =
 
         (* in *)
         let retty =
-          subst_rty_instance arg (AVar tmp_name #: (erase_rty argrty)) retty
+          subst_rty_instance arg (AVar tmp_name#:(erase_rty argrty)) retty
         in
         (* let cty = *)
         (*   match argcty with *)
@@ -278,20 +280,18 @@ and arrow_type_apply (uctx : uctx) appf_rty apparg =
         (*         } *)
         (* in *)
         (* let rty = RtyBase { ou = false; cty } in *)
-        Some ([ tmp_name #: argrty ], retty)
+        Some ([ tmp_name#:argrty ], retty)
       else (
         _warinning_subtyping_emptyness_error __FILE__ __LINE__ argrty;
         _warinning_typing_error __FILE__ __LINE__
-          ( layout_typed_value apparg #-> (map_value erase_rty) #=> erase_rty,
-            argrty );
+          (layout_typed_value apparg#->(map_value erase_rty)#=>erase_rty, argrty);
         None)
   | RtyArrArr { argrty; retty } ->
       if sub_rty_bool uctx (apparg.ty, argrty) then Some ([], retty)
       else (
         _warinning_subtyping_error __FILE__ __LINE__ (apparg.ty, argrty);
         _warinning_typing_error __FILE__ __LINE__
-          ( layout_typed_value apparg #-> (map_value erase_rty) #=> erase_rty,
-            argrty );
+          (layout_typed_value apparg#->(map_value erase_rty)#=>erase_rty, argrty);
         None)
   | _ -> _failatwith __FILE__ __LINE__ "type error: not an arrow type"
 
@@ -310,11 +310,6 @@ and term_type_infer_app (uctx : uctx) (a : ('t, 't term) typed) :
           | RtyBaseArr { argcty; _ } ->
               let rec_arg_rty = RtyBase { ou = false; cty = argcty } in
 
-              (* print_endline (layout_rty appf.ty);
-                 print_endline (layout_rty rec_arg_rty);
-                 print_endline (layout_rty _rec_arg_rty);
-
-                 assert (sub_rty_bool uctx (rec_arg_rty, _rec_arg_rty)); *)
               let safety_check = sub_rty_bool uctx (rec_arg_rty, apparg.ty) in
               if !Backend.Check.smt_timeout_flag || safety_check then ()
               else (
@@ -329,12 +324,12 @@ and term_type_infer_app (uctx : uctx) (a : ('t, 't term) typed) :
         in
 
         let* bindings, retty = arrow_type_apply uctx appf.ty apparg in
-        Some (bindings, (CApp { appf; apparg }) #: retty)
+        Some (bindings, (CApp { appf; apparg })#:retty)
     | CAppOp { op; appopargs } ->
         let op_rty =
           _id_type_infer __FILE__ __LINE__ uctx (op_name_for_typectx op.x)
         in
-        let op = op.x #: op_rty in
+        let op = op.x#:op_rty in
         let appopargs = List.map (value_type_infer uctx) appopargs in
         let* bindings, res =
           List.fold_left
@@ -345,7 +340,7 @@ and term_type_infer_app (uctx : uctx) (a : ('t, 't term) typed) :
             (Some ([], op_rty))
             appopargs
         in
-        Some (bindings, (CAppOp { op; appopargs }) #: res)
+        Some (bindings, (CAppOp { op; appopargs })#:res)
     | _ ->
         let* res = term_type_infer uctx a in
         Some ([], res)
@@ -356,13 +351,13 @@ and term_type_infer (uctx : uctx) (a : ('t, 't term) typed) :
     (t rty, t rty term) typed option =
   let res =
     match a.x with
-    | CErr -> Some CErr #: (prop_to_rty false a.ty mk_false)
+    | CErr -> Some CErr#:(prop_to_rty false a.ty mk_false)
     | CVal v ->
         let v = value_type_infer uctx v in
-        Some (CVal v) #: v.ty
+        Some (CVal v)#:v.ty
     | CApp _ | CAppOp _ ->
         let* bindings, res = term_type_infer_app uctx a in
-        Some res.x #: (exists_rtys_to_rty bindings res.ty)
+        Some res.x#:(exists_rtys_to_rty bindings res.ty)
     | CMatch { matched; match_cases } ->
         (* NOTE: we drop unreachable cases *)
         let match_cases =
@@ -374,18 +369,18 @@ and term_type_infer (uctx : uctx) (a : ('t, 't term) typed) :
           @@ List.map (function CMatchcase { exp; _ } -> exp.ty) match_cases
         in
         let matched = value_type_infer uctx matched in
-        Some (CMatch { matched; match_cases }) #: unioned_ty
+        Some (CMatch { matched; match_cases })#:unioned_ty
     | CLetDeTu _ -> failwith "unimp"
     | CLetE { rhs; lhs; body } ->
         let* bindings, rhs = term_type_infer_app uctx rhs in
-        let lhs = lhs.x #: rhs.ty in
+        let lhs = lhs.x#:rhs.ty in
         let bindings = bindings @ [ lhs ] in
         let* body = term_type_infer (add_to_rights uctx bindings) body in
         (* let _ = *)
         (*   Printf.printf "CLetE exists %s\n" *)
         (*   @@ List.split_by_comma (fun x -> x.x) bindings *)
         (* in *)
-        Some (CLetE { rhs; lhs; body }) #: (exists_rtys_to_rty bindings body.ty)
+        Some (CLetE { rhs; lhs; body })#:(exists_rtys_to_rty bindings body.ty)
   in
   (* let () =
        match res with
@@ -398,29 +393,29 @@ and term_type_check (uctx : uctx) (y : ('t, 't term) typed) (rty : t rty) :
     (t rty, t rty term) typed option =
   let () = pprint_simple_typectx_judge uctx (layout_typed_term y, rty) in
   match y.x with
-  | CErr -> Some CErr #: rty
+  | CErr -> Some CErr#:rty
   | CLetDeTu _ -> failwith "unimp"
   | CVal v ->
       let* v = value_type_check uctx v rty in
-      Some (CVal v) #: rty
+      Some (CVal v)#:rty
   | CApp _ | CAppOp _ | CMatch _ ->
       let* x = term_type_infer uctx y in
       (* let () = failwith "end" in *)
-      if sub_rty_bool uctx (x.ty, rty) then Some x.x #: rty
+      if sub_rty_bool uctx (x.ty, rty) then Some x.x#:rty
       else (
         _warinning_subtyping_error __FILE__ __LINE__ (x.ty, rty);
         _warinning_typing_error __FILE__ __LINE__ (layout_typed_term y, rty);
         None)
   | CLetE { rhs; lhs; body } ->
       let* bindings, rhs = term_type_infer_app uctx rhs in
-      let lhs = lhs.x #: rhs.ty in
+      let lhs = lhs.x#:rhs.ty in
       let bindings = bindings @ [ lhs ] in
       let* body = term_type_check (add_to_rights uctx bindings) body rty in
       (* let _ = *)
       (*   Printf.printf "CLetE exists %s\n" *)
       (*   @@ List.split_by_comma (fun x -> x.x) bindings *)
       (* in *)
-      Some (CLetE { rhs; lhs; body }) #: rty
+      Some (CLetE { rhs; lhs; body })#:rty
 
 let term_type_check_with_rec_check (uctx : uctx) (y : ('t, 't term) typed)
     (rty : t rty) =
