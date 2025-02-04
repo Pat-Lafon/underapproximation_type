@@ -231,6 +231,19 @@ idx1:[v:int | v == s]
 y:[v:int | true]
 pathcond_0:[v:unit | ∃x_3, ((((x_3) => (s == 0)) && ((s == 0) => (x_3))) && ((not (x_3) => (s > 0)) && ((s > 0) => not (x_3))) && not (x_3) && (x <= y))]
 idx13_0:[v:int | v == (idx1 - 1)]
+idx2:[v:int | v == x]
+y:[v:int | true]
+pathcond_0:[v:unit | ∃x_3, ((((x_3) => (s == 0)) && ((s == 0) => (x_3))) && ((not (x_3) => (s > 0)) && ((s > 0) => not (x_3))) && not (x_3) && (x <= y))]
+idx53_0:[v:int list | ∃s_12, ((0 <= s_12) && (s_12 >= 0) && (s_12 < s) && (s_12 == idx13_0) && (∃idx53, ((len idx53 s_12) && (sorted idx53) && (∀u, ((hd idx53 u) => (idx2 <= u))) && (v == idx53))))] 
+ ⊢ idx53_0 as let (idx1) = s in
+let (idx13_0) = subs idx1 in
+let (idx52) = sorted_list_gen idx13_0 in let (idx2) = x in idx52 idx2 : int list :
+[v:int list | ∃s_12, ((0 <= s_12) && (s_12 >= 0) && (s_12 < s) && (s_12 == idx13_0) && (∃idx53, ((len idx53 s_12) && (sorted idx53) && (∀u, ((hd idx53 u) => (idx2 <= u))) && (v == idx53))))]
+
+idx1:[v:int | v == s]
+y:[v:int | true]
+pathcond_0:[v:unit | ∃x_3, ((((x_3) => (s == 0)) && ((s == 0) => (x_3))) && ((not (x_3) => (s > 0)) && ((s > 0) => not (x_3))) && not (x_3) && (x <= y))]
+idx13_0:[v:int | v == (idx1 - 1)]
 y:[v:int | true]
 pathcond_0:[v:unit | ∃x_3, ((((x_3) => (s == 0)) && ((s == 0) => (x_3))) && ((not (x_3) => (s > 0)) && ((s > 0) => not (x_3))) && not (x_3) && (x <= y))]
 idx6:[v:int | v == y]

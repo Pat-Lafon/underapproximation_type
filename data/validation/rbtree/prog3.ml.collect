@@ -1,136 +1,46 @@
 Path Specific Collection:
 In Path:
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
-Cost: 5
-Type: Ty_bool
-_x0:[v:bool | v]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))] 
- ⊢ _x0 as True : bool :
-[v:bool | v]
-
-Cost: 6
-Type: Ty_int
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
-_x40:[v:int | v == (_x6 - 1)] 
- ⊢ _x40 as let (_x6) = h in subs _x6 : int :
-[v:int | v == (_x6 - 1)]
-
-Cost: 16
-Type: Ty_int
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
-_x40:[v:int | v == (_x6 - 1)]
-_x88:[v:int | v == (_x40 - 1)]
-_x128:[v:int | v == (_x88 - 1)] 
- ⊢ _x128 as let (_x6) = h in let (_x40) = subs _x6 in let (_x88) = subs _x40 in subs _x88 : int :
-[v:int | v == (_x88 - 1)]
-
-Cost: 21
-Type: Ty_int
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
-_x40:[v:int | v == (_x6 - 1)]
-_x88:[v:int | v == (_x40 - 1)]
-_x128:[v:int | v == (_x88 - 1)]
-_x174:[v:int | v == (_x128 - 1)] 
- ⊢ _x174 as let (_x6) = h in
-let (_x40) = subs _x6 in
-let (_x88) = subs _x40 in let (_x128) = subs _x88 in subs _x128 : int :
-[v:int | v == (_x128 - 1)]
-
-Cost: 11
-Type: Ty_int
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
-_x40:[v:int | v == (_x6 - 1)]
-_x88:[v:int | v == (_x40 - 1)] 
- ⊢ _x88 as let (_x6) = h in let (_x40) = subs _x6 in subs _x40 : int :
-[v:int | v == (_x40 - 1)]
-
+pathcond_0:[v:unit | ∃x_33, ((((x_33) => (h == 0)) && ((h == 0) => (x_33))) && ((not (x_33) => (h > 0)) && ((h > 0) => not (x_33))) && (x_33) && not (color))]
 Cost: 10
 Type: (Ty_constructor(rbtree(Ty_int)))
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))] 
- ⊢ _x2 as Rbtleaf : int rbtree :
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_33, ((((x_33) => (h == 0)) && ((h == 0) => (x_33))) && ((not (x_33) => (h > 0)) && ((h > 0) => not (x_33))) && (x_33) && not (color))] 
+ ⊢ idx2 as Rbtleaf : int rbtree :
 [v:int rbtree | rb_leaf v]
-
-Cost: 27
-Type: (Ty_constructor(rbtree(Ty_int)))
-_x5:[v:bool | v == color]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
-_119:[v:int | true]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
-_x229:[v:int rbtree | ∃_x229, ((rb_root_color _x229 _x5) && (rb_root _x229 _119) && (rb_lch _x229 _x2) && (rb_rch _x229 _x2) && (v == _x229))] 
- ⊢ _x229 as let (_x2) = Rbtleaf in
-let (_119) = int_gen () in let (_x5) = color in Rbtnode (_x5, _x2, _119, _x2) : int rbtree :
-[v:int rbtree | ∃_x229, ((rb_root_color _x229 _x5) && (rb_root _x229 _119) && (rb_lch _x229 _x2) && (rb_rch _x229 _x2) && (v == _x229))]
-
-_x5:[v:bool | v == color]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
-_x228:[v:int rbtree | ∃_x228, ((rb_root_color _x228 _x5) && (rb_root _x228 _x4) && (rb_lch _x228 _x2) && (rb_rch _x228 _x2) && (v == _x228))] 
- ⊢ _x228 as let (_x2) = Rbtleaf in
-let (_x4) = inv in let (_x5) = color in Rbtnode (_x5, _x2, _x4, _x2) : int rbtree :
-[v:int rbtree | ∃_x228, ((rb_root_color _x228 _x5) && (rb_root _x228 _x4) && (rb_lch _x228 _x2) && (rb_rch _x228 _x2) && (v == _x228))]
-
-_x5:[v:bool | v == color]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
-_x227:[v:int rbtree | ∃_x227, ((rb_root_color _x227 _x5) && (rb_root _x227 _x6) && (rb_lch _x227 _x2) && (rb_rch _x227 _x2) && (v == _x227))] 
- ⊢ _x227 as let (_x2) = Rbtleaf in
-let (_x6) = h in let (_x5) = color in Rbtnode (_x5, _x2, _x6, _x2) : int rbtree :
-[v:int rbtree | ∃_x227, ((rb_root_color _x227 _x5) && (rb_root _x227 _x6) && (rb_lch _x227 _x2) && (rb_rch _x227 _x2) && (v == _x227))]
-
-Cost: 26
-Type: Ty_int
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))]
-_x40:[v:int | v == (_x6 - 1)]
-_x88:[v:int | v == (_x40 - 1)]
-_x128:[v:int | v == (_x88 - 1)]
-_x174:[v:int | v == (_x128 - 1)]
-_x226:[v:int | v == (_x174 - 1)] 
- ⊢ _x226 as let (_x6) = h in
-let (_x40) = subs _x6 in
-let (_x88) = subs _x40 in
-let (_x128) = subs _x88 in let (_x174) = subs _x128 in subs _x174 : int :
-[v:int | v == (_x174 - 1)]
 
 Cost: 1
 Type: Ty_int
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))] 
- ⊢ _x6 as h : int :
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_33, ((((x_33) => (h == 0)) && ((h == 0) => (x_33))) && ((not (x_33) => (h > 0)) && ((h > 0) => not (x_33))) && (x_33) && not (color))] 
+ ⊢ idx6 as h : int :
 [v:int | v == h]
 
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))] 
- ⊢ _x4 as inv : int :
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_33, ((((x_33) => (h == 0)) && ((h == 0) => (x_33))) && ((not (x_33) => (h > 0)) && ((h > 0) => not (x_33))) && (x_33) && not (color))] 
+ ⊢ idx4 as inv : int :
 [v:int | v == inv]
 
-_43:[v:int | true]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))] 
- ⊢ _43 as int_gen () : int :
+idx3_0:[v:int | true]
+pathcond_0:[v:unit | ∃x_33, ((((x_33) => (h == 0)) && ((h == 0) => (x_33))) && ((not (x_33) => (h > 0)) && ((h > 0) => not (x_33))) && (x_33) && not (color))] 
+ ⊢ idx3_0 as int_gen () : int :
 [v:int | true]
 
 Type: Ty_bool
-_x5:[v:bool | v == color]
-pathcond_0:[v:unit | ∃x_33, (((x_33) <=> (h == 0)) && (not (x_33) <=> (h > 0)) && (x_33) && not (color) && (∃x_34, (x_34)))] 
- ⊢ _x5 as color : bool :
+idx5:[v:bool | v == color]
+pathcond_0:[v:unit | ∃x_33, ((((x_33) => (h == 0)) && ((h == 0) => (x_33))) && ((not (x_33) => (h > 0)) && ((h > 0) => not (x_33))) && (x_33) && not (color))] 
+ ⊢ idx5 as color : bool :
 [v:bool | v == color]
+
+idx0:[v:bool | v]
+pathcond_0:[v:unit | ∃x_33, ((((x_33) => (h == 0)) && ((h == 0) => (x_33))) && ((not (x_33) => (h > 0)) && ((h > 0) => not (x_33))) && (x_33) && not (color))] 
+ ⊢ idx0 as True : bool :
+[v:bool | v]
+
+Cost: 16
+Type: Ty_int
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_33, ((((x_33) => (h == 0)) && ((h == 0) => (x_33))) && ((not (x_33) => (h > 0)) && ((h > 0) => not (x_33))) && (x_33) && not (color))]
+idx67_0:[v:int | v == (idx6 - 1)] 
+ ⊢ idx67_0 as let (idx6) = h in subs idx6 : int :
+[v:int | v == (idx6 - 1)]
 

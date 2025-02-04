@@ -23,7 +23,7 @@
     ],
     "num_quantifier": 0,
     "abduce_rlimit": 20000000,
-    "synth_bound": 40,
+    "synth_bound": 100,
     "synth_rlimit": 2000000,
     "type_rlimit": 80000000,
     "use_missing_coverage_file": false,

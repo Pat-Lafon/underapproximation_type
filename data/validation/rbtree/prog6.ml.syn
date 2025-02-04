@@ -30,8 +30,8 @@ let rec rbtree_gen = fun inv ->
                let (rt2) = xccc36 xccc37 in
                let (xccc38) = int_gen () in Rbtnode (false, lt2, xccc38, rt2)
            | False ->
-               let (_x10) = bool_gen () in
-               (match _x10 with
+               let (idx10) = bool_gen () in
+               (match idx10 with
                 | True ->
                     let (xccc39) = subs inv in
                     let (xccc40) = rbtree_gen xccc39 in
@@ -44,8 +44,8 @@ let rec rbtree_gen = fun inv ->
                     let (xccc45) = int_gen () in
                     Rbtnode (true, lt3, xccc45, rt3)
                 | False ->
-                    let (_x4) = inv in
-                    let (_x41) = subs _x4 in
-                    let (_x108) = rbtree_gen _x41 in
-                    let (_x0) = True in
-                    let (_x109) = _x108 _x0 in let (_x6) = h in _x109 _x6))
+                    let (idx4) = inv in
+                    let (idx68ccc0) = subs idx4 in
+                    let (idx79) = rbtree_gen idx68ccc0 in
+                    let (idx0) = True in
+                    let (idx80) = idx79 idx0 in let (idx6) = h in idx80 idx6))

@@ -7,13 +7,14 @@ let rec rbtree_gen = fun inv ->
           (match color with
            | True -> Rbtleaf
            | False ->
-               let (_x7) = bool_gen () in
-               (match _x7 with
+               let (idx7) = bool_gen () in
+               (match idx7 with
                 | True -> Rbtleaf
                 | False ->
-                    let (_x2) = Rbtleaf in
-                    let (ccc165) = int_gen () in
-                    let (_x0) = True in Rbtnode (_x0, _x2, ccc165, _x2)))
+                    let (idx2) = Rbtleaf in
+                    let (idx3ccc10) = int_gen () in
+                    let (idx0) = True in
+                    Rbtnode (idx0, idx2, idx3ccc10, idx2)))
       | False ->
           (match color with
            | True ->

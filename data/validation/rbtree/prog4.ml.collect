@@ -1,682 +1,793 @@
 Path Specific Collection:
 In Path:
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
 Cost: 32
 Type: (Ty_constructor(rbtree(Ty_int)))
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_455:[v:int | v == (_x6 - 1)]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x701:[v:int rbtree | ∃_x701, ((rb_root_color _x701 _x1) && (rb_root _x701 _455) && (rb_lch _x701 _x2) && (rb_rch _x701 _x2) && (v == _x701))] 
- ⊢ _x701 as let (_x2) = Rbtleaf in
-let (_x6) = h in
-let (_455) = subs _x6 in let (_x1) = False in Rbtnode (_x1, _x2, _455, _x2) : int rbtree :
-[v:int rbtree | ∃_x701, ((rb_root_color _x701 _x1) && (rb_root _x701 _455) && (rb_lch _x701 _x2) && (rb_rch _x701 _x2) && (v == _x701))]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx3_12:[v:int | true]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx147_0:[v:int rbtree | ∃idx147, ((rb_root_color idx147 idx1) && (rb_root idx147 idx3_12) && (rb_lch idx147 idx2) && (rb_rch idx147 idx2) && (v == idx147))] 
+ ⊢ idx147_0 as let (idx2) = Rbtleaf in
+let (idx3_12) = int_gen () in
+let (idx1) = False in Rbtnode (idx1, idx2, idx3_12, idx2) : int rbtree :
+[v:int rbtree | ∃idx147, ((rb_root_color idx147 idx1) && (rb_root idx147 idx3_12) && (rb_lch idx147 idx2) && (rb_rch idx147 idx2) && (v == idx147))]
 
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_454:[v:int | v == (_x4 - 1)]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x700:[v:int rbtree | ∃_x700, ((rb_root_color _x700 _x1) && (rb_root _x700 _454) && (rb_lch _x700 _x2) && (rb_rch _x700 _x2) && (v == _x700))] 
- ⊢ _x700 as let (_x2) = Rbtleaf in
-let (_x4) = inv in
-let (_454) = subs _x4 in let (_x1) = False in Rbtnode (_x1, _x2, _454, _x2) : int rbtree :
-[v:int rbtree | ∃_x700, ((rb_root_color _x700 _x1) && (rb_root _x700 _454) && (rb_lch _x700 _x2) && (rb_rch _x700 _x2) && (v == _x700))]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx146_0:[v:int rbtree | ∃idx146, ((rb_root_color idx146 idx1) && (rb_root idx146 idx4) && (rb_lch idx146 idx2) && (rb_rch idx146 idx2) && (v == idx146))] 
+ ⊢ idx146_0 as let (idx2) = Rbtleaf in
+let (idx4) = inv in let (idx1) = False in Rbtnode (idx1, idx2, idx4, idx2) : int rbtree :
+[v:int rbtree | ∃idx146, ((rb_root_color idx146 idx1) && (rb_root idx146 idx4) && (rb_lch idx146 idx2) && (rb_rch idx146 idx2) && (v == idx146))]
 
-_x5:[v:bool | v == color]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_453:[v:int | v == (_x6 - 1)]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x699:[v:int rbtree | ∃_x699, ((rb_root_color _x699 _x5) && (rb_root _x699 _453) && (rb_lch _x699 _x2) && (rb_rch _x699 _x2) && (v == _x699))] 
- ⊢ _x699 as let (_x2) = Rbtleaf in
-let (_x6) = h in
-let (_453) = subs _x6 in let (_x5) = color in Rbtnode (_x5, _x2, _453, _x2) : int rbtree :
-[v:int rbtree | ∃_x699, ((rb_root_color _x699 _x5) && (rb_root _x699 _453) && (rb_lch _x699 _x2) && (rb_rch _x699 _x2) && (v == _x699))]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx145_0:[v:int rbtree | ∃idx145, ((rb_root_color idx145 idx1) && (rb_root idx145 idx6) && (rb_lch idx145 idx2) && (rb_rch idx145 idx2) && (v == idx145))] 
+ ⊢ idx145_0 as let (idx2) = Rbtleaf in
+let (idx6) = h in let (idx1) = False in Rbtnode (idx1, idx2, idx6, idx2) : int rbtree :
+[v:int rbtree | ∃idx145, ((rb_root_color idx145 idx1) && (rb_root idx145 idx6) && (rb_lch idx145 idx2) && (rb_rch idx145 idx2) && (v == idx145))]
 
-_x5:[v:bool | v == color]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_452:[v:int | v == (_x4 - 1)]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x698:[v:int rbtree | ∃_x698, ((rb_root_color _x698 _x5) && (rb_root _x698 _452) && (rb_lch _x698 _x2) && (rb_rch _x698 _x2) && (v == _x698))] 
- ⊢ _x698 as let (_x2) = Rbtleaf in
-let (_x4) = inv in
-let (_452) = subs _x4 in let (_x5) = color in Rbtnode (_x5, _x2, _452, _x2) : int rbtree :
-[v:int rbtree | ∃_x698, ((rb_root_color _x698 _x5) && (rb_root _x698 _452) && (rb_lch _x698 _x2) && (rb_rch _x698 _x2) && (v == _x698))]
+idx5:[v:bool | v == color]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx3_11:[v:int | true]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx144_0:[v:int rbtree | ∃idx144, ((rb_root_color idx144 idx5) && (rb_root idx144 idx3_11) && (rb_lch idx144 idx2) && (rb_rch idx144 idx2) && (v == idx144))] 
+ ⊢ idx144_0 as let (idx2) = Rbtleaf in
+let (idx3_11) = int_gen () in
+let (idx5) = color in Rbtnode (idx5, idx2, idx3_11, idx2) : int rbtree :
+[v:int rbtree | ∃idx144, ((rb_root_color idx144 idx5) && (rb_root idx144 idx3_11) && (rb_lch idx144 idx2) && (rb_rch idx144 idx2) && (v == idx144))]
 
-Cost: 6
-Type: Ty_int
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x68:[v:int | v == (_x4 - 1)] 
- ⊢ _x68 as let (_x4) = inv in subs _x4 : int :
-[v:int | v == (_x4 - 1)]
+idx5:[v:bool | v == color]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx143_0:[v:int rbtree | ∃idx143, ((rb_root_color idx143 idx5) && (rb_root idx143 idx4) && (rb_lch idx143 idx2) && (rb_rch idx143 idx2) && (v == idx143))] 
+ ⊢ idx143_0 as let (idx2) = Rbtleaf in
+let (idx4) = inv in let (idx5) = color in Rbtnode (idx5, idx2, idx4, idx2) : int rbtree :
+[v:int rbtree | ∃idx143, ((rb_root_color idx143 idx5) && (rb_root idx143 idx4) && (rb_lch idx143 idx2) && (rb_rch idx143 idx2) && (v == idx143))]
 
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x67:[v:int | v == (_x6 - 1)] 
- ⊢ _x67 as let (_x6) = h in subs _x6 : int :
-[v:int | v == (_x6 - 1)]
+idx5:[v:bool | v == color]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx142_0:[v:int rbtree | ∃idx142, ((rb_root_color idx142 idx5) && (rb_root idx142 idx6) && (rb_lch idx142 idx2) && (rb_rch idx142 idx2) && (v == idx142))] 
+ ⊢ idx142_0 as let (idx2) = Rbtleaf in
+let (idx6) = h in let (idx5) = color in Rbtnode (idx5, idx2, idx6, idx2) : int rbtree :
+[v:int rbtree | ∃idx142, ((rb_root_color idx142 idx5) && (rb_root idx142 idx6) && (rb_lch idx142 idx2) && (rb_rch idx142 idx2) && (v == idx142))]
+
+Cost: 34
+Type: (Ty_constructor(rbtree(Ty_int)))
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_0:[v:int | v == (idx4 - 1)]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_8:[v:int | v == (idx6 - 1)]
+idx159_0:[v:int rbtree | ∃inv_47, ((inv_47 >= 0) && (inv_47 < inv) && (inv_47 == idx68_0) && (∃h_20, ((h_20 >= 0) && ((idx1) => ((h_20 + h_20) == inv_47)) && (not (idx1) => (((h_20 + h_20) + 1) == inv_47)) && (h_20 == idx67_8) && (∃idx159, ((num_black idx159 h_20) && (no_red_red idx159) && ((idx1) => not (rb_root_color idx159 true)) && (not (idx1) => ((h_20 == 0) => not (rb_root_color idx159 false))) && (v == idx159))))))] 
+ ⊢ idx159_0 as let (idx4) = inv in
+let (idx68_0) = subs idx4 in
+let (idx157) = rbtree_gen idx68_0 in
+let (idx1) = False in
+let (idx158) = idx157 idx1 in
+let (idx6) = h in let (idx67_8) = subs idx6 in idx158 idx67_8 : int rbtree :
+[v:int rbtree | ∃inv_47, ((inv_47 >= 0) && (inv_47 < inv) && (inv_47 == idx68_0) && (∃h_20, ((h_20 >= 0) && ((idx1) => ((h_20 + h_20) == inv_47)) && (not (idx1) => (((h_20 + h_20) + 1) == inv_47)) && (h_20 == idx67_8) && (∃idx159, ((num_black idx159 h_20) && (no_red_red idx159) && ((idx1) => not (rb_root_color idx159 true)) && (not (idx1) => ((h_20 == 0) => not (rb_root_color idx159 false))) && (v == idx159))))))]
+
+Cost: 71
+Type: (Ty_constructor(rbtree(Ty_int)))
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_35:[v:int | v == (idx6 - 1)]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_36:[v:int | v == (idx4 - 1)]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_36:[v:int | v == (idx6 - 1)]
+idx159_20:[v:int rbtree | ∃inv_47, ((inv_47 >= 0) && (inv_47 < inv) && (inv_47 == idx68_36) && (∃h_20, ((h_20 >= 0) && ((idx1) => ((h_20 + h_20) == inv_47)) && (not (idx1) => (((h_20 + h_20) + 1) == inv_47)) && (h_20 == idx67_36) && (∃idx159, ((num_black idx159 h_20) && (no_red_red idx159) && ((idx1) => not (rb_root_color idx159 true)) && (not (idx1) => ((h_20 == 0) => not (rb_root_color idx159 false))) && (v == idx159))))))]
+idx195_0:[v:int rbtree | ∃idx195, ((rb_root_color idx195 idx1) && (rb_root idx195 idx67_35) && (rb_lch idx195 idx2) && (rb_rch idx195 idx159_20) && (v == idx195))] 
+ ⊢ idx195_0 as let (idx4) = inv in
+let (idx68_0) = subs idx4 in
+let (idx157) = rbtree_gen idx68_0 in
+let (idx1) = False in
+let (idx158) = idx157 idx1 in
+let (idx6) = h in
+let (idx67_8) = subs idx6 in
+let (idx159_20) = idx158 idx67_8 in
+let (idx67_35) = subs idx6 in
+let (idx2) = Rbtleaf in Rbtnode (idx1, idx2, idx67_35, idx159_20) : int rbtree :
+[v:int rbtree | ∃idx195, ((rb_root_color idx195 idx1) && (rb_root idx195 idx67_35) && (rb_lch idx195 idx2) && (rb_rch idx195 idx159_20) && (v == idx195))]
+
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_34:[v:int | v == (idx4 - 1)]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_35:[v:int | v == (idx4 - 1)]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_34:[v:int | v == (idx6 - 1)]
+idx159_19:[v:int rbtree | ∃inv_47, ((inv_47 >= 0) && (inv_47 < inv) && (inv_47 == idx68_35) && (∃h_20, ((h_20 >= 0) && ((idx1) => ((h_20 + h_20) == inv_47)) && (not (idx1) => (((h_20 + h_20) + 1) == inv_47)) && (h_20 == idx67_34) && (∃idx159, ((num_black idx159 h_20) && (no_red_red idx159) && ((idx1) => not (rb_root_color idx159 true)) && (not (idx1) => ((h_20 == 0) => not (rb_root_color idx159 false))) && (v == idx159))))))]
+idx194_0:[v:int rbtree | ∃idx194, ((rb_root_color idx194 idx1) && (rb_root idx194 idx68_34) && (rb_lch idx194 idx2) && (rb_rch idx194 idx159_19) && (v == idx194))] 
+ ⊢ idx194_0 as let (idx4) = inv in
+let (idx68_0) = subs idx4 in
+let (idx157) = rbtree_gen idx68_0 in
+let (idx1) = False in
+let (idx158) = idx157 idx1 in
+let (idx6) = h in
+let (idx67_8) = subs idx6 in
+let (idx159_19) = idx158 idx67_8 in
+let (idx68_34) = subs idx4 in
+let (idx2) = Rbtleaf in Rbtnode (idx1, idx2, idx68_34, idx159_19) : int rbtree :
+[v:int rbtree | ∃idx194, ((rb_root_color idx194 idx1) && (rb_root idx194 idx68_34) && (rb_lch idx194 idx2) && (rb_rch idx194 idx159_19) && (v == idx194))]
+
+idx5:[v:bool | v == color]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_32:[v:int | v == (idx6 - 1)]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_33:[v:int | v == (idx4 - 1)]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_33:[v:int | v == (idx6 - 1)]
+idx159_18:[v:int rbtree | ∃inv_47, ((inv_47 >= 0) && (inv_47 < inv) && (inv_47 == idx68_33) && (∃h_20, ((h_20 >= 0) && ((idx1) => ((h_20 + h_20) == inv_47)) && (not (idx1) => (((h_20 + h_20) + 1) == inv_47)) && (h_20 == idx67_33) && (∃idx159, ((num_black idx159 h_20) && (no_red_red idx159) && ((idx1) => not (rb_root_color idx159 true)) && (not (idx1) => ((h_20 == 0) => not (rb_root_color idx159 false))) && (v == idx159))))))]
+idx193_0:[v:int rbtree | ∃idx193, ((rb_root_color idx193 idx5) && (rb_root idx193 idx67_32) && (rb_lch idx193 idx2) && (rb_rch idx193 idx159_18) && (v == idx193))] 
+ ⊢ idx193_0 as let (idx4) = inv in
+let (idx68_0) = subs idx4 in
+let (idx157) = rbtree_gen idx68_0 in
+let (idx1) = False in
+let (idx158) = idx157 idx1 in
+let (idx6) = h in
+let (idx67_8) = subs idx6 in
+let (idx159_18) = idx158 idx67_8 in
+let (idx67_32) = subs idx6 in
+let (idx2) = Rbtleaf in
+let (idx5) = color in Rbtnode (idx5, idx2, idx67_32, idx159_18) : int rbtree :
+[v:int rbtree | ∃idx193, ((rb_root_color idx193 idx5) && (rb_root idx193 idx67_32) && (rb_lch idx193 idx2) && (rb_rch idx193 idx159_18) && (v == idx193))]
+
+idx5:[v:bool | v == color]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_31:[v:int | v == (idx4 - 1)]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_32:[v:int | v == (idx4 - 1)]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_31:[v:int | v == (idx6 - 1)]
+idx159_17:[v:int rbtree | ∃inv_47, ((inv_47 >= 0) && (inv_47 < inv) && (inv_47 == idx68_32) && (∃h_20, ((h_20 >= 0) && ((idx1) => ((h_20 + h_20) == inv_47)) && (not (idx1) => (((h_20 + h_20) + 1) == inv_47)) && (h_20 == idx67_31) && (∃idx159, ((num_black idx159 h_20) && (no_red_red idx159) && ((idx1) => not (rb_root_color idx159 true)) && (not (idx1) => ((h_20 == 0) => not (rb_root_color idx159 false))) && (v == idx159))))))]
+idx192_0:[v:int rbtree | ∃idx192, ((rb_root_color idx192 idx5) && (rb_root idx192 idx68_31) && (rb_lch idx192 idx2) && (rb_rch idx192 idx159_17) && (v == idx192))] 
+ ⊢ idx192_0 as let (idx4) = inv in
+let (idx68_0) = subs idx4 in
+let (idx157) = rbtree_gen idx68_0 in
+let (idx1) = False in
+let (idx158) = idx157 idx1 in
+let (idx6) = h in
+let (idx67_8) = subs idx6 in
+let (idx159_17) = idx158 idx67_8 in
+let (idx68_31) = subs idx4 in
+let (idx2) = Rbtleaf in
+let (idx5) = color in Rbtnode (idx5, idx2, idx68_31, idx159_17) : int rbtree :
+[v:int rbtree | ∃idx192, ((rb_root_color idx192 idx5) && (rb_root idx192 idx68_31) && (rb_lch idx192 idx2) && (rb_rch idx192 idx159_17) && (v == idx192))]
+
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_30:[v:int | v == (idx4 - 1)]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_29:[v:int | v == (idx6 - 1)]
+idx159_16:[v:int rbtree | ∃inv_47, ((inv_47 >= 0) && (inv_47 < inv) && (inv_47 == idx68_30) && (∃h_20, ((h_20 >= 0) && ((idx1) => ((h_20 + h_20) == inv_47)) && (not (idx1) => (((h_20 + h_20) + 1) == inv_47)) && (h_20 == idx67_29) && (∃idx159, ((num_black idx159 h_20) && (no_red_red idx159) && ((idx1) => not (rb_root_color idx159 true)) && (not (idx1) => ((h_20 == 0) => not (rb_root_color idx159 false))) && (v == idx159))))))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_30:[v:int | v == (idx6 - 1)]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx191_0:[v:int rbtree | ∃idx191, ((rb_root_color idx191 idx1) && (rb_root idx191 idx67_30) && (rb_lch idx191 idx159_16) && (rb_rch idx191 idx2) && (v == idx191))] 
+ ⊢ idx191_0 as let (idx2) = Rbtleaf in
+let (idx6) = h in
+let (idx67_30) = subs idx6 in
+let (idx4) = inv in
+let (idx68_0) = subs idx4 in
+let (idx157) = rbtree_gen idx68_0 in
+let (idx1) = False in
+let (idx158) = idx157 idx1 in
+let (idx67_8) = subs idx6 in
+let (idx159_16) = idx158 idx67_8 in Rbtnode (idx1, idx159_16, idx67_30, idx2) : int rbtree :
+[v:int rbtree | ∃idx191, ((rb_root_color idx191 idx1) && (rb_root idx191 idx67_30) && (rb_lch idx191 idx159_16) && (rb_rch idx191 idx2) && (v == idx191))]
+
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_28:[v:int | v == (idx4 - 1)]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_28:[v:int | v == (idx6 - 1)]
+idx159_15:[v:int rbtree | ∃inv_47, ((inv_47 >= 0) && (inv_47 < inv) && (inv_47 == idx68_28) && (∃h_20, ((h_20 >= 0) && ((idx1) => ((h_20 + h_20) == inv_47)) && (not (idx1) => (((h_20 + h_20) + 1) == inv_47)) && (h_20 == idx67_28) && (∃idx159, ((num_black idx159 h_20) && (no_red_red idx159) && ((idx1) => not (rb_root_color idx159 true)) && (not (idx1) => ((h_20 == 0) => not (rb_root_color idx159 false))) && (v == idx159))))))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_29:[v:int | v == (idx4 - 1)]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx190_0:[v:int rbtree | ∃idx190, ((rb_root_color idx190 idx1) && (rb_root idx190 idx68_29) && (rb_lch idx190 idx159_15) && (rb_rch idx190 idx2) && (v == idx190))] 
+ ⊢ idx190_0 as let (idx2) = Rbtleaf in
+let (idx4) = inv in
+let (idx68_29) = subs idx4 in
+let (idx68_0) = subs idx4 in
+let (idx157) = rbtree_gen idx68_0 in
+let (idx1) = False in
+let (idx158) = idx157 idx1 in
+let (idx6) = h in
+let (idx67_8) = subs idx6 in
+let (idx159_15) = idx158 idx67_8 in Rbtnode (idx1, idx159_15, idx68_29, idx2) : int rbtree :
+[v:int rbtree | ∃idx190, ((rb_root_color idx190 idx1) && (rb_root idx190 idx68_29) && (rb_lch idx190 idx159_15) && (rb_rch idx190 idx2) && (v == idx190))]
+
+idx5:[v:bool | v == color]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_27:[v:int | v == (idx4 - 1)]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_26:[v:int | v == (idx6 - 1)]
+idx159_14:[v:int rbtree | ∃inv_47, ((inv_47 >= 0) && (inv_47 < inv) && (inv_47 == idx68_27) && (∃h_20, ((h_20 >= 0) && ((idx1) => ((h_20 + h_20) == inv_47)) && (not (idx1) => (((h_20 + h_20) + 1) == inv_47)) && (h_20 == idx67_26) && (∃idx159, ((num_black idx159 h_20) && (no_red_red idx159) && ((idx1) => not (rb_root_color idx159 true)) && (not (idx1) => ((h_20 == 0) => not (rb_root_color idx159 false))) && (v == idx159))))))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_27:[v:int | v == (idx6 - 1)]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx189_0:[v:int rbtree | ∃idx189, ((rb_root_color idx189 idx5) && (rb_root idx189 idx67_27) && (rb_lch idx189 idx159_14) && (rb_rch idx189 idx2) && (v == idx189))] 
+ ⊢ idx189_0 as let (idx2) = Rbtleaf in
+let (idx6) = h in
+let (idx67_27) = subs idx6 in
+let (idx4) = inv in
+let (idx68_0) = subs idx4 in
+let (idx157) = rbtree_gen idx68_0 in
+let (idx1) = False in
+let (idx158) = idx157 idx1 in
+let (idx67_8) = subs idx6 in
+let (idx159_14) = idx158 idx67_8 in
+let (idx5) = color in Rbtnode (idx5, idx159_14, idx67_27, idx2) : int rbtree :
+[v:int rbtree | ∃idx189, ((rb_root_color idx189 idx5) && (rb_root idx189 idx67_27) && (rb_lch idx189 idx159_14) && (rb_rch idx189 idx2) && (v == idx189))]
+
+idx5:[v:bool | v == color]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_25:[v:int | v == (idx4 - 1)]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_25:[v:int | v == (idx6 - 1)]
+idx159_13:[v:int rbtree | ∃inv_47, ((inv_47 >= 0) && (inv_47 < inv) && (inv_47 == idx68_25) && (∃h_20, ((h_20 >= 0) && ((idx1) => ((h_20 + h_20) == inv_47)) && (not (idx1) => (((h_20 + h_20) + 1) == inv_47)) && (h_20 == idx67_25) && (∃idx159, ((num_black idx159 h_20) && (no_red_red idx159) && ((idx1) => not (rb_root_color idx159 true)) && (not (idx1) => ((h_20 == 0) => not (rb_root_color idx159 false))) && (v == idx159))))))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_26:[v:int | v == (idx4 - 1)]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx188_0:[v:int rbtree | ∃idx188, ((rb_root_color idx188 idx5) && (rb_root idx188 idx68_26) && (rb_lch idx188 idx159_13) && (rb_rch idx188 idx2) && (v == idx188))] 
+ ⊢ idx188_0 as let (idx2) = Rbtleaf in
+let (idx4) = inv in
+let (idx68_26) = subs idx4 in
+let (idx68_0) = subs idx4 in
+let (idx157) = rbtree_gen idx68_0 in
+let (idx1) = False in
+let (idx158) = idx157 idx1 in
+let (idx6) = h in
+let (idx67_8) = subs idx6 in
+let (idx159_13) = idx158 idx67_8 in
+let (idx5) = color in Rbtnode (idx5, idx159_13, idx68_26, idx2) : int rbtree :
+[v:int rbtree | ∃idx188, ((rb_root_color idx188 idx5) && (rb_root idx188 idx68_26) && (rb_lch idx188 idx159_13) && (rb_rch idx188 idx2) && (v == idx188))]
+
+Cost: 47
+Type: (Ty_constructor(rbtree(Ty_int)))
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_12:[v:int | v == (idx6 - 1)]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx175_0:[v:int rbtree | ∃idx175, ((rb_root_color idx175 idx1) && (rb_root idx175 idx67_12) && (rb_lch idx175 idx2) && (rb_rch idx175 idx2) && (v == idx175))] 
+ ⊢ idx175_0 as let (idx2) = Rbtleaf in
+let (idx6) = h in
+let (idx67_12) = subs idx6 in
+let (idx1) = False in Rbtnode (idx1, idx2, idx67_12, idx2) : int rbtree :
+[v:int rbtree | ∃idx175, ((rb_root_color idx175 idx1) && (rb_root idx175 idx67_12) && (rb_lch idx175 idx2) && (rb_rch idx175 idx2) && (v == idx175))]
+
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_12:[v:int | v == (idx4 - 1)]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx174_0:[v:int rbtree | ∃idx174, ((rb_root_color idx174 idx1) && (rb_root idx174 idx68_12) && (rb_lch idx174 idx2) && (rb_rch idx174 idx2) && (v == idx174))] 
+ ⊢ idx174_0 as let (idx2) = Rbtleaf in
+let (idx4) = inv in
+let (idx68_12) = subs idx4 in
+let (idx1) = False in Rbtnode (idx1, idx2, idx68_12, idx2) : int rbtree :
+[v:int rbtree | ∃idx174, ((rb_root_color idx174 idx1) && (rb_root idx174 idx68_12) && (rb_lch idx174 idx2) && (rb_rch idx174 idx2) && (v == idx174))]
+
+idx5:[v:bool | v == color]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_11:[v:int | v == (idx6 - 1)]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx173_0:[v:int rbtree | ∃idx173, ((rb_root_color idx173 idx5) && (rb_root idx173 idx67_11) && (rb_lch idx173 idx2) && (rb_rch idx173 idx2) && (v == idx173))] 
+ ⊢ idx173_0 as let (idx2) = Rbtleaf in
+let (idx6) = h in
+let (idx67_11) = subs idx6 in
+let (idx5) = color in Rbtnode (idx5, idx2, idx67_11, idx2) : int rbtree :
+[v:int rbtree | ∃idx173, ((rb_root_color idx173 idx5) && (rb_root idx173 idx67_11) && (rb_lch idx173 idx2) && (rb_rch idx173 idx2) && (v == idx173))]
+
+idx5:[v:bool | v == color]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_11:[v:int | v == (idx4 - 1)]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx172_0:[v:int rbtree | ∃idx172, ((rb_root_color idx172 idx5) && (rb_root idx172 idx68_11) && (rb_lch idx172 idx2) && (rb_rch idx172 idx2) && (v == idx172))] 
+ ⊢ idx172_0 as let (idx2) = Rbtleaf in
+let (idx4) = inv in
+let (idx68_11) = subs idx4 in
+let (idx5) = color in Rbtnode (idx5, idx2, idx68_11, idx2) : int rbtree :
+[v:int rbtree | ∃idx172, ((rb_root_color idx172 idx5) && (rb_root idx172 idx68_11) && (rb_lch idx172 idx2) && (rb_rch idx172 idx2) && (v == idx172))]
+
+Cost: 56
+Type: (Ty_constructor(rbtree(Ty_int)))
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx3_16:[v:int | true]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_24:[v:int | v == (idx4 - 1)]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_24:[v:int | v == (idx6 - 1)]
+idx159_12:[v:int rbtree | ∃inv_47, ((inv_47 >= 0) && (inv_47 < inv) && (inv_47 == idx68_24) && (∃h_20, ((h_20 >= 0) && ((idx1) => ((h_20 + h_20) == inv_47)) && (not (idx1) => (((h_20 + h_20) + 1) == inv_47)) && (h_20 == idx67_24) && (∃idx159, ((num_black idx159 h_20) && (no_red_red idx159) && ((idx1) => not (rb_root_color idx159 true)) && (not (idx1) => ((h_20 == 0) => not (rb_root_color idx159 false))) && (v == idx159))))))]
+idx187_0:[v:int rbtree | ∃idx187, ((rb_root_color idx187 idx1) && (rb_root idx187 idx3_16) && (rb_lch idx187 idx2) && (rb_rch idx187 idx159_12) && (v == idx187))] 
+ ⊢ idx187_0 as let (idx4) = inv in
+let (idx68_0) = subs idx4 in
+let (idx157) = rbtree_gen idx68_0 in
+let (idx1) = False in
+let (idx158) = idx157 idx1 in
+let (idx6) = h in
+let (idx67_8) = subs idx6 in
+let (idx159_12) = idx158 idx67_8 in
+let (idx3_16) = int_gen () in
+let (idx2) = Rbtleaf in Rbtnode (idx1, idx2, idx3_16, idx159_12) : int rbtree :
+[v:int rbtree | ∃idx187, ((rb_root_color idx187 idx1) && (rb_root idx187 idx3_16) && (rb_lch idx187 idx2) && (rb_rch idx187 idx159_12) && (v == idx187))]
+
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_23:[v:int | v == (idx4 - 1)]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_23:[v:int | v == (idx6 - 1)]
+idx159_11:[v:int rbtree | ∃inv_47, ((inv_47 >= 0) && (inv_47 < inv) && (inv_47 == idx68_23) && (∃h_20, ((h_20 >= 0) && ((idx1) => ((h_20 + h_20) == inv_47)) && (not (idx1) => (((h_20 + h_20) + 1) == inv_47)) && (h_20 == idx67_23) && (∃idx159, ((num_black idx159 h_20) && (no_red_red idx159) && ((idx1) => not (rb_root_color idx159 true)) && (not (idx1) => ((h_20 == 0) => not (rb_root_color idx159 false))) && (v == idx159))))))]
+idx186_0:[v:int rbtree | ∃idx186, ((rb_root_color idx186 idx1) && (rb_root idx186 idx4) && (rb_lch idx186 idx2) && (rb_rch idx186 idx159_11) && (v == idx186))] 
+ ⊢ idx186_0 as let (idx4) = inv in
+let (idx68_0) = subs idx4 in
+let (idx157) = rbtree_gen idx68_0 in
+let (idx1) = False in
+let (idx158) = idx157 idx1 in
+let (idx6) = h in
+let (idx67_8) = subs idx6 in
+let (idx159_11) = idx158 idx67_8 in
+let (idx2) = Rbtleaf in Rbtnode (idx1, idx2, idx4, idx159_11) : int rbtree :
+[v:int rbtree | ∃idx186, ((rb_root_color idx186 idx1) && (rb_root idx186 idx4) && (rb_lch idx186 idx2) && (rb_rch idx186 idx159_11) && (v == idx186))]
+
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_22:[v:int | v == (idx4 - 1)]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_22:[v:int | v == (idx6 - 1)]
+idx159_10:[v:int rbtree | ∃inv_47, ((inv_47 >= 0) && (inv_47 < inv) && (inv_47 == idx68_22) && (∃h_20, ((h_20 >= 0) && ((idx1) => ((h_20 + h_20) == inv_47)) && (not (idx1) => (((h_20 + h_20) + 1) == inv_47)) && (h_20 == idx67_22) && (∃idx159, ((num_black idx159 h_20) && (no_red_red idx159) && ((idx1) => not (rb_root_color idx159 true)) && (not (idx1) => ((h_20 == 0) => not (rb_root_color idx159 false))) && (v == idx159))))))]
+idx185_0:[v:int rbtree | ∃idx185, ((rb_root_color idx185 idx1) && (rb_root idx185 idx6) && (rb_lch idx185 idx2) && (rb_rch idx185 idx159_10) && (v == idx185))] 
+ ⊢ idx185_0 as let (idx4) = inv in
+let (idx68_0) = subs idx4 in
+let (idx157) = rbtree_gen idx68_0 in
+let (idx1) = False in
+let (idx158) = idx157 idx1 in
+let (idx6) = h in
+let (idx67_8) = subs idx6 in
+let (idx159_10) = idx158 idx67_8 in
+let (idx2) = Rbtleaf in Rbtnode (idx1, idx2, idx6, idx159_10) : int rbtree :
+[v:int rbtree | ∃idx185, ((rb_root_color idx185 idx1) && (rb_root idx185 idx6) && (rb_lch idx185 idx2) && (rb_rch idx185 idx159_10) && (v == idx185))]
+
+idx5:[v:bool | v == color]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx3_15:[v:int | true]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_21:[v:int | v == (idx4 - 1)]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_21:[v:int | v == (idx6 - 1)]
+idx159_9:[v:int rbtree | ∃inv_47, ((inv_47 >= 0) && (inv_47 < inv) && (inv_47 == idx68_21) && (∃h_20, ((h_20 >= 0) && ((idx1) => ((h_20 + h_20) == inv_47)) && (not (idx1) => (((h_20 + h_20) + 1) == inv_47)) && (h_20 == idx67_21) && (∃idx159, ((num_black idx159 h_20) && (no_red_red idx159) && ((idx1) => not (rb_root_color idx159 true)) && (not (idx1) => ((h_20 == 0) => not (rb_root_color idx159 false))) && (v == idx159))))))]
+idx184_0:[v:int rbtree | ∃idx184, ((rb_root_color idx184 idx5) && (rb_root idx184 idx3_15) && (rb_lch idx184 idx2) && (rb_rch idx184 idx159_9) && (v == idx184))] 
+ ⊢ idx184_0 as let (idx4) = inv in
+let (idx68_0) = subs idx4 in
+let (idx157) = rbtree_gen idx68_0 in
+let (idx1) = False in
+let (idx158) = idx157 idx1 in
+let (idx6) = h in
+let (idx67_8) = subs idx6 in
+let (idx159_9) = idx158 idx67_8 in
+let (idx3_15) = int_gen () in
+let (idx2) = Rbtleaf in
+let (idx5) = color in Rbtnode (idx5, idx2, idx3_15, idx159_9) : int rbtree :
+[v:int rbtree | ∃idx184, ((rb_root_color idx184 idx5) && (rb_root idx184 idx3_15) && (rb_lch idx184 idx2) && (rb_rch idx184 idx159_9) && (v == idx184))]
+
+idx5:[v:bool | v == color]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_20:[v:int | v == (idx4 - 1)]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_20:[v:int | v == (idx6 - 1)]
+idx159_8:[v:int rbtree | ∃inv_47, ((inv_47 >= 0) && (inv_47 < inv) && (inv_47 == idx68_20) && (∃h_20, ((h_20 >= 0) && ((idx1) => ((h_20 + h_20) == inv_47)) && (not (idx1) => (((h_20 + h_20) + 1) == inv_47)) && (h_20 == idx67_20) && (∃idx159, ((num_black idx159 h_20) && (no_red_red idx159) && ((idx1) => not (rb_root_color idx159 true)) && (not (idx1) => ((h_20 == 0) => not (rb_root_color idx159 false))) && (v == idx159))))))]
+idx183_0:[v:int rbtree | ∃idx183, ((rb_root_color idx183 idx5) && (rb_root idx183 idx4) && (rb_lch idx183 idx2) && (rb_rch idx183 idx159_8) && (v == idx183))] 
+ ⊢ idx183_0 as let (idx4) = inv in
+let (idx68_0) = subs idx4 in
+let (idx157) = rbtree_gen idx68_0 in
+let (idx1) = False in
+let (idx158) = idx157 idx1 in
+let (idx6) = h in
+let (idx67_8) = subs idx6 in
+let (idx159_8) = idx158 idx67_8 in
+let (idx2) = Rbtleaf in
+let (idx5) = color in Rbtnode (idx5, idx2, idx4, idx159_8) : int rbtree :
+[v:int rbtree | ∃idx183, ((rb_root_color idx183 idx5) && (rb_root idx183 idx4) && (rb_lch idx183 idx2) && (rb_rch idx183 idx159_8) && (v == idx183))]
+
+idx5:[v:bool | v == color]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_19:[v:int | v == (idx4 - 1)]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_19:[v:int | v == (idx6 - 1)]
+idx159_7:[v:int rbtree | ∃inv_47, ((inv_47 >= 0) && (inv_47 < inv) && (inv_47 == idx68_19) && (∃h_20, ((h_20 >= 0) && ((idx1) => ((h_20 + h_20) == inv_47)) && (not (idx1) => (((h_20 + h_20) + 1) == inv_47)) && (h_20 == idx67_19) && (∃idx159, ((num_black idx159 h_20) && (no_red_red idx159) && ((idx1) => not (rb_root_color idx159 true)) && (not (idx1) => ((h_20 == 0) => not (rb_root_color idx159 false))) && (v == idx159))))))]
+idx182_0:[v:int rbtree | ∃idx182, ((rb_root_color idx182 idx5) && (rb_root idx182 idx6) && (rb_lch idx182 idx2) && (rb_rch idx182 idx159_7) && (v == idx182))] 
+ ⊢ idx182_0 as let (idx4) = inv in
+let (idx68_0) = subs idx4 in
+let (idx157) = rbtree_gen idx68_0 in
+let (idx1) = False in
+let (idx158) = idx157 idx1 in
+let (idx6) = h in
+let (idx67_8) = subs idx6 in
+let (idx159_7) = idx158 idx67_8 in
+let (idx2) = Rbtleaf in
+let (idx5) = color in Rbtnode (idx5, idx2, idx6, idx159_7) : int rbtree :
+[v:int rbtree | ∃idx182, ((rb_root_color idx182 idx5) && (rb_root idx182 idx6) && (rb_lch idx182 idx2) && (rb_rch idx182 idx159_7) && (v == idx182))]
+
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_18:[v:int | v == (idx4 - 1)]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_18:[v:int | v == (idx6 - 1)]
+idx159_6:[v:int rbtree | ∃inv_47, ((inv_47 >= 0) && (inv_47 < inv) && (inv_47 == idx68_18) && (∃h_20, ((h_20 >= 0) && ((idx1) => ((h_20 + h_20) == inv_47)) && (not (idx1) => (((h_20 + h_20) + 1) == inv_47)) && (h_20 == idx67_18) && (∃idx159, ((num_black idx159 h_20) && (no_red_red idx159) && ((idx1) => not (rb_root_color idx159 true)) && (not (idx1) => ((h_20 == 0) => not (rb_root_color idx159 false))) && (v == idx159))))))]
+idx3_14:[v:int | true]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx181_0:[v:int rbtree | ∃idx181, ((rb_root_color idx181 idx1) && (rb_root idx181 idx3_14) && (rb_lch idx181 idx159_6) && (rb_rch idx181 idx2) && (v == idx181))] 
+ ⊢ idx181_0 as let (idx2) = Rbtleaf in
+let (idx3_14) = int_gen () in
+let (idx4) = inv in
+let (idx68_0) = subs idx4 in
+let (idx157) = rbtree_gen idx68_0 in
+let (idx1) = False in
+let (idx158) = idx157 idx1 in
+let (idx6) = h in
+let (idx67_8) = subs idx6 in
+let (idx159_6) = idx158 idx67_8 in Rbtnode (idx1, idx159_6, idx3_14, idx2) : int rbtree :
+[v:int rbtree | ∃idx181, ((rb_root_color idx181 idx1) && (rb_root idx181 idx3_14) && (rb_lch idx181 idx159_6) && (rb_rch idx181 idx2) && (v == idx181))]
+
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_17:[v:int | v == (idx4 - 1)]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_17:[v:int | v == (idx6 - 1)]
+idx159_5:[v:int rbtree | ∃inv_47, ((inv_47 >= 0) && (inv_47 < inv) && (inv_47 == idx68_17) && (∃h_20, ((h_20 >= 0) && ((idx1) => ((h_20 + h_20) == inv_47)) && (not (idx1) => (((h_20 + h_20) + 1) == inv_47)) && (h_20 == idx67_17) && (∃idx159, ((num_black idx159 h_20) && (no_red_red idx159) && ((idx1) => not (rb_root_color idx159 true)) && (not (idx1) => ((h_20 == 0) => not (rb_root_color idx159 false))) && (v == idx159))))))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx180_0:[v:int rbtree | ∃idx180, ((rb_root_color idx180 idx1) && (rb_root idx180 idx4) && (rb_lch idx180 idx159_5) && (rb_rch idx180 idx2) && (v == idx180))] 
+ ⊢ idx180_0 as let (idx2) = Rbtleaf in
+let (idx4) = inv in
+let (idx68_0) = subs idx4 in
+let (idx157) = rbtree_gen idx68_0 in
+let (idx1) = False in
+let (idx158) = idx157 idx1 in
+let (idx6) = h in
+let (idx67_8) = subs idx6 in
+let (idx159_5) = idx158 idx67_8 in Rbtnode (idx1, idx159_5, idx4, idx2) : int rbtree :
+[v:int rbtree | ∃idx180, ((rb_root_color idx180 idx1) && (rb_root idx180 idx4) && (rb_lch idx180 idx159_5) && (rb_rch idx180 idx2) && (v == idx180))]
+
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_16:[v:int | v == (idx4 - 1)]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_16:[v:int | v == (idx6 - 1)]
+idx159_4:[v:int rbtree | ∃inv_47, ((inv_47 >= 0) && (inv_47 < inv) && (inv_47 == idx68_16) && (∃h_20, ((h_20 >= 0) && ((idx1) => ((h_20 + h_20) == inv_47)) && (not (idx1) => (((h_20 + h_20) + 1) == inv_47)) && (h_20 == idx67_16) && (∃idx159, ((num_black idx159 h_20) && (no_red_red idx159) && ((idx1) => not (rb_root_color idx159 true)) && (not (idx1) => ((h_20 == 0) => not (rb_root_color idx159 false))) && (v == idx159))))))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx179_0:[v:int rbtree | ∃idx179, ((rb_root_color idx179 idx1) && (rb_root idx179 idx6) && (rb_lch idx179 idx159_4) && (rb_rch idx179 idx2) && (v == idx179))] 
+ ⊢ idx179_0 as let (idx2) = Rbtleaf in
+let (idx6) = h in
+let (idx4) = inv in
+let (idx68_0) = subs idx4 in
+let (idx157) = rbtree_gen idx68_0 in
+let (idx1) = False in
+let (idx158) = idx157 idx1 in
+let (idx67_8) = subs idx6 in
+let (idx159_4) = idx158 idx67_8 in Rbtnode (idx1, idx159_4, idx6, idx2) : int rbtree :
+[v:int rbtree | ∃idx179, ((rb_root_color idx179 idx1) && (rb_root idx179 idx6) && (rb_lch idx179 idx159_4) && (rb_rch idx179 idx2) && (v == idx179))]
+
+idx5:[v:bool | v == color]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_15:[v:int | v == (idx4 - 1)]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_15:[v:int | v == (idx6 - 1)]
+idx159_3:[v:int rbtree | ∃inv_47, ((inv_47 >= 0) && (inv_47 < inv) && (inv_47 == idx68_15) && (∃h_20, ((h_20 >= 0) && ((idx1) => ((h_20 + h_20) == inv_47)) && (not (idx1) => (((h_20 + h_20) + 1) == inv_47)) && (h_20 == idx67_15) && (∃idx159, ((num_black idx159 h_20) && (no_red_red idx159) && ((idx1) => not (rb_root_color idx159 true)) && (not (idx1) => ((h_20 == 0) => not (rb_root_color idx159 false))) && (v == idx159))))))]
+idx3_13:[v:int | true]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx178_0:[v:int rbtree | ∃idx178, ((rb_root_color idx178 idx5) && (rb_root idx178 idx3_13) && (rb_lch idx178 idx159_3) && (rb_rch idx178 idx2) && (v == idx178))] 
+ ⊢ idx178_0 as let (idx2) = Rbtleaf in
+let (idx3_13) = int_gen () in
+let (idx4) = inv in
+let (idx68_0) = subs idx4 in
+let (idx157) = rbtree_gen idx68_0 in
+let (idx1) = False in
+let (idx158) = idx157 idx1 in
+let (idx6) = h in
+let (idx67_8) = subs idx6 in
+let (idx159_3) = idx158 idx67_8 in
+let (idx5) = color in Rbtnode (idx5, idx159_3, idx3_13, idx2) : int rbtree :
+[v:int rbtree | ∃idx178, ((rb_root_color idx178 idx5) && (rb_root idx178 idx3_13) && (rb_lch idx178 idx159_3) && (rb_rch idx178 idx2) && (v == idx178))]
+
+idx5:[v:bool | v == color]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_14:[v:int | v == (idx4 - 1)]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_14:[v:int | v == (idx6 - 1)]
+idx159_2:[v:int rbtree | ∃inv_47, ((inv_47 >= 0) && (inv_47 < inv) && (inv_47 == idx68_14) && (∃h_20, ((h_20 >= 0) && ((idx1) => ((h_20 + h_20) == inv_47)) && (not (idx1) => (((h_20 + h_20) + 1) == inv_47)) && (h_20 == idx67_14) && (∃idx159, ((num_black idx159 h_20) && (no_red_red idx159) && ((idx1) => not (rb_root_color idx159 true)) && (not (idx1) => ((h_20 == 0) => not (rb_root_color idx159 false))) && (v == idx159))))))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx177_0:[v:int rbtree | ∃idx177, ((rb_root_color idx177 idx5) && (rb_root idx177 idx4) && (rb_lch idx177 idx159_2) && (rb_rch idx177 idx2) && (v == idx177))] 
+ ⊢ idx177_0 as let (idx2) = Rbtleaf in
+let (idx4) = inv in
+let (idx68_0) = subs idx4 in
+let (idx157) = rbtree_gen idx68_0 in
+let (idx1) = False in
+let (idx158) = idx157 idx1 in
+let (idx6) = h in
+let (idx67_8) = subs idx6 in
+let (idx159_2) = idx158 idx67_8 in
+let (idx5) = color in Rbtnode (idx5, idx159_2, idx4, idx2) : int rbtree :
+[v:int rbtree | ∃idx177, ((rb_root_color idx177 idx5) && (rb_root idx177 idx4) && (rb_lch idx177 idx159_2) && (rb_rch idx177 idx2) && (v == idx177))]
+
+idx5:[v:bool | v == color]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_13:[v:int | v == (idx4 - 1)]
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_13:[v:int | v == (idx6 - 1)]
+idx159_1:[v:int rbtree | ∃inv_47, ((inv_47 >= 0) && (inv_47 < inv) && (inv_47 == idx68_13) && (∃h_20, ((h_20 >= 0) && ((idx1) => ((h_20 + h_20) == inv_47)) && (not (idx1) => (((h_20 + h_20) + 1) == inv_47)) && (h_20 == idx67_13) && (∃idx159, ((num_black idx159 h_20) && (no_red_red idx159) && ((idx1) => not (rb_root_color idx159 true)) && (not (idx1) => ((h_20 == 0) => not (rb_root_color idx159 false))) && (v == idx159))))))]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx176_0:[v:int rbtree | ∃idx176, ((rb_root_color idx176 idx5) && (rb_root idx176 idx6) && (rb_lch idx176 idx159_1) && (rb_rch idx176 idx2) && (v == idx176))] 
+ ⊢ idx176_0 as let (idx2) = Rbtleaf in
+let (idx6) = h in
+let (idx4) = inv in
+let (idx68_0) = subs idx4 in
+let (idx157) = rbtree_gen idx68_0 in
+let (idx1) = False in
+let (idx158) = idx157 idx1 in
+let (idx67_8) = subs idx6 in
+let (idx159_1) = idx158 idx67_8 in
+let (idx5) = color in Rbtnode (idx5, idx159_1, idx6, idx2) : int rbtree :
+[v:int rbtree | ∃idx176, ((rb_root_color idx176 idx5) && (rb_root idx176 idx6) && (rb_lch idx176 idx159_1) && (rb_rch idx176 idx2) && (v == idx176))]
 
 Cost: 16
 Type: Ty_int
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x68:[v:int | v == (_x4 - 1)]
-_x142:[v:int | v == (_x68 - 1)]
-_x241:[v:int | v == (_x142 - 1)] 
- ⊢ _x241 as let (_x4) = inv in
-let (_x68) = subs _x4 in let (_x142) = subs _x68 in subs _x142 : int :
-[v:int | v == (_x142 - 1)]
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx68_0:[v:int | v == (idx4 - 1)] 
+ ⊢ idx68_0 as let (idx4) = inv in subs idx4 : int :
+[v:int | v == (idx4 - 1)]
 
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x67:[v:int | v == (_x6 - 1)]
-_x143:[v:int | v == (_x67 - 1)]
-_x240:[v:int | v == (_x143 - 1)] 
- ⊢ _x240 as let (_x6) = h in
-let (_x67) = subs _x6 in let (_x143) = subs _x67 in subs _x143 : int :
-[v:int | v == (_x143 - 1)]
-
-Cost: 21
-Type: Ty_int
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x67:[v:int | v == (_x6 - 1)]
-_x143:[v:int | v == (_x67 - 1)]
-_x240:[v:int | v == (_x143 - 1)]
-_x363:[v:int | v == (_x240 - 1)] 
- ⊢ _x363 as let (_x6) = h in
-let (_x67) = subs _x6 in
-let (_x143) = subs _x67 in let (_x240) = subs _x143 in subs _x240 : int :
-[v:int | v == (_x240 - 1)]
-
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x68:[v:int | v == (_x4 - 1)]
-_x142:[v:int | v == (_x68 - 1)]
-_x241:[v:int | v == (_x142 - 1)]
-_x362:[v:int | v == (_x241 - 1)] 
- ⊢ _x362 as let (_x4) = inv in
-let (_x68) = subs _x4 in
-let (_x142) = subs _x68 in let (_x241) = subs _x142 in subs _x241 : int :
-[v:int | v == (_x241 - 1)]
-
-Cost: 11
-Type: Ty_int
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x67:[v:int | v == (_x6 - 1)]
-_x143:[v:int | v == (_x67 - 1)] 
- ⊢ _x143 as let (_x6) = h in let (_x67) = subs _x6 in subs _x67 : int :
-[v:int | v == (_x67 - 1)]
-
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x68:[v:int | v == (_x4 - 1)]
-_x142:[v:int | v == (_x68 - 1)] 
- ⊢ _x142 as let (_x4) = inv in let (_x68) = subs _x4 in subs _x68 : int :
-[v:int | v == (_x68 - 1)]
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))]
+idx67_0:[v:int | v == (idx6 - 1)] 
+ ⊢ idx67_0 as let (idx6) = h in subs idx6 : int :
+[v:int | v == (idx6 - 1)]
 
 Cost: 10
 Type: (Ty_constructor(rbtree(Ty_int)))
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))] 
- ⊢ _x2 as Rbtleaf : int rbtree :
+idx2:[v:int rbtree | rb_leaf v]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))] 
+ ⊢ idx2 as Rbtleaf : int rbtree :
 [v:int rbtree | rb_leaf v]
-
-Cost: 27
-Type: (Ty_constructor(rbtree(Ty_int)))
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_267:[v:int | true]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x515:[v:int rbtree | ∃_x515, ((rb_root_color _x515 _x1) && (rb_root _x515 _267) && (rb_lch _x515 _x2) && (rb_rch _x515 _x2) && (v == _x515))] 
- ⊢ _x515 as let (_x2) = Rbtleaf in
-let (_267) = int_gen () in let (_x1) = False in Rbtnode (_x1, _x2, _267, _x2) : int rbtree :
-[v:int rbtree | ∃_x515, ((rb_root_color _x515 _x1) && (rb_root _x515 _267) && (rb_lch _x515 _x2) && (rb_rch _x515 _x2) && (v == _x515))]
-
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x514:[v:int rbtree | ∃_x514, ((rb_root_color _x514 _x1) && (rb_root _x514 _x4) && (rb_lch _x514 _x2) && (rb_rch _x514 _x2) && (v == _x514))] 
- ⊢ _x514 as let (_x2) = Rbtleaf in
-let (_x4) = inv in let (_x1) = False in Rbtnode (_x1, _x2, _x4, _x2) : int rbtree :
-[v:int rbtree | ∃_x514, ((rb_root_color _x514 _x1) && (rb_root _x514 _x4) && (rb_lch _x514 _x2) && (rb_rch _x514 _x2) && (v == _x514))]
-
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x513:[v:int rbtree | ∃_x513, ((rb_root_color _x513 _x1) && (rb_root _x513 _x6) && (rb_lch _x513 _x2) && (rb_rch _x513 _x2) && (v == _x513))] 
- ⊢ _x513 as let (_x2) = Rbtleaf in
-let (_x6) = h in let (_x1) = False in Rbtnode (_x1, _x2, _x6, _x2) : int rbtree :
-[v:int rbtree | ∃_x513, ((rb_root_color _x513 _x1) && (rb_root _x513 _x6) && (rb_lch _x513 _x2) && (rb_rch _x513 _x2) && (v == _x513))]
-
-_x5:[v:bool | v == color]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_266:[v:int | true]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x512:[v:int rbtree | ∃_x512, ((rb_root_color _x512 _x5) && (rb_root _x512 _266) && (rb_lch _x512 _x2) && (rb_rch _x512 _x2) && (v == _x512))] 
- ⊢ _x512 as let (_x2) = Rbtleaf in
-let (_266) = int_gen () in let (_x5) = color in Rbtnode (_x5, _x2, _266, _x2) : int rbtree :
-[v:int rbtree | ∃_x512, ((rb_root_color _x512 _x5) && (rb_root _x512 _266) && (rb_lch _x512 _x2) && (rb_rch _x512 _x2) && (v == _x512))]
-
-_x5:[v:bool | v == color]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x511:[v:int rbtree | ∃_x511, ((rb_root_color _x511 _x5) && (rb_root _x511 _x4) && (rb_lch _x511 _x2) && (rb_rch _x511 _x2) && (v == _x511))] 
- ⊢ _x511 as let (_x2) = Rbtleaf in
-let (_x4) = inv in let (_x5) = color in Rbtnode (_x5, _x2, _x4, _x2) : int rbtree :
-[v:int rbtree | ∃_x511, ((rb_root_color _x511 _x5) && (rb_root _x511 _x4) && (rb_lch _x511 _x2) && (rb_rch _x511 _x2) && (v == _x511))]
-
-_x5:[v:bool | v == color]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x510:[v:int rbtree | ∃_x510, ((rb_root_color _x510 _x5) && (rb_root _x510 _x6) && (rb_lch _x510 _x2) && (rb_rch _x510 _x2) && (v == _x510))] 
- ⊢ _x510 as let (_x2) = Rbtleaf in
-let (_x6) = h in let (_x5) = color in Rbtnode (_x5, _x2, _x6, _x2) : int rbtree :
-[v:int rbtree | ∃_x510, ((rb_root_color _x510 _x5) && (rb_root _x510 _x6) && (rb_lch _x510 _x2) && (rb_rch _x510 _x2) && (v == _x510))]
-
-Cost: 26
-Type: Ty_int
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x68:[v:int | v == (_x4 - 1)]
-_x142:[v:int | v == (_x68 - 1)]
-_x241:[v:int | v == (_x142 - 1)]
-_x362:[v:int | v == (_x241 - 1)]
-_x509:[v:int | v == (_x362 - 1)] 
- ⊢ _x509 as let (_x4) = inv in
-let (_x68) = subs _x4 in
-let (_x142) = subs _x68 in
-let (_x241) = subs _x142 in let (_x362) = subs _x241 in subs _x362 : int :
-[v:int | v == (_x362 - 1)]
-
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x67:[v:int | v == (_x6 - 1)]
-_x143:[v:int | v == (_x67 - 1)]
-_x240:[v:int | v == (_x143 - 1)]
-_x363:[v:int | v == (_x240 - 1)]
-_x508:[v:int | v == (_x363 - 1)] 
- ⊢ _x508 as let (_x6) = h in
-let (_x67) = subs _x6 in
-let (_x143) = subs _x67 in
-let (_x240) = subs _x143 in let (_x363) = subs _x240 in subs _x363 : int :
-[v:int | v == (_x363 - 1)]
-
-Cost: 31
-Type: Ty_int
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x67:[v:int | v == (_x6 - 1)]
-_x143:[v:int | v == (_x67 - 1)]
-_x240:[v:int | v == (_x143 - 1)]
-_x363:[v:int | v == (_x240 - 1)]
-_x508:[v:int | v == (_x363 - 1)]
-_x685:[v:int | v == (_x508 - 1)] 
- ⊢ _x685 as let (_x6) = h in
-let (_x67) = subs _x6 in
-let (_x143) = subs _x67 in
-let (_x240) = subs _x143 in
-let (_x363) = subs _x240 in let (_x508) = subs _x363 in subs _x508 : int :
-[v:int | v == (_x508 - 1)]
-
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x68:[v:int | v == (_x4 - 1)]
-_x142:[v:int | v == (_x68 - 1)]
-_x241:[v:int | v == (_x142 - 1)]
-_x362:[v:int | v == (_x241 - 1)]
-_x509:[v:int | v == (_x362 - 1)]
-_x684:[v:int | v == (_x509 - 1)] 
- ⊢ _x684 as let (_x4) = inv in
-let (_x68) = subs _x4 in
-let (_x142) = subs _x68 in
-let (_x241) = subs _x142 in
-let (_x362) = subs _x241 in let (_x509) = subs _x362 in subs _x509 : int :
-[v:int | v == (_x509 - 1)]
-
-Type: (Ty_constructor(rbtree(Ty_int)))
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_448:[v:int | true]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_449:[v:int | v == (_x4 - 1)]
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_450:[v:int | v == (_x6 - 1)]
-_451:[v:int rbtree | ∃inv_53, ((inv_53 >= 0) && (inv_53 < inv) && (inv_53 == _449) && (∃h_20, ((h_20 >= 0) && ((_x1) => ((h_20 + h_20) == inv_53)) && (not (_x1) => (((h_20 + h_20) + 1) == inv_53)) && (h_20 == _450) && (∃_x191, ((num_black _x191 h_20) && (no_red_red _x191) && ((_x1) => not (rb_root_color _x191 true)) && (not (_x1) => ((h_20 == 0) => not (rb_root_color _x191 false))) && (v == _x191))))))]
-_x697:[v:int rbtree | ∃_x697, ((rb_root_color _x697 _x1) && (rb_root _x697 _448) && (rb_lch _x697 _x2) && (rb_rch _x697 _451) && (v == _x697))] 
- ⊢ _x697 as let (_x4) = inv in
-let (_x68) = subs _x4 in
-let (_x189) = rbtree_gen _x68 in
-let (_x1) = False in
-let (_x190) = _x189 _x1 in
-let (_x6) = h in
-let (_73) = subs _x6 in
-let (_451) = _x190 _73 in
-let (_448) = int_gen () in
-let (_x2) = Rbtleaf in Rbtnode (_x1, _x2, _448, _451) : int rbtree :
-[v:int rbtree | ∃_x697, ((rb_root_color _x697 _x1) && (rb_root _x697 _448) && (rb_lch _x697 _x2) && (rb_rch _x697 _451) && (v == _x697))]
-
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_445:[v:int | v == (_x4 - 1)]
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_446:[v:int | v == (_x6 - 1)]
-_447:[v:int rbtree | ∃inv_53, ((inv_53 >= 0) && (inv_53 < inv) && (inv_53 == _445) && (∃h_20, ((h_20 >= 0) && ((_x1) => ((h_20 + h_20) == inv_53)) && (not (_x1) => (((h_20 + h_20) + 1) == inv_53)) && (h_20 == _446) && (∃_x191, ((num_black _x191 h_20) && (no_red_red _x191) && ((_x1) => not (rb_root_color _x191 true)) && (not (_x1) => ((h_20 == 0) => not (rb_root_color _x191 false))) && (v == _x191))))))]
-_x696:[v:int rbtree | ∃_x696, ((rb_root_color _x696 _x1) && (rb_root _x696 _x4) && (rb_lch _x696 _x2) && (rb_rch _x696 _447) && (v == _x696))] 
- ⊢ _x696 as let (_x4) = inv in
-let (_x68) = subs _x4 in
-let (_x189) = rbtree_gen _x68 in
-let (_x1) = False in
-let (_x190) = _x189 _x1 in
-let (_x6) = h in
-let (_73) = subs _x6 in
-let (_447) = _x190 _73 in
-let (_x2) = Rbtleaf in Rbtnode (_x1, _x2, _x4, _447) : int rbtree :
-[v:int rbtree | ∃_x696, ((rb_root_color _x696 _x1) && (rb_root _x696 _x4) && (rb_lch _x696 _x2) && (rb_rch _x696 _447) && (v == _x696))]
-
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_442:[v:int | v == (_x4 - 1)]
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_443:[v:int | v == (_x6 - 1)]
-_444:[v:int rbtree | ∃inv_53, ((inv_53 >= 0) && (inv_53 < inv) && (inv_53 == _442) && (∃h_20, ((h_20 >= 0) && ((_x1) => ((h_20 + h_20) == inv_53)) && (not (_x1) => (((h_20 + h_20) + 1) == inv_53)) && (h_20 == _443) && (∃_x191, ((num_black _x191 h_20) && (no_red_red _x191) && ((_x1) => not (rb_root_color _x191 true)) && (not (_x1) => ((h_20 == 0) => not (rb_root_color _x191 false))) && (v == _x191))))))]
-_x695:[v:int rbtree | ∃_x695, ((rb_root_color _x695 _x1) && (rb_root _x695 _x6) && (rb_lch _x695 _x2) && (rb_rch _x695 _444) && (v == _x695))] 
- ⊢ _x695 as let (_x4) = inv in
-let (_x68) = subs _x4 in
-let (_x189) = rbtree_gen _x68 in
-let (_x1) = False in
-let (_x190) = _x189 _x1 in
-let (_x6) = h in
-let (_73) = subs _x6 in
-let (_444) = _x190 _73 in
-let (_x2) = Rbtleaf in Rbtnode (_x1, _x2, _x6, _444) : int rbtree :
-[v:int rbtree | ∃_x695, ((rb_root_color _x695 _x1) && (rb_root _x695 _x6) && (rb_lch _x695 _x2) && (rb_rch _x695 _444) && (v == _x695))]
-
-_x5:[v:bool | v == color]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_438:[v:int | true]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_439:[v:int | v == (_x4 - 1)]
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_440:[v:int | v == (_x6 - 1)]
-_441:[v:int rbtree | ∃inv_53, ((inv_53 >= 0) && (inv_53 < inv) && (inv_53 == _439) && (∃h_20, ((h_20 >= 0) && ((_x1) => ((h_20 + h_20) == inv_53)) && (not (_x1) => (((h_20 + h_20) + 1) == inv_53)) && (h_20 == _440) && (∃_x191, ((num_black _x191 h_20) && (no_red_red _x191) && ((_x1) => not (rb_root_color _x191 true)) && (not (_x1) => ((h_20 == 0) => not (rb_root_color _x191 false))) && (v == _x191))))))]
-_x694:[v:int rbtree | ∃_x694, ((rb_root_color _x694 _x5) && (rb_root _x694 _438) && (rb_lch _x694 _x2) && (rb_rch _x694 _441) && (v == _x694))] 
- ⊢ _x694 as let (_x4) = inv in
-let (_x68) = subs _x4 in
-let (_x189) = rbtree_gen _x68 in
-let (_x1) = False in
-let (_x190) = _x189 _x1 in
-let (_x6) = h in
-let (_73) = subs _x6 in
-let (_441) = _x190 _73 in
-let (_438) = int_gen () in
-let (_x2) = Rbtleaf in let (_x5) = color in Rbtnode (_x5, _x2, _438, _441) : int rbtree :
-[v:int rbtree | ∃_x694, ((rb_root_color _x694 _x5) && (rb_root _x694 _438) && (rb_lch _x694 _x2) && (rb_rch _x694 _441) && (v == _x694))]
-
-_x5:[v:bool | v == color]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_435:[v:int | v == (_x4 - 1)]
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_436:[v:int | v == (_x6 - 1)]
-_437:[v:int rbtree | ∃inv_53, ((inv_53 >= 0) && (inv_53 < inv) && (inv_53 == _435) && (∃h_20, ((h_20 >= 0) && ((_x1) => ((h_20 + h_20) == inv_53)) && (not (_x1) => (((h_20 + h_20) + 1) == inv_53)) && (h_20 == _436) && (∃_x191, ((num_black _x191 h_20) && (no_red_red _x191) && ((_x1) => not (rb_root_color _x191 true)) && (not (_x1) => ((h_20 == 0) => not (rb_root_color _x191 false))) && (v == _x191))))))]
-_x693:[v:int rbtree | ∃_x693, ((rb_root_color _x693 _x5) && (rb_root _x693 _x4) && (rb_lch _x693 _x2) && (rb_rch _x693 _437) && (v == _x693))] 
- ⊢ _x693 as let (_x4) = inv in
-let (_x68) = subs _x4 in
-let (_x189) = rbtree_gen _x68 in
-let (_x1) = False in
-let (_x190) = _x189 _x1 in
-let (_x6) = h in
-let (_73) = subs _x6 in
-let (_437) = _x190 _73 in
-let (_x2) = Rbtleaf in let (_x5) = color in Rbtnode (_x5, _x2, _x4, _437) : int rbtree :
-[v:int rbtree | ∃_x693, ((rb_root_color _x693 _x5) && (rb_root _x693 _x4) && (rb_lch _x693 _x2) && (rb_rch _x693 _437) && (v == _x693))]
-
-_x5:[v:bool | v == color]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_432:[v:int | v == (_x4 - 1)]
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_433:[v:int | v == (_x6 - 1)]
-_434:[v:int rbtree | ∃inv_53, ((inv_53 >= 0) && (inv_53 < inv) && (inv_53 == _432) && (∃h_20, ((h_20 >= 0) && ((_x1) => ((h_20 + h_20) == inv_53)) && (not (_x1) => (((h_20 + h_20) + 1) == inv_53)) && (h_20 == _433) && (∃_x191, ((num_black _x191 h_20) && (no_red_red _x191) && ((_x1) => not (rb_root_color _x191 true)) && (not (_x1) => ((h_20 == 0) => not (rb_root_color _x191 false))) && (v == _x191))))))]
-_x692:[v:int rbtree | ∃_x692, ((rb_root_color _x692 _x5) && (rb_root _x692 _x6) && (rb_lch _x692 _x2) && (rb_rch _x692 _434) && (v == _x692))] 
- ⊢ _x692 as let (_x4) = inv in
-let (_x68) = subs _x4 in
-let (_x189) = rbtree_gen _x68 in
-let (_x1) = False in
-let (_x190) = _x189 _x1 in
-let (_x6) = h in
-let (_73) = subs _x6 in
-let (_434) = _x190 _73 in
-let (_x2) = Rbtleaf in let (_x5) = color in Rbtnode (_x5, _x2, _x6, _434) : int rbtree :
-[v:int rbtree | ∃_x692, ((rb_root_color _x692 _x5) && (rb_root _x692 _x6) && (rb_lch _x692 _x2) && (rb_rch _x692 _434) && (v == _x692))]
-
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_428:[v:int | v == (_x4 - 1)]
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_429:[v:int | v == (_x6 - 1)]
-_430:[v:int rbtree | ∃inv_53, ((inv_53 >= 0) && (inv_53 < inv) && (inv_53 == _428) && (∃h_20, ((h_20 >= 0) && ((_x1) => ((h_20 + h_20) == inv_53)) && (not (_x1) => (((h_20 + h_20) + 1) == inv_53)) && (h_20 == _429) && (∃_x191, ((num_black _x191 h_20) && (no_red_red _x191) && ((_x1) => not (rb_root_color _x191 true)) && (not (_x1) => ((h_20 == 0) => not (rb_root_color _x191 false))) && (v == _x191))))))]
-_431:[v:int | true]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x691:[v:int rbtree | ∃_x691, ((rb_root_color _x691 _x1) && (rb_root _x691 _431) && (rb_lch _x691 _430) && (rb_rch _x691 _x2) && (v == _x691))] 
- ⊢ _x691 as let (_x2) = Rbtleaf in
-let (_431) = int_gen () in
-let (_x4) = inv in
-let (_x68) = subs _x4 in
-let (_x189) = rbtree_gen _x68 in
-let (_x1) = False in
-let (_x190) = _x189 _x1 in
-let (_x6) = h in
-let (_73) = subs _x6 in
-let (_430) = _x190 _73 in Rbtnode (_x1, _430, _431, _x2) : int rbtree :
-[v:int rbtree | ∃_x691, ((rb_root_color _x691 _x1) && (rb_root _x691 _431) && (rb_lch _x691 _430) && (rb_rch _x691 _x2) && (v == _x691))]
-
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_425:[v:int | v == (_x4 - 1)]
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_426:[v:int | v == (_x6 - 1)]
-_427:[v:int rbtree | ∃inv_53, ((inv_53 >= 0) && (inv_53 < inv) && (inv_53 == _425) && (∃h_20, ((h_20 >= 0) && ((_x1) => ((h_20 + h_20) == inv_53)) && (not (_x1) => (((h_20 + h_20) + 1) == inv_53)) && (h_20 == _426) && (∃_x191, ((num_black _x191 h_20) && (no_red_red _x191) && ((_x1) => not (rb_root_color _x191 true)) && (not (_x1) => ((h_20 == 0) => not (rb_root_color _x191 false))) && (v == _x191))))))]
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x690:[v:int rbtree | ∃_x690, ((rb_root_color _x690 _x1) && (rb_root _x690 _x4) && (rb_lch _x690 _427) && (rb_rch _x690 _x2) && (v == _x690))] 
- ⊢ _x690 as let (_x2) = Rbtleaf in
-let (_x4) = inv in
-let (_x68) = subs _x4 in
-let (_x189) = rbtree_gen _x68 in
-let (_x1) = False in
-let (_x190) = _x189 _x1 in
-let (_x6) = h in
-let (_73) = subs _x6 in
-let (_427) = _x190 _73 in Rbtnode (_x1, _427, _x4, _x2) : int rbtree :
-[v:int rbtree | ∃_x690, ((rb_root_color _x690 _x1) && (rb_root _x690 _x4) && (rb_lch _x690 _427) && (rb_rch _x690 _x2) && (v == _x690))]
-
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_422:[v:int | v == (_x4 - 1)]
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_423:[v:int | v == (_x6 - 1)]
-_424:[v:int rbtree | ∃inv_53, ((inv_53 >= 0) && (inv_53 < inv) && (inv_53 == _422) && (∃h_20, ((h_20 >= 0) && ((_x1) => ((h_20 + h_20) == inv_53)) && (not (_x1) => (((h_20 + h_20) + 1) == inv_53)) && (h_20 == _423) && (∃_x191, ((num_black _x191 h_20) && (no_red_red _x191) && ((_x1) => not (rb_root_color _x191 true)) && (not (_x1) => ((h_20 == 0) => not (rb_root_color _x191 false))) && (v == _x191))))))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x689:[v:int rbtree | ∃_x689, ((rb_root_color _x689 _x1) && (rb_root _x689 _x6) && (rb_lch _x689 _424) && (rb_rch _x689 _x2) && (v == _x689))] 
- ⊢ _x689 as let (_x2) = Rbtleaf in
-let (_x6) = h in
-let (_x4) = inv in
-let (_x68) = subs _x4 in
-let (_x189) = rbtree_gen _x68 in
-let (_x1) = False in
-let (_x190) = _x189 _x1 in
-let (_73) = subs _x6 in
-let (_424) = _x190 _73 in Rbtnode (_x1, _424, _x6, _x2) : int rbtree :
-[v:int rbtree | ∃_x689, ((rb_root_color _x689 _x1) && (rb_root _x689 _x6) && (rb_lch _x689 _424) && (rb_rch _x689 _x2) && (v == _x689))]
-
-_x5:[v:bool | v == color]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_418:[v:int | v == (_x4 - 1)]
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_419:[v:int | v == (_x6 - 1)]
-_420:[v:int rbtree | ∃inv_53, ((inv_53 >= 0) && (inv_53 < inv) && (inv_53 == _418) && (∃h_20, ((h_20 >= 0) && ((_x1) => ((h_20 + h_20) == inv_53)) && (not (_x1) => (((h_20 + h_20) + 1) == inv_53)) && (h_20 == _419) && (∃_x191, ((num_black _x191 h_20) && (no_red_red _x191) && ((_x1) => not (rb_root_color _x191 true)) && (not (_x1) => ((h_20 == 0) => not (rb_root_color _x191 false))) && (v == _x191))))))]
-_421:[v:int | true]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x688:[v:int rbtree | ∃_x688, ((rb_root_color _x688 _x5) && (rb_root _x688 _421) && (rb_lch _x688 _420) && (rb_rch _x688 _x2) && (v == _x688))] 
- ⊢ _x688 as let (_x2) = Rbtleaf in
-let (_421) = int_gen () in
-let (_x4) = inv in
-let (_x68) = subs _x4 in
-let (_x189) = rbtree_gen _x68 in
-let (_x1) = False in
-let (_x190) = _x189 _x1 in
-let (_x6) = h in
-let (_73) = subs _x6 in
-let (_420) = _x190 _73 in let (_x5) = color in Rbtnode (_x5, _420, _421, _x2) : int rbtree :
-[v:int rbtree | ∃_x688, ((rb_root_color _x688 _x5) && (rb_root _x688 _421) && (rb_lch _x688 _420) && (rb_rch _x688 _x2) && (v == _x688))]
-
-_x5:[v:bool | v == color]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_415:[v:int | v == (_x4 - 1)]
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_416:[v:int | v == (_x6 - 1)]
-_417:[v:int rbtree | ∃inv_53, ((inv_53 >= 0) && (inv_53 < inv) && (inv_53 == _415) && (∃h_20, ((h_20 >= 0) && ((_x1) => ((h_20 + h_20) == inv_53)) && (not (_x1) => (((h_20 + h_20) + 1) == inv_53)) && (h_20 == _416) && (∃_x191, ((num_black _x191 h_20) && (no_red_red _x191) && ((_x1) => not (rb_root_color _x191 true)) && (not (_x1) => ((h_20 == 0) => not (rb_root_color _x191 false))) && (v == _x191))))))]
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x687:[v:int rbtree | ∃_x687, ((rb_root_color _x687 _x5) && (rb_root _x687 _x4) && (rb_lch _x687 _417) && (rb_rch _x687 _x2) && (v == _x687))] 
- ⊢ _x687 as let (_x2) = Rbtleaf in
-let (_x4) = inv in
-let (_x68) = subs _x4 in
-let (_x189) = rbtree_gen _x68 in
-let (_x1) = False in
-let (_x190) = _x189 _x1 in
-let (_x6) = h in
-let (_73) = subs _x6 in
-let (_417) = _x190 _73 in let (_x5) = color in Rbtnode (_x5, _417, _x4, _x2) : int rbtree :
-[v:int rbtree | ∃_x687, ((rb_root_color _x687 _x5) && (rb_root _x687 _x4) && (rb_lch _x687 _417) && (rb_rch _x687 _x2) && (v == _x687))]
-
-_x5:[v:bool | v == color]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_412:[v:int | v == (_x4 - 1)]
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_413:[v:int | v == (_x6 - 1)]
-_414:[v:int rbtree | ∃inv_53, ((inv_53 >= 0) && (inv_53 < inv) && (inv_53 == _412) && (∃h_20, ((h_20 >= 0) && ((_x1) => ((h_20 + h_20) == inv_53)) && (not (_x1) => (((h_20 + h_20) + 1) == inv_53)) && (h_20 == _413) && (∃_x191, ((num_black _x191 h_20) && (no_red_red _x191) && ((_x1) => not (rb_root_color _x191 true)) && (not (_x1) => ((h_20 == 0) => not (rb_root_color _x191 false))) && (v == _x191))))))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x2:[v:int rbtree | rb_leaf v]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x686:[v:int rbtree | ∃_x686, ((rb_root_color _x686 _x5) && (rb_root _x686 _x6) && (rb_lch _x686 _414) && (rb_rch _x686 _x2) && (v == _x686))] 
- ⊢ _x686 as let (_x2) = Rbtleaf in
-let (_x6) = h in
-let (_x4) = inv in
-let (_x68) = subs _x4 in
-let (_x189) = rbtree_gen _x68 in
-let (_x1) = False in
-let (_x190) = _x189 _x1 in
-let (_73) = subs _x6 in
-let (_414) = _x190 _73 in let (_x5) = color in Rbtnode (_x5, _414, _x6, _x2) : int rbtree :
-[v:int rbtree | ∃_x686, ((rb_root_color _x686 _x5) && (rb_root _x686 _x6) && (rb_lch _x686 _414) && (rb_rch _x686 _x2) && (v == _x686))]
-
-Cost: 14
-Type: (Ty_constructor(rbtree(Ty_int)))
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x68:[v:int | v == (_x4 - 1)]
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_73:[v:int | v == (_x6 - 1)]
-_x191:[v:int rbtree | ∃inv_53, ((inv_53 >= 0) && (inv_53 < inv) && (inv_53 == _x68) && (∃h_20, ((h_20 >= 0) && ((_x1) => ((h_20 + h_20) == inv_53)) && (not (_x1) => (((h_20 + h_20) + 1) == inv_53)) && (h_20 == _73) && (∃_x191, ((num_black _x191 h_20) && (no_red_red _x191) && ((_x1) => not (rb_root_color _x191 true)) && (not (_x1) => ((h_20 == 0) => not (rb_root_color _x191 false))) && (v == _x191))))))] 
- ⊢ _x191 as let (_x4) = inv in
-let (_x68) = subs _x4 in
-let (_x189) = rbtree_gen _x68 in
-let (_x1) = False in
-let (_x190) = _x189 _x1 in let (_x6) = h in let (_73) = subs _x6 in _x190 _73 : int rbtree :
-[v:int rbtree | ∃inv_53, ((inv_53 >= 0) && (inv_53 < inv) && (inv_53 == _x68) && (∃h_20, ((h_20 >= 0) && ((_x1) => ((h_20 + h_20) == inv_53)) && (not (_x1) => (((h_20 + h_20) + 1) == inv_53)) && (h_20 == _73) && (∃_x191, ((num_black _x191 h_20) && (no_red_red _x191) && ((_x1) => not (rb_root_color _x191 true)) && (not (_x1) => ((h_20 == 0) => not (rb_root_color _x191 false))) && (v == _x191))))))]
 
 Cost: 1
 Type: Ty_int
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))] 
- ⊢ _x6 as h : int :
+idx6:[v:int | v == h]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))] 
+ ⊢ idx6 as h : int :
 [v:int | v == h]
 
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))] 
- ⊢ _x4 as inv : int :
+idx4:[v:int | v == inv]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))] 
+ ⊢ idx4 as inv : int :
 [v:int | v == inv]
 
-_43:[v:int | true]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))] 
- ⊢ _43 as int_gen () : int :
+idx3_0:[v:int | true]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))] 
+ ⊢ idx3_0 as int_gen () : int :
 [v:int | true]
 
 Type: Ty_bool
-_x5:[v:bool | v == color]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))] 
- ⊢ _x5 as color : bool :
+idx5:[v:bool | v == color]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))] 
+ ⊢ idx5 as color : bool :
 [v:bool | v == color]
 
-_x1:[v:bool | not (v)]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))] 
- ⊢ _x1 as False : bool :
+idx1:[v:bool | not (v)]
+pathcond_0:[v:unit | ∃x_27, ((((x_27) => (h == 0)) && ((h == 0) => (x_27))) && ((not (x_27) => (h > 0)) && ((h > 0) => not (x_27))) && not (x_27) && (color))] 
+ ⊢ idx1 as False : bool :
 [v:bool | not (v)]
-
-Cost: 19
-Type: (Ty_constructor(rbtree(Ty_int)))
-_x4:[v:int | v == inv]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x68:[v:int | v == (_x4 - 1)]
-_x142:[v:int | v == (_x68 - 1)]
-_x5:[v:bool | v == color]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_x6:[v:int | v == h]
-pathcond_0:[v:unit | ∃x_27, (((x_27) <=> (h == 0)) && (not (x_27) <=> (h > 0)) && not (x_27) && (color))]
-_111:[v:int | v == (_x6 - 1)]
-_x295:[v:int rbtree | ∃inv_63, ((inv_63 >= 0) && (inv_63 < inv) && (inv_63 == _x142) && (∃h_21, ((h_21 >= 0) && ((_x5) => ((h_21 + h_21) == inv_63)) && (not (_x5) => (((h_21 + h_21) + 1) == inv_63)) && (h_21 == _111) && (∃_x295, ((num_black _x295 h_21) && (no_red_red _x295) && ((_x5) => not (rb_root_color _x295 true)) && (not (_x5) => ((h_21 == 0) => not (rb_root_color _x295 false))) && (v == _x295))))))] 
- ⊢ _x295 as let (_x4) = inv in
-let (_x68) = subs _x4 in
-let (_x142) = subs _x68 in
-let (_x293) = rbtree_gen _x142 in
-let (_x5) = color in
-let (_x294) = _x293 _x5 in
-let (_x6) = h in let (_111) = subs _x6 in _x294 _111 : int rbtree :
-[v:int rbtree | ∃inv_63, ((inv_63 >= 0) && (inv_63 < inv) && (inv_63 == _x142) && (∃h_21, ((h_21 >= 0) && ((_x5) => ((h_21 + h_21) == inv_63)) && (not (_x5) => (((h_21 + h_21) + 1) == inv_63)) && (h_21 == _111) && (∃_x295, ((num_black _x295 h_21) && (no_red_red _x295) && ((_x5) => not (rb_root_color _x295 true)) && (not (_x5) => ((h_21 == 0) => not (rb_root_color _x295 false))) && (v == _x295))))))]
 
