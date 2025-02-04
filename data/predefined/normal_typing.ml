@@ -6,6 +6,7 @@ val ( > ) : int -> int -> bool
 val ( >= ) : int -> int -> bool
 val ( + ) : int -> int -> int
 val ( - ) : int -> int -> int
+val not : bool -> bool
 (* dt *)
 
 (* others *)
