@@ -470,19 +470,19 @@ Lemma upper_lower_separate_by_atleast_one : forall l, (forall x, (forall y, (((b
     - intros. simp. assert (y < v). eapply node_lower_helper; eauto. assert (v < x). eapply node_upper_helper; eauto. lia.
  Qed. Hint Resolve upper_lower_separate_by_atleast_one: core.
 
- Lemma tree_lower_bound_destruct_2 : forall l, (forall l1, (forall x, (((bst l /\ root l x) /\ ((rch l l1) /\ ~(leaf l1))) -> (lower_bound l1 x)))). Proof.
+(*  Lemma tree_lower_bound_destruct_2 : forall l, (forall l1, (forall x, (((bst l /\ root l x) /\ ((rch l l1) /\ ~(leaf l1))) -> (lower_bound l1 x)))). Proof.
     intros. simp. my_inversion H0; clear H0. my_inversion H2; clear H2. my_inversion H. auto.
-  Qed. Hint Resolve tree_lower_bound_destruct_2: core.
+  Qed. Hint Resolve tree_lower_bound_destruct_2: core. *)
 
-  Lemma tree_lower_bound_root : forall l, (forall x, (forall y, (((bst l /\ root l x) /\ (lower_bound l y)) -> (y < x)))). Proof.
+(*   Lemma tree_lower_bound_root : forall l, (forall x, (forall y, (((bst l /\ root l x) /\ (lower_bound l y)) -> (y < x)))). Proof.
     intros. simp. my_inversion H1; clear H1. my_inversion H; clear H. my_inversion H0; clear H0. my_inversion H2; clear H2. apply H4 in H1. clear H4. assert (y + 1 < x). eapply upper_lower_separate_by_atleast_one; eauto. lia.
    Qed. Hint Resolve tree_lower_bound_root: core.
-
-Lemma tree_upper_bound_destruct_2 : forall l, (forall l1, (forall x, (((bst l) /\ ((root l x) /\ ((lch l l1) /\ ~(leaf l1)))) -> (upper_bound l1 x)))). Proof.
+ *)
+(* Lemma tree_upper_bound_destruct_2 : forall l, (forall l1, (forall x, (((bst l) /\ ((root l x) /\ ((lch l l1) /\ ~(leaf l1)))) -> (upper_bound l1 x)))). Proof.
     intros. simp. my_inversion H1; clear H1. my_inversion H0; clear H0. my_inversion H. apply H4 in H2; clear H4. auto.
  Qed. Hint Resolve tree_upper_bound_destruct_2: core.
 
 Lemma tree_upper_bound_root : forall l, (forall x, (forall y, (((bst l) /\ ((root l x) /\ (upper_bound l y))) -> (y > x)))). Proof.
    intros. simp. my_inversion H1; clear H1; my_inversion H; clear H; my_inversion H0; clear H0.
     my_inversion H4; clear H4. apply H6 in H3; clear H6. assert (y > x + 1).  eapply upper_lower_separate_by_atleast_one; eauto. lia.
- Qed. Hint Resolve tree_upper_bound_root: core.
+ Qed. Hint Resolve tree_upper_bound_root: core. *)
