@@ -44,19 +44,18 @@ let rec map_item (f : 't -> 's) (item_e : 't item) =
   match item_e with
   | MTyDecl { type_name; type_params; type_decls } ->
       MTyDecl { type_name; type_params; type_decls }
-  | MValDecl _t_stringtyped0 -> MValDecl _t_stringtyped0 #=> f
-  | MMethodPred _t_stringtyped0 -> MMethodPred _t_stringtyped0 #=> f
+  | MValDecl _t_stringtyped0 -> MValDecl _t_stringtyped0#=>f
+  | MMethodPred _t_stringtyped0 -> MMethodPred _t_stringtyped0#=>f
   | MAxiom { name; prop } -> MAxiom { name; prop = map_prop f prop }
   | MFuncImpRaw { name; if_rec; body } ->
-      MFuncImpRaw
-        { name = name #=> f; if_rec; body = typed_map_raw_term f body }
+      MFuncImpRaw { name = name#=>f; if_rec; body = typed_map_raw_term f body }
   | MFuncImp { name; if_rec; body } ->
-      MFuncImp { name = name #=> f; if_rec; body = typed_map_term f body }
+      MFuncImp { name = name#=>f; if_rec; body = typed_map_term f body }
   | MRty { is_assumption; name; rty } ->
       MRty { is_assumption; name; rty = map_rty f rty }
 
 and typed_map_item (f : 't -> 's) (item_e : ('t, 't item) typed) =
-  item_e #=> f #-> (map_item f)
+  item_e#=>f#->(map_item f)
 
 let fv_item_id e = fv_typed_id_to_id fv_item e
 let typed_fv_item_id e = fv_typed_id_to_id typed_fv_item e
@@ -73,6 +72,6 @@ let get_rty_by_name (item_e : 't item list) (x : string) =
       item_e
   in
   match res with
-  | [] -> Sugar._failatwith __FILE__ __LINE__ "die"
+  | [] -> Sugar._failatwith __FILE__ __LINE__ ("Can't find rty by name: " ^ x)
   | [ x ] -> x
   | _ -> Sugar._failatwith __FILE__ __LINE__ "die"
