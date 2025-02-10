@@ -22,7 +22,7 @@
         "template_red_root"
     ],
     "num_quantifier": 0,
-    "abduce_rlimit": 20000000,
+    "abduce_rlimit":20000000,
     "synth_bound": 100,
     "synth_rlimit": 2000000,
     "type_rlimit": 80000000,
@@ -32,7 +32,7 @@
         "data_type_decls": "data/predefined/data_type_decls.ml",
         "templates": "data/predefined/templates.ml",
         "normal_typing": "data/predefined/normal_typing.ml",
-        "axioms": "data/predefined/axioms.ml",
+        "axioms": "data/validation/rbtree/axioms.ml",
         "coverage_typing": "data/predefined/coverage_typing.ml"
     }
 }
