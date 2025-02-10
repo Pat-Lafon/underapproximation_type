@@ -1,2 +1,2 @@
 Result, Bounds, Resource Limit, Queries, Abd Time, Synth Time, Total Time
-true, 24, 1000000, 34, 0.79, 0.94, 1.76
+true, 60, 200000, 34, 0.18, 0.17, 0.36

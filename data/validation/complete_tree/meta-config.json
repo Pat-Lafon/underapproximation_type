@@ -16,16 +16,16 @@
     "collectfile": ".collect",
     "abd_templates": ["template_leaf"],
     "num_quantifier": 0,
-    "abduce_rlimit": 3000000,
-    "synth_bound": 100,
-    "synth_rlimit": 1000000,
-    "type_rlimit": 3000000,
+    "abduce_rlimit": 600000,
+    "synth_bound": 60,
+    "synth_rlimit": 200000,
+    "type_rlimit": 600000,
     "comp_path": "components.txt",
     "prim_path": {
         "data_type_decls": "data/predefined/data_type_decls.ml",
         "templates": "data/predefined/templates.ml",
         "normal_typing": "data/predefined/normal_typing.ml",
-        "axioms": "data/predefined/axioms.ml",
+        "axioms": "data/validation/complete_tree/axioms.ml",
         "coverage_typing": "data/predefined/coverage_typing.ml"
     }
 }
