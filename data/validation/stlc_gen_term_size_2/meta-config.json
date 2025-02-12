@@ -5,7 +5,7 @@
         // "preprocess",
         // "ntyping",
         // "typing",
-        "queries",
+        // "queries",
         // "model",
         "result",
         "never-use"
@@ -15,19 +15,20 @@
     "abdfile": ".abd",
     "synfile": ".syn",
     "collectfile": ".collect",
-    "abd_templates": [/* "template_no_app", "template_is_const", "template_is_var", */ "template_is_abs", "template_is_app", "template_eq_0"],
+    "abd_templates": [/* "template_no_app", "template_is_const", "template_is_var", */ /* "template_is_abs", */ "template_is_app", "template_eq_0"],
     "abd_templates_back": ["template_no_app"],
     "num_quantifier": 0,
-    "abduce_rlimit": 700000000,
-    "synth_bound": 1,
-    "synth_rlimit": 3000000,
-    "type_rlimit": 3000000,
+    "abduce_rlimit": 80000000,
+    "synth_bound": 70,
+    "synth_rlimit": 40000000,
+    "type_rlimit": 160000000,
+    "use_missing_coverage_file": false,
     "comp_path": "components.txt",
     "prim_path": {
         "data_type_decls": "data/predefined/data_type_decls.ml",
         "templates": "data/predefined/templates.ml",
         "normal_typing": "data/predefined/normal_typing.ml",
-        "axioms": "data/predefined/axioms.ml",
+        "axioms": "data/validation/stlc_gen_term_size_2/axioms.ml",
         "coverage_typing": "data/predefined/coverage_typing.ml"
     }
 }

@@ -1,0 +1,43 @@
+let rec gen_term_size = fun num_arr_tau ->
+  fun num ->
+    fun gamma ->
+      fun tau ->
+        let (xccc15) = sizecheck num in
+        match xccc15 with
+        | True ->
+            let (idx2) = gamma in
+            let (idx25) = gen_term_no_app idx2 in
+            let (idx3) = tau in idx25 idx3
+        | False ->
+            let (xccc16) = bool_gen () in
+            (match xccc16 with
+             | True ->
+                 let (arg_tau) = gen_type () in
+                 (match true with
+                  | True ->
+                      let (num_app_func) = int_range_inex_zero num in
+                      let (xccc17) = difference_inex num in
+                      let (num_app_arg) = xccc17 num_app_func in
+                      let (func_ty) = Stlc_ty_arr (arg_tau, tau) in
+                      let (num_arr_func_ty) = get_num_arr func_ty in
+                      let (xccc18) = gen_term_size num_arr_func_ty in
+                      let (xccc19) = xccc18 num_app_func in
+                      let (xccc20) = xccc19 gamma in
+                      let (xccc21) = Stlc_ty_arr (arg_tau, tau) in
+                      let (func) = xccc20 xccc21 in
+                      let (num_arr_arg_ty) = get_num_arr arg_tau in
+                      let (xccc22) = gen_term_size num_arr_arg_ty in
+                      let (xccc23) = xccc22 num_app_arg in
+                      let (xccc24) = xccc23 gamma in
+                      let (arg) = xccc24 arg_tau in Stlc_app (func, arg)
+                  | False -> Err)
+             | False ->
+                 (match tau with
+                  | Stlc_ty_nat -> Err
+                  | Stlc_ty_arr (tau1, tau2) ->
+                      let (num_arr_tau2) = get_num_arr tau2 in
+                      let (xccc25) = gen_term_size num_arr_tau2 in
+                      let (xccc26) = xccc25 num in
+                      let (xccc27) = Stlc_tyctx_cons (tau1, gamma) in
+                      let (xccc28) = xccc26 xccc27 in
+                      let (body) = xccc28 tau2 in Stlc_abs (tau1, body)))
