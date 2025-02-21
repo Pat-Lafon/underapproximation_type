@@ -127,7 +127,7 @@ let[@axiom] tree_leaf_or_root (l : int tree) =
 
 (** depth *)
 
-let[@axiom] tree_depth_geq_0 (l : int tree) (n : int) = (depth l n) #==> (n >= 0)
+(* let[@axiom] tree_depth_geq_0 (l : int tree) (n : int) = (depth l n) #==> (n >= 0) *)
 
 let[@axiom] tree_leaf_depth_0 (l : int tree) (n : int) =
   (leaf l && depth l n) #==> (n == 0)
