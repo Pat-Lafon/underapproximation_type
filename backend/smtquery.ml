@@ -17,7 +17,7 @@ let ctx =
       (* ("rlimit", "80000000"); (* 21 timeouts*) *)
       (* ("rlimit", "120000000"); (* 16ish timeouts *) *)
       (* ("rlimit", "250000000"); (* 12ish I think timeouts *) *)
-      ("rlimit", "80000000");
+      ("rlimit", "8000000");
       (* 13 timeouts *)
     ]
 

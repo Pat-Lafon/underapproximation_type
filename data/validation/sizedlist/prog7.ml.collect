@@ -14,7 +14,6 @@ Type: (Ty_constructor(list(Ty_int)))
 idx1_0:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, ((((x_3) => (s == 0)) && ((s == 0) => (x_3))) && ((not (x_3) => (s > 0)) && ((s > 0) => not (x_3))) && not (x_3))]
 idx0:[v:int list | emp v]
-pathcond_1:[v:unit | ∃x_3, ((((x_3) => (s == 0)) && ((s == 0) => (x_3))) && ((not (x_3) => (s > 0)) && ((s > 0) => not (x_3))) && not (x_3))]
 idx10_0:[v:int list | ∃idx10, ((hd idx10 idx1_0) && (tl idx10 idx0) && (v == idx10))] 
  ⊢ idx10_0 as let (idx0) = Nil in let (idx1_0) = int_gen () in Cons (idx1_0, idx0) : int list :
 [v:int list | ∃idx10, ((hd idx10 idx1_0) && (tl idx10 idx0) && (v == idx10))]
@@ -22,7 +21,6 @@ idx10_0:[v:int list | ∃idx10, ((hd idx10 idx1_0) && (tl idx10 idx0) && (v == i
 idx2:[v:int | v == s]
 pathcond_1:[v:unit | ∃x_3, ((((x_3) => (s == 0)) && ((s == 0) => (x_3))) && ((not (x_3) => (s > 0)) && ((s > 0) => not (x_3))) && not (x_3))]
 idx0:[v:int list | emp v]
-pathcond_1:[v:unit | ∃x_3, ((((x_3) => (s == 0)) && ((s == 0) => (x_3))) && ((not (x_3) => (s > 0)) && ((s > 0) => not (x_3))) && not (x_3))]
 idx9_0:[v:int list | ∃idx9, ((hd idx9 idx2) && (tl idx9 idx0) && (v == idx9))] 
  ⊢ idx9_0 as let (idx0) = Nil in let (idx2) = s in Cons (idx2, idx0) : int list :
 [v:int list | ∃idx9, ((hd idx9 idx2) && (tl idx9 idx0) && (v == idx9))]

@@ -11,16 +11,20 @@ let rec size_bst_gen = fun d ->
            | True ->
                let (xccc9) = int_range lo in
                let (x) = xccc9 hi in
-               let (_x5) = bool_gen () in
-               (match _x5 with
+               let (idx5) = bool_gen () in
+               (match idx5 with
                 | True -> Leaf
                 | False ->
-                    let (_x1) = d in
-                    let (_x203) = subs _x1 in
-                    let (_x231) = size_bst_gen _x203 in
-                    let (_x2) = lo in
-                    let (_x232) = _x231 _x2 in
-                    let (_x3) = hi in
-                    let (ccc1936) = _x232 _x3 in
-                    let (ccc1934) = _x232 _x3 in Node (x, ccc1934, ccc1936))
+                    let (idx1) = d in
+                    let (idx204ccc0) = subs idx1 in
+                    let (idx208) = size_bst_gen idx204ccc0 in
+                    let (idx8) = x in
+                    let (idx209) = idx208 idx8 in
+                    let (idx3) = hi in
+                    let (idx210ccc10) = idx209 idx3 in
+                    let (idx229) = size_bst_gen idx204ccc0 in
+                    let (idx2) = lo in
+                    let (idx230) = idx229 idx2 in
+                    let (idx231ccc13) = idx230 idx8 in
+                    Node (idx8, idx231ccc13, idx210ccc10))
            | False -> Leaf)

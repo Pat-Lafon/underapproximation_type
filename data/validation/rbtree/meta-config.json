@@ -22,10 +22,10 @@
         "template_red_root"
     ],
     "num_quantifier": 0,
-    "abduce_rlimit":20000000,
+    "abduce_rlimit":4000000,
     "synth_bound": 100,
     "synth_rlimit": 2000000,
-    "type_rlimit": 80000000,
+    "type_rlimit": 120000000,
     "use_missing_coverage_file": false,
     "comp_path": "components.txt",
     "prim_path": {
