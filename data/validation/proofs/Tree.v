@@ -68,6 +68,27 @@ Hint Constructors lower_bound : core.
 Hint Constructors upper_bound : core.
 Hint Unfold not: core.
 
+Lemma tree_no_root_is_tree : forall l, forall i, not ( (root l i) /\ leaf l).
+Proof.
+    intro. destruct l.
+    - intro. unfold not. intro. my_inversion H. my_inversion H0.
+    - intro. unfold not. intro. my_inversion H. my_inversion H1.
+Qed.
+
+Lemma tree_depth_exists : forall l, exists n, depth l n.
+Proof.
+    intro. induction l.
+    - exists 0. constructor.
+    - my_inversion IHl1. my_inversion IHl2. exists (S (max x x0)). econstructor; eauto.
+Qed.
+
+Lemma tree_leaf_depth_0_disjoint : forall l, exists n, (depth l 0 /\ leaf l) \/ (depth l n /\ n > 0 /\ not (leaf l)).
+Proof.
+    intros. destruct (tree_depth_exists l) as [n H]. destruct l.
+    - eexists. left. split; auto.
+    - eexists. right. split. eapply H. split. my_inversion H. lia. unfold not. intro. my_inversion H0. Unshelve. constructor.
+Qed.
+
 Lemma tree_complete_leaf : forall l, (leaf l -> complete l). Proof.
     intros. my_inversion H. auto.
  Qed. Hint Resolve tree_complete_leaf: core.
@@ -302,12 +323,6 @@ Lemma tree_positive_depth_is_not_leaf : forall l, (forall n, ((depth l n /\ n > 
     intros. simp. unfold not. intro. my_inversion H1. my_inversion H. my_inversion H0.
  Qed. Hint Resolve tree_positive_depth_is_not_leaf: core.
 
-Lemma tree_depth_exists : forall l, exists n, depth l n.
-Proof.
-    intro. induction l.
-    - exists 0. constructor.
-    - my_inversion IHl1. my_inversion IHl2. exists (S (max x x0)). econstructor; eauto.
-Qed.
 
 (* Lemma tree_ch_depth_ex : forall l, (forall l1, (forall n, (exists n1, (((lch l l1 \/ rch l l1) /\ depth l n) -> depth l1 n1)))). Proof.
     intros. assert (exists n', depth l1 n'). apply tree_depth_exists. destruct H. exists x. intro. auto.
