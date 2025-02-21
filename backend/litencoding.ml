@@ -32,6 +32,7 @@ let rec typed_lit_to_z3 ctx lit =
       | "mod", [ a; b ] -> Arithmetic.Integer.mk_mod ctx a b
       | "*", [ a; b ] -> Arithmetic.mk_mul ctx [ a; b ]
       | "/", [ a; b ] -> Arithmetic.mk_div ctx a b
+      | "ite", [ a; b; c ] -> Boolean.mk_ite ctx a b c
       | opname, args ->
           let argsty, retty = Nt.destruct_arr_tp op.ty in
           let func = z3func ctx opname argsty retty in
