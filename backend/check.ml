@@ -40,6 +40,35 @@ let get_pred m predexpr =
 let get_unknown_fv ctx m unknown_fv =
   List.map (fun (_, b) -> get_pred m (Boolean.mk_const_s ctx b)) unknown_fv
 
+let rlimit = ref 200000000
+
+let smt_format_file filename solver =
+  let oc = open_out filename in
+  let prelude = "(set-option :rlimit " ^ string_of_int !rlimit ^ ")\n" in
+  let query = Z3.Solver.to_string solver in
+  let postlude = "\n(check-sat)\n" in
+  Printf.fprintf oc "%s%s%s" prelude query postlude;
+  close_out oc
+
+let run_z3_in_process solver : smt_result =
+  let filename = "subtyping_temp_file.smt2" in
+  smt_format_file filename solver;
+  let command = "z3 " ^ filename in
+  (* let status = Unix.system command in *)
+  let stdout, _std_else = Unix.open_process command in
+  let status = input_line stdout in
+
+  let _ = Unix.close_process (stdout, _std_else) in
+  
+  print_endline "----------------";
+  print_endline status;
+  print_endline "----------------";
+  (*  match status with
+  | WEXITED i -> Printf.printf "Exited with code: %d\n" i
+  | WSIGNALED i -> Printf.printf "Killed by signal: %d\n" i
+  | WSTOPPED i -> Printf.printf "Stopped by signal: %d\n" i *)
+  if status = "unsat" (* status = WEXITED 0 *) then SmtUnsat else Timeout
+
 let smt_solve ctx assertions =
   (* let _ = printf "check\n" in *)
   let solver = mk_solver ctx None in
@@ -58,7 +87,8 @@ let smt_solve ctx assertions =
   let _ = Solver.add solver (get_formulas g) in
 
   (* Solver.to_string solver |> print_endline; *)
-  let _, res = Sugar.clock (fun () -> solver_result solver) in
+  (*  let _, res = Sugar.clock (fun () -> solver_result solver) in *)
+  let res = run_z3_in_process solver in
   res
 
 let extend =
