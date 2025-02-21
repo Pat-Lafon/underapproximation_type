@@ -4,8 +4,8 @@
     "debug_tags": [
         // "preprocess",
         // "ntyping",
-        // "typing",
-        // "queries",
+        "typing",
+        "queries",
         "result",
         "never-use"
     ],
@@ -16,17 +16,18 @@
     "collectfile": ".collect",
     "abd_templates": ["template_leaf", "template_eq_0"],
     "num_quantifier": 0,
-    "abduce_rlimit": 6000000,
-    "synth_bound": 100,
-    "synth_rlimit": 6000000,
-    "type_rlimit": 20000000,
+    "abduce_rlimit": 40000000,
+    "synth_bound": 50,
+    "synth_rlimit": 200000000,
+/* "synth_rlimit": 800000000, */
+    "type_rlimit": 300000000,
     "use_missing_coverage_file": false,
     "comp_path": "components.txt",
     "prim_path": {
         "data_type_decls": "data/predefined/data_type_decls.ml",
         "templates": "data/predefined/templates.ml",
         "normal_typing": "data/predefined/normal_typing.ml",
-        "axioms": "data/predefined/axioms.ml",
+        "axioms": "data/validation/depth_bst/current_axioms.ml",
         "coverage_typing": "data/validation/depth_bst/builtin_rty.ml"
     }
 }
