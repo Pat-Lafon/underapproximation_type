@@ -1,0 +1,45 @@
+let rec gen_term_size = fun num_arr_tau ->
+  fun num ->
+    fun gamma ->
+      fun tau ->
+        let (xccc12) = sizecheck num in
+        match xccc12 with
+        | True -> let (xccc13) = gen_term_no_app gamma in xccc13 tau
+        | False ->
+            let (xccc14) = bool_gen () in
+            (match xccc14 with
+             | True ->
+                 let (arg_tau) = gen_type () in
+                 (match true with
+                  | True ->
+                      let (num_app_func) = int_range_inex_zero num in
+                      let (xccc15) = difference_inex num in
+                      let (num_app_arg) = xccc15 num_app_func in
+                      let (func_ty) = Stlc_ty_arr (arg_tau, tau) in
+                      let (num_arr_func_ty) = get_num_arr func_ty in
+                      let (xccc16) = gen_term_size num_arr_func_ty in
+                      let (xccc17) = xccc16 num_app_func in
+                      let (xccc18) = xccc17 gamma in
+                      let (xccc19) = Stlc_ty_arr (arg_tau, tau) in
+                      let (func) = xccc18 xccc19 in
+                      let (num_arr_arg_ty) = get_num_arr arg_tau in
+                      let (xccc20) = gen_term_size num_arr_arg_ty in
+                      let (xccc21) = xccc20 num_app_arg in
+                      let (xccc22) = xccc21 gamma in
+                      let (arg) = xccc22 arg_tau in Stlc_app (func, arg)
+                  | False -> Err)
+             | False ->
+                 (match tau with
+                  | Stlc_ty_nat -> Err
+                  | Stlc_ty_arr (tau1, tau2) ->
+                      let (idx10) = tau2 in
+                      let (idx60ccc0) = get_num_arr idx10 in
+                      let (idx570) = gen_term_size idx60ccc0 in
+                      let (idx1) = num in
+                      let (idx571) = idx570 idx1 in
+                      let (idx2) = gamma in
+                      let (idx9) = tau1 in
+                      let (idx62ccc20) = Stlc_tyctx_cons (idx9, idx2) in
+                      let (idx572) = idx571 idx62ccc20 in
+                      let (idx573ccc1) = idx572 idx10 in
+                      Stlc_abs (idx9, idx573ccc1)))
