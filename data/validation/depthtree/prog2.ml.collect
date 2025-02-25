@@ -15,8 +15,8 @@ pathcond_0:[v:unit | ∃x_4, ((((x_4) => (s == 0)) && ((s == 0) => (x_4))) && ((
 
 Cost: 10
 Type: (Ty_constructor(tree(Ty_int)))
-idx0:[v:int tree | leaf v]
+idx0:[v:int tree | (leaf v) && (depth v 0)]
 pathcond_0:[v:unit | ∃x_4, ((((x_4) => (s == 0)) && ((s == 0) => (x_4))) && ((not (x_4) => (s > 0)) && ((s > 0) => not (x_4))) && not (x_4))] 
  ⊢ idx0 as Leaf : int tree :
-[v:int tree | leaf v]
+[v:int tree | (leaf v) && (depth v 0)]
 
