@@ -3,21 +3,21 @@ let rec rbtree_gen = fun inv ->
     fun h ->
       let (xccc29) = sizecheck h in
       match xccc29 with
-      | True ->
+      | true ->
           (match color with
-           | True -> Rbtleaf
-           | False ->
+           | true -> Rbtleaf
+           | false ->
                let (xccc30) = bool_gen () in
                (match xccc30 with
-                | True -> Rbtleaf
-                | False ->
+                | true -> Rbtleaf
+                | false ->
                     let (xccc31) = Rbtleaf in
                     let (xccc32) = int_gen () in
                     let (xccc33) = Rbtleaf in
                     Rbtnode (true, xccc33, xccc32, xccc31)))
-      | False ->
+      | false ->
           (match color with
-           | True ->
+           | true ->
                let (xccc34) = subs inv in
                let (xccc35) = rbtree_gen xccc34 in
                let (xccc36) = xccc35 false in
@@ -29,10 +29,10 @@ let rec rbtree_gen = fun inv ->
                let (xccc41) = subs h in
                let (rt2) = xccc40 xccc41 in
                let (xccc42) = int_gen () in Rbtnode (false, lt2, xccc42, rt2)
-           | False ->
+           | false ->
                let (c) = bool_gen () in
                (match c with
-                | True ->
+                | true ->
                     let (idx4) = inv in
                     let (idx68ccc0) = subs idx4 in
                     let (idx79) = rbtree_gen idx68ccc0 in
@@ -43,7 +43,7 @@ let rec rbtree_gen = fun inv ->
                     let (idx3ccc18) = int_gen () in
                     let (idx81ccc23) = idx80 idx6 in
                     Rbtnode (idx0, idx81ccc23, idx3ccc18, idx81ccc24)
-                | False ->
+                | false ->
                     let (xccc43) = subs inv in
                     let (xccc44) = subs xccc43 in
                     let (xccc45) = rbtree_gen xccc44 in

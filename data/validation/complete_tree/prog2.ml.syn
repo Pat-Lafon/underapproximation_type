@@ -1,8 +1,8 @@
 let rec complete_tree_gen = fun s ->
   let (xccc2) = sizecheck s in
   match xccc2 with
-  | True -> Leaf
-  | False ->
+  | true -> Leaf
+  | false ->
       let (idx2) = s in
       let (idx5ccc0) = subs idx2 in
       let (idx7ccc8) = complete_tree_gen idx5ccc0 in

@@ -3,18 +3,18 @@ let rec size_bst_gen = fun d ->
     fun hi ->
       let (xccc6) = sizecheck d in
       match xccc6 with
-      | True -> Leaf
-      | False ->
+      | true -> Leaf
+      | false ->
           let (xccc7) = incr lo in
           let (xccc8) = xccc7 < hi in
           (match xccc8 with
-           | True ->
+           | true ->
                let (xccc9) = int_range lo in
                let (x) = xccc9 hi in
                let (idx5) = bool_gen () in
                (match idx5 with
-                | True -> Leaf
-                | False ->
+                | true -> Leaf
+                | false ->
                     let (idx1) = d in
                     let (idx204ccc0) = subs idx1 in
                     let (idx208) = size_bst_gen idx204ccc0 in
@@ -27,4 +27,4 @@ let rec size_bst_gen = fun d ->
                     let (idx230) = idx229 idx2 in
                     let (idx231ccc13) = idx230 idx8 in
                     Node (idx8, idx231ccc13, idx210ccc10))
-           | False -> Leaf)
+           | false -> Leaf)

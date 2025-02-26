@@ -1,5 +1,7 @@
 let[@library] True = (v : [%v: bool]) [@under]
 let[@library] False = (not v : [%v: bool]) [@under]
+let[@library] true = (v : [%v: bool]) [@under]
+let[@library] false = (not v : [%v: bool]) [@under]
 
 let[@library] Leaf = (leaf v && depth v 0 : [%v: int tree]) [@under]
 
