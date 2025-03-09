@@ -114,7 +114,7 @@ let rec subst_value (string_x : string) f (value_e : 't value) =
       VTu (List.map (typed_subst_value string_x f) _t__tvaluetypedlist0)
 
 and typed_subst_value (string_x : string) f (value_e : ('t, 't value) typed) =
-  value_e #-> (subst_value string_x f)
+  value_e#->(subst_value string_x f)
 
 and subst_term (string_x : string) f (term_e : 't term) =
   match term_e with
@@ -158,7 +158,7 @@ and subst_term (string_x : string) f (term_e : 't term) =
         }
 
 and typed_subst_term (string_x : string) f (term_e : ('t, 't term) typed) =
-  term_e #-> (subst_term string_x f)
+  term_e#->(subst_term string_x f)
 
 and subst_match_case (string_x : string) f (match_case_e : 't match_case) =
   match match_case_e with
@@ -170,26 +170,26 @@ and subst_match_case (string_x : string) f (match_case_e : 't match_case) =
 
 and typed_subst_match_case (string_x : string) f
     (match_case_e : ('t, 't match_case) typed) =
-  match_case_e #-> (subst_match_case string_x f)
+  match_case_e#->(subst_match_case string_x f)
 
 let rec map_value (f : 't -> 's) (value_e : 't value) =
   match value_e with
   | VConst constant0 -> VConst constant0
-  | VVar _t_stringtyped0 -> VVar _t_stringtyped0 #=> f
+  | VVar _t_stringtyped0 -> VVar _t_stringtyped0#=>f
   | VLam { lamarg; body } ->
-      VLam { lamarg = lamarg #=> f; body = typed_map_term f body }
+      VLam { lamarg = lamarg#=>f; body = typed_map_term f body }
   | VFix { fixname; fixarg; body } ->
       VFix
         {
-          fixname = fixname #=> f;
-          fixarg = fixarg #=> f;
+          fixname = fixname#=>f;
+          fixarg = fixarg#=>f;
           body = typed_map_term f body;
         }
   | VTu _t__tvaluetypedlist0 ->
       VTu (List.map (typed_map_value f) _t__tvaluetypedlist0)
 
 and typed_map_value (f : 't -> 's) (value_e : ('t, 't value) typed) =
-  value_e #=> f #-> (map_value f)
+  value_e#=>f#->(map_value f)
 
 and map_term : 't 's. ('t -> 's) -> 't term -> 's term =
  fun f term_e ->
@@ -200,21 +200,20 @@ and map_term : 't 's. ('t -> 's) -> 't term -> 's term =
       CLetE
         {
           rhs = typed_map_term f rhs;
-          lhs = lhs #=> f;
+          lhs = lhs#=>f;
           body = typed_map_term f body;
         }
   | CLetDeTu { turhs; tulhs; body } ->
       CLetDeTu
         {
           turhs = typed_map_value f turhs;
-          tulhs = List.map (fun x -> x #=> f) tulhs;
+          tulhs = List.map (fun x -> x#=>f) tulhs;
           body = typed_map_term f body;
         }
   | CApp { appf; apparg } ->
       CApp { appf = typed_map_value f appf; apparg = typed_map_value f apparg }
   | CAppOp { op; appopargs } ->
-      CAppOp
-        { op = op #=> f; appopargs = List.map (typed_map_value f) appopargs }
+      CAppOp { op = op#=>f; appopargs = List.map (typed_map_value f) appopargs }
   | CMatch { matched; match_cases } ->
       CMatch
         {
@@ -223,8 +222,8 @@ and map_term : 't 's. ('t -> 's) -> 't term -> 's term =
         }
 
 and typed_map_term :
-      't 's. ('t -> 's) -> ('t, 't term) typed -> ('s, 's term) typed =
- fun f term_e -> term_e #=> f #-> (map_term f)
+    't 's. ('t -> 's) -> ('t, 't term) typed -> ('s, 's term) typed =
+ fun f term_e -> term_e#=>f#->(map_term f)
 
 and map_match_case : 't 's. ('t -> 's) -> 't match_case -> 's match_case =
  fun f match_case_e ->
@@ -232,8 +231,8 @@ and map_match_case : 't 's. ('t -> 's) -> 't match_case -> 's match_case =
   | CMatchcase { constructor; args; exp } ->
       CMatchcase
         {
-          constructor = constructor #=> f;
-          args = List.map (fun x -> x #=> f) args;
+          constructor = constructor#=>f;
+          args = List.map (fun x -> x#=>f) args;
           exp = typed_map_term f exp;
         }
 
@@ -265,25 +264,23 @@ let typed_subst_match_case_instance x instance e =
 (* Generated from _term.ml *)
 open Sugar
 
-let constant_to_value c = (VConst c) #: (constant_to_nt c)
-let value_to_term v = (CVal v) #: v.ty
+let constant_to_value c = (VConst c)#:(constant_to_nt c)
+let value_to_term v = (CVal v)#:v.ty
 
 let term_to_value e =
   match e.x with
-  | CVal v -> v.x #: e.ty
+  | CVal v -> v.x#:e.ty
   | _ -> _failatwith __FILE__ __LINE__ "die"
 
-let id_to_value v = (VVar v) #: v.ty
+let id_to_value v = (VVar v)#:v.ty
 let id_to_term v = value_to_term @@ id_to_value v
-
-let mk_lam lamarg body =
-  (VLam { lamarg; body }) #: (Nt.mk_arr lamarg.ty body.ty)
+let mk_lam lamarg body = (VLam { lamarg; body })#:(Nt.mk_arr lamarg.ty body.ty)
 
 let mk_id_function ty =
-  let lamarg = "x" #: ty in
-  (VLam { lamarg; body = id_to_term lamarg }) #: (Nt.mk_arr ty ty)
+  let lamarg = "x"#:ty in
+  (VLam { lamarg; body = id_to_term lamarg })#:(Nt.mk_arr ty ty)
 
-let mk_fix fixname fixarg body = (VFix { fixname; fixarg; body }) #: fixname.ty
+let mk_fix fixname fixarg body = (VFix { fixname; fixarg; body })#:fixname.ty
 
 let lam_to_fix fixname body =
   match body.x with
@@ -293,8 +290,31 @@ let lam_to_fix fixname body =
 let lam_to_fix_comp fixname body =
   value_to_term (lam_to_fix fixname (term_to_value body))
 
-let mk_lete lhs rhs body = (CLetE { lhs; rhs; body }) #: body.ty
-let mk_app appf apparg = (CApp { appf; apparg }) #: (Nt.get_retty appf.ty)
+let mk_lete lhs rhs body = (CLetE { lhs; rhs; body })#:body.ty
+let mk_app appf apparg = (CApp { appf; apparg })#:(Nt.get_retty appf.ty)
 
 let mk_appop op appopargs =
-  (CAppOp { op; appopargs }) #: (snd @@ Nt.destruct_arr_tp op.ty)
+  (CAppOp { op; appopargs })#:(snd @@ Nt.destruct_arr_tp op.ty)
+
+let rec ast_size_value (v : _ value) : int =
+  match v with
+  | VConst _ | VVar _ -> 1
+  | VTu v_l -> List.fold_left (fun acc v -> acc + ast_size_value v.x) 0 v_l
+  | VLam _ -> failwith "ast_size_value::VLam::unimplemented"
+  | VFix _ -> failwith "ast_size_value::VFix::unimplemented"
+
+let rec ast_size_term (t : _ term) : int =
+  match t with
+  | CErr -> 1
+  | CVal v -> ast_size_value v.x
+  | CApp { appf; apparg } -> ast_size_value appf.x + ast_size_value apparg.x
+  | CAppOp { op; appopargs } ->
+      1 + List.fold_left (fun acc v -> acc + ast_size_value v.x) 0 appopargs
+  | CLetE { lhs; rhs; body } -> 1 + ast_size_term rhs.x + ast_size_term body.x
+  | CLetDeTu _ -> failwith "ast_size_term::CLetDeTu::unimplemented"
+  | CMatch { matched; match_cases } ->
+      ast_size_value matched.x
+      + List.fold_left
+          (fun acc (CMatchcase { constructor; args; exp }) ->
+            acc + 1 + ast_size_term exp.x)
+          0 match_cases
