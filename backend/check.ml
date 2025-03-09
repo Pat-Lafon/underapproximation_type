@@ -41,10 +41,19 @@ let get_unknown_fv ctx m unknown_fv =
   List.map (fun (_, b) -> get_pred m (Boolean.mk_const_s ctx b)) unknown_fv
 
 let rlimit = ref 200000000
+let optional_timeout = ref None
 
 let smt_format_file filename solver =
+  (match !optional_timeout with
+  | Some x -> Printf.printf "Timeout: %d\n" x
+  | None -> print_endline "No timeout");
   let oc = open_out filename in
-  let prelude = "(set-option :rlimit " ^ string_of_int !rlimit ^ ")\n" in
+  let prelude =
+    "(set-option :rlimit " ^ string_of_int !rlimit ^ ")\n"
+    ^ Option.fold ~none:""
+        ~some:(fun x -> "(set-option :timeout " ^ string_of_int x ^ ")\n")
+        !optional_timeout
+  in
   let query = Z3.Solver.to_string solver in
   let postlude = "\n(check-sat)\n" in
   Printf.fprintf oc "%s%s%s" prelude query postlude;
@@ -59,7 +68,7 @@ let run_z3_in_process solver : smt_result =
   let status = input_line stdout in
 
   let _ = Unix.close_process (stdout, _std_else) in
-  
+
   print_endline "----------------";
   print_endline status;
   print_endline "----------------";
