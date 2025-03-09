@@ -1,30 +1,6 @@
 Path Specific Collection:
 In Path:
 pathcond_1:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && not (x_2))]
-Cost: 16
-Type: Ty_int
-idx2:[v:int | v == s]
-pathcond_1:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && not (x_2))]
-idx5_0:[v:int | v == (idx2 - 1)] 
- ⊢ idx5_0 as let (idx2) = s in subs idx2 : int :
-[v:int | v == (idx2 - 1)]
-
-Cost: 17
-Type: (Ty_constructor(tree(Ty_int)))
-idx2:[v:int | v == s]
-pathcond_1:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && not (x_2))]
-idx5_0:[v:int | v == (idx2 - 1)]
-idx7_0:[v:int tree | ∃s_4, ((0 <= s_4) && (s_4 >= 0) && (s_4 < s) && (s_4 == idx5_0) && (∃idx7, ((depth idx7 s_4) && (complete idx7) && (v == idx7))))] 
- ⊢ idx7_0 as let (idx2) = s in let (idx5_0) = subs idx2 in complete_tree_gen idx5_0 : int tree :
-[v:int tree | ∃s_4, ((0 <= s_4) && (s_4 >= 0) && (s_4 < s) && (s_4 == idx5_0) && (∃idx7, ((depth idx7 s_4) && (complete idx7) && (v == idx7))))]
-
-Cost: 10
-Type: (Ty_constructor(tree(Ty_int)))
-idx0:[v:int tree | leaf v]
-pathcond_1:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && not (x_2))] 
- ⊢ idx0 as Leaf : int tree :
-[v:int tree | leaf v]
-
 Cost: 1
 Type: Ty_int
 idx2:[v:int | v == s]
@@ -37,72 +13,31 @@ pathcond_1:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((
  ⊢ idx1_0 as int_gen () : int :
 [v:int | true]
 
-Cost: 38
+Cost: 10
 Type: (Ty_constructor(tree(Ty_int)))
-idx1_0:[v:int | true]
-pathcond_1:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && not (x_2))]
 idx0:[v:int tree | leaf v]
-idx2:[v:int | v == s]
-idx5_4:[v:int | v == (idx2 - 1)]
-idx7_4:[v:int tree | ∃s_4, ((0 <= s_4) && (s_4 >= 0) && (s_4 < s) && (s_4 == idx5_4) && (∃idx7, ((depth idx7 s_4) && (complete idx7) && (v == idx7))))]
-idx13_0:[v:int tree | ∃idx13, ((root idx13 idx1_0) && (lch idx13 idx0) && (rch idx13 idx7_4) && (v == idx13))] 
- ⊢ idx13_0 as let (idx2) = s in
-let (idx5_0) = subs idx2 in
-let (idx7_4) = complete_tree_gen idx5_0 in
-let (idx0) = Leaf in let (idx1_0) = int_gen () in Node (idx1_0, idx0, idx7_4) : int tree :
-[v:int tree | ∃idx13, ((root idx13 idx1_0) && (lch idx13 idx0) && (rch idx13 idx7_4) && (v == idx13))]
+pathcond_1:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && not (x_2))] 
+ ⊢ idx0 as Leaf : int tree :
+[v:int tree | leaf v]
 
+In Path:
+pathcond_0:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && (x_2))]
+Cost: 1
+Type: Ty_int
 idx2:[v:int | v == s]
-pathcond_1:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && not (x_2))]
-idx0:[v:int tree | leaf v]
-idx5_3:[v:int | v == (idx2 - 1)]
-idx7_3:[v:int tree | ∃s_4, ((0 <= s_4) && (s_4 >= 0) && (s_4 < s) && (s_4 == idx5_3) && (∃idx7, ((depth idx7 s_4) && (complete idx7) && (v == idx7))))]
-idx12_0:[v:int tree | ∃idx12, ((root idx12 idx2) && (lch idx12 idx0) && (rch idx12 idx7_3) && (v == idx12))] 
- ⊢ idx12_0 as let (idx2) = s in
-let (idx5_0) = subs idx2 in
-let (idx7_3) = complete_tree_gen idx5_0 in
-let (idx0) = Leaf in Node (idx2, idx0, idx7_3) : int tree :
-[v:int tree | ∃idx12, ((root idx12 idx2) && (lch idx12 idx0) && (rch idx12 idx7_3) && (v == idx12))]
+pathcond_0:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && (x_2))] 
+ ⊢ idx2 as s : int :
+[v:int | v == s]
 
-idx1_0:[v:int | true]
-pathcond_1:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && not (x_2))]
-idx2:[v:int | v == s]
-idx5_2:[v:int | v == (idx2 - 1)]
-idx7_2:[v:int tree | ∃s_4, ((0 <= s_4) && (s_4 >= 0) && (s_4 < s) && (s_4 == idx5_2) && (∃idx7, ((depth idx7 s_4) && (complete idx7) && (v == idx7))))]
-idx0:[v:int tree | leaf v]
-idx11_0:[v:int tree | ∃idx11, ((root idx11 idx1_0) && (lch idx11 idx7_2) && (rch idx11 idx0) && (v == idx11))] 
- ⊢ idx11_0 as let (idx0) = Leaf in
-let (idx2) = s in
-let (idx5_0) = subs idx2 in
-let (idx7_2) = complete_tree_gen idx5_0 in
-let (idx1_0) = int_gen () in Node (idx1_0, idx7_2, idx0) : int tree :
-[v:int tree | ∃idx11, ((root idx11 idx1_0) && (lch idx11 idx7_2) && (rch idx11 idx0) && (v == idx11))]
+idx1_1:[v:int | true]
+pathcond_0:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && (x_2))] 
+ ⊢ idx1_1 as int_gen () : int :
+[v:int | true]
 
-idx2:[v:int | v == s]
-pathcond_1:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && not (x_2))]
-idx5_1:[v:int | v == (idx2 - 1)]
-idx7_1:[v:int tree | ∃s_4, ((0 <= s_4) && (s_4 >= 0) && (s_4 < s) && (s_4 == idx5_1) && (∃idx7, ((depth idx7 s_4) && (complete idx7) && (v == idx7))))]
-idx0:[v:int tree | leaf v]
-idx10_0:[v:int tree | ∃idx10, ((root idx10 idx2) && (lch idx10 idx7_1) && (rch idx10 idx0) && (v == idx10))] 
- ⊢ idx10_0 as let (idx0) = Leaf in
-let (idx2) = s in
-let (idx5_0) = subs idx2 in
-let (idx7_1) = complete_tree_gen idx5_0 in Node (idx2, idx7_1, idx0) : int tree :
-[v:int tree | ∃idx10, ((root idx10 idx2) && (lch idx10 idx7_1) && (rch idx10 idx0) && (v == idx10))]
-
-Cost: 31
+Cost: 10
 Type: (Ty_constructor(tree(Ty_int)))
-idx1_0:[v:int | true]
-pathcond_1:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && not (x_2))]
 idx0:[v:int tree | leaf v]
-idx9_0:[v:int tree | ∃idx9, ((root idx9 idx1_0) && (lch idx9 idx0) && (rch idx9 idx0) && (v == idx9))] 
- ⊢ idx9_0 as let (idx0) = Leaf in let (idx1_0) = int_gen () in Node (idx1_0, idx0, idx0) : int tree :
-[v:int tree | ∃idx9, ((root idx9 idx1_0) && (lch idx9 idx0) && (rch idx9 idx0) && (v == idx9))]
-
-idx2:[v:int | v == s]
-pathcond_1:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && not (x_2))]
-idx0:[v:int tree | leaf v]
-idx8_0:[v:int tree | ∃idx8, ((root idx8 idx2) && (lch idx8 idx0) && (rch idx8 idx0) && (v == idx8))] 
- ⊢ idx8_0 as let (idx0) = Leaf in let (idx2) = s in Node (idx2, idx0, idx0) : int tree :
-[v:int tree | ∃idx8, ((root idx8 idx2) && (lch idx8 idx0) && (rch idx8 idx0) && (v == idx8))]
+pathcond_0:[v:unit | ∃x_2, ((((x_2) => (s == 0)) && ((s == 0) => (x_2))) && ((not (x_2) => (s > 0)) && ((s > 0) => not (x_2))) && (x_2))] 
+ ⊢ idx0 as Leaf : int tree :
+[v:int tree | leaf v]
 

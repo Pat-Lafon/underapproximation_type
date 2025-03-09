@@ -37,6 +37,22 @@ pathcond_1:[v:unit | ∃x_6, ((((x_6) => (s == 0)) && ((s == 0) => (x_6))) && ((
 [v:int list | emp v]
 
 In Path:
+pathcond_0:[v:unit | ∃x_6, ((((x_6) => (s == 0)) && ((s == 0) => (x_6))) && ((not (x_6) => (s > 0)) && ((s > 0) => not (x_6))) && (x_6))]
+Cost: 1
+Type: Ty_int
+idx1:[v:int | v == s]
+pathcond_0:[v:unit | ∃x_6, ((((x_6) => (s == 0)) && ((s == 0) => (x_6))) && ((not (x_6) => (s > 0)) && ((s > 0) => not (x_6))) && (x_6))] 
+ ⊢ idx1 as s : int :
+[v:int | v == s]
+
+Cost: 10
+Type: (Ty_constructor(list(Ty_int)))
+idx0:[v:int list | emp v]
+pathcond_0:[v:unit | ∃x_6, ((((x_6) => (s == 0)) && ((s == 0) => (x_6))) && ((not (x_6) => (s > 0)) && ((s > 0) => not (x_6))) && (x_6))] 
+ ⊢ idx0 as Nil : int list :
+[v:int list | emp v]
+
+In Path:
 l:[v:int list | true]
 x:[v:int | true]
 pathcond_2:[v:unit | ∃x_6, ((((x_6) => (s == 0)) && ((s == 0) => (x_6))) && ((not (x_6) => (s > 0)) && ((s > 0) => not (x_6))) && not (x_6) && (∃s_17, ((s_17 >= 0) && (s_17 < s) && (s_17 == (s - 1)) && ((len l s_17) && (uniq l) && not (list_mem l x)))))]

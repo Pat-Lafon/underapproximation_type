@@ -1,2 +1,2 @@
-Result, Bounds, Resource Limit, Queries, Abd Time, Synth Time, Total Time
-true, 30, 3000000, 87, 1.52, 17.62, 19.16
+Result, Bounds, Resource Limit, Queries, #Terms, #Paths, Repair Size, Abd Time, Synth Time, Total Time
+true, 30, 500000, 87, 19, 1, 16, 1.63, 4.61, 6.27
