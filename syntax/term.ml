@@ -299,7 +299,7 @@ let mk_appop op appopargs =
 let rec ast_size_value (v : _ value) : int =
   match v with
   | VConst _ | VVar _ -> 1
-  | VTu v_l -> List.fold_left (fun acc v -> acc + ast_size_value v.x) 0 v_l
+  | VTu v_l -> List.fold_left (fun acc v -> acc + ast_size_value v.x) 1 v_l
   | VLam _ -> failwith "ast_size_value::VLam::unimplemented"
   | VFix _ -> failwith "ast_size_value::VFix::unimplemented"
 
@@ -309,12 +309,12 @@ let rec ast_size_term (t : _ term) : int =
   | CVal v -> ast_size_value v.x
   | CApp { appf; apparg } -> ast_size_value appf.x + ast_size_value apparg.x
   | CAppOp { op; appopargs } ->
-      1 + List.fold_left (fun acc v -> acc + ast_size_value v.x) 0 appopargs
+      List.fold_left (fun acc v -> acc + ast_size_value v.x) 1 appopargs
   | CLetE { lhs; rhs; body } -> 1 + ast_size_term rhs.x + ast_size_term body.x
   | CLetDeTu _ -> failwith "ast_size_term::CLetDeTu::unimplemented"
   | CMatch { matched; match_cases } ->
-      ast_size_value matched.x
+      1 + ast_size_value matched.x
       + List.fold_left
           (fun acc (CMatchcase { constructor; args; exp }) ->
-            acc + 1 + ast_size_term exp.x)
+            acc + ast_size_term exp.x)
           0 match_cases
