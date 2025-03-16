@@ -17,5 +17,6 @@ _build/
 *.vo*
 *.d
 
-
 test.v
+
+.DS_Store
