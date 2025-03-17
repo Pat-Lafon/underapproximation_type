@@ -20,3 +20,4 @@ _build/
 test.v
 
 .DS_Store
+*.smt2
