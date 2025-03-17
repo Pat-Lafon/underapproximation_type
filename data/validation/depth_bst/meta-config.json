@@ -18,7 +18,7 @@
     "num_quantifier": 0,
     "abduce_rlimit": 10000000,
     "synth_bound": 50,
-    "synth_rlimit": 1000000,
+    "synth_rlimit": 700000,
     "type_rlimit": 40000000,
     "use_missing_coverage_file": false,
     "comp_path": "components.txt",
