@@ -59,15 +59,98 @@ let smt_format_file filename solver =
   Printf.fprintf oc "%s%s%s" prelude query postlude;
   close_out oc
 
+let run_both_commands cmd1 cmd2 =
+  (* Start both processes *)
+  let proc1 = Unix.open_process_in cmd1 in
+  let proc2 = Unix.open_process_in cmd2 in
+
+  (* Read first line from each process (or empty string if no output) *)
+  let result1 = try input_line proc1 with End_of_file -> "" in
+
+  let result2 = try input_line proc2 with End_of_file -> "" in
+
+  (* Wait for both processes to complete *)
+  ignore (Unix.close_process_in proc1);
+  ignore (Unix.close_process_in proc2);
+
+  (* Return first line from each command and their exit statuses *)
+  if result1 = "unsat" then result1 else result2
+
+(* NGL, this is claude generated... we will see how it goes *)
+let run_first_to_finish cmd1 cmd2 =
+  (* Start both processes *)
+  let proc1 = Unix.open_process_in cmd1 in
+  let proc2 = Unix.open_process_in cmd2 in
+
+  (* Get file descriptors *)
+  let fd1 = Unix.descr_of_in_channel proc1 in
+  let fd2 = Unix.descr_of_in_channel proc2 in
+
+  (* Set both channels to non-blocking mode *)
+  Unix.set_nonblock fd1;
+  Unix.set_nonblock fd2;
+
+  let rec check_for_result () =
+    (* Use select to wait for any data *)
+    let ready_read, _, _ = Unix.select [ fd1; fd2 ] [] [] 0.01 in
+
+    let fd1_ready = List.mem fd1 ready_read in
+    let fd2_ready = List.mem fd2 ready_read in
+
+    (* Check if both commands have finished *)
+    if fd1_ready && fd2_ready then (
+      print_endline "Both commands finished";
+      (* Both commands finished *)
+      let result1 = input_line proc1 in
+      let result2 = input_line proc2 in
+      ignore (Unix.close_process_in proc1);
+      ignore (Unix.close_process_in proc2);
+      if result1 = "unsat" then result1 else result2)
+    else if fd1_ready then (
+      print_endline "First command finished";
+      (* First command finished *)
+      let result = input_line proc1 in
+      ignore (Unix.close_process_in proc1);
+      ignore (Unix.close_process_in proc2);
+      result)
+    else if fd2_ready then (
+      print_endline "Second command finished";
+      (* Second command finished *)
+      let result = input_line proc2 in
+      ignore (Unix.close_process_in proc1);
+      ignore (Unix.close_process_in proc2);
+      result)
+    else
+      (* Neither command has finished yet, keep checking *)
+      check_for_result ()
+  in
+
+  try check_for_result () with
+  | End_of_file ->
+      (* Handle case where command finished but produced no output *)
+      ignore (Unix.close_process_in proc1);
+      ignore (Unix.close_process_in proc2);
+      ""
+  | e ->
+      (* Clean up on exception *)
+      ignore (Unix.close_process_in proc1);
+      ignore (Unix.close_process_in proc2);
+      raise e
+
 let run_z3_in_process solver : smt_result =
   let filename = "subtyping_temp_file.smt2" in
   smt_format_file filename solver;
   let command = "z3 " ^ filename in
+  let command2 = "z3 proof=true " ^ filename in
   (* let status = Unix.system command in *)
-  let stdout, _std_else = Unix.open_process command in
+  (*   let stdout, _std_else = Unix.open_process command in
   let status = input_line stdout in
 
-  let _ = Unix.close_process (stdout, _std_else) in
+  let _ = Unix.close_process (stdout, _std_else) in *)
+
+  (* let status = run_first_to_finish command2 command in *)
+
+  let status = run_both_commands command command2 in
 
   print_endline "----------------";
   print_endline status;
