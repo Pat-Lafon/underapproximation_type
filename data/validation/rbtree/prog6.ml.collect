@@ -3,14 +3,14 @@ In Path:
 pathcond_0:[v:unit | ∃x_25, ((((x_25) => (h == 0)) && ((h == 0) => (x_25))) && ((not (x_25) => (h > 0)) && ((h > 0) => not (x_25))) && not (x_25) && not (color))]
 Cost: 1
 Type: Ty_int
-idx6:[v:int | v == h]
+idx6_0:[v:int | v == h]
 pathcond_0:[v:unit | ∃x_25, ((((x_25) => (h == 0)) && ((h == 0) => (x_25))) && ((not (x_25) => (h > 0)) && ((h > 0) => not (x_25))) && not (x_25) && not (color))] 
- ⊢ idx6 as h : int :
+ ⊢ idx6_0 as h : int :
 [v:int | v == h]
 
-idx4:[v:int | v == inv]
+idx4_0:[v:int | v == inv]
 pathcond_0:[v:unit | ∃x_25, ((((x_25) => (h == 0)) && ((h == 0) => (x_25))) && ((not (x_25) => (h > 0)) && ((h > 0) => not (x_25))) && not (x_25) && not (color))] 
- ⊢ idx4 as inv : int :
+ ⊢ idx4_0 as inv : int :
 [v:int | v == inv]
 
 idx3_0:[v:int | true]
@@ -19,20 +19,20 @@ pathcond_0:[v:unit | ∃x_25, ((((x_25) => (h == 0)) && ((h == 0) => (x_25))) &&
 [v:int | true]
 
 Type: Ty_bool
-idx5:[v:bool | v == color]
+idx5_0:[v:bool | v == color]
 pathcond_0:[v:unit | ∃x_25, ((((x_25) => (h == 0)) && ((h == 0) => (x_25))) && ((not (x_25) => (h > 0)) && ((h > 0) => not (x_25))) && not (x_25) && not (color))] 
- ⊢ idx5 as color : bool :
+ ⊢ idx5_0 as color : bool :
 [v:bool | v == color]
 
-idx0:[v:bool | v]
+idx0_0:[v:bool | v]
 pathcond_0:[v:unit | ∃x_25, ((((x_25) => (h == 0)) && ((h == 0) => (x_25))) && ((not (x_25) => (h > 0)) && ((h > 0) => not (x_25))) && not (x_25) && not (color))] 
- ⊢ idx0 as True : bool :
+ ⊢ idx0_0 as True : bool :
 [v:bool | v]
 
 Cost: 10
 Type: (Ty_constructor(rbtree(Ty_int)))
-idx2:[v:int rbtree | rb_leaf v]
+idx2_0:[v:int rbtree | rb_leaf v]
 pathcond_0:[v:unit | ∃x_25, ((((x_25) => (h == 0)) && ((h == 0) => (x_25))) && ((not (x_25) => (h > 0)) && ((h > 0) => not (x_25))) && not (x_25) && not (color))] 
- ⊢ idx2 as Rbtleaf : int rbtree :
+ ⊢ idx2_0 as Rbtleaf : int rbtree :
 [v:int rbtree | rb_leaf v]
 

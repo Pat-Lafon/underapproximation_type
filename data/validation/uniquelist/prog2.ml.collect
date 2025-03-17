@@ -12,11 +12,11 @@ idx8:[v:int | v == x]
  ⊢ idx8 as x : int :
 [v:int | v == x]
 
-idx1:[v:int | v == s]
+idx1_0:[v:int | v == s]
 l:[v:int list | true]
 x:[v:int | true]
 pathcond_1:[v:unit | ∃x_6, ((((x_6) => (s == 0)) && ((s == 0) => (x_6))) && ((not (x_6) => (s > 0)) && ((s > 0) => not (x_6))) && not (x_6) && (∃s_17, ((s_17 >= 0) && (s_17 < s) && (s_17 == (s - 1)) && ((len l s_17) && (uniq l) && not (list_mem l x)))))] 
- ⊢ idx1 as s : int :
+ ⊢ idx1_0 as s : int :
 [v:int | v == s]
 
 Type: (Ty_constructor(list(Ty_int)))
@@ -29,11 +29,11 @@ idx7:[v:int list | v == l]
 
 Cost: 10
 Type: (Ty_constructor(list(Ty_int)))
-idx0:[v:int list | emp v]
+idx0_0:[v:int list | emp v]
 l:[v:int list | true]
 x:[v:int | true]
 pathcond_1:[v:unit | ∃x_6, ((((x_6) => (s == 0)) && ((s == 0) => (x_6))) && ((not (x_6) => (s > 0)) && ((s > 0) => not (x_6))) && not (x_6) && (∃s_17, ((s_17 >= 0) && (s_17 < s) && (s_17 == (s - 1)) && ((len l s_17) && (uniq l) && not (list_mem l x)))))] 
- ⊢ idx0 as Nil : int list :
+ ⊢ idx0_0 as Nil : int list :
 [v:int list | emp v]
 
 In Path:
@@ -49,11 +49,11 @@ idx6:[v:int | v == x]
  ⊢ idx6 as x : int :
 [v:int | v == x]
 
-idx1:[v:int | v == s]
+idx1_1:[v:int | v == s]
 l:[v:int list | true]
 x:[v:int | true]
 pathcond_0:[v:unit | ∃x_6, ((((x_6) => (s == 0)) && ((s == 0) => (x_6))) && ((not (x_6) => (s > 0)) && ((s > 0) => not (x_6))) && not (x_6) && (∃s_15, ((s_15 >= 0) && (s_15 < s) && (s_15 == (s - 1)) && ((len l s_15) && (uniq l) && (list_mem l x)))))] 
- ⊢ idx1 as s : int :
+ ⊢ idx1_1 as s : int :
 [v:int | v == s]
 
 Type: (Ty_constructor(list(Ty_int)))
@@ -66,10 +66,10 @@ idx5:[v:int list | v == l]
 
 Cost: 10
 Type: (Ty_constructor(list(Ty_int)))
-idx0:[v:int list | emp v]
+idx0_1:[v:int list | emp v]
 l:[v:int list | true]
 x:[v:int | true]
 pathcond_0:[v:unit | ∃x_6, ((((x_6) => (s == 0)) && ((s == 0) => (x_6))) && ((not (x_6) => (s > 0)) && ((s > 0) => not (x_6))) && not (x_6) && (∃s_15, ((s_15 >= 0) && (s_15 < s) && (s_15 == (s - 1)) && ((len l s_15) && (uniq l) && (list_mem l x)))))] 
- ⊢ idx0 as Nil : int list :
+ ⊢ idx0_1 as Nil : int list :
 [v:int list | emp v]
 

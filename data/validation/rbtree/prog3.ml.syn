@@ -11,10 +11,11 @@ let rec rbtree_gen = fun inv ->
                (match idx7 with
                 | true -> Rbtleaf
                 | false ->
-                    let (idx2) = Rbtleaf in
+                    let (idx2ccc12) = Rbtleaf in
                     let (idx3ccc10) = int_gen () in
-                    let (idx0) = True in
-                    Rbtnode (idx0, idx2, idx3ccc10, idx2)))
+                    let (idx2ccc11) = Rbtleaf in
+                    let (idx0ccc0) = True in
+                    Rbtnode (idx0ccc0, idx2ccc11, idx3ccc10, idx2ccc12)))
       | false ->
           (match color with
            | true ->

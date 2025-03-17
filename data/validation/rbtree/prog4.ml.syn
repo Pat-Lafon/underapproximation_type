@@ -18,17 +18,18 @@ let rec rbtree_gen = fun inv ->
       | false ->
           (match color with
            | true ->
-               let (idx4) = inv in
-               let (idx68ccc0) = subs idx4 in
+               let (idx4ccc0) = inv in
+               let (idx68ccc0) = subs idx4ccc0 in
                let (idx157) = rbtree_gen idx68ccc0 in
-               let (idx1) = False in
-               let (idx158) = idx157 idx1 in
-               let (idx6) = h in
-               let (idx67ccc8) = subs idx6 in
+               let (idx1ccc23) = False in
+               let (idx158) = idx157 idx1ccc23 in
+               let (idx6ccc0) = h in
+               let (idx67ccc8) = subs idx6ccc0 in
                let (idx159ccc32) = idx158 idx67ccc8 in
                let (idx3ccc18) = int_gen () in
                let (idx159ccc31) = idx158 idx67ccc8 in
-               Rbtnode (idx1, idx159ccc31, idx3ccc18, idx159ccc32)
+               let (idx1ccc0) = False in
+               Rbtnode (idx1ccc0, idx159ccc31, idx3ccc18, idx159ccc32)
            | false ->
                let (c) = bool_gen () in
                (match c with
