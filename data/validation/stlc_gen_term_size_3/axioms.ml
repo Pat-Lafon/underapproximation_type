@@ -169,7 +169,7 @@ let[@axiom] stlc_typing_app_tau_destruct (gamma : stlc_tyctx) (v : stlc_term)
 
 let[@axiom] stlc_typing_gamma_app (gamma : stlc_tyctx) (v : stlc_term)
     (tau : stlc_ty) (func : stlc_term) (arg : stlc_term) (func_ty : stlc_ty)
-    (arg_ty : stlc_ty) =
+    (arg_ty : stlc_ty) (empty_arg : int) =
   (stlc_app1 v func && stlc_app2 v arg
   && stlc_ty_arr1 func_ty arg_ty
   && stlc_ty_arr2 func_ty tau && typing gamma func func_ty

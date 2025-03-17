@@ -3,25 +3,25 @@ In Path:
 pathcond_0:[v:unit | ∃x_15, ((((x_15) => (num == 0)) && ((num == 0) => (x_15))) && ((not (x_15) => (num > 0)) && ((num > 0) => not (x_15))) && (x_15))]
 Cost: 1
 Type: Ty_int
-idx1:[v:int | v == num]
+idx1_0:[v:int | v == num]
 pathcond_0:[v:unit | ∃x_15, ((((x_15) => (num == 0)) && ((num == 0) => (x_15))) && ((not (x_15) => (num > 0)) && ((num > 0) => not (x_15))) && (x_15))] 
- ⊢ idx1 as num : int :
+ ⊢ idx1_0 as num : int :
 [v:int | v == num]
 
-idx0:[v:int | v == num_arr_tau]
+idx0_0:[v:int | v == num_arr_tau]
 pathcond_0:[v:unit | ∃x_15, ((((x_15) => (num == 0)) && ((num == 0) => (x_15))) && ((not (x_15) => (num > 0)) && ((num > 0) => not (x_15))) && (x_15))] 
- ⊢ idx0 as num_arr_tau : int :
+ ⊢ idx0_0 as num_arr_tau : int :
 [v:int | v == num_arr_tau]
 
 Type: (Ty_constructor(stlc_tyctx()))
-idx2:[v:stlc_tyctx | v == gamma]
+idx2_0:[v:stlc_tyctx | v == gamma]
 pathcond_0:[v:unit | ∃x_15, ((((x_15) => (num == 0)) && ((num == 0) => (x_15))) && ((not (x_15) => (num > 0)) && ((num > 0) => not (x_15))) && (x_15))] 
- ⊢ idx2 as gamma : stlc_tyctx :
+ ⊢ idx2_0 as gamma : stlc_tyctx :
 [v:stlc_tyctx | v == gamma]
 
 Type: (Ty_constructor(stlc_ty()))
-idx3:[v:stlc_ty | v == tau]
+idx3_0:[v:stlc_ty | v == tau]
 pathcond_0:[v:unit | ∃x_15, ((((x_15) => (num == 0)) && ((num == 0) => (x_15))) && ((not (x_15) => (num > 0)) && ((num > 0) => not (x_15))) && (x_15))] 
- ⊢ idx3 as tau : stlc_ty :
+ ⊢ idx3_0 as tau : stlc_ty :
 [v:stlc_ty | v == tau]
 
