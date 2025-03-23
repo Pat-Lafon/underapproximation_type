@@ -8,6 +8,7 @@ let[@axiom] template_eq_0 (x : int) = x == 0
 let[@axiom] template_lt (a : int) (b : int) = a < b
 let[@axiom] template_leq_1 (a : int) = a <= 1
 let[@axiom] template_emp (l : int list) = emp l
+let[@axiom] template_singleton (l : int list) = len l 1
 let[@axiom] template_sorted (l : int list) = sorted l
 let[@axiom] template_leaf (l : int tree) = leaf l
 let[@axiom] template_rb_leaf (v : int rbtree) = rb_leaf v

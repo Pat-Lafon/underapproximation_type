@@ -214,6 +214,10 @@ let[@library] decrement =
   let n = (true : [%v: int]) [@over] in
   (v == n - 1 : [%v: int]) [@under]
 
+let[@library] double =
+  let n = (true : [%v: int]) [@over] in
+  (v == n * 2 : [%v: int]) [@under]
+
 let[@library] lt_eq_one =
   let s = (true : [%v: int]) [@over] in
   (iff v (s <= 1) && iff (not v) (s > 1) : [%v: bool]) [@under]

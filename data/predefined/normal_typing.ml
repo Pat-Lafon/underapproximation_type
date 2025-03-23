@@ -6,6 +6,7 @@ val ( > ) : int -> int -> bool
 val ( >= ) : int -> int -> bool
 val ( + ) : int -> int -> int
 val ( - ) : int -> int -> int
+val ( * ) : int -> int -> int
 val not : bool -> bool
 val ite : bool -> 'a -> 'a -> 'a
 (* dt *)
@@ -21,6 +22,7 @@ val int_range_inex_zero : int -> int
 val difference_inex : int -> int -> int
 val increment : int -> int
 val decrement : int -> int
+val double : int -> int
 val lt_eq_one : int -> bool
 val gt_eq_int_gen : int -> int
 val sizecheck : int -> bool
@@ -37,6 +39,7 @@ val tl : 'a list -> 'a list -> bool
 val list_mem : int list -> int -> bool
 val sorted : 'a list -> bool
 val uniq : 'a list -> bool
+val all_evens : 'a list -> bool
 
 (* for tree *)
 val depth : 'a tree -> int -> bool
