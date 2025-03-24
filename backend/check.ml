@@ -102,6 +102,8 @@ let run_first_to_decision commands =
             (fun (fd, cmd, proc) ->
               print_endline (cmd ^ " finished");
               Unix.clear_nonblock fd; (* TODO: Needing this clear is a hack and I think makes things weird?? *)
+              (* TODO: Part of the problem is that this wakes up when the first
+              line is done... but then we keep going *)
               let result = In_channel.input_all proc in
 
               print_endline ("Result: " ^ result);

@@ -19,9 +19,10 @@
     "abd_templates_back": ["template_no_app"],
     "num_quantifier": 0,
     "abduce_rlimit": 2000000,
-    "synth_bound": 50,
-    "synth_rlimit": 700000,
-    "type_rlimit": 3200000,
+    "synth_bound": 99,
+    "synth_timeout": 20000,
+    "synth_rlimit": 2000000,
+    "type_rlimit": 5000000,
     "use_missing_coverage_file": false,
     "comp_path": "components.txt",
     "prim_path": {

@@ -2,12 +2,12 @@ let rec gen_term_size = fun num_arr_tau ->
   fun num ->
     fun gamma ->
       fun tau ->
-        let (xccc0) = sizecheck num in
-        match xccc0 with
-        | true -> let (xccc1) = gen_term_no_app gamma in xccc1 tau
+        let (xccc8) = sizecheck num in
+        match xccc8 with
+        | true -> let (xccc9) = gen_term_no_app gamma in xccc9 tau
         | false ->
-            let (xccc2) = bool_gen () in
-            (match xccc2 with
+            let (xccc10) = bool_gen () in
+            (match xccc10 with
              | true ->
                  let (arg_tau) = gen_type () in
                  let (num_app_func) = int_range_inex_zero num in
@@ -40,8 +40,8 @@ let rec gen_term_size = fun num_arr_tau ->
                   | Stlc_ty_nat -> Err
                   | Stlc_ty_arr (tau1, tau2) ->
                       let (num_arr_tau2) = get_num_arr tau2 in
-                      let (xccc3) = gen_term_size num_arr_tau2 in
-                      let (xccc4) = xccc3 num in
-                      let (xccc5) = Stlc_tyctx_cons (tau1, gamma) in
-                      let (xccc6) = xccc4 xccc5 in
-                      let (body) = xccc6 tau2 in Stlc_abs (tau1, body)))
+                      let (xccc11) = gen_term_size num_arr_tau2 in
+                      let (xccc12) = xccc11 num in
+                      let (xccc13) = Stlc_tyctx_cons (tau1, gamma) in
+                      let (xccc14) = xccc12 xccc13 in
+                      let (body) = xccc14 tau2 in Stlc_abs (tau1, body)))
