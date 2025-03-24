@@ -26,7 +26,6 @@
     "synth_bound": 100,
     "synth_rlimit": 50000,
     "synth_timeout": 1000, // Sadly Z3 doesn't always respect the rlimit
-    // TODO: Can I remove now?
     "type_rlimit": 70000000,
     "use_missing_coverage_file": false,
     "comp_path": "components.txt",
