@@ -308,12 +308,12 @@ and term_type_infer_app (uctx : uctx) (a : ('t, 't term) typed) :
               { argcty = Cty { phi = Lit { x = AC (B true); _ }; _ }; _ } ->
               ()
           | RtyBaseArr { argcty; _ } ->
-              (* print_endline
+              print_endline
                 ("we are about to do a safety check for: "
                 ^ layout_typed_value appf#->(map_value erase_rty)#=>erase_rty
                 ^ " with "
-                ^ layout_typed_value apparg#->(map_value erase_rty)#=>erase_rty); *)
-
+                ^ layout_typed_value apparg#->(map_value erase_rty)#=>erase_rty
+                );
               let rec_arg_rty = RtyBase { ou = false; cty = argcty } in
 
               let safety_check = sub_rty_bool uctx (rec_arg_rty, apparg.ty) in

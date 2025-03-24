@@ -56,8 +56,71 @@ let smt_format_file filename solver =
   in
   let query = Z3.Solver.to_string solver in
   let postlude = "\n(check-sat)\n" in
+  let postlude =
+    if Core.String.is_substring ~substring:"double" filename then
+      postlude ^ postlude
+    else postlude
+  in
   Printf.fprintf oc "%s%s%s" prelude query postlude;
+  (* Printf.printf "%s%s%s" prelude query postlude; *)
   close_out oc
+
+let run_first_to_decision commands =
+  (* Start all processes *)
+  let procs = List.map (fun cmd -> (cmd, Unix.open_process_in cmd)) commands in
+
+  (* Get file descriptors with their associated process info *)
+  let fd_procs =
+    List.map
+      (fun (cmd, proc) -> (Unix.descr_of_in_channel proc, cmd, proc))
+      procs
+  in
+
+  (* Set all channels to non-blocking mode *)
+  List.iter (fun (fd, _, _) -> Unix.set_nonblock fd) fd_procs;
+
+  let cleanup () =
+    List.iter (fun (_, _, proc) -> ignore (Unix.close_process_in proc)) fd_procs
+  in
+
+  let rec check_for_result remaining_fds =
+    if remaining_fds = [] then "unknown"
+    else
+      (* Use select to wait for any ready file descriptor *)
+      let ready_fds, _, _ =
+        Unix.select (List.map (fun (fd, _, _) -> fd) remaining_fds) [] [] 0.01
+      in
+
+      if ready_fds = [] then check_for_result remaining_fds
+      else
+        let done_fds, remaining_fds =
+          List.partition (fun (fd, _, _) -> List.mem fd ready_fds) remaining_fds
+        in
+
+        match
+          List.find_map
+            (fun (fd, cmd, proc) ->
+              print_endline (cmd ^ " finished");
+              Unix.clear_nonblock fd; (* TODO: Needing this clear is a hack and I think makes things weird?? *)
+              let result = In_channel.input_all proc in
+
+              print_endline ("Result: " ^ result);
+
+              (* If result contains "unsat", return it immediately *)
+              if Core.String.is_substring ~substring:"unsat" result then
+                Some "unsat"
+              else if Core.String.is_substring ~substring:"sat" result then
+                Some "sat"
+              else None)
+            done_fds
+        with
+        | Some s -> s
+        | None -> check_for_result remaining_fds
+  in
+
+  let res = check_for_result fd_procs in
+  cleanup ();
+  res
 
 let run_both_commands cmd1 cmd2 =
   (* Start both processes *)
@@ -72,6 +135,10 @@ let run_both_commands cmd1 cmd2 =
   (* Wait for both processes to complete *)
   ignore (Unix.close_process_in proc1);
   ignore (Unix.close_process_in proc2);
+
+  print_endline "results";
+  print_endline result1;
+  print_endline result2;
 
   (* Return first line from each command and their exit statuses *)
   if result1 = "unsat" then result1 else result2
@@ -139,9 +206,13 @@ let run_first_to_finish cmd1 cmd2 =
 
 let run_z3_in_process solver : smt_result =
   let filename = "subtyping_temp_file.smt2" in
+  let filename2 = "subtyping_temp_file_double.smt2" in
   smt_format_file filename solver;
   let command = "z3 " ^ filename in
   let command2 = "z3 proof=true " ^ filename in
+
+  smt_format_file filename2 solver;
+  let command3 = "z3 proof=true " ^ filename2 in
   (* let status = Unix.system command in *)
   (*   let stdout, _std_else = Unix.open_process command in
   let status = input_line stdout in
@@ -150,7 +221,7 @@ let run_z3_in_process solver : smt_result =
 
   (* let status = run_first_to_finish command2 command in *)
 
-  let status = run_both_commands command command2 in
+  let status = run_first_to_decision [ command; command2; command3 ] in
 
   print_endline "----------------";
   print_endline status;

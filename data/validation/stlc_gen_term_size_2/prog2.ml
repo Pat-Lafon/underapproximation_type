@@ -8,9 +8,22 @@ let rec gen_term_size (num_arr_tau : int) (num : int) (gamma : stlc_tyctx)
   if sizecheck num then gen_term_no_app gamma tau
   else if bool_gen () then
     let (arg_tau : stlc_ty) = gen_type () in
-    if true then
-      Err
-    else Err
+    let (num_app_func : int) = int_range_inex_zero num in
+(*     let (num_app_arg : int) = difference_inex num num_app_func in *)
+(*     let (func_ty : stlc_ty) = Stlc_ty_arr (arg_tau, tau) in
+    let (num_arr_func_ty : int) = get_num_arr func_ty in *)
+(*     let (func : stlc_term) =
+      gen_term_size num_arr_func_ty num_app_func gamma
+        func_ty
+    in *)
+(*     let (num_arr_arg_ty : int) = get_num_arr arg_tau in *)
+(*     let (arg : stlc_term) =
+      gen_term_size num_arr_arg_ty num_app_arg gamma arg_tau
+    in *)
+    if true then Err else Err
+(*     let (arg_tau : stlc_ty) = gen_type () in
+    let (num_app_func : int) = int_range_inex_zero num in
+    if true then Err else Err *)
   else
     match tau with
     | Stlc_ty_nat -> Err

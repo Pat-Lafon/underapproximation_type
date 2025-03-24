@@ -4,7 +4,7 @@
    num_arr tau n *)
 
 (* let[@axiom] stlc_num_arr_geq_0 (tau : stlc_ty) (n : int) =
-   (num_arr tau n) #==> (n >= 0) *)
+  (num_arr tau n)#==>(n >= 0) *)
 
 let[@axiom] stlc_num_arr_unique (tau : stlc_ty) (n1 : int) (n2 : int) =
   (num_arr tau n1 && num_arr tau n2)#==>(n1 == n2)

@@ -1,0 +1,47 @@
+let rec gen_term_size = fun num_arr_tau ->
+  fun num ->
+    fun gamma ->
+      fun tau ->
+        let (xccc0) = sizecheck num in
+        match xccc0 with
+        | true -> let (xccc1) = gen_term_no_app gamma in xccc1 tau
+        | false ->
+            let (xccc2) = bool_gen () in
+            (match xccc2 with
+             | true ->
+                 let (arg_tau) = gen_type () in
+                 let (num_app_func) = int_range_inex_zero num in
+                 (match true with
+                  | true ->
+                      let (idx9) = arg_tau in
+                      let (idx83ccc0) = get_num_arr idx9 in
+                      let (idx108) = gen_term_size idx83ccc0 in
+                      let (idx10) = num_app_func in
+                      let (idx109) = idx108 idx10 in
+                      let (idx2ccc20) = gamma in
+                      let (idx110) = idx109 idx2ccc20 in
+                      let (idx111ccc61) = idx110 idx9 in
+                      let (idx3ccc10) = tau in
+                      let (idx104ccc0) = Stlc_ty_arr (idx9, idx3ccc10) in
+                      let (idx362ccc0) = get_num_arr idx104ccc0 in
+                      let (idx2239) = gen_term_size idx362ccc0 in
+                      let (idx1ccc0) = num in
+                      let (idx91) = difference_inex idx1ccc0 in
+                      let (idx92ccc63) = idx91 idx10 in
+                      let (idx2240) = idx2239 idx92ccc63 in
+                      let (idx2ccc577) = gamma in
+                      let (idx2241) = idx2240 idx2ccc577 in
+                      let (idx104ccc142) = Stlc_ty_arr (idx9, idx3ccc10) in
+                      let (idx2242ccc0) = idx2241 idx104ccc142 in
+                      Stlc_app (idx2242ccc0, idx111ccc61)
+                  | false -> Err)
+             | false ->
+                 (match tau with
+                  | Stlc_ty_nat -> Err
+                  | Stlc_ty_arr (tau1, tau2) ->
+                      let (num_arr_tau2) = get_num_arr tau2 in
+                      let (xccc3) = gen_term_size num_arr_tau2 in
+                      let (xccc4) = xccc3 num in
+                      let (xccc5) = Stlc_tyctx_cons (tau1, gamma) in
+                      let (xccc6) = xccc4 xccc5 in
+                      let (body) = xccc6 tau2 in Stlc_abs (tau1, body)))

@@ -1,5 +1,4 @@
 Stlc_app
 Stlc_ty_arr
-int_range_inex_zero
 difference_inex
 get_num_arr
