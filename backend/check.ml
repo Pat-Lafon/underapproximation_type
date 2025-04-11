@@ -37,201 +37,103 @@ let get_pred m predexpr =
   | None -> failwith "get pred"
   | Some v -> Z3aux.z3expr_to_bool v
 
-let get_unknown_fv ctx m unknown_fv =
-  List.map (fun (_, b) -> get_pred m (Boolean.mk_const_s ctx b)) unknown_fv
+(* let get_unknown_fv ctx m unknown_fv =
+  List.map (fun (_, b) -> get_pred m (Boolean.mk_const_s ctx b)) unknown_fv *)
 
 let rlimit = ref 200000000
 let optional_timeout = ref None
 
-let smt_format_file filename solver =
-  (match !optional_timeout with
+let smt_format_file ?(double_check = false) ~optional_timeout ~rlimit filename
+    solver =
+  (match optional_timeout with
   | Some x -> Printf.printf "Timeout: %d\n" x
   | None -> print_endline "No timeout");
   let oc = open_out filename in
   let prelude =
-    "(set-option :rlimit " ^ string_of_int !rlimit ^ ")\n"
+    "(set-option :rlimit " ^ string_of_int rlimit ^ ")\n"
     ^ Option.fold ~none:""
         ~some:(fun x -> "(set-option :timeout " ^ string_of_int x ^ ")\n")
-        !optional_timeout
+        optional_timeout
   in
   let query = Z3.Solver.to_string solver in
   let postlude = "\n(check-sat)\n" in
-  let postlude =
-    if Core.String.is_substring ~substring:"double" filename then
-      postlude ^ postlude
-    else postlude
-  in
+  let postlude = if double_check then postlude ^ postlude else postlude in
   Printf.fprintf oc "%s%s%s" prelude query postlude;
   (* Printf.printf "%s%s%s" prelude query postlude; *)
   close_out oc
 
-let run_first_to_decision commands =
-  (* Start all processes *)
-  let procs = List.map (fun cmd -> (cmd, Unix.open_process_in cmd)) commands in
+let first_matching (deferreds : 'a Async.Deferred.t list)
+    (predicate : 'a -> 'a option) : 'a option Async.Deferred.t =
+  let open Async in
+  let result_ivar = Ivar.create () in
 
-  (* Get file descriptors with their associated process info *)
-  let fd_procs =
-    List.map
-      (fun (cmd, proc) -> (Unix.descr_of_in_channel proc, cmd, proc))
-      procs
+  let handle d =
+    don't_wait_for
+      ( d >>| fun value ->
+        let pred = predicate value in
+        if Option.is_some pred then Ivar.fill_if_empty result_ivar pred;
+        () )
   in
 
-  (* Set all channels to non-blocking mode *)
-  List.iter (fun (fd, _, _) -> Unix.set_nonblock fd) fd_procs;
+  List.iter handle deferreds;
 
-  let cleanup () =
-    List.iter (fun (_, _, proc) -> ignore (Unix.close_process_in proc)) fd_procs
-  in
+  (* Also wait for all to complete in case none match *)
+  don't_wait_for
+    (Deferred.all deferreds >>| fun _ -> Ivar.fill_if_empty result_ivar None);
 
-  let rec check_for_result remaining_fds =
-    if remaining_fds = [] then "unknown"
-    else
-      (* Use select to wait for any ready file descriptor *)
-      let ready_fds, _, _ =
-        Unix.select (List.map (fun (fd, _, _) -> fd) remaining_fds) [] [] 0.01
+  Ivar.read result_ivar
+
+let smt_predicate result =
+  if Core.String.is_substring ~substring:"unsat" result then Some "unsat"
+  else if Core.String.is_substring ~substring:"sat" result then Some "sat"
+  else None
+
+let process_command cmd =
+  match String.split_on_char ' ' cmd with
+  | prog :: args -> (prog, args)
+  | [] -> failwith "Empty command"
+
+let run_first_to_decision_alt commands =
+  let open Async in
+  Thread_safe.block_on_async_exn (fun () ->
+      let deferred_commands =
+        List.map
+          (fun cmd ->
+            let prog, args = process_command cmd in
+            Process.create_exn ~prog ~args () >>= fun proc ->
+            (* Have to use up stdin and stderr because somehow these don't close
+            otherwise? *)
+            Writer.close (Process.stdin proc) >>= fun () ->
+            let stderr_drain = Reader.drain (Process.stderr proc) in
+            Reader.contents (Process.stdout proc) >>= fun output ->
+            stderr_drain >>= fun () ->
+            Process.wait proc >>| fun _ -> output)
+          commands
       in
-
-      if ready_fds = [] then check_for_result remaining_fds
-      else
-        let done_fds, remaining_fds =
-          List.partition (fun (fd, _, _) -> List.mem fd ready_fds) remaining_fds
-        in
-
-        match
-          List.find_map
-            (fun (fd, cmd, proc) ->
-              print_endline (cmd ^ " finished");
-              Unix.clear_nonblock fd; (* TODO: Needing this clear is a hack and I think makes things weird?? *)
-              (* TODO: Part of the problem is that this wakes up when the first
-              line is done... but then we keep going *)
-              let result = In_channel.input_all proc in
-
-              print_endline ("Result: " ^ result);
-
-              (* If result contains "unsat", return it immediately *)
-              if Core.String.is_substring ~substring:"unsat" result then
-                Some "unsat"
-              else if Core.String.is_substring ~substring:"sat" result then
-                Some "sat"
-              else None)
-            done_fds
-        with
-        | Some s -> s
-        | None -> check_for_result remaining_fds
-  in
-
-  let res = check_for_result fd_procs in
-  cleanup ();
-  res
-
-let run_both_commands cmd1 cmd2 =
-  (* Start both processes *)
-  let proc1 = Unix.open_process_in cmd1 in
-  let proc2 = Unix.open_process_in cmd2 in
-
-  (* Read first line from each process (or empty string if no output) *)
-  let result1 = try input_line proc1 with End_of_file -> "" in
-
-  let result2 = try input_line proc2 with End_of_file -> "" in
-
-  (* Wait for both processes to complete *)
-  ignore (Unix.close_process_in proc1);
-  ignore (Unix.close_process_in proc2);
-
-  print_endline "results";
-  print_endline result1;
-  print_endline result2;
-
-  (* Return first line from each command and their exit statuses *)
-  if result1 = "unsat" then result1 else result2
-
-(* NGL, this is claude generated... we will see how it goes *)
-let run_first_to_finish cmd1 cmd2 =
-  (* Start both processes *)
-  let proc1 = Unix.open_process_in cmd1 in
-  let proc2 = Unix.open_process_in cmd2 in
-
-  (* Get file descriptors *)
-  let fd1 = Unix.descr_of_in_channel proc1 in
-  let fd2 = Unix.descr_of_in_channel proc2 in
-
-  (* Set both channels to non-blocking mode *)
-  Unix.set_nonblock fd1;
-  Unix.set_nonblock fd2;
-
-  let rec check_for_result () =
-    (* Use select to wait for any data *)
-    let ready_read, _, _ = Unix.select [ fd1; fd2 ] [] [] 0.01 in
-
-    let fd1_ready = List.mem fd1 ready_read in
-    let fd2_ready = List.mem fd2 ready_read in
-
-    (* Check if both commands have finished *)
-    if fd1_ready && fd2_ready then (
-      print_endline "Both commands finished";
-      (* Both commands finished *)
-      let result1 = input_line proc1 in
-      let result2 = input_line proc2 in
-      ignore (Unix.close_process_in proc1);
-      ignore (Unix.close_process_in proc2);
-      if result1 = "unsat" then result1 else result2)
-    else if fd1_ready then (
-      print_endline "First command finished";
-      (* First command finished *)
-      let result = input_line proc1 in
-      ignore (Unix.close_process_in proc1);
-      ignore (Unix.close_process_in proc2);
-      result)
-    else if fd2_ready then (
-      print_endline "Second command finished";
-      (* Second command finished *)
-      let result = input_line proc2 in
-      ignore (Unix.close_process_in proc1);
-      ignore (Unix.close_process_in proc2);
-      result)
-    else
-      (* Neither command has finished yet, keep checking *)
-      check_for_result ()
-  in
-
-  try check_for_result () with
-  | End_of_file ->
-      (* Handle case where command finished but produced no output *)
-      ignore (Unix.close_process_in proc1);
-      ignore (Unix.close_process_in proc2);
-      ""
-  | e ->
-      (* Clean up on exception *)
-      ignore (Unix.close_process_in proc1);
-      ignore (Unix.close_process_in proc2);
-      raise e
+      first_matching deferred_commands smt_predicate
+      >>| Option.value ~default:"unknown")
 
 let run_z3_in_process solver : smt_result =
+  (* TODO: Use stdin instead for parallelism *)
   let filename = "subtyping_temp_file.smt2" in
   let filename2 = "subtyping_temp_file_double.smt2" in
-  smt_format_file filename solver;
+  smt_format_file ~optional_timeout:!optional_timeout ~rlimit:!rlimit filename
+    solver;
   let command = "z3 " ^ filename in
   let command2 = "z3 proof=true " ^ filename in
 
-  smt_format_file filename2 solver;
+  smt_format_file
+    ~optional_timeout:
+      (Option.map (fun timeout -> timeout / 2) !optional_timeout)
+    ~rlimit:(!rlimit / 2) ~double_check:true filename2 solver;
+
   let command3 = "z3 proof=true " ^ filename2 in
-  (* let status = Unix.system command in *)
-  (*   let stdout, _std_else = Unix.open_process command in
-  let status = input_line stdout in
 
-  let _ = Unix.close_process (stdout, _std_else) in *)
-
-  (* let status = run_first_to_finish command2 command in *)
-
-  let status = run_first_to_decision [ command; command2; command3 ] in
+  let status = run_first_to_decision_alt [ command; command2; command3 ] in
 
   print_endline "----------------";
   print_endline status;
   print_endline "----------------";
-  (*  match status with
-  | WEXITED i -> Printf.printf "Exited with code: %d\n" i
-  | WSIGNALED i -> Printf.printf "Killed by signal: %d\n" i
-  | WSTOPPED i -> Printf.printf "Stopped by signal: %d\n" i *)
   if status = "unsat" (* status = WEXITED 0 *) then SmtUnsat else Timeout
 
 let smt_solve ctx assertions =
