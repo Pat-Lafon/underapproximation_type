@@ -139,6 +139,9 @@ let rec typed_raw_term_of_pattern pattern =
 let typed_ids_of_pattern pattern =
   to_typed_ids @@ typed_raw_term_of_pattern pattern
 
+let layout_raw_term x = Pprintast.string_of_expression @@ raw_term_to_expr x
+
+
 let typed_raw_term_of_expr expr =
   let rec aux expr =
     match expr.pexp_desc with
@@ -202,6 +205,37 @@ let typed_raw_term_of_expr expr =
                       args = List.map term_force_var args;
                       exp = aux case.pc_rhs;
                     }
+              | Const (B true) -> 
+                  print_endline "t";
+                  Matchcase
+                  {
+                    constructor = "true"#:(Some Nt.T.Ty_bool);
+                    args = [];
+                    exp = aux case.pc_rhs;
+                  }
+              | Const (B false) -> 
+                  print_endline "t";
+                  Matchcase
+                  {
+                    constructor = "false"#:(Some Nt.T.Ty_bool);
+                    args = [];
+                    exp = aux case.pc_rhs;
+                  }
+              (* Matchcase
+              {
+                constructor = "true"#:None;
+                args = [];
+                exp = aux case.pc_rhs;
+              } *)
+
+              (* | x -> print_endline (layout_raw_term x);
+              Matchcase
+              {
+                constructor = "true"#:None;
+                args = [];
+                exp = aux case.pc_rhs;
+              } *)
+
               | _ ->
                   _failatwith __FILE__ __LINE__
                     "Expected a data constructor in match")
@@ -251,7 +285,6 @@ let typed_id_of_expr expr =
         (spf "die: %s" (Pprintast.string_of_expression expr))
 
 let id_of_expr expr = (typed_id_of_expr expr).x
-let layout_raw_term x = Pprintast.string_of_expression @@ raw_term_to_expr x
 
 let layout_typed_raw_term x =
   Pprintast.string_of_expression @@ raw_term_to_expr x.x

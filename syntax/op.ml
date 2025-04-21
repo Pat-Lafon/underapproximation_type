@@ -10,6 +10,7 @@ let dt_name_for_typectx = function
   | "()" -> "TT"
   | "::" -> "Cons"
   | "[]" -> "Nil"
+  | "true" -> "true"
   | _ as s -> s
 
 let op_name_for_typectx = function
