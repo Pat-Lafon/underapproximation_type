@@ -206,7 +206,6 @@ let typed_raw_term_of_expr expr =
                       exp = aux case.pc_rhs;
                     }
               | Const (B true) -> 
-                  print_endline "t";
                   Matchcase
                   {
                     constructor = "true"#:(Some Nt.T.Ty_bool);
@@ -214,7 +213,6 @@ let typed_raw_term_of_expr expr =
                     exp = aux case.pc_rhs;
                   }
               | Const (B false) -> 
-                  print_endline "t";
                   Matchcase
                   {
                     constructor = "false"#:(Some Nt.T.Ty_bool);
