@@ -221,21 +221,6 @@ let typed_raw_term_of_expr expr =
                     args = [];
                     exp = aux case.pc_rhs;
                   }
-              (* Matchcase
-              {
-                constructor = "true"#:None;
-                args = [];
-                exp = aux case.pc_rhs;
-              } *)
-
-              (* | x -> print_endline (layout_raw_term x);
-              Matchcase
-              {
-                constructor = "true"#:None;
-                args = [];
-                exp = aux case.pc_rhs;
-              } *)
-
               | _ ->
                   _failatwith __FILE__ __LINE__
                     "Expected a data constructor in match")
