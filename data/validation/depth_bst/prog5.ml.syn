@@ -26,11 +26,5 @@ let rec size_bst_gen = fun d ->
                     let (idx230) = idx229 idx2ccc37 in
                     let (idx231ccc11) = idx230 idx8 in
                     Node (idx8, idx231ccc11, idx210ccc9)
-                | false ->
-                    let (idx1ccc2) = d in
-                    let (idx204ccc0) = subs idx1ccc2 in
-                    let (idx232) = size_bst_gen idx204ccc0 in
-                    let (idx2ccc38) = lo in
-                    let (idx233) = idx232 idx2ccc38 in
-                    let (idx3ccc41) = hi in idx233 idx3ccc41)
+                | false -> Leaf)
            | false -> Leaf)
