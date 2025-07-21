@@ -69,13 +69,13 @@ Lemma list_positive_len_is_not_emp : forall l, (forall n, (((len l n) /\ (n > 0)
     - my_inversion H. my_inversion H0.
     - unfold not. intro. my_inversion H1.
  Qed. Hint Resolve list_positive_len_is_not_emp: core.
-
-Lemma list_is_not_emp_positive_len : forall l, (forall n, (~(emp l) -> ((len l n) /\ (n > 0)))). Proof.
-    intros. induction l; split.
-    - unfold not in H. exfalso. auto.
-    - unfold not in H. exfalso. auto.
-    - unfold not in IHl.
-    -
+(*
+Lemma list_is_not_emp_positive_len : forall l, (exists n, (~(emp l) -> ((len l n) /\ (n > 0)))). Proof.
+    intro. eexists. induction l; split.
+    - unfold not in H. exfalso. apply H. constructor.
+    - unfold not in H. exfalso. apply H. constructor.
+    - unfold not in IHl. econstructor. clear H.
+    - unfold not in IHl. admit.
 
  Qed. Hint Resolve list_is_not_emp_positive_len: core.
 
@@ -90,3 +90,4 @@ Lemma list_tl_sorted : forall l, (forall l1, (((tl l l1) /\ (sorted l)) -> (sort
 Lemma list_hd_sorted : forall l, (forall l1, (forall x, (forall y, (((tl l l1) /\ (sorted l)) -> ((emp l1) \/ (((hd l1 y) /\ (hd l x)) -> (x <= y))))))). Proof. Qed. Hint Resolve list_hd_sorted: core.
 
 Lemma list_sorted_hd : forall l, (forall l1, (forall x, (forall y, (((tl l l1) /\ ((sorted l1) /\ ((hd l y) /\ ((hd l1 x) /\ (y <= x))))) -> (sorted l))))). Proof. Qed. Hint Resolve list_sorted_hd: core.
+ *)
