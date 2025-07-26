@@ -4,7 +4,7 @@ let rec even_list_gen = fun s ->
   | true ->
       let (idx0ccc6) = Nil in
       let (idx1ccc0) = int_gen () in
-      let (idx10ccc0) = double idx1ccc0 in idx10ccc0 :: idx0ccc6
+      let (idx14ccc0) = double idx1ccc0 in idx14ccc0 :: idx0ccc6
   | false ->
       let (idx4) = bool_gen () in
       (match idx4 with
@@ -15,6 +15,6 @@ let rec even_list_gen = fun s ->
        | false ->
            let (idx2ccc1) = s in
            let (idx7ccc0) = subs idx2ccc1 in
-           let (idx17ccc3) = even_list_gen idx7ccc0 in
+           let (idx29ccc3) = even_list_gen idx7ccc0 in
            let (idx1ccc1) = int_gen () in
-           let (idx12ccc0) = double idx1ccc1 in idx12ccc0 :: idx17ccc3)
+           let (idx16ccc0) = double idx1ccc1 in idx16ccc0 :: idx29ccc3)

@@ -9,6 +9,7 @@ let rec depth_tree_gen = fun s ->
        | false ->
            let (idx2ccc0) = s in
            let (idx6ccc0) = subs idx2ccc0 in
-           let (idx8ccc8) = depth_tree_gen idx6ccc0 in
-           let (idx8ccc7) = depth_tree_gen idx6ccc0 in
-           let (idx1ccc0) = int_gen () in Node (idx1ccc0, idx8ccc7, idx8ccc8))
+           let (idx10ccc8) = depth_tree_gen idx6ccc0 in
+           let (idx10ccc7) = depth_tree_gen idx6ccc0 in
+           let (idx1ccc0) = int_gen () in
+           Node (idx1ccc0, idx10ccc7, idx10ccc8))

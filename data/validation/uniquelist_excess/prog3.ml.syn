@@ -10,4 +10,4 @@ let rec unique_list_gen = fun s ->
       let (xccc9) = xccc8 x in
       (match xccc9 with
        | true -> Err
-       | false -> let (idx8) = l in let (idx9) = x in idx9 :: idx8)
+       | false -> let (idx7) = l in let (idx8) = x in idx8 :: idx7)

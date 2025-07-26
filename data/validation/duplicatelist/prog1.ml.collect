@@ -3,15 +3,20 @@ In Path:
 pathcond_0:[v:unit | ∃x_7, ((((x_7) => (s == 0)) && ((s == 0) => (x_7))) && ((not (x_7) => (s > 0)) && ((s > 0) => not (x_7))) && (x_7))]
 Cost: 1
 Type: Ty_int
-idx2_0:[v:int | v == x]
+idx3_0:[v:int | v == x]
 pathcond_0:[v:unit | ∃x_7, ((((x_7) => (s == 0)) && ((s == 0) => (x_7))) && ((not (x_7) => (s > 0)) && ((s > 0) => not (x_7))) && (x_7))] 
- ⊢ idx2_0 as x : int :
+ ⊢ idx3_0 as x : int :
 [v:int | v == x]
 
-idx1_0:[v:int | v == s]
+idx2_0:[v:int | v == s]
 pathcond_0:[v:unit | ∃x_7, ((((x_7) => (s == 0)) && ((s == 0) => (x_7))) && ((not (x_7) => (s > 0)) && ((s > 0) => not (x_7))) && (x_7))] 
- ⊢ idx1_0 as s : int :
+ ⊢ idx2_0 as s : int :
 [v:int | v == s]
+
+idx1_0:[v:int | true]
+pathcond_0:[v:unit | ∃x_7, ((((x_7) => (s == 0)) && ((s == 0) => (x_7))) && ((not (x_7) => (s > 0)) && ((s > 0) => not (x_7))) && (x_7))] 
+ ⊢ idx1_0 as int_gen () : int :
+[v:int | true]
 
 Cost: 10
 Type: (Ty_constructor(list(Ty_int)))

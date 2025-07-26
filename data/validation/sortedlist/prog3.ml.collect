@@ -6,21 +6,27 @@ Cost: 1
 Type: Ty_int
 y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, ((((x_3) => (s == 0)) && ((s == 0) => (x_3))) && ((not (x_3) => (s > 0)) && ((s > 0) => not (x_3))) && not (x_3) && (x <= y))]
-idx6:[v:int | v == y] 
- ⊢ idx6 as y : int :
+idx7:[v:int | v == y] 
+ ⊢ idx7 as y : int :
 [v:int | v == y]
 
-idx2_0:[v:int | v == x]
+idx3_0:[v:int | v == x]
 y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, ((((x_3) => (s == 0)) && ((s == 0) => (x_3))) && ((not (x_3) => (s > 0)) && ((s > 0) => not (x_3))) && not (x_3) && (x <= y))] 
- ⊢ idx2_0 as x : int :
+ ⊢ idx3_0 as x : int :
 [v:int | v == x]
 
-idx1_0:[v:int | v == s]
+idx2_0:[v:int | v == s]
 y:[v:int | true]
 pathcond_1:[v:unit | ∃x_3, ((((x_3) => (s == 0)) && ((s == 0) => (x_3))) && ((not (x_3) => (s > 0)) && ((s > 0) => not (x_3))) && not (x_3) && (x <= y))] 
- ⊢ idx1_0 as s : int :
+ ⊢ idx2_0 as s : int :
 [v:int | v == s]
+
+idx1_0:[v:int | true]
+y:[v:int | true]
+pathcond_1:[v:unit | ∃x_3, ((((x_3) => (s == 0)) && ((s == 0) => (x_3))) && ((not (x_3) => (s > 0)) && ((s > 0) => not (x_3))) && not (x_3) && (x <= y))] 
+ ⊢ idx1_0 as int_gen () : int :
+[v:int | true]
 
 Cost: 10
 Type: (Ty_constructor(list(Ty_int)))
@@ -37,21 +43,27 @@ Cost: 1
 Type: Ty_int
 y:[v:int | true]
 pathcond_2:[v:unit | ∃x_3, ((((x_3) => (s == 0)) && ((s == 0) => (x_3))) && ((not (x_3) => (s > 0)) && ((s > 0) => not (x_3))) && not (x_3) && not (x <= y))]
-idx7:[v:int | v == y] 
- ⊢ idx7 as y : int :
+idx8:[v:int | v == y] 
+ ⊢ idx8 as y : int :
 [v:int | v == y]
 
-idx2_1:[v:int | v == x]
+idx3_1:[v:int | v == x]
 y:[v:int | true]
 pathcond_2:[v:unit | ∃x_3, ((((x_3) => (s == 0)) && ((s == 0) => (x_3))) && ((not (x_3) => (s > 0)) && ((s > 0) => not (x_3))) && not (x_3) && not (x <= y))] 
- ⊢ idx2_1 as x : int :
+ ⊢ idx3_1 as x : int :
 [v:int | v == x]
 
-idx1_1:[v:int | v == s]
+idx2_1:[v:int | v == s]
 y:[v:int | true]
 pathcond_2:[v:unit | ∃x_3, ((((x_3) => (s == 0)) && ((s == 0) => (x_3))) && ((not (x_3) => (s > 0)) && ((s > 0) => not (x_3))) && not (x_3) && not (x <= y))] 
- ⊢ idx1_1 as s : int :
+ ⊢ idx2_1 as s : int :
 [v:int | v == s]
+
+idx1_1:[v:int | true]
+y:[v:int | true]
+pathcond_2:[v:unit | ∃x_3, ((((x_3) => (s == 0)) && ((s == 0) => (x_3))) && ((not (x_3) => (s > 0)) && ((s > 0) => not (x_3))) && not (x_3) && not (x <= y))] 
+ ⊢ idx1_1 as int_gen () : int :
+[v:int | true]
 
 Cost: 10
 Type: (Ty_constructor(list(Ty_int)))
@@ -65,15 +77,20 @@ In Path:
 pathcond_0:[v:unit | ∃x_3, ((((x_3) => (s == 0)) && ((s == 0) => (x_3))) && ((not (x_3) => (s > 0)) && ((s > 0) => not (x_3))) && (x_3))]
 Cost: 1
 Type: Ty_int
-idx2_2:[v:int | v == x]
+idx3_2:[v:int | v == x]
 pathcond_0:[v:unit | ∃x_3, ((((x_3) => (s == 0)) && ((s == 0) => (x_3))) && ((not (x_3) => (s > 0)) && ((s > 0) => not (x_3))) && (x_3))] 
- ⊢ idx2_2 as x : int :
+ ⊢ idx3_2 as x : int :
 [v:int | v == x]
 
-idx1_2:[v:int | v == s]
+idx2_2:[v:int | v == s]
 pathcond_0:[v:unit | ∃x_3, ((((x_3) => (s == 0)) && ((s == 0) => (x_3))) && ((not (x_3) => (s > 0)) && ((s > 0) => not (x_3))) && (x_3))] 
- ⊢ idx1_2 as s : int :
+ ⊢ idx2_2 as s : int :
 [v:int | v == s]
+
+idx1_2:[v:int | true]
+pathcond_0:[v:unit | ∃x_3, ((((x_3) => (s == 0)) && ((s == 0) => (x_3))) && ((not (x_3) => (s > 0)) && ((s > 0) => not (x_3))) && (x_3))] 
+ ⊢ idx1_2 as int_gen () : int :
+[v:int | true]
 
 Cost: 10
 Type: (Ty_constructor(list(Ty_int)))

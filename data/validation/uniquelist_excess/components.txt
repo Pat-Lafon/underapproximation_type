@@ -1,8 +1,2 @@
 Nil
 Cons
-int_gen
-subs
-double
-list_mem
-sizecheck
-<
