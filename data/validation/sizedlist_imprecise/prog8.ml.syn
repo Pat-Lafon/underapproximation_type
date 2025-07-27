@@ -1,0 +1,3 @@
+let rec sized_list_gen = fun s ->
+  let (xccc2) = sizecheck s in
+  match xccc2 with | true -> [] | false -> hidden_list_gen ()
