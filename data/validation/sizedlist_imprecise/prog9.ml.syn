@@ -1,3 +1,15 @@
 let rec sized_list_gen = fun s ->
   let (xccc2) = sizecheck s in
-  match xccc2 with | true -> hidden_list_gen () | false -> hidden_list_gen ()
+  match xccc2 with
+  | true -> hidden_list_gen ()
+  | false ->
+      let (idx12) = bool_gen () in
+      (match idx12 with
+       | true ->
+           let (idx1ccc0) = s in
+           let (idx4ccc0) = subs idx1ccc0 in
+           let (idx8ccc2) = sized_list_gen idx4ccc0 in
+           let (idx0ccc0) = int_gen () in idx0ccc0 :: idx8ccc2
+       | false ->
+           let (idx1ccc0) = s in
+           let (idx4ccc0) = subs idx1ccc0 in sized_list_gen idx4ccc0)

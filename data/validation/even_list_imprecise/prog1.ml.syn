@@ -1,0 +1,18 @@
+let rec even_list_gen = fun s ->
+  let (xccc12) = sizecheck s in
+  match xccc12 with
+  | true ->
+      let (idx0ccc2) = Nil in
+      let (idx1ccc0) = int_gen () in idx1ccc0 :: idx0ccc2
+  | false ->
+      let (xccc13) = bool_gen () in
+      (match xccc13 with
+       | true ->
+           let (xccc14) = [] in
+           let (xccc15) = int_gen () in
+           let (xccc16) = double xccc15 in xccc16 :: xccc14
+       | false ->
+           let (xccc17) = subs s in
+           let (xccc18) = even_list_gen xccc17 in
+           let (xccc19) = int_gen () in
+           let (xccc20) = double xccc19 in xccc20 :: xccc18)
