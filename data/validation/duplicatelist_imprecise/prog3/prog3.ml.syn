@@ -1,0 +1,8 @@
+let rec duplicate_list_gen = fun s ->
+  fun x ->
+    let (xccc2) = sizecheck s in
+    match xccc2 with
+    | true -> []
+    | false ->
+        let (idx1ccc2) = hidden_list_gen () in
+        let (idx3ccc0) = x in idx3ccc0 :: idx1ccc2

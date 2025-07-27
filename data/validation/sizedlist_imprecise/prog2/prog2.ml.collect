@@ -1,0 +1,15 @@
+Path Specific Collection:
+In Path:
+pathcond_0:[v:unit | ∃x_7, ((((x_7) => (s == 0)) && ((s == 0) => (x_7))) && ((not (x_7) => (s > 0)) && ((s > 0) => not (x_7))) && not (x_7))]
+Cost: 1
+Type: Ty_int
+idx1_0:[v:int | v == s]
+pathcond_0:[v:unit | ∃x_7, ((((x_7) => (s == 0)) && ((s == 0) => (x_7))) && ((not (x_7) => (s > 0)) && ((s > 0) => not (x_7))) && not (x_7))] 
+ ⊢ idx1_0 as s : int :
+[v:int | v == s]
+
+idx0_0:[v:int | true]
+pathcond_0:[v:unit | ∃x_7, ((((x_7) => (s == 0)) && ((s == 0) => (x_7))) && ((not (x_7) => (s > 0)) && ((s > 0) => not (x_7))) && not (x_7))] 
+ ⊢ idx0_0 as int_gen () : int :
+[v:int | true]
+

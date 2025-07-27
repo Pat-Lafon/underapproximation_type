@@ -256,6 +256,42 @@ range of datatypes.
 
 The source code file expected by **Poirot** is simply an OCaml functions listing. Currently, **Poirot** handles only a subset of OCaml, it does not handle features involving references and effects, parametric polymorphism, or concurrency. Additionally, all functions should be annotated with precise input and output type; all left-hand-side variables in a let binding should be annotated with its precise type.
 
+### Running Imprecise Benchmarks
+
+Located in `data/validation/`, these benchmarks test under-approximation of coverage properties:
+
+* `even_list_imprecise/` - 7 programs
+* `sizedlist_imprecise/` - 3 programs
+* `sortedlist_imprecise/` - 4 programs
+* `uniquelist_imprecise/` - 4 programs
+* `duplicatelist_imprecise/` - 4 programs
+
+**Run single program:**
+```bash
+cd underapproximation_type
+dune exec ../bin/main.exe -- synthesis data/validation/even_list_imprecise/prog1/prog1.ml
+```
+
+**Run all programs in each benchmark:**
+```bash
+# Even list imprecise (7 programs)
+python scripts/synth_imprecise.py underapproximation_type/data/validation/even_list_imprecise
+
+# Sized list imprecise (9 programs)
+python scripts/synth_imprecise.py underapproximation_type/data/validation/sizedlist_imprecise
+
+# Sorted list imprecise (4 programs)
+python scripts/synth_imprecise.py underapproximation_type/data/validation/sortedlist_imprecise
+
+# Unique list imprecise (4 programs)
+python scripts/synth_imprecise.py underapproximation_type/data/validation/uniquelist_imprecise
+
+# Duplicate list imprecise (4 programs)
+python scripts/synth_imprecise.py underapproximation_type/data/validation/duplicatelist_imprecise
+```
+
+##### Input File Formats (continued)
+
 The refinement type file expected by **Poirot** is also an OCaml source code file which is specially formatted:
 
 ```c
