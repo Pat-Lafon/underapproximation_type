@@ -1,9 +1,18 @@
-let rec complete_tree_gen = fun s ->
-  let (xccc3) = sizecheck s in
-  match xccc3 with
-  | true -> hidden_tree_gen ()
-  | false ->
-      let (s1) = subs s in
-      let (lt) = complete_tree_gen s1 in
-      let (rt) = complete_tree_gen s1 in
-      let (n) = int_gen () in Node (n, lt, rt)
+let rec complete_tree_gen = fun (s : int) ->
+  (let ((xccc3 : bool)) =
+     ((sizecheck : int -> bool) ((s : int) : int) : bool) in
+   (match ((xccc3 : bool) : bool) with
+    | true -> ((hidden_tree_gen : unit -> int tree) (() : unit) : int tree)
+    | false ->
+        (let ((s1 : int)) = ((subs : int -> int) ((s : int) : int) : int) in
+         (let ((lt : int tree)) =
+            ((complete_tree_gen : int -> int tree) ((s1 : int) : int) : 
+            int tree) in
+          (let ((rt : int tree)) =
+             ((complete_tree_gen : int -> int tree) ((s1 : int) : int) : 
+             int tree) in
+           (let ((n : int)) = ((int_gen : unit -> int) (() : unit) : int) in
+            (Node
+               (((n : int) : int), ((lt : int tree) : int tree),
+                 ((rt : int tree) : int tree)) : int tree) : int tree) : 
+            int tree) : int tree) : int tree) : int tree) : int tree)

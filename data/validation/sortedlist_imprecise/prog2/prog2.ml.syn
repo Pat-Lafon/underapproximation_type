@@ -1,13 +1,23 @@
-let rec sorted_list_gen = fun s ->
-  fun x ->
-    let (xccc3) = sizecheck s in
-    match xccc3 with
-    | true -> []
-    | false ->
-        let (y) = int_gen () in
-        let (xccc4) = x <= y in
-        (match xccc4 with
-         | true ->
-             let (idx1ccc5) = hidden_list_gen () in
-             let (idx7) = y in idx7 :: idx1ccc5
-         | false -> hidden_list_gen ())
+let rec sorted_list_gen = fun (s : int) ->
+  (fun (x : int) ->
+     (let ((xccc3 : bool)) =
+        ((sizecheck : int -> bool) ((s : int) : int) : bool) in
+      (match ((xccc3 : bool) : bool) with
+       | true -> ([] : int list)
+       | false ->
+           (let ((y : int)) = ((int_gen : unit -> int) (() : unit) : int) in
+            (let ((xccc4 : bool)) =
+               (((x : int) : int) <= ((y : int) : int) : bool) in
+             ((match ((xccc4 : bool) : bool) with
+               | true ->
+                   (let ((idx1ccc5 : int list)) =
+                      ((hidden_list_gen : unit -> int list) (() : unit) : 
+                      int list) in
+                    (let ((idx7 : int)) = ((y : int) : int) in
+                     (((idx7 : int) : int) ::
+                       ((idx1ccc5 : int list) : int list) : int list) : 
+                      int list) : int list)
+               | false ->
+                   ((hidden_list_gen : unit -> int list) (() : unit) : 
+                   int list)) : int list) : int list) : int list) : int list) : 
+     int list) : int -> int list)

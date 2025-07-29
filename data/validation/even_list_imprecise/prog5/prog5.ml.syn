@@ -1,18 +1,36 @@
-let rec even_list_gen = fun s ->
-  let (xccc6) = sizecheck s in
-  match xccc6 with
-  | true ->
-      let (xccc7) = [] in
-      let (xccc8) = int_gen () in
-      let (xccc9) = double xccc8 in xccc9 :: xccc7
-  | false ->
-      let (idx14) = bool_gen () in
-      (match idx14 with
-       | true ->
-           let (idx0ccc2) = Nil in
-           let (idx1ccc0) = int_gen () in idx1ccc0 :: idx0ccc2
-       | false ->
-           let (idx2ccc0) = s in
-           let (idx5ccc0) = subs idx2ccc0 in
-           let (idx7ccc2) = even_list_gen idx5ccc0 in
-           let (idx1ccc0) = int_gen () in idx1ccc0 :: idx7ccc2)
+let rec even_list_gen = fun (s : int) ->
+  (let ((xccc6 : bool)) =
+     ((sizecheck : int -> bool) ((s : int) : int) : bool) in
+   (match ((xccc6 : bool) : bool) with
+    | true ->
+        (let ((xccc7 : int list)) = ([] : int list) in
+         (let ((xccc8 : int)) = ((int_gen : unit -> int) (() : unit) : int) in
+          (let ((xccc9 : int)) =
+             ((double : int -> int) ((xccc8 : int) : int) : int) in
+           (((xccc9 : int) : int) ::
+             ((xccc7 : int list) : int list) : int list) : int list) : 
+           int list) : int list)
+    | false ->
+        (let ((idx14 : bool)) =
+           ((bool_gen : unit -> bool) (() : unit) : bool) in
+         ((match ((idx14 : bool) : bool) with
+           | true ->
+               (let ((idx0ccc2 : int list)) = (Nil : int list) in
+                (let ((idx1ccc0 : int)) =
+                   ((int_gen : unit -> int) (() : unit) : int) in
+                 (((idx1ccc0 : int) : int) ::
+                   ((idx0ccc2 : int list) : int list) : int list) : int list) : 
+               int list)
+           | false ->
+               (let ((idx2ccc0 : int)) = ((s : int) : int) in
+                (let ((idx5ccc0 : int)) =
+                   ((subs : int -> int) ((idx2ccc0 : int) : int) : int) in
+                 (let ((idx7ccc2 : int list)) =
+                    ((even_list_gen : int -> int list)
+                       ((idx5ccc0 : int) : int) : int list) in
+                  (let ((idx1ccc0 : int)) =
+                     ((int_gen : unit -> int) (() : unit) : int) in
+                   (((idx1ccc0 : int) : int) ::
+                     ((idx7ccc2 : int list) : int list) : int list) : 
+                    int list) : int list) : int list) : int list)) : 
+           int list) : int list) : int list) : int list)

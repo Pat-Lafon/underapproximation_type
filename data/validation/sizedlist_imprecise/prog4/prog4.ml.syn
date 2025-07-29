@@ -1,14 +1,27 @@
-let rec sized_list_gen = fun s ->
-  let (xccc7) = sizecheck s in
-  match xccc7 with
-  | true -> hidden_list_gen ()
-  | false ->
-      let (xccc8) = bool_gen () in
-      (match xccc8 with
-       | true ->
-           let (idx1ccc0) = s in
-           let (idx5ccc0) = subs idx1ccc0 in sized_list_gen idx5ccc0
-       | false ->
-           let (xccc9) = subs s in
-           let (xccc10) = sized_list_gen xccc9 in
-           let (xccc11) = int_gen () in xccc11 :: xccc10)
+let rec sized_list_gen = fun (s : int) ->
+  (let ((xccc7 : bool)) =
+     ((sizecheck : int -> bool) ((s : int) : int) : bool) in
+   (match ((xccc7 : bool) : bool) with
+    | true -> ((hidden_list_gen : unit -> int list) (() : unit) : int list)
+    | false ->
+        (let ((xccc8 : bool)) =
+           ((bool_gen : unit -> bool) (() : unit) : bool) in
+         ((match ((xccc8 : bool) : bool) with
+           | true ->
+               (let ((idx1ccc0 : int)) = ((s : int) : int) in
+                (let ((idx5ccc0 : int)) =
+                   ((subs : int -> int) ((idx1ccc0 : int) : int) : int) in
+                 ((sized_list_gen : int -> int list) ((idx5ccc0 : int) : int) : 
+                   int list) : int list) : int list)
+           | false ->
+               (let ((xccc9 : int)) =
+                  ((subs : int -> int) ((s : int) : int) : int) in
+                (let ((xccc10 : int list)) =
+                   ((sized_list_gen : int -> int list) ((xccc9 : int) : int) : 
+                   int list) in
+                 (let ((xccc11 : int)) =
+                    ((int_gen : unit -> int) (() : unit) : int) in
+                  (((xccc11 : int) : int) ::
+                    ((xccc10 : int list) : int list) : int list) : int list) : 
+                  int list) : int list)) : int list) : int list) : int list) : 
+  int list)

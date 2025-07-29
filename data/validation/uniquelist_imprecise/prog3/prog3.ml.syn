@@ -1,13 +1,24 @@
-let rec unique_list_gen = fun s ->
-  let (xccc6) = sizecheck s in
-  match xccc6 with
-  | true -> []
-  | false ->
-      let (xccc7) = subs s in
-      let (l) = unique_list_gen xccc7 in
-      let (x) = int_gen () in
-      let (xccc8) = list_mem l in
-      let (xccc9) = xccc8 x in
-      (match xccc9 with
-       | true -> hidden_list_gen ()
-       | false -> hidden_list_gen ())
+let rec unique_list_gen = fun (s : int) ->
+  (let ((xccc6 : bool)) =
+     ((sizecheck : int -> bool) ((s : int) : int) : bool) in
+   (match ((xccc6 : bool) : bool) with
+    | true -> ([] : int list)
+    | false ->
+        (let ((xccc7 : int)) = ((subs : int -> int) ((s : int) : int) : int) in
+         (let ((l : int list)) =
+            ((unique_list_gen : int -> int list) ((xccc7 : int) : int) : 
+            int list) in
+          (let ((x : int)) = ((int_gen : unit -> int) (() : unit) : int) in
+           (let ((xccc8 : int -> bool)) =
+              ((list_mem : int list -> int -> bool)
+                 ((l : int list) : int list) : int -> bool) in
+            (let ((xccc9 : bool)) =
+               ((xccc8 : int -> bool) ((x : int) : int) : bool) in
+             ((match ((xccc9 : bool) : bool) with
+               | true ->
+                   ((hidden_list_gen : unit -> int list) (() : unit) : 
+                   int list)
+               | false ->
+                   ((hidden_list_gen : unit -> int list) (() : unit) : 
+                   int list)) : int list) : int list) : int list) : int list) : 
+           int list) : int list) : int list) : int list)

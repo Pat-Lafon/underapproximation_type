@@ -1,14 +1,25 @@
-let rec size_bst_gen = fun d ->
-  fun lo ->
-    fun hi ->
-      let (xccc6) = sizecheck d in
-      match xccc6 with
-      | true -> Leaf
-      | false ->
-          let (xccc7) = incr lo in
-          let (xccc8) = xccc7 < hi in
-          (match xccc8 with
-           | true ->
-               let (xccc9) = int_range lo in
-               let (x) = xccc9 hi in hidden_tree_gen ()
-           | false -> Leaf)
+let rec size_bst_gen = fun (d : int) ->
+  (fun (lo : int) ->
+     (fun (hi : int) ->
+        (let ((xccc6 : bool)) =
+           ((sizecheck : int -> bool) ((d : int) : int) : bool) in
+         (match ((xccc6 : bool) : bool) with
+          | true -> (Leaf : int tree)
+          | false ->
+              (let ((xccc7 : int)) =
+                 ((incr : int -> int) ((lo : int) : int) : int) in
+               (let ((xccc8 : bool)) =
+                  (((xccc7 : int) : int) < ((hi : int) : int) : bool) in
+                ((match ((xccc8 : bool) : bool) with
+                  | true ->
+                      (let ((xccc9 : int -> int)) =
+                         ((int_range : int -> int -> int) ((lo : int) : int) : 
+                         int -> int) in
+                       (let ((x : int)) =
+                          ((xccc9 : int -> int) ((hi : int) : int) : 
+                          int) in
+                        ((hidden_tree_gen : unit -> int tree) (() : unit) : 
+                          int tree) : int tree) : int tree)
+                  | false -> (Leaf : int tree)) : int tree) : int tree) : 
+              int tree) : int tree) : int tree) : int -> int tree) : 
+  int -> int -> int tree)

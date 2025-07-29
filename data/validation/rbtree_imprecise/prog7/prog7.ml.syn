@@ -1,11 +1,21 @@
-let rec rbtree_gen = fun inv ->
-  fun color ->
-    fun h ->
-      let (xccc2) = sizecheck h in
-      match xccc2 with
-      | true ->
-          (match color with | true -> Rbtleaf | false -> hidden_rbtree_gen ())
-      | false ->
-          (match color with
-           | true -> hidden_rbtree_gen ()
-           | false -> hidden_rbtree_gen ())
+let rec rbtree_gen = fun (inv : int) ->
+  (fun (color : bool) ->
+     (fun (h : int) ->
+        (let ((xccc2 : bool)) =
+           ((sizecheck : int -> bool) ((h : int) : int) : bool) in
+         (match ((xccc2 : bool) : bool) with
+          | true ->
+              ((match ((color : bool) : bool) with
+                | true -> (Rbtleaf : int rbtree)
+                | false ->
+                    ((hidden_rbtree_gen : unit -> int rbtree) (() : unit) : 
+                    int rbtree)) : int rbtree)
+          | false ->
+              ((match ((color : bool) : bool) with
+                | true ->
+                    ((hidden_rbtree_gen : unit -> int rbtree) (() : unit) : 
+                    int rbtree)
+                | false ->
+                    ((hidden_rbtree_gen : unit -> int rbtree) (() : unit) : 
+                    int rbtree)) : int rbtree) : int rbtree) : int rbtree) : 
+     int -> int rbtree) : bool -> int -> int rbtree)
