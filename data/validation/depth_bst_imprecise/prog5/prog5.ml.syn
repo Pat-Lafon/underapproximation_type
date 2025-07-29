@@ -1,0 +1,14 @@
+let rec size_bst_gen = fun d ->
+  fun lo ->
+    fun hi ->
+      let (xccc6) = sizecheck d in
+      match xccc6 with
+      | true -> Leaf
+      | false ->
+          let (xccc7) = incr lo in
+          let (xccc8) = xccc7 < hi in
+          (match xccc8 with
+           | true ->
+               let (xccc9) = int_range lo in
+               let (x) = xccc9 hi in hidden_tree_gen ()
+           | false -> Leaf)

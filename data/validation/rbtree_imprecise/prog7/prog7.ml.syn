@@ -1,0 +1,11 @@
+let rec rbtree_gen = fun inv ->
+  fun color ->
+    fun h ->
+      let (xccc2) = sizecheck h in
+      match xccc2 with
+      | true ->
+          (match color with | true -> Rbtleaf | false -> hidden_rbtree_gen ())
+      | false ->
+          (match color with
+           | true -> hidden_rbtree_gen ()
+           | false -> hidden_rbtree_gen ())

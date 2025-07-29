@@ -261,10 +261,14 @@ The source code file expected by **Poirot** is simply an OCaml functions listing
 Located in `data/validation/`, these benchmarks test under-approximation of coverage properties:
 
 * `even_list_imprecise/` - 7 programs
-* `sizedlist_imprecise/` - 3 programs
-* `sortedlist_imprecise/` - 4 programs
-* `uniquelist_imprecise/` - 4 programs
-* `duplicatelist_imprecise/` - 4 programs
+* `sizedlist_imprecise/` - 9 programs
+* `sortedlist_imprecise/` - 3 programs
+* `uniquelist_imprecise/` - 3 programs
+* `duplicatelist_imprecise/` - 3 programs
+* `complete_tree_imprecise/` - 3 programs
+* `depth_bst_imprecise/` - 5 programs
+* `depthtree_imprecise/` - 4 programs
+* `rbtree_imprecise/` - 7 programs
 
 **Run single program:**
 ```bash
@@ -280,14 +284,26 @@ python scripts/synth_imprecise.py underapproximation_type/data/validation/even_l
 # Sized list imprecise (9 programs)
 python scripts/synth_imprecise.py underapproximation_type/data/validation/sizedlist_imprecise
 
-# Sorted list imprecise (4 programs)
+# Sorted list imprecise (3 programs)
 python scripts/synth_imprecise.py underapproximation_type/data/validation/sortedlist_imprecise
 
-# Unique list imprecise (4 programs)
+# Unique list imprecise (3 programs)
 python scripts/synth_imprecise.py underapproximation_type/data/validation/uniquelist_imprecise
 
-# Duplicate list imprecise (4 programs)
+# Duplicate list imprecise (3 programs)
 python scripts/synth_imprecise.py underapproximation_type/data/validation/duplicatelist_imprecise
+
+# Complete tree imprecise (3 programs)
+python scripts/synth_imprecise.py underapproximation_type/data/validation/complete_tree_imprecise
+
+# Depth BST imprecise (5 programs)
+python scripts/synth_imprecise.py underapproximation_type/data/validation/depth_bst_imprecise
+
+# Depth Tree imprecise (4 programs)
+python scripts/synth_imprecise.py underapproximation_type/data/validation/depthtree_imprecise
+
+# Red-black tree imprecise (7 programs)
+python scripts/synth_imprecise.py underapproximation_type/data/validation/rbtree_imprecise
 ```
 
 ##### Input File Formats (continued)
