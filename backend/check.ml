@@ -162,6 +162,7 @@ let extend =
   [
     ("len", [ "hd"; "tl"; "emp" ]);
     ("leaf", [ "root"; "lch"; "rch" ]);
+    ("root", [ "leaf"; "lch"; "rch" ]);
     ( "rb_root",
       [
         "rb_leaf";
