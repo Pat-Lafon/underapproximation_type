@@ -13,10 +13,10 @@ let rec size_bst_gen = fun (d : int) ->
                 ((match ((xccc8 : bool) : bool) with
                   | true ->
                       (let ((xccc9 : int -> int)) =
-                         ((int_range : int -> int -> int) ((lo : int) : int) : 
+                         ((int_range : int -> int -> int) ((lo : int) : int) :
                          int -> int) in
                        (let ((x : int)) =
-                          ((xccc9 : int -> int) ((hi : int) : int) : 
+                          ((xccc9 : int -> int) ((hi : int) : int) :
                           int) in
                         (let ((idx31438 : bool)) =
                            ((bool_gen : unit -> bool) (() : unit) : bool) in
@@ -41,34 +41,34 @@ let rec size_bst_gen = fun (d : int) ->
                                        ((hi : int) : int) in
                                      (let ((idx455ccc16 : int tree)) =
                                         ((idx454 : int -> int tree)
-                                           ((idx4ccc58 : int) : int) : 
+                                           ((idx4ccc58 : int) : int) :
                                         int tree) in
                                       (let ((idx480 : int -> int -> int tree))
                                          =
                                          ((size_bst_gen : int ->
                                                             int ->
                                                               int -> int tree)
-                                            ((idx393ccc0 : int) : int) : 
+                                            ((idx393ccc0 : int) : int) :
                                          int -> int -> int tree) in
                                        (let ((idx3ccc60 : int)) =
                                           ((lo : int) : int) in
                                         (let ((idx481 : int -> int tree)) =
                                            ((idx480 : int -> int -> int tree)
-                                              ((idx3ccc60 : int) : int) : 
+                                              ((idx3ccc60 : int) : int) :
                                            int -> int tree) in
                                          (let ((idx482ccc23 : int tree)) =
                                             ((idx481 : int -> int tree)
-                                               ((idx9 : int) : int) : 
+                                               ((idx9 : int) : int) :
                                             int tree) in
                                           (Node
                                              (((idx9 : int) : int),
-                                               ((idx482ccc23 : int tree) : 
+                                               ((idx482ccc23 : int tree) :
                                                int tree),
-                                               ((idx455ccc16 : int tree) : 
-                                               int tree)) : int tree) : 
-                                           int tree) : int tree) : int tree) : 
-                                        int tree) : int tree) : int tree) : 
-                                     int tree) : int tree) : int tree) : 
+                                               ((idx455ccc16 : int tree) :
+                                               int tree)) : int tree) :
+                                           int tree) : int tree) : int tree) :
+                                        int tree) : int tree) : int tree) :
+                                     int tree) : int tree) : int tree) :
                                   int tree) : int tree)
                            | false ->
                                (let ((idx2ccc2 : int)) = ((d : int) : int) in
@@ -85,15 +85,15 @@ let rec size_bst_gen = fun (d : int) ->
                                      ((lo : int) : int) in
                                    (let ((idx484 : int -> int tree)) =
                                       ((idx483 : int -> int -> int tree)
-                                         ((idx3ccc61 : int) : int) : 
+                                         ((idx3ccc61 : int) : int) :
                                       int -> int tree) in
                                     (let ((idx4ccc65 : int)) =
                                        ((hi : int) : int) in
                                      ((idx484 : int -> int tree)
-                                        ((idx4ccc65 : int) : int) : int tree) : 
-                                      int tree) : int tree) : int tree) : 
-                                   int tree) : int tree) : int tree)) : 
+                                        ((idx4ccc65 : int) : int) : int tree) :
+                                      int tree) : int tree) : int tree) :
+                                   int tree) : int tree) : int tree)) :
                            int tree) : int tree) : int tree) : int tree)
-                  | false -> (Leaf : int tree)) : int tree) : int tree) : 
-              int tree) : int tree) : int tree) : int -> int tree) : 
+                  | false -> (Leaf : int tree)) : int tree) : int tree) :
+              int tree) : int tree) : int tree) : int -> int tree) :
   int -> int -> int tree)

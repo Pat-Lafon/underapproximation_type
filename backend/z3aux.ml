@@ -54,12 +54,19 @@ let int_to_z3 ctx i = mk_numeral_int ctx i (Integer.mk_sort ctx)
 let bool_to_z3 ctx b = if b then mk_true ctx else mk_false ctx
 
 let tp_to_sort ctx t =
-  (* let () = *)
-  (*   Printf.printf "z3aux t: %s\n" @@ Sexplib.Sexp.to_string @@ sexp_of_t t *)
-  (* in *)
+  (*   let () =
+    Printf.printf "z3aux t: %s\n" @@ Sexplib.Sexp.to_string @@ sexp_of_t t
+  in *)
   T.(
     match t with
     | Ty_uninter name -> Sort.mk_uninterpreted_s ctx name
+    | Ty_constructor (name, a) when List.length a == 0 -> (
+        let dt = Dtencoding.z3_data_type_get name in
+        match dt with
+        | None ->
+            print_endline "Not a a loaded datatype";
+            Integer.mk_sort ctx
+        | Some dt -> dt.sort)
     | _ -> (
         match to_smtty t with
         | Int | Dt -> Integer.mk_sort ctx
@@ -91,6 +98,13 @@ let tpedvar_to_z3 ctx (tp, name) =
   T.(
     match tp with
     | Ty_uninter _ -> Expr.mk_const_s ctx name (tp_to_sort ctx tp)
+    | Ty_constructor (c, a) when List.length a == 0 -> (
+        let dt = Dtencoding.z3_data_type_get c in
+        match dt with
+        | None ->
+            print_endline "Not a a loaded datatype";
+            Integer.mk_const_s ctx name
+        | Some dt -> Expr.mk_const_s ctx name dt.sort)
     | _ -> (
         match to_smtty tp with
         | Dt | Int -> Integer.mk_const_s ctx name

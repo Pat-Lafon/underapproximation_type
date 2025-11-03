@@ -11,18 +11,23 @@ open To_prop
 open To_id
 open Sugar
 
+(* IDK, a set of functions to reflect so I don't polute the Item Variant*)
+let reflect_func_set = Hashtbl.create 10
+
+let reflect_func_mem s = Hashtbl.mem reflect_func_set s
+
 let ocaml_structure_item_to_item structure =
   match structure.pstr_desc with
   | Pstr_primitive { pval_name; pval_type; pval_prim; pval_attributes; _ } ->
       Some
         (if String.equal pval_name.txt "method_predicates" then
            let mp = List.nth pval_prim 0 in
-           MMethodPred mp #: (Some (Nt.core_type_to_t pval_type))
+           MMethodPred mp#:(Some (Nt.core_type_to_t pval_type))
          else
            match pval_attributes with
            | [ x ] when String.equal x.attr_name.txt "method_pred" ->
-               MMethodPred pval_name.txt #: (Some (Nt.core_type_to_t pval_type))
-           | _ -> MValDecl pval_name.txt #: (Some (Nt.core_type_to_t pval_type)))
+               MMethodPred pval_name.txt#:(Some (Nt.core_type_to_t pval_type))
+           | _ -> MValDecl pval_name.txt#:(Some (Nt.core_type_to_t pval_type)))
   | Pstr_type (_, [ type_dec ]) -> Some (To_type_dec.of_ocamltypedec type_dec)
   | Pstr_value (flag, [ value_binding ]) ->
       Some
@@ -30,6 +35,20 @@ let ocaml_structure_item_to_item structure =
          match value_binding.pvb_attributes with
          | [ x ] -> (
              match x.attr_name.txt with
+             | "reflect" ->
+                 Hashtbl.add reflect_func_set name ();
+                 let body = typed_raw_term_of_expr value_binding.pvb_expr in
+                 (* let () = Printf.printf "if_rec: %b\n" (get_if_rec flag) in *)
+                 (* let () = failwith "end" in *)
+                 MFuncImpRaw
+                   {
+                     name =
+                       name#:(Some
+                                (Raw_term.__get_lam_term_ty __FILE__ __LINE__
+                                   body.x));
+                     if_rec = get_if_rec flag;
+                     body;
+                   }
              | "axiom" ->
                  MAxiom { name; prop = prop_of_expr value_binding.pvb_expr }
              | "assert" ->
@@ -46,10 +65,10 @@ let ocaml_structure_item_to_item structure =
                      name;
                      rty = rty_of_expr value_binding.pvb_expr;
                    }
-             | _ ->
+             | _ as s ->
                  _failatwith __FILE__ __LINE__
-                   "syntax error: non known rty kind, not axiom | assert | \
-                    library")
+                   ("syntax error: " ^ s
+                  ^ " is non known rty kind, not axiom | assert | library"))
          | [] ->
              let body = typed_raw_term_of_expr value_binding.pvb_expr in
              (* let () = Printf.printf "if_rec: %b\n" (get_if_rec flag) in *)
@@ -57,16 +76,16 @@ let ocaml_structure_item_to_item structure =
              MFuncImpRaw
                {
                  name =
-                   name
-                   #: (Some
-                         (Raw_term.__get_lam_term_ty __FILE__ __LINE__ body.x));
+                   name#:(Some
+                            (Raw_term.__get_lam_term_ty __FILE__ __LINE__ body.x));
                  if_rec = get_if_rec flag;
                  body;
                }
          | _ ->
              _failatwith __FILE__ __LINE__
                ("wrong syntax: "
-               ^ (value_binding.pvb_attributes |> List.map (fun x -> x.attr_name.txt)
+               ^ (value_binding.pvb_attributes
+                 |> List.map (fun x -> x.attr_name.txt)
                  |> String.concat ", ")))
   | Pstr_attribute _ -> None
   | _ ->

@@ -124,7 +124,7 @@ let rec subst_raw_term (string_x : string) f (raw_term_e : 't raw_term) =
 
 and typed_subst_raw_term (string_x : string) f
     (raw_term_e : ('t, 't raw_term) typed) =
-  raw_term_e #-> (subst_raw_term string_x f)
+  raw_term_e#->(subst_raw_term string_x f)
 
 and subst_raw_match_case (string_x : string) f
     (raw_match_case_e : 't raw_match_case) =
@@ -138,22 +138,22 @@ and subst_raw_match_case (string_x : string) f
 
 and typed_subst_raw_match_case (string_x : string) f
     (raw_match_case_e : ('t, 't raw_match_case) typed) =
-  raw_match_case_e #-> (subst_raw_match_case string_x f)
+  raw_match_case_e#->(subst_raw_match_case string_x f)
 
 let rec map_raw_term : 't 's. ('t -> 's) -> 't raw_term -> 's raw_term =
  fun f raw_term_e ->
   match raw_term_e with
-  | Var _t_stringtyped0 -> Var _t_stringtyped0 #=> f
+  | Var _t_stringtyped0 -> Var _t_stringtyped0#=>f
   | Const constant0 -> Const constant0
   | Lam { lamarg; lambody } ->
-      Lam { lamarg = lamarg #=> f; lambody = typed_map_raw_term f lambody }
+      Lam { lamarg = lamarg#=>f; lambody = typed_map_raw_term f lambody }
   | Err -> Err
   | Let { if_rec; rhs; lhs; letbody } ->
       Let
         {
           if_rec;
           rhs = typed_map_raw_term f rhs;
-          lhs = List.map (fun x -> x #=> f) lhs;
+          lhs = List.map (fun x -> x#=>f) lhs;
           letbody = typed_map_raw_term f letbody;
         }
   | App (_t__traw_termtyped0, _t__traw_termtypedlist1) ->
@@ -162,7 +162,7 @@ let rec map_raw_term : 't 's. ('t -> 's) -> 't raw_term -> 's raw_term =
           List.map (typed_map_raw_term f) _t__traw_termtypedlist1 )
   | AppOp (_t_optyped0, _t__traw_termtypedlist1) ->
       AppOp
-        ( _t_optyped0 #=> f,
+        ( _t_optyped0#=>f,
           List.map (typed_map_raw_term f) _t__traw_termtypedlist1 )
   | Ite (_t__traw_termtyped0, _t__traw_termtyped1, _t__traw_termtyped2) ->
       Ite
@@ -179,23 +179,23 @@ let rec map_raw_term : 't 's. ('t -> 's) -> 't raw_term -> 's raw_term =
         }
 
 and typed_map_raw_term :
-      't 's. ('t -> 's) -> ('t, 't raw_term) typed -> ('s, 's raw_term) typed =
+    't 's. ('t -> 's) -> ('t, 't raw_term) typed -> ('s, 's raw_term) typed =
  fun (f : 't -> 's) (raw_term_e : ('t, 't raw_term) typed) ->
-  raw_term_e #=> f #-> (map_raw_term f)
+  raw_term_e#=>f#->(map_raw_term f)
 
 and map_raw_match_case (f : 't -> 's) (raw_match_case_e : 't raw_match_case) =
   match raw_match_case_e with
   | Matchcase { constructor; args; exp } ->
       Matchcase
         {
-          constructor = constructor #=> f;
-          args = List.map (fun x -> x #=> f) args;
+          constructor = constructor#=>f;
+          args = List.map (fun x -> x#=>f) args;
           exp = typed_map_raw_term f exp;
         }
 
 and typed_map_raw_match_case (f : 't -> 's)
     (raw_match_case_e : ('t, 't raw_match_case) typed) =
-  raw_match_case_e #-> (map_raw_match_case f)
+  raw_match_case_e#->(map_raw_match_case f)
 
 let fv_raw_term_id e = fv_typed_id_to_id fv_raw_term e
 let typed_fv_raw_term_id e = fv_typed_id_to_id typed_fv_raw_term e
@@ -228,3 +228,18 @@ let rec __get_lam_term_ty file line = function
       | Some t2 -> Nt.mk_arr t1 t2
       | None -> Nt.mk_arr t1 (__get_lam_term_ty file line lambody.x))
   | _ -> _failatwith file line "__get_lam_term_ty: not lam "
+
+let rec raw_term_to_ty = function
+  | Var { ty; _ } -> ty
+  | Lam { lamarg; lambody } ->
+      let t1 = lamarg.ty in
+      let t2 = raw_term_to_ty lambody.x in
+      Nt.mk_arr t1 t2
+  | _ -> failwith "raw_term_to_ty: unimplemented"
+
+let rec destruct_lam_terms (t : _ raw_term) : _ list * _ raw_term =
+  match t with
+  | Lam { lamarg; lambody } ->
+      let acc, t2 = destruct_lam_terms lambody.x in
+      (lamarg :: acc, t2)
+  | _ -> ([], t)

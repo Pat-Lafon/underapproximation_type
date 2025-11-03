@@ -21,6 +21,20 @@ let ctx =
       (* 13 timeouts *)
     ]
 
+let _ = Dtencoding.list_data_type ctx
+
+(* let _ =
+  let open Mtyped in
+  Funencoding.z3_create_rec_func ctx "len"
+    [ "l"#:(Nt.Ty_constructor ("ilist", [])); "n"#:Nt.Ty_int ]
+    Nt.Ty_bool
+    (Lit.AAppOp
+       ( "=="#:(Nt.Ty_arrow (Nt.Ty_int, Nt.Ty_arrow (Nt.Ty_int, Nt.Ty_bool))),
+         [
+           (Lit.AC (Constant.I 0))#:Nt.Ty_int;
+           (Lit.AVar "n"#:Nt.Ty_int)#:Nt.Ty_int;
+         ] ))#:Nt.Ty_bool *)
+
 let _check axiom q =
   Check.(handle_check_res (fun () -> smt_neg_and_solve ctx axiom q))
 (* let check_with_pre pres vc = _check pres vc *)

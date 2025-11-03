@@ -19,8 +19,6 @@ let rec typed_lit_to_z3 ctx lit =
   | AAppOp (op, args) -> (
       let args = List.map (typed_lit_to_z3 ctx) args in
       match (op.x, args) with
-      (* NOTE: we don't encode force *)
-      | "forc", [ a ] -> a
       | "==", [ a; b ] -> Boolean.mk_eq ctx a b
       | "!=", [ a; b ] -> Boolean.mk_not ctx @@ Boolean.mk_eq ctx a b
       | "<=", [ a; b ] -> Arithmetic.mk_le ctx a b
@@ -34,6 +32,16 @@ let rec typed_lit_to_z3 ctx lit =
       | "/", [ a; b ] -> Arithmetic.mk_div ctx a b
       | "ite", [ a; b; c ] -> Boolean.mk_ite ctx a b c
       | opname, args ->
-          let argsty, retty = Nt.destruct_arr_tp op.ty in
-          let func = z3func ctx opname argsty retty in
+          let func =
+            match
+              (* Assume op.ty is an arrow type*)
+              let fst_arg = op.ty |> Nt.get_argty |> Nt.layout in
+              Option.bind (Dtencoding.z3_data_type_get fst_arg) (fun x ->
+                  Dtencoding.z3_data_type_func_get x opname)
+            with
+            | Some f -> f
+            | None ->
+                let argsty, retty = Nt.destruct_arr_tp op.ty in
+                z3func ctx opname argsty retty
+          in
           Z3.FuncDecl.apply func args)
