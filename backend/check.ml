@@ -40,7 +40,7 @@ let get_pred m predexpr =
 (* let get_unknown_fv ctx m unknown_fv =
   List.map (fun (_, b) -> get_pred m (Boolean.mk_const_s ctx b)) unknown_fv *)
 
-let rlimit = ref 200000000
+let rlimit = ref 200000
 let optional_timeout = ref None
 
 let smt_format_file ?(double_check = false) ~optional_timeout ~rlimit filename
@@ -59,7 +59,7 @@ let smt_format_file ?(double_check = false) ~optional_timeout ~rlimit filename
   let postlude = "\n(check-sat)\n" in
   let postlude = if double_check then postlude ^ postlude else postlude in
   Printf.fprintf oc "%s%s%s" prelude query postlude;
-  (* Printf.printf "%s%s%s" prelude query postlude; *)
+  Printf.printf "%s%s%s" prelude query postlude;
   close_out oc
 
 let first_matching (deferreds : 'a Async.Deferred.t list)
@@ -137,6 +137,9 @@ let run_z3_in_process solver : smt_result =
   if status = "unsat" (* status = WEXITED 0 *) then SmtUnsat else Timeout
 
 let smt_solve ctx assertions =
+  let dt = Hashtbl.find Dtencoding.datatype_map "ilist" in
+  let () = print_endline (Dtencoding.z3_data_type_layout dt) in
+
   (* let _ = printf "check\n" in *)
   let solver = mk_solver ctx None in
   let g = mk_goal ctx true false false in
@@ -153,7 +156,7 @@ let smt_solve ctx assertions =
   (* in *)
   let _ = Solver.add solver (get_formulas g) in
 
-  (* Solver.to_string solver |> print_endline; *)
+  Solver.to_string solver |> print_endline;
   (*  let _, res = Sugar.clock (fun () -> solver_result solver) in *)
   let res = run_z3_in_process solver in
   res

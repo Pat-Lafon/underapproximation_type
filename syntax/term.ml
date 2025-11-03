@@ -318,3 +318,15 @@ let rec ast_size_term (t : _ term) : int =
           (fun acc (CMatchcase { constructor; args; exp }) ->
             acc + ast_size_term exp.x)
           0 match_cases
+
+let rec destruct_lam_values (v : _ value) : _ list * (_, _ term) typed =
+  match v with
+  | VLam { lamarg; body = { x = CVal v; _ } } ->
+      let args, body = destruct_lam_values v.x in
+      (lamarg :: args, body)
+  | VLam { lamarg; body } -> ([ lamarg ], body)
+  | VFix { fixname; fixarg; body = { x = CVal v; _ } } ->
+      let args, body = destruct_lam_values v.x in
+      (fixarg :: args, body)
+  | VFix { fixname; fixarg; body } -> ([ fixarg ], body)
+  | _ -> failwith "destruct_lam_values::unimplemented"

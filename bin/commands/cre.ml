@@ -19,7 +19,70 @@ let preprocess source_file () =
     ocaml_structure_to_items
     @@ Ocaml5_parser.Frontend.parse ~sourcefile:source_file
   in
-  (* let _ = Pp.printf "%s\n" (FrontendRaw.layout_structure code) in *)
+  (*   let _ = Pp.printf "%s\n" (FrontendRaw.layout_structure code) in *)
+
+  let reflectable_functions, code =
+    List.partition
+      (fun s ->
+        match s with
+        | MFuncImpRaw { name; _ }
+          when Frontend_opt.To_item.reflect_func_mem name.x ->
+            true
+        | _ -> false)
+      code
+  in
+
+  let list_ty = Nt.T.Ty_constructor ("ilist", []) in
+
+  let init_normal_ctx =
+    Typectx.add_to_right init_normal_ctx
+      "tail"#:(Nt.T.Ty_arrow (list_ty, list_ty))
+  in
+
+  let init_normal_ctx =
+    Typectx.add_to_right init_normal_ctx
+      "head"#:(Nt.T.Ty_arrow (list_ty, Nt.T.Ty_int))
+  in
+
+  let init_normal_ctx, reflectable_functions =
+    struct_check init_normal_ctx reflectable_functions
+  in
+  (*
+  let reflectable_functions = normalize_structure reflectable_functions in *)
+
+  let () =
+    List.iter
+      (fun i ->
+        i
+        |> Item.map_item (fun t -> Some t)
+        |> Frontend_opt.To_item.layout_item |> print_endline)
+      reflectable_functions
+  in
+
+  let () =
+    List.iter
+      (fun i ->
+        match i with
+        | MFuncImpRaw { name; if_rec = true; body } ->
+            let ty = body.ty in
+            let args, body = Raw_term.destruct_lam_terms body.x in
+
+            List.iter (fun a -> print_endline a.x) args;
+
+            print_endline (Language.FrontendTyped.layout_raw_term body);
+
+            let _, ret = Normalty.Ntyped.destruct_arr_tp ty in
+            print_endline (Nt.layout ty);
+
+            let _ =
+              Backend.Funencoding.z3_create_rec_func Backend.Smtquery.ctx name.x
+                args ret body#:ty
+            in
+            ()
+        | _ -> failwith "not a function")
+      reflectable_functions
+  in
+
   let _, code = struct_check init_normal_ctx code in
   (* let _ = Pp.printf "%s\n" (FrontendTyped.layout_structure code) in *)
   let code = normalize_structure code in

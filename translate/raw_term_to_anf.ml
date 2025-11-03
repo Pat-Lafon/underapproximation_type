@@ -9,8 +9,8 @@ type 't vcont = ('t, 't value) typed -> ('t, 't term) typed
 type 't vconts = ('t, 't value) typed list -> ('t, 't term) typed
 
 let new_x () = Rename.unique "x"
-let construct_lete lhs rhs body = (CLetE { lhs; rhs; body }) #: body.ty
-let var_to_v x = (VVar x) #: x.ty
+let construct_lete lhs rhs body = (CLetE { lhs; rhs; body })#:body.ty
+let var_to_v x = (VVar x)#:x.ty
 
 (* let vcont_to_cont (k : 't vcont) (rhs : comp typed) : *)
 (*     comp typed = *)
@@ -20,47 +20,47 @@ let var_to_v x = (VVar x) #: x.ty
 let decurry (f, args) =
   let rec aux f = function
     | [] -> f
-    | arg :: args -> aux (App (f, [ arg ])) #: (Nt.get_retty f.ty) args
+    | arg :: args -> aux (App (f, [ arg ]))#:(Nt.get_retty f.ty) args
   in
   aux f args
 
-let rec normalize_term (tm : ('t, 't raw_term) typed) : ('t, 't term) typed =
+let rec normalize_term (tm : (Nt.t, Nt.t raw_term) typed) : (Nt.t, Nt.t term) typed =
   normalize_get_comp (fun x -> x) tm
 
-and normalize_get_value (k : 't vcont) (expr : ('t, 't raw_term) typed) :
-    ('t, 't term) typed =
+and normalize_get_value (k : Nt.t vcont) (expr : (Nt.t, Nt.t raw_term) typed) :
+    (Nt.t, Nt.t term) typed =
   normalize_get_comp
     (fun e ->
       match e.x with
       | CVal v -> k v
       | _ ->
-          let lhs = (new_x ()) #: e.ty in
+          let lhs = (new_x ())#:e.ty in
           construct_lete lhs e (k @@ var_to_v lhs))
     expr
 
-and normalize_get_values (k : 't vconts) (es : ('t, 't raw_term) typed list) :
-    ('t, 't term) typed =
+and normalize_get_values (k : Nt.t vconts)
+    (es : (Nt.t, Nt.t raw_term) typed list) : (Nt.t, Nt.t term) typed =
   (List.fold_left
-     (fun (k : 't vconts) rhs ids ->
+     (fun (k : Nt.t vconts) rhs ids ->
        normalize_get_value (fun id -> k (id :: ids)) rhs)
      k es)
     []
 
-and normalize_get_comp (k : 't cont) (expr : ('t, 't raw_term) typed) :
-    ('t, 't term) typed =
+and normalize_get_comp (k : Nt.t cont) (expr : (Nt.t, Nt.t raw_term) typed) :
+    (Nt.t, Nt.t term) typed =
   (* let k e = k' e #: expr.ty in *)
   let kv v = k (value_to_term v) in
   match expr.x with
-  | Err -> k CErr #: expr.ty
+  | Err -> k CErr#:expr.ty
   | Tu es ->
       normalize_get_values
-        (fun vs -> kv (VTu vs) #: (Nt.mk_tuple (List.map _get_ty vs)))
+        (fun vs -> kv (VTu vs)#:(Nt.mk_tuple (List.map _get_ty vs)))
         es
-  | Var var -> kv (VVar var) #: expr.ty
-  | Const c -> kv (VConst c) #: expr.ty
+  | Var var -> kv (VVar var)#:expr.ty
+  | Const c -> kv (VConst c)#:expr.ty
   (* NOTE: do we need a name of a function? *)
   | Lam { lamarg; lambody } ->
-      kv (VLam { lamarg; body = normalize_term lambody }) #: expr.ty
+      kv (VLam { lamarg; body = normalize_term lambody })#:expr.ty
   | Let { if_rec; lhs; rhs; letbody } -> (
       match (if_rec, lhs) with
       | true, fixname :: fixarg :: args ->
@@ -84,7 +84,7 @@ and normalize_get_comp (k : 't cont) (expr : ('t, 't raw_term) typed) :
           normalize_get_value
             (fun rhs ->
               let body = normalize_get_comp k letbody in
-              (CLetDeTu { tulhs; turhs = rhs; body }) #: body.ty)
+              (CLetDeTu { tulhs; turhs = rhs; body })#:body.ty)
             rhs)
   | AppOp (op, es) ->
       normalize_get_values (fun appopargs -> k (mk_appop op appopargs)) es
@@ -101,12 +101,11 @@ and normalize_get_comp (k : 't cont) (expr : ('t, 't raw_term) typed) :
              match_cases =
                [
                  Matchcase
-                   { constructor = "True" #: Nt.bool_ty; args = []; exp = et };
+                   { constructor = "True"#:Nt.bool_ty; args = []; exp = et };
                  Matchcase
-                   { constructor = "False" #: Nt.bool_ty; args = []; exp = ef };
+                   { constructor = "False"#:Nt.bool_ty; args = []; exp = ef };
                ];
-           })
-        #: expr.ty
+           })#:expr.ty
   | Match { matched; match_cases } ->
       normalize_get_value
         (fun matched ->
@@ -118,7 +117,7 @@ and normalize_get_comp (k : 't cont) (expr : ('t, 't raw_term) typed) :
                       { constructor; args; exp = normalize_get_comp k exp })
               match_cases
           in
-          (CMatch { matched; match_cases }) #: expr.ty)
+          (CMatch { matched; match_cases })#:expr.ty)
         matched
 
 let normalize_item (item : Nt.t item) =
@@ -126,7 +125,7 @@ let normalize_item (item : Nt.t item) =
   | MFuncImpRaw { name; if_rec; body } ->
       let body = normalize_term body in
       let body =
-        if if_rec then lam_to_fix_comp name.x #: body.ty body else body
+        if if_rec then lam_to_fix_comp name.x#:body.ty body else body
       in
       MFuncImp { name; if_rec; body }
   | _ -> item
