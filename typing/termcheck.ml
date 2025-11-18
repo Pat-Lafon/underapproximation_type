@@ -399,7 +399,10 @@ and term_type_check (uctx : uctx) (y : ('t, 't term) typed) (rty : t rty) :
     (t rty, t rty term) typed option =
   let () = pprint_simple_typectx_judge uctx (layout_typed_term y, rty) in
   match y.x with
-  | CErr -> Some CErr#:rty
+  | CErr ->
+      if sub_rty_bool uctx (prop_to_rty false (Rty.erase_rty rty) mk_false, rty)
+      then Some CErr#:rty
+      else None
   | CLetDeTu _ -> failwith "unimp"
   | CVal v ->
       let* v = value_type_check uctx v rty in
