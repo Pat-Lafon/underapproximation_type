@@ -134,6 +134,16 @@ let coq_axioms meta_config_file () =
     axioms;
   ()
 
+let lean_axioms meta_config_file () =
+  let () = Env.load_meta meta_config_file in
+  let prim_path = Env.get_prim_path () in
+  let axioms : t item list = preprocess prim_path.axioms () in
+
+  List.iter
+    (fun x -> Printf.printf "%s\n" (FrontendTyped.layout_item_to_lean x))
+    axioms;
+  ()
+
 let print_erase_code meta_config_file source_file () =
   let () = Env.load_meta meta_config_file in
   let code =
@@ -174,4 +184,5 @@ let test =
       ("type-infer", input_config_source "type infer" type_infer_);
       ("subtype-check", input_config_source "subtype check" subtype_check_);
       ("coq-axioms", input_config "coq axioms" coq_axioms);
+      ("lean-axioms", input_config "lean axioms" lean_axioms);
     ]
