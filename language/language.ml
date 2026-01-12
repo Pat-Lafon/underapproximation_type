@@ -40,6 +40,7 @@ module FrontendTyped = struct
   let layout_lit e = To_lit.layout @@ map_lit some e
   let layout_prop prop = To_prop.layout_prop @@ map_prop some prop
   let layout_prop_to_coq prop = To_prop.layout_prop_to_coq @@ map_prop some prop
+  let layout_prop_to_lean prop = To_prop.layout_prop_to_lean @@ map_prop some prop
 
   let layout_prop_to_smtlib2 prop =
     To_prop.layout_to_smtlib2 @@ map_prop some prop
@@ -53,6 +54,7 @@ module FrontendTyped = struct
 
   let layout_item item = To_item.layout_item @@ map_item some item
   let layout_item_to_coq item = To_item.layout_item_to_coq @@ map_item some item
+  let layout_item_to_lean item = To_item.layout_item_to_lean @@ map_item some item
 
   let layout_structure s =
     To_item.layout_structure @@ List.map (map_item some) s

@@ -105,6 +105,30 @@ let coqsetting =
     layout_mp = (function "==" -> "=" | x -> x);
   }
 
+let lean_layout_ty = function
+  | Some Nt.T.Ty_bool -> "Bool"
+  | Some Nt.T.Ty_int -> "Int"
+  | Some (Nt.T.Ty_constructor (name, [Nt.T.Ty_int])) when name = "list" -> "MyList"
+  | Some (Nt.T.Ty_constructor (name, [Nt.T.Ty_var _])) when name = "list" -> "MyList"
+  | ty ->
+      let ty_str = match ty with None -> "None" | Some _ -> "Some(...)" in
+      _failatwith __FILE__ __LINE__ (spf "Unknown type encountered: %s" ty_str)
+
+let leansetting =
+  {
+    sym_true = "True";
+    sym_false = "False";
+    sym_and = " ∧ ";
+    sym_or = " ∨ ";
+    sym_not = "¬";
+    sym_implies = "→";
+    sym_iff = "↔";
+    sym_forall = "∀ ";
+    sym_exists = "∃ ";
+    layout_typedid = (fun x -> spf "(%s : %s)" x.x (lean_layout_ty x.ty));
+    layout_mp = (function "==" -> "=" | x -> x);
+  }
+
 let layout_prop_
     {
       sym_and;
@@ -262,3 +286,4 @@ let prop_of_expr expr =
 let layout_prop__raw x = Pprintast.string_of_expression @@ prop_to_expr x
 let layout_prop = layout_prop_ psetting
 let layout_prop_to_coq = layout_prop_ coqsetting
+let layout_prop_to_lean = layout_prop_ leansetting

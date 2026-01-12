@@ -110,4 +110,9 @@ let layout_item_to_coq = function
         (layout_prop_to_coq prop) name
   | _ -> _failatwith __FILE__ __LINE__ "not implemented"
 
+let layout_item_to_lean = function
+  | MAxiom { name; prop } ->
+      spf "@[grind]\ntheorem %s : %s := by grind" name (layout_prop_to_lean prop)
+  | _ -> _failatwith __FILE__ __LINE__ "not implemented"
+
 let layout_structure l = spf "%s\n" (List.split_by "\n" layout_item l)
