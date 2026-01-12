@@ -1,6 +1,6 @@
 From Stdlib Require List.
 From Stdlib Require Lia.
-Import ListNotations.
+Open Scope list_scope.
 
 From Stdlib Require Export Logic.Classical_Pred_Type.
 
@@ -8,22 +8,22 @@ From MyProject Require Import Tactics.
 
 
 Inductive hd : list nat -> nat -> Prop :=
-| lhd1: forall u u', u = u' -> hd [u] u'
+| lhd1: forall u u', u = u' -> hd (u :: nil) u'
 | lhd2: forall l u u', u = u' ->  hd (u :: l) u'.
 
 Inductive tl : list nat -> list nat -> Prop :=
 | ltl2: forall u l l', l = l' ->  tl (u :: l) l'.
 
 Inductive len : list nat -> nat -> Prop :=
-| llen1: len [] 0
+| llen1: len nil 0
 | llen2: forall l u n, len (l) n -> len (u :: l) (n + 1).
 
 Inductive emp : list nat -> Prop :=
-| lemp1: emp [].
+| lemp1: emp nil.
 
 Inductive sorted : list nat -> Prop :=
-| lsorted1: sorted []
-| lsorted2: forall n, sorted [n]
+| lsorted1: sorted nil
+| lsorted2: forall n, sorted (n :: nil)
 | lsorted3: forall n n' l, sorted (n' :: l) -> n <= n' -> sorted (n :: n' :: l).
 
 Hint Constructors hd: core.

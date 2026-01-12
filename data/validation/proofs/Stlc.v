@@ -2,7 +2,8 @@ From Stdlib Require Setoid.
 From Stdlib Require Lia.
 
 From Stdlib Require List.
-Import ListNotations.
+Import List.ListNotations.
+Open Scope list_scope.
 
 From Stdlib Require Export Logic.Classical_Pred_Type.
 
@@ -93,7 +94,7 @@ Inductive stlc_tyctx_tl : env -> env -> Prop :=
 Inductive typing (e : env) : term -> type -> Prop :=
 | TId :
     forall x tau,
-      nth_error e x = Some tau ->
+      List.nth_error e x = Some tau ->
       typing e (Id x) tau
 | TConst :
     forall n,
@@ -130,13 +131,13 @@ Hint Constructors typing: core.
 Hint Unfold not: core.
 
 Lemma stlc_num_arr_geq_0 : forall tau, (forall n, (num_arr tau n -> n >= 0)). Proof.
-    intros. lia.
+    intros. Lia.lia.
 Qed. Hint Resolve stlc_num_arr_geq_0: core.
 
 Lemma stlc_num_arr_arr : forall tau, (forall tau_body, (forall m, (stlc_ty_arr2 tau tau_body -> (num_arr tau_body m <-> num_arr tau (m + 1))))). Proof.
     intros. my_inversion H. split.
     - intro. econstructor. auto.
-    - intro. my_inversion H0. assert (n2 = m). lia. subst. auto.
+    - intro. my_inversion H0. assert (n2 = m). Lia.lia. subst. auto.
  Qed. Hint Resolve stlc_num_arr_arr: core.
 
 Lemma stlc_num_arr_arr_1 : forall tau, (forall tau_body, (forall m, (((stlc_ty_arr2 tau tau_body) /\ (num_arr tau_body m)) -> (num_arr tau (m + 1))))). Proof.
@@ -145,16 +146,16 @@ Lemma stlc_num_arr_arr_1 : forall tau, (forall tau_body, (forall m, (((stlc_ty_a
 
 
 Lemma stlc_num_arr_arr_2 : forall tau, (forall tau_body, (forall m, (((stlc_ty_arr2 tau tau_body) /\ (num_arr tau (m + 1))) -> (num_arr tau_body m)))). Proof.
-    intros. my_inversion H. clear H. my_inversion H0; clear H0. my_inversion H1. assert (n2 = m). lia. subst. auto.
+    intros. my_inversion H. clear H. my_inversion H0; clear H0. my_inversion H1. assert (n2 = m). Lia.lia. subst. auto.
  Qed. Hint Resolve stlc_num_arr_arr_2: core.
 
 Lemma stlc_is_abs_num_arr_ge_zero : forall v, (forall tau, (forall gamma, (exists n, (((is_abs v) /\ ((typing gamma v tau) /\ (num_arr tau n))) -> (n >= 1))))). Proof.
     intros. eexists. intros. destruct H. destruct H0. my_inversion H; clear
-    H. my_inversion H1; clear H1. my_inversion H0. lia. Unshelve. constructor.
+    H. my_inversion H1; clear H1. my_inversion H0. Lia.lia. Unshelve. constructor.
  Qed. Hint Resolve stlc_is_abs_num_arr_ge_zero: core.
 
 Lemma stlc_is_abs_num_arr_ge_zero_2 : forall v, (forall tau, (forall gamma, ( (((typing gamma v tau) /\ (num_arr tau 0)) -> ~(is_abs v))))). Proof.
-    intros. destruct H. unfold not. intros. my_inversion H1; clear H1. my_inversion H0; clear H0. my_inversion H. assert (n2 + 1 = 0 -> False). lia.  apply H0. auto.
+    intros. destruct H. unfold not. intros. my_inversion H1; clear H1. my_inversion H0; clear H0. my_inversion H. assert (n2 + 1 = 0 -> False). Lia.lia.  apply H0. auto.
  Qed. Hint Resolve stlc_is_abs_num_arr_ge_zero: core.
 
 Lemma stlc_const_num_app_0 : forall v, (forall n, ((is_const v /\ num_app v n) -> n = 0)). Proof.
@@ -309,7 +310,7 @@ Lemma stlc_tyctx_cons : forall ty, (forall gamma, (exists v, (stlc_tyctx_hd v ty
  Qed. Hint Resolve stlc_tyctx_cons: core.
 
 Lemma stlc_num_app_geq_0 : forall v, (forall n, (num_app v n -> 0 <= n)). Proof.
-    intros. lia.
+    intros. Lia.lia.
  Qed. Hint Resolve stlc_num_app_geq_0: core.
 
 Lemma stlc_num_app_abs_body_eq : forall v, (forall body, (forall n, ((stlc_abs_body v body /\ num_app v n) -> num_app body n))). Proof.
@@ -321,7 +322,7 @@ Lemma stlc_num_app_abs_body_eq_rev : forall v, (forall body, (forall n, ((stlc_a
  Qed. Hint Resolve stlc_num_app_abs_body_eq_rev: core.
 
 Lemma stlc_num_app_app : forall v, (forall t1, (forall t2, (forall n1, (forall n2, (((stlc_app1 v t1) /\ ((stlc_app2 v t2) /\ ((num_app t1 n1) /\ (num_app t2 n2)))) -> (num_app v ((1 + n1) + n2))))))). Proof.
-    intros. simp. my_inversion H; clear H. my_inversion H0; clear H0. assert (1 + n1 + n2 = S (n1 + n2 )). lia.
+    intros. simp. my_inversion H; clear H. my_inversion H0; clear H0. assert (1 + n1 + n2 = S (n1 + n2 )). Lia.lia.
 rewrite <- H. eauto.
 Qed. Hint Resolve stlc_num_app_app: core.
 
@@ -329,7 +330,7 @@ Lemma stlc_num_app_app_rev : forall v, (forall t1, (forall t2, (forall n, (((stl
     intros. simp. my_inversion H1; clear H1.
     - my_inversion H0.
     - my_inversion H0.
-    - my_inversion H0; clear H0. my_inversion H; clear H. exists n1. exists n2. split; auto. split; auto. lia.
+    - my_inversion H0; clear H0. my_inversion H; clear H. exists n1. exists n2. split; auto. split; auto. Lia.lia.
     - my_inversion H0.
 Qed. Hint Resolve stlc_num_app_app_rev: core.
 
@@ -342,12 +343,12 @@ Lemma stlc_const_typing_nat : forall gamma, (forall v, (forall tau, ((is_const v
 Qed. Hint Resolve stlc_const_typing_nat: core.
 
 Lemma stlc_app_num_app_geq_0 : forall v, (forall n, ((is_app v /\ num_app v n) -> n > 0)). Proof.
-    intros. simp. my_inversion H. my_inversion H0. lia.
+    intros. simp. my_inversion H. my_inversion H0. Lia.lia.
  Qed. Hint Resolve stlc_app_num_app_geq_0: core.
 
 
 Lemma stlc_num_app_app_alt : forall v, (forall t1, (forall t2, (forall n1, (forall n2, (((stlc_app1 v t1) /\ ((stlc_app2 v t2) /\ ((num_app t1 n1) /\ (num_app t2 n2)))) -> (num_app v ((n1 + n2) + 1))))))). Proof.
-    intros. simp. my_inversion H; clear H. my_inversion H0; clear H0.  assert (n1 + n2 + 1 = 1 + n1 + n2). lia. rewrite H. constructor; auto.
+    intros. simp. my_inversion H; clear H. my_inversion H0; clear H0.  assert (n1 + n2 + 1 = 1 + n1 + n2). Lia.lia. rewrite H. constructor; auto.
  Qed. Hint Resolve stlc_num_app_app: core.
 
 Lemma stlc_typing_arr_term_abs_1 : forall gamma, (forall v, (forall tau, (forall ty, ((~(is_var v) /\ (~(is_app v) /\ ((stlc_ty_arr1 tau ty) /\ (typing gamma v tau)))) -> (stlc_abs_ty v ty))))). Proof.
@@ -359,11 +360,11 @@ Lemma stlc_typing_arr_term_abs_1 : forall gamma, (forall v, (forall tau, (forall
 
 
 Lemma stlc_num_app_app_rev_bounds_1 : forall v, (forall t1, (forall n, (((stlc_app1 v t1) /\ (num_app v n)) -> (exists m1, ((m1 < n) /\ (num_app t1 m1)))))). Proof.
-    intros. simp. my_inversion H; clear H. my_inversion H0. eexists. split; eauto. lia.
+    intros. simp. my_inversion H; clear H. my_inversion H0. eexists. split; eauto. Lia.lia.
  Qed. Hint Resolve stlc_num_app_app_rev_bounds_1: core.
 
 Lemma stlc_num_app_app_rev_bounds_2 : forall v, (forall t2, (forall n, (forall m2, (((stlc_app2 v t2) /\ ((num_app t2 m2) /\ (num_app v n))) -> (m2 < n))))). Proof.
-    intros. simp. my_inversion H; clear H. my_inversion H1; clear H1. assert (n2 = m2); try lia. generalize dependent m2. generalize dependent n2. clear H3. clear n1. clear t1. induction t2.
+    intros. simp. my_inversion H; clear H. my_inversion H1; clear H1. assert (n2 = m2); try Lia.lia. generalize dependent m2. generalize dependent n2. clear H3. clear n1. clear t1. induction t2.
     - intros. my_inversion H0. my_inversion H5.
     - intros. my_inversion H0. my_inversion H5.
     - intros. my_inversion H0; clear H0. my_inversion H5; clear H5. eapply IHt2_1 in H2; eapply IHt2_1 in H1; clear IHt2_1; eapply IHt2_2 in H4; eapply IHt2_2 in H6; clear IHt2_2. eauto. eapply H6. assert (n0 = n4). eapply H6. subst. eauto. auto. eapply H1. eapply H6. eapply H4. all: subst. shelve. assert (n1 = n3). eapply H1. all: subst. auto. apply H6. eapply H4. shelve. auto. apply H6. apply H4. Unshelve. shelve. shelve. shelve. eapply H4. shelve. eapply H6. Unshelve. eapply H4.

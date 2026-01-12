@@ -1,4 +1,5 @@
 From Stdlib Require Logic.ClassicalFacts.
+From Stdlib Require Lia.
 
 Tactic Notation "simplify_eq" := repeat match goal with
   | _ => congruence || (progress subst)
@@ -21,7 +22,7 @@ Ltac simp := repeat match goal with
 | _ => solve [eauto]
 end.
 
-Axiom excluded_middle: excluded_middle.
+Axiom excluded_middle: forall P: Prop, P \/ ~ P.
 Lemma rewrite_not_conj P Q: not (P /\ Q) <-> (not P) \/ (not Q).
 Proof.
   split; intros; auto.

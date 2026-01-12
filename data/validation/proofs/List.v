@@ -1,6 +1,6 @@
 From Stdlib Require List.
 From Stdlib Require Lia.
-Import ListNotations.
+Open Scope list_scope.
 
 From Stdlib Require Export Logic.Classical_Pred_Type.
 
@@ -8,31 +8,31 @@ From MyProject Require Import Tactics.
 
 
 Inductive hd : list nat -> nat -> Prop :=
-| lhd1: forall u u', u = u' -> hd [u] u'
+| lhd1: forall u u', u = u' -> hd (u :: nil) u'
 | lhd2: forall l u u', u = u' ->  hd (u :: l) u'.
 
 Inductive tl : list nat -> list nat -> Prop :=
 | ltl2: forall u l l', l = l' ->  tl (u :: l) l'.
 
 Inductive len : list nat -> nat -> Prop :=
-| llen1: len [] 0
+| llen1: len nil 0
 | llen2: forall l u n, len (l) n -> len (u :: l) (n + 1).
 
 Inductive emp : list nat -> Prop :=
-| lemp1: emp [].
+| lemp1: emp nil.
 
 Inductive list_mem: list nat -> nat -> Prop :=
 | lmem1: forall l u, list_mem (u :: l) u
 | lmem2: forall l u v, list_mem l u -> list_mem (v :: l) u.
 
 Inductive sorted : list nat -> Prop :=
-| lsorted1: sorted []
-| lsorted2: forall n, sorted [n]
+| lsorted1: sorted nil
+| lsorted2: forall n, sorted (n :: nil)
 | lsorted3: forall n n' l, sorted (n' :: l) -> n <= n' -> sorted (n :: n' :: l).
 
 Inductive uniq : list nat -> Prop :=
-| luniq1 : uniq []
-| luniq2 : forall n, uniq [n]
+| luniq1 : uniq nil
+| luniq2 : forall n, uniq (n :: nil)
 | luniq3 : forall n l, uniq l -> not (list_mem l n) -> uniq (n :: l).
 
 Hint Constructors hd: core.
@@ -83,7 +83,7 @@ Lemma list_tl_no_emp : forall l, (forall l1, (tl l l1 -> ~emp l)). Proof.
 Qed. Hint Resolve list_tl_no_emp: core.
 
 Lemma list_len_geq_0 : forall l, (forall n, (len l n -> n >= 0)). Proof.
-    intros. lia.
+     intros l n H. induction H; simp; Lia.lia.
 Qed. Hint Resolve list_len_geq_0: core.
 
 Lemma list_hd_leq : forall l, (forall x, (forall y, ((x <= y /\ hd l y) -> (forall u, (hd l u -> x <= u))))). Proof.
@@ -109,7 +109,7 @@ Lemma list_positive_len_is_not_emp : forall l, (forall n, ((len l n /\ n > 0) ->
 Lemma list_tl_len_plus_1 : forall l, (forall l1, (forall n, (tl l l1 -> (len l1 n <-> len l (n + 1))))). Proof.
     intros. split; intro.
     - my_inversion H. auto.
-    - my_inversion H. my_inversion H0. assert (n0 = n). lia. subst. auto.
+    - my_inversion H. my_inversion H0. assert (n0 = n). Lia.lia. subst. auto.
  Qed. Hint Resolve list_tl_len_plus_1: core.
 
 Lemma list_hd_is_mem : forall l, (forall u, (hd l u -> list_mem l u)). Proof.
@@ -135,7 +135,7 @@ Qed. Hint Resolve list_emp_sorted: core.
 Lemma list_single_sorted : forall l, (len l 1 -> sorted l). Proof.
     intros. my_inversion H. my_inversion H2.
     - constructor.
-    - lia.
+    - Lia.lia.
  Qed. Hint Resolve list_single_sorted: core.
 
 Lemma list_tl_sorted : forall l, (forall l1, ((tl l l1 /\ sorted l) -> sorted l1)). Proof.
@@ -163,10 +163,10 @@ Lemma list_tl_unique : forall l, (forall l1, ((tl l l1 /\ uniq l) -> uniq l1)). 
  Qed. Hint Resolve list_tl_unique: core.
 
 Lemma not_list_hd_unique : not (forall l, (forall l1, (forall x, ((tl l l1 /\ (uniq l /\ hd l1 x))) -> ~list_mem l1 x))). Proof.
-    apply ex_not_not_all. exists (0 :: [1]). apply ex_not_not_all. exists [1]. apply ex_not_not_all. exists 1. unfold not. intros. apply H.
-    - split; auto. split; auto. constructor; auto. unfold not. intros. my_inversion H0. my_inversion H4.
-    - constructor.
- Qed. Hint Resolve not_list_hd_unique: core.
+     apply ex_not_not_all. exists (0 :: (1 :: nil)). apply ex_not_not_all. exists (1 :: nil). apply ex_not_not_all. exists 1. unfold not. intros. apply H.
+     - split; auto. split; auto. constructor; auto. unfold not. intros. my_inversion H0. my_inversion H4.
+     - constructor.
+  Qed. Hint Resolve not_list_hd_unique: core.
 
  Lemma list_hd_unique : (forall l, (forall l1, (forall x, ((tl l l1 /\ (uniq l /\ hd l x))) -> ~list_mem l1 x))). Proof.
     intros. simp. my_inversion H. my_inversion H1.

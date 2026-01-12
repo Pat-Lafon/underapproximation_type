@@ -129,7 +129,7 @@ Lemma rbtree_num_black_0_rb_leaf : forall l, ((num_black l 0 /\ ~rb_root_color l
 Qed. Hint Resolve rbtree_num_black_0_rb_leaf: core.
 
 Lemma rbtree_num_black_geq_0 : forall l, (forall n, (num_black l n -> n >= 0)). Proof.
-  intros. induction n. eauto. lia.
+   intros l n H. induction H; simp.
 Qed. Hint Resolve rbtree_num_black_geq_0: core.
 
 Lemma rbtree_rb_leaf_num_black_0 : forall l, (forall n, ((rb_leaf l /\ num_black l n) -> n = 0)). Proof.
