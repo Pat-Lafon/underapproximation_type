@@ -1,4 +1,4 @@
-Require Import Logic.ClassicalFacts.
+From Stdlib Require Logic.ClassicalFacts.
 
 Tactic Notation "simplify_eq" := repeat match goal with
   | _ => congruence || (progress subst)

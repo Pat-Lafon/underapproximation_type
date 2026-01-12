@@ -1,10 +1,10 @@
-Require Import Setoid.
-Require Import Lia.
+From Stdlib Require Setoid.
+From Stdlib Require Lia.
 
-Require Import List.
+From Stdlib Require List.
 Import ListNotations.
 
-From Coq Require Export Logic.Classical_Pred_Type.
+From Stdlib Require Export Logic.Classical_Pred_Type.
 
 From MyProject Require Import Tactics.
 

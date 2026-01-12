@@ -1,8 +1,8 @@
-Require Import List.
-Require Import Lia.
+From Stdlib Require List.
+From Stdlib Require Lia.
 Import ListNotations.
 
-From Coq Require Export Logic.Classical_Pred_Type.
+From Stdlib Require Export Logic.Classical_Pred_Type.
 
 From MyProject Require Import Tactics.
 
