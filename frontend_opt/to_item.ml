@@ -10,11 +10,7 @@ open To_rty
 open To_prop
 open To_id
 open Sugar
-
-(* IDK, a set of functions to reflect so I don't polute the Item Variant*)
-let reflect_func_set = Hashtbl.create 10
-
-let reflect_func_mem s = Hashtbl.mem reflect_func_set s
+open Reflect
 
 let ocaml_structure_item_to_item structure =
   match structure.pstr_desc with
@@ -28,7 +24,17 @@ let ocaml_structure_item_to_item structure =
            | [ x ] when String.equal x.attr_name.txt "method_pred" ->
                MMethodPred pval_name.txt#:(Some (Nt.core_type_to_t pval_type))
            | _ -> MValDecl pval_name.txt#:(Some (Nt.core_type_to_t pval_type)))
-  | Pstr_type (_, [ type_dec ]) -> Some (To_type_dec.of_ocamltypedec type_dec)
+  | Pstr_type (_, [ type_dec ]) -> (
+      let item = To_type_dec.of_ocamltypedec type_dec in
+      match type_dec.ptype_attributes with
+      | [ x ] when String.equal x.attr_name.txt "reflect" -> (
+          match item with
+          | MTyDecl { type_name; type_params; type_decls } ->
+              add_reflect_type type_name type_params type_decls;
+              Some item
+          | _ -> failwith "unexpected item type from To_type_dec.of_ocamltypedec")
+      | [] -> Some item
+      | _ -> failwith "unimplemented case I can come back to later")
   | Pstr_value (flag, [ value_binding ]) ->
       Some
         (let name = id_of_pattern value_binding.pvb_pat in
@@ -36,7 +42,7 @@ let ocaml_structure_item_to_item structure =
          | [ x ] -> (
              match x.attr_name.txt with
              | "reflect" ->
-                 Hashtbl.add reflect_func_set name ();
+                 add_reflect_func name;
                  let body = typed_raw_term_of_expr value_binding.pvb_expr in
                  (* let () = Printf.printf "if_rec: %b\n" (get_if_rec flag) in *)
                  (* let () = failwith "end" in *)
@@ -131,7 +137,8 @@ let layout_item_to_coq = function
 
 let layout_item_to_lean = function
   | MAxiom { name; prop } ->
-      spf "@[grind]\ntheorem %s : %s := by grind" name (layout_prop_to_lean prop)
+      spf "@[grind]\ntheorem %s : %s := by grind" name
+        (layout_prop_to_lean prop)
   | _ -> _failatwith __FILE__ __LINE__ "not implemented"
 
 let layout_structure l = spf "%s\n" (List.split_by "\n" layout_item l)

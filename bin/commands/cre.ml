@@ -26,7 +26,7 @@ let preprocess source_file () =
       (fun s ->
         match s with
         | MFuncImpRaw { name; _ }
-          when Frontend_opt.To_item.reflect_func_mem name.x ->
+          when Frontend_opt.Reflect.reflect_func_mem name.x ->
             true
         | _ -> false)
       code

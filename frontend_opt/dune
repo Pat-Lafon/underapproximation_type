@@ -4,6 +4,7 @@
  (wrapped true)
  (libraries translate syntax underapproximation_type.zzenv)
  (modules
+  reflect
   to_notation
   to_id
   to_op
