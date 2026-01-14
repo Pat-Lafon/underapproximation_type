@@ -1,4 +1,3 @@
-include Frontend_opt
 include Mtyped
 include Constant
 include Op
@@ -14,50 +13,50 @@ include Item
 module Env = Zzenv
 
 module FrontendRaw = struct
-  let layout_constant = To_constant.layout_constant
-  let layout_constants = To_constant.layout_constants
-  let layout_op = To_op.layout_op
-  let layout_typed_lit = To_lit.layout_typed_lit
-  let layout_lit = To_lit.layout
-  let layout_prop = To_prop.layout_prop
-  let layout_cty = To_cty.layout_cty
-  let layout_rty = To_rty.layout_rty
-  let layout_raw_term = To_raw_term.layout_raw_term
-  let layout_typed_raw_term = To_raw_term.layout_typed_raw_term
-  let layout_item = To_item.layout_item
-  let layout_structure = To_item.layout_structure
+  let layout_constant = Frontend_opt.To_constant.layout_constant
+  let layout_constants = Frontend_opt.To_constant.layout_constants
+  let layout_op = Frontend_opt.To_op.layout_op
+  let layout_typed_lit = Frontend_opt.To_lit.layout_typed_lit
+  let layout_lit = Frontend_opt.To_lit.layout
+  let layout_prop = Frontend_opt.To_prop.layout_prop
+  let layout_cty = Frontend_opt.To_cty.layout_cty
+  let layout_rty = Frontend_opt.To_rty.layout_rty
+  let layout_raw_term = Frontend_opt.To_raw_term.layout_raw_term
+  let layout_typed_raw_term = Frontend_opt.To_raw_term.layout_typed_raw_term
+  let layout_item = Frontend_opt.To_item.layout_item
+  let layout_structure = Frontend_opt.To_item.layout_structure
 end
 
 module FrontendTyped = struct
   let some ty = Some ty
-  let layout_constant = To_constant.layout_constant
-  let layout_constants = To_constant.layout_constants
-  let layout_op = To_op.layout_op
+  let layout_constant = Frontend_opt.To_constant.layout_constant
+  let layout_constants = Frontend_opt.To_constant.layout_constants
+  let layout_op = Frontend_opt.To_op.layout_op
 
   let layout_typed_lit e =
-    To_lit.layout_typed_lit (map_lit some e.x) #: (some e.ty)
+    Frontend_opt.To_lit.layout_typed_lit (map_lit some e.x) #: (some e.ty)
 
-  let layout_lit e = To_lit.layout @@ map_lit some e
-  let layout_prop prop = To_prop.layout_prop @@ map_prop some prop
-  let layout_prop_to_coq prop = To_prop.layout_prop_to_coq @@ map_prop some prop
-  let layout_prop_to_lean prop = To_prop.layout_prop_to_lean @@ map_prop some prop
+  let layout_lit e = Frontend_opt.To_lit.layout @@ map_lit some e
+  let layout_prop prop = Frontend_opt.To_prop.layout_prop @@ map_prop some prop
+  let layout_prop_to_coq prop = Frontend_opt.To_prop.layout_prop_to_coq @@ map_prop some prop
+  let layout_prop_to_lean prop = Frontend_opt.To_prop.layout_prop_to_lean @@ map_prop some prop
 
   let layout_prop_to_smtlib2 prop =
-    To_prop.layout_to_smtlib2 @@ map_prop some prop
+    Frontend_opt.To_prop.layout_to_smtlib2 @@ map_prop some prop
 
-  let layout_cty cty = To_cty.layout_cty @@ map_cty some cty
-  let layout_rty rty = To_rty.layout_rty @@ map_rty some rty
-  let layout_raw_term e = To_raw_term.layout_raw_term @@ map_raw_term some e
+  let layout_cty cty = Frontend_opt.To_cty.layout_cty @@ map_cty some cty
+  let layout_rty rty = Frontend_opt.To_rty.layout_rty @@ map_rty some rty
+  let layout_raw_term e = Frontend_opt.To_raw_term.layout_raw_term @@ map_raw_term some e
 
   let layout_typed_raw_term e =
-    To_raw_term.layout_typed_raw_term (map_raw_term some e.x) #: (some e.ty)
+    Frontend_opt.To_raw_term.layout_typed_raw_term (map_raw_term some e.x) #: (some e.ty)
 
-  let layout_item item = To_item.layout_item @@ map_item some item
-  let layout_item_to_coq item = To_item.layout_item_to_coq @@ map_item some item
-  let layout_item_to_lean item = To_item.layout_item_to_lean @@ map_item some item
+  let layout_item item = Frontend_opt.To_item.layout_item @@ map_item some item
+  let layout_item_to_coq item = Frontend_opt.To_item.layout_item_to_coq @@ map_item some item
+  let layout_item_to_lean item = Frontend_opt.To_item.layout_item_to_lean @@ map_item some item
 
   let layout_structure s =
-    To_item.layout_structure @@ List.map (map_item some) s
+    Frontend_opt.To_item.layout_structure @@ List.map (map_item some) s
 
   let layout_typed_term e =
     let e = Anf_to_raw_term.denormalize_term e in
@@ -66,7 +65,7 @@ module FrontendTyped = struct
   let layout_typed_erased_term e =
     let e = Anf_to_raw_term.denormalize_term e in
     let e = (map_raw_term (fun _ -> None) e.x) #: None in
-    To_raw_term.layout_typed_raw_term e
+    Frontend_opt.To_raw_term.layout_typed_raw_term e
 
   let layout_typed_value e =
     let e = Anf_to_raw_term.denormalize_value e in
@@ -395,13 +394,13 @@ module FrontendTyped = struct
   open Zzdatatype.Datatype
 
   let playout_under_subtyping ctx (r1, r2) =
-    To_typectx.playout_subtyping
-      (To_typectx.layout_typectx layout_rty ctx)
+    Frontend_opt.To_typectx.playout_subtyping
+      (Frontend_opt.To_typectx.layout_typectx layout_rty ctx)
       (layout_rty r1, layout_rty r2)
 
   let pprint_typectx x =
     Env.show_debug_typing (fun _ ->
-        To_typectx.pprint_typectx layout_rty x;
+        Frontend_opt.To_typectx.pprint_typectx layout_rty x;
         print_newline ())
 
   let pprint_typectx_infer ctx (e, (r : t rty)) =

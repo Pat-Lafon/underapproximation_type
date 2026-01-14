@@ -3,7 +3,7 @@ open Caux
 open Language
 open Zzdatatype.Datatype
 open Preprocessing.Normal_item_typing
-open To_item
+open Frontend_opt.To_item
 open Raw_term_to_anf
 
 let parse = Ocaml5_parser.Frontend.parse
