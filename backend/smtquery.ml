@@ -21,8 +21,6 @@ let ctx =
       (* 13 timeouts *)
     ]
 
-let _ = Dtencoding.list_data_type ctx
-
 (* let _ =
   let open Mtyped in
   Funencoding.z3_create_rec_func ctx "len"
