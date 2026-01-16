@@ -12,8 +12,9 @@ let preprocess source_file () =
   let prim_path = Env.get_prim_path () in
   let s1 = parse ~sourcefile:prim_path.type_decls in
   let s2 = parse ~sourcefile:prim_path.normal_typing in
+  let items = ocaml_structure_to_items (s1 @ s2) in
   let init_normal_ctx =
-    struct_mk_ctx Typectx.emp (ocaml_structure_to_items (s1 @ s2))
+    struct_mk_ctx Typectx.emp items
   in
   let code =
     ocaml_structure_to_items
@@ -30,18 +31,6 @@ let preprocess source_file () =
             true
         | _ -> false)
       code
-  in
-
-  let list_ty = Nt.T.Ty_constructor ("ilist", []) in
-
-  let init_normal_ctx =
-    Typectx.add_to_right init_normal_ctx
-      "tail"#:(Nt.T.Ty_arrow (list_ty, list_ty))
-  in
-
-  let init_normal_ctx =
-    Typectx.add_to_right init_normal_ctx
-      "head"#:(Nt.T.Ty_arrow (list_ty, Nt.T.Ty_int))
   in
 
   let init_normal_ctx, reflectable_functions =
@@ -103,8 +92,18 @@ let handle_lemma axioms =
 
 let init_type_context meta_config_file source_file : _ * Env.prim_path * _ * _ =
   let () = Env.load_meta meta_config_file in
-  let _ = Backend.Dtencoding.list_data_type Backend.Smtquery.ctx in
+  let () = 
+    (* Initialize builtin datatypes *)
+    let _ = Backend.Dtencoding.list_data_type Backend.Smtquery.ctx in
+    ()
+  in
   let code = preprocess source_file () in
+  let () =
+    Core.List.iter code ~f:(function
+      | Item.MTyDecl { type_name; type_params = _; type_decls } ->
+          Backend.Z3aux.create_and_register_datatype Backend.Smtquery.ctx type_name type_decls
+      | _ -> ())
+  in
   let prim_path = Env.get_prim_path () in
   let predefine = preprocess prim_path.coverage_typing () in
   let builtin_ctx = Typing.Itemcheck.gather_uctx predefine in
@@ -119,7 +118,9 @@ let init_templates_and_axioms (prim_path : Env.prim_path) axioms =
   axioms
 
 let subtype_check_ meta_config_file source_file () =
-  let code, _, builtin_ctx, axioms = init_type_context meta_config_file source_file in
+  let code, _, builtin_ctx, axioms =
+    init_type_context meta_config_file source_file
+  in
   let axioms =
     List.map (fun x -> x.ty) @@ Typing.Itemcheck.gather_axioms axioms
   in
@@ -137,13 +138,17 @@ let subtype_check_ meta_config_file source_file () =
   ()
 
 let type_check_ meta_config_file source_file () =
-  let code, prim_path, builtin_ctx, axioms = init_type_context meta_config_file source_file in
+  let code, prim_path, builtin_ctx, axioms =
+    init_type_context meta_config_file source_file
+  in
   let axioms = init_templates_and_axioms prim_path axioms in
   let _ = Typing.Itemcheck.struc_check (axioms, builtin_ctx) code in
   ()
 
 let type_infer_inner meta_config_file source_file () =
-  let code, prim_path, builtin_ctx, axioms = init_type_context meta_config_file source_file in
+  let code, prim_path, builtin_ctx, axioms =
+    init_type_context meta_config_file source_file
+  in
   let axioms = init_templates_and_axioms prim_path axioms in
   let _ = Typing.Itemcheck.struc_infer (axioms, builtin_ctx) code in
   let result = Typing.Termsyn.get_inferred_result () in
@@ -166,7 +171,8 @@ let process_axioms meta_config_file ?header formatter =
   List.iter (fun x -> Printf.printf "%s\n" (formatter x)) axioms
 
 let coq_axioms meta_config_file () =
-  process_axioms meta_config_file ~header:"Axioms:" FrontendTyped.layout_item_to_coq
+  process_axioms meta_config_file ~header:"Axioms:"
+    FrontendTyped.layout_item_to_coq
 
 let lean_axioms meta_config_file () =
   process_axioms meta_config_file FrontendTyped.layout_item_to_lean

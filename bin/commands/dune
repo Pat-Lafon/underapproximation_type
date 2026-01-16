@@ -6,9 +6,11 @@
   core_unix.sys_unix
   frontend_opt
   syntax
+  language
   preprocessing
   translate
   typing
+  backend
   ; inferrty
   ; inference
   )

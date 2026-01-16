@@ -19,6 +19,8 @@ let reflect_type_mem s = Hashtbl.mem reflect_type_set s
 
 let get_reflect_type s = Hashtbl.find_opt reflect_type_set s
 
+let get_all_reflected_types () = Hashtbl.fold (fun _ v acc -> v :: acc) reflect_type_set []
+
 let add_reflect_func name = Hashtbl.add reflect_func_set name ()
 
 let add_reflect_type name type_params type_decls =

@@ -2,22 +2,52 @@ open Ocaml5_parser
 open Parsetree
 open Item
 open Constructor_declaration
+open Mtyped
 module Type = Normalty.Frontend
 open Sugar
 
 let constructor_declaration_of_ocaml { pcd_name; pcd_args; _ } =
-  let argsty =
-    match pcd_args with
-    | Pcstr_tuple cts -> List.map Type.core_type_to_t cts
-    | _ -> failwith "unimp complex type decl"
-  in
-  { constr_name = pcd_name.txt; argsty }
+  match pcd_args with
+  | Pcstr_tuple cts ->
+      let args =
+        List.mapi (fun i ct ->
+            let ty = Type.core_type_to_t ct in
+            { x = Printf.sprintf "field_%d" i; ty })
+          cts
+      in
+      { Constructor_declaration.constr_name = pcd_name.txt; args = Tuple args }
+  | Pcstr_record fields ->
+      let args =
+        List.map (fun { pld_name; pld_type; _ } ->
+            let ty = Type.core_type_to_t pld_type in
+            { x = pld_name.txt; ty })
+          fields
+      in
+      { Constructor_declaration.constr_name = pcd_name.txt; args = Record args }
 
-let constructor_declaration_to_ocaml { constr_name; argsty } =
+let constructor_declaration_to_ocaml { constr_name; args } =
+  let pcd_args =
+    match args with
+    | Record arg_list ->
+        let pld_fields =
+          List.map (fun { x = name; ty } ->
+              {
+                pld_name = Location.mknoloc name;
+                pld_type = Type.t_to_core_type ty;
+                pld_loc = Location.none;
+                pld_mutable = Asttypes.Immutable;
+                pld_attributes = [];
+              })
+            arg_list
+        in
+        Pcstr_record pld_fields
+    | Tuple arg_list -> 
+        Pcstr_tuple (List.map (fun { ty; _ } -> Type.t_to_core_type ty) arg_list)
+  in
   {
     pcd_name = Location.mknoloc constr_name;
     pcd_vars = [];
-    pcd_args = Pcstr_tuple (List.map Type.t_to_core_type argsty);
+    pcd_args;
     pcd_res = None;
     pcd_loc = Location.none;
     pcd_attributes = [];

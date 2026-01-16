@@ -11,6 +11,9 @@ let datatype_map : (string, z3_data_type) Hashtbl.t = Hashtbl.create 5
 let z3_data_type_get (s : string) : z3_data_type option =
   Hashtbl.find_opt datatype_map s
 
+let register_data_type (name : string) (dt : z3_data_type) : unit =
+  Hashtbl.add datatype_map name dt
+
 let z3_data_type_func_get (dt : z3_data_type) (f : string) :
     Z3.FuncDecl.func_decl option =
   List.find_opt (fun (name, _) -> name = f) dt.constructors

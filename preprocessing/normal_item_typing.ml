@@ -7,8 +7,9 @@ open Normal_term_typing
 
 type t = Nt.t
 
-let constructor_declaration_mk_ (retty, { constr_name; argsty }) =
-  constr_name #: (Nt.construct_arr_tp (argsty, retty))
+let constructor_declaration_mk_ (retty, { constr_name; args }) =
+  let argsty = Constructor_declaration.get_arg_types args in
+  constr_name#:(Nt.construct_arr_tp (argsty, retty))
 
 let item_mk_ctx (e : t option item) =
   match e with
@@ -29,7 +30,7 @@ let item_mk_ctx (e : t option item) =
 
 let item_erase (e : 'a option item) =
   match e with
-  | MRty { name; rty; _ } -> MValDecl name #: (Some (erase_rty rty))
+  | MRty { name; rty; _ } -> MValDecl name#:(Some (erase_rty rty))
   | _ -> e
 
 let item_check ctx (e : t option item) : t ctx * t item =
@@ -58,11 +59,11 @@ let item_check ctx (e : t option item) : t ctx * t item =
       (ctx, MRty { is_assumption; name; rty = bi_typed_rty_check ctx rty })
   | MFuncImpRaw { name; if_rec = false; body } ->
       let body = bi_typed_term_infer ctx body in
-      let name = name.x #: body.ty in
+      let name = name.x#:body.ty in
       (add_to_right ctx name, MFuncImpRaw { name; if_rec = false; body })
   | MFuncImpRaw { name; if_rec = true; body } ->
       let name_ty = Raw_term.__get_lam_term_ty __FILE__ __LINE__ body.x in
-      let name = name.x #: name_ty in
+      let name = name.x#:name_ty in
       let ctx' = add_to_right ctx name in
       let body = bi_typed_term_check ctx' body name.ty in
       (ctx', MFuncImpRaw { name; if_rec = true; body })

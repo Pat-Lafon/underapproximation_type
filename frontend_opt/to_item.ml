@@ -44,8 +44,6 @@ let ocaml_structure_item_to_item structure =
              | "reflect" ->
                  add_reflect_func name;
                  let body = typed_raw_term_of_expr value_binding.pvb_expr in
-                 (* let () = Printf.printf "if_rec: %b\n" (get_if_rec flag) in *)
-                 (* let () = failwith "end" in *)
                  MFuncImpRaw
                    {
                      name =
@@ -77,8 +75,6 @@ let ocaml_structure_item_to_item structure =
                   ^ " is non known rty kind, not axiom | assert | library"))
          | [] ->
              let body = typed_raw_term_of_expr value_binding.pvb_expr in
-             (* let () = Printf.printf "if_rec: %b\n" (get_if_rec flag) in *)
-             (* let () = failwith "end" in *)
              MFuncImpRaw
                {
                  name =

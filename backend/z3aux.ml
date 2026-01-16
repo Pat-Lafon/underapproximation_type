@@ -5,6 +5,7 @@ open Z3.Arithmetic
 open Normalty.Ntyped
 module T = Normalty.SMTtyped
 open Sugar
+open Mtyped
 
 let find_const_in_model m x =
   let cs = Z3.Model.get_const_decls m in
@@ -136,6 +137,24 @@ let z3expr_to_bool v =
   | Z3enums.L_TRUE -> true
   | Z3enums.L_FALSE -> false
   | Z3enums.L_UNDEF -> failwith "z3expr_to_bool"
+
+(* Create and register a Z3 datatype from constructor declarations *)
+let create_and_register_datatype ctx type_name type_decls =
+  (* Convert constructor_declaration to Z3 case format *)
+  let cases : Dtencoding.case list =
+    List.map (fun (constr : Constructor_declaration.constructor_declaration) ->
+      let arg_list = Constructor_declaration.get_args constr.args in
+      let z3_args =
+        List.map (fun { x = name; ty } ->
+            (name, Some (tp_to_sort ctx ty)))
+          arg_list
+      in
+      (constr.constr_name, z3_args))
+      type_decls
+  in
+  
+  let dt = Dtencoding.create_data_type ctx type_name cases in
+  Dtencoding.register_data_type type_name dt
 
 (* type imp_version = V1 | V2 *)
 
