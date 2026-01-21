@@ -13,15 +13,13 @@ let preprocess source_file () =
   let s1 = parse ~sourcefile:prim_path.type_decls in
   let s2 = parse ~sourcefile:prim_path.normal_typing in
   let items = ocaml_structure_to_items (s1 @ s2) in
-  let init_normal_ctx =
-    struct_mk_ctx Typectx.emp items
-  in
+  let init_normal_ctx = struct_mk_ctx Typectx.emp items in
   let code =
     ocaml_structure_to_items
     @@ Ocaml5_parser.Frontend.parse ~sourcefile:source_file
   in
-  (*   let _ = Pp.printf "%s\n" (FrontendRaw.layout_structure code) in *)
 
+  (*   let _ = Pp.printf "%s\n" (FrontendRaw.layout_structure code) in *)
   let reflectable_functions, code =
     List.partition
       (fun s ->
@@ -36,9 +34,9 @@ let preprocess source_file () =
   let init_normal_ctx, reflectable_functions =
     struct_check init_normal_ctx reflectable_functions
   in
+
   (*
   let reflectable_functions = normalize_structure reflectable_functions in *)
-
   let () =
     List.iter
       (fun i ->
@@ -92,7 +90,7 @@ let handle_lemma axioms =
 
 let init_type_context meta_config_file source_file : _ * Env.prim_path * _ * _ =
   let () = Env.load_meta meta_config_file in
-  let () = 
+  let () =
     (* Initialize builtin datatypes *)
     let _ = Backend.Dtencoding.list_data_type Backend.Smtquery.ctx in
     ()
@@ -101,7 +99,8 @@ let init_type_context meta_config_file source_file : _ * Env.prim_path * _ * _ =
   let () =
     Core.List.iter code ~f:(function
       | Item.MTyDecl { type_name; type_params = _; type_decls } ->
-          Backend.Z3aux.create_and_register_datatype Backend.Smtquery.ctx type_name type_decls
+          Backend.Z3aux.create_and_register_datatype Backend.Smtquery.ctx
+            type_name type_decls
       | _ -> ())
   in
   let prim_path = Env.get_prim_path () in
