@@ -72,7 +72,7 @@ let item_check ctx (e : t option item) : t ctx * t item =
 let struct_mk_ctx ctx l =
   add_to_rights ctx @@ List.concat @@ List.map item_mk_ctx l
 
-let struct_check ctx l =
+let struct_check (ctx : Nt.t Typectx.ctx) l =
   List.fold_left
     (fun (ctx, res) e ->
       let ctx, e = item_check ctx e in
