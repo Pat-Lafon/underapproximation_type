@@ -141,8 +141,8 @@ let type_check_ meta_config_file source_file () =
     init_type_context meta_config_file source_file
   in
   let axioms = init_templates_and_axioms prim_path axioms in
-  let _ = Typing.Itemcheck.struc_check (axioms, builtin_ctx) code in
-  ()
+  let b = Typing.Itemcheck.struc_check (axioms, builtin_ctx) code in
+  if not b then failwith "typechecking failed" else ()
 
 let type_infer_inner meta_config_file source_file () =
   let code, prim_path, builtin_ctx, axioms =
