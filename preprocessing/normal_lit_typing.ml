@@ -22,7 +22,7 @@ let rec bi_typed_lit_check (ctx : t ctx) (lit : (t option, t option lit) typed)
   | AAppOp (mp, args), _ ->
       let mp = bi_typed_id_infer ctx mp in
       let args' = List.map (bi_typed_lit_infer ctx) args in
-      (* let _ = Printf.printf "lit: %s\n" (To_lit.layout_typed_lit lit) in *)
+      (* let _ = Printf.printf "name: %s\n" mp.x in *)
       let mp_ty =
         Nt._type_unify __FILE__ __LINE__ mp.ty
           (Nt.construct_arr_tp (List.map _get_ty args', ty))
