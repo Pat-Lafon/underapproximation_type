@@ -65,7 +65,7 @@ let item_infer (axioms, uctx) imps = function
       in
       let () =
         Env.show_debug_result @@ fun _ ->
-        Pp.printf "@{<bold>partial infer against with:@} %s\n"
+        Pp.printf "@{<bold>Expected type:@} %s\n"
           (FrontendTyped.layout_rty rty)
       in
       let _ = Nt._type_unify __FILE__ __LINE__ imp.ty (erase_rty rty) in
@@ -74,11 +74,14 @@ let item_infer (axioms, uctx) imps = function
           { builtin_ctx = uctx; local_ctx = emp; axioms }
           imp rty
       with
-      | Some _ ->
+      | Some inferred_typed ->
           ( Env.show_debug_result @@ fun _ ->
             Pp.printf "@{<bold>@{<yellow>Task %s, type infer succeeded@}@}\n"
               name );
-          Some (add_to_right uctx name #: rty, imps)
+          ( Env.show_debug_result @@ fun _ ->
+            Pp.printf "@{<bold>Inferred coverage:@} %s\n"
+              (FrontendTyped.layout_rty inferred_typed.ty) );
+          Some (add_to_right uctx name #: inferred_typed.ty, imps)
       | None ->
           ( Env.show_debug_result @@ fun _ ->
             Pp.printf "@{<bold>@{<red>Task %s, type infer failed@}@}\n" name );

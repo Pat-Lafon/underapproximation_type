@@ -57,5 +57,12 @@ let abductive_infer_rty uctx rty1 rty2 =
   match (rty1, rty2) with
   | RtyBase { ou = false; cty = cty1 }, RtyBase { ou = false; cty = cty2 } ->
       let cty = abductive_infer_cty uctx cty1 cty2 in
-      RtyBase { ou = false; cty }
+      let result = RtyBase { ou = false; cty } in
+      ( Env.show_debug_result @@ fun _ ->
+        let open Language.FrontendTyped in
+        Pp.printf "@{<bold>Abduction:@}\n";
+        Pp.printf "@{<bold>  Inferred (current):@} %s\n" (layout_rty rty1);
+        Pp.printf "@{<bold>  Expected (spec):@} %s\n" (layout_rty rty2);
+        Pp.printf "@{<bold>  Missing coverage:@} %s\n" (layout_rty result) );
+      result
   | _, _ -> _failatwith __FILE__ __LINE__ "unimp"
