@@ -44,8 +44,12 @@ and bi_term_check (ctx : t ctx) (x : t option raw_term) (ty : t) :
       let op' = bi_typed_op_infer ctx op in
       let args' = List.map (bi_typed_term_infer ctx) args in
       let fty =
-        Nt._type_unify __FILE__ __LINE__ op'.ty
-          (Nt.construct_arr_tp (List.map _get_ty args', ty))
+        try
+          Nt._type_unify __FILE__ __LINE__ op'.ty
+            (Nt.construct_arr_tp (List.map _get_ty args', ty))
+        with Failure msg ->
+          Printf.eprintf "ERROR [appop_term_check_type_unify]: op.x=%s, %s\n" op.x msg;
+          raise (Failure msg)
       in
       let argsty, _ = Nt.destruct_arr_tp fty in
       (* This code does not currently handle partial application well because

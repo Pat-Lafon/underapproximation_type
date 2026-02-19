@@ -14,24 +14,35 @@ let rec bi_typed_lit_check (ctx : t ctx) (lit : (t option, t option lit) typed)
       lit.x #: ty
   | ATu l, Nt.Ty_tuple tys ->
       let l =
-        List.map (fun (x, ty) -> bi_typed_lit_check ctx x ty)
-        @@ _safe_combine __FILE__ __LINE__ l tys
+        try
+          List.map (fun (x, ty) -> bi_typed_lit_check ctx x ty)
+          @@ _safe_combine __FILE__ __LINE__ l tys
+        with Failure msg ->
+          Printf.eprintf "ERROR [tuple_lit_check_safe_combine]: %s\n" msg;
+          raise (Failure msg)
       in
       (ATu l) #: ty
   | AProj _, _ -> _failatwith __FILE__ __LINE__ "unimp"
   | AAppOp (mp, args), _ ->
       let mp = bi_typed_id_infer ctx mp in
       let args' = List.map (bi_typed_lit_infer ctx) args in
-      (* let _ = Printf.printf "name: %s\n" mp.x in *)
       let mp_ty =
-        Nt._type_unify __FILE__ __LINE__ mp.ty
-          (Nt.construct_arr_tp (List.map _get_ty args', ty))
+        try
+          Nt._type_unify __FILE__ __LINE__ mp.ty
+            (Nt.construct_arr_tp (List.map _get_ty args', ty))
+        with Failure msg ->
+          Printf.eprintf "ERROR [appop_check_type_unify]: mp.x=%s, %s\n" mp.x msg;
+          raise (Failure msg)
       in
       let mp = mp.x #: mp_ty in
       let argsty, _ = Nt.destruct_arr_tp mp_ty in
       let args =
-        List.map (fun (x, ty) -> bi_typed_lit_check ctx x ty)
-        @@ _safe_combine __FILE__ __LINE__ args argsty
+        try
+          List.map (fun (x, ty) -> bi_typed_lit_check ctx x ty)
+          @@ _safe_combine __FILE__ __LINE__ args argsty
+        with Failure msg ->
+          Printf.eprintf "ERROR [appop_check_safe_combine]: mp.x=%s, %s\n" mp.x msg;
+          raise (Failure msg)
       in
       (AAppOp (mp, args)) #: ty
   | _, _ -> _failatwith __FILE__ __LINE__ "lit type error"
@@ -61,13 +72,21 @@ and bi_typed_lit_infer (ctx : t ctx) (lit : (t option, t option lit) typed) :
       let mp = bi_typed_id_infer ctx mp in
       let args' = List.map (bi_typed_lit_infer ctx) args in
       let mp_ty =
-        Nt._type_unify __FILE__ __LINE__ mp.ty
-          (Nt.construct_arr_tp (List.map _get_ty args', Ty_unknown))
+        try
+          Nt._type_unify __FILE__ __LINE__ mp.ty
+            (Nt.construct_arr_tp (List.map _get_ty args', Ty_unknown))
+        with Failure msg ->
+          Printf.eprintf "ERROR [appop_infer_type_unify]: mp.x=%s, %s\n" mp.x msg;
+          raise (Failure msg)
       in
       let mp = mp.x #: mp_ty in
       let argsty, retty = Nt.destruct_arr_tp mp_ty in
       let args =
-        List.map (fun (x, ty) -> bi_typed_lit_check ctx x ty)
-        @@ _safe_combine __FILE__ __LINE__ args argsty
+        try
+          List.map (fun (x, ty) -> bi_typed_lit_check ctx x ty)
+          @@ _safe_combine __FILE__ __LINE__ args argsty
+        with Failure msg ->
+          Printf.eprintf "ERROR [appop_infer_safe_combine]: mp.x=%s, %s\n" mp.x msg;
+          raise (Failure msg)
       in
       (AAppOp (mp, args)) #: retty
