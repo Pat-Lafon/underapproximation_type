@@ -48,7 +48,8 @@ and bi_term_check (ctx : t ctx) (x : t option raw_term) (ty : t) :
           Nt._type_unify __FILE__ __LINE__ op'.ty
             (Nt.construct_arr_tp (List.map _get_ty args', ty))
         with Failure msg ->
-          Printf.eprintf "ERROR [appop_term_check_type_unify]: op.x=%s, %s\n" op.x msg;
+          Printf.eprintf "ERROR [appop_term_check_type_unify]: op.x=%s, %s\n"
+            (op_name_for_typectx op.x) msg;
           raise (Failure msg)
       in
       let argsty, _ = Nt.destruct_arr_tp fty in
