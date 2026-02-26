@@ -77,3 +77,19 @@ let list_data_type ctx =
   let dt = create_data_type ctx name cases in
   Hashtbl.add datatype_map name dt;
   dt
+
+let tree_data_type ctx =
+  let name = "itree" in
+  let leaf = ("leaf", []) in
+  let node =
+    ( "node",
+      [
+        ("value", Some (Z3.Arithmetic.Integer.mk_sort ctx));
+        ("left", None);
+        ("right", None);
+      ] )
+  in
+  let cases = [ leaf; node ] in
+  let dt = create_data_type ctx name cases in
+  Hashtbl.add datatype_map name dt;
+  dt
