@@ -3,4 +3,4 @@
  (name subtyping)
  (wrapped true)
  (libraries language core backend zzenv)
- (modules subcty subrty))
+ (modules subcty subrty lean_dump))

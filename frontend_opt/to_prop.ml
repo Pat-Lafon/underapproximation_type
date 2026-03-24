@@ -108,11 +108,21 @@ let coqsetting =
 let lean_layout_ty = function
   | Some Nt.T.Ty_bool -> "Bool"
   | Some Nt.T.Ty_int -> "Int"
-  | Some (Nt.T.Ty_constructor (name, [Nt.T.Ty_int])) when name = "list" -> "MyList"
-  | Some (Nt.T.Ty_constructor (name, [Nt.T.Ty_var _])) when name = "list" -> "MyList"
+  | Some Nt.T.Ty_unit -> "Unit"
+  | Some (Nt.T.Ty_constructor (name, _)) -> (
+      match name with
+      | "ilist" -> "ilist"
+      | "itree" -> "itree"
+      | "rbtree" -> "rbtree"
+      | "stlc_ty" -> "StlcTy"
+      | "stlc_term" -> "StlcTerm"
+      | "stlc_tyctx" -> "StlcTyctx"
+      | _ -> _failatwith __FILE__ __LINE__
+               (spf "lean_layout_ty: unsupported constructor type '%s'" name))
   | ty ->
-      let ty_str = match ty with None -> "None" | Some _ -> "Some(...)" in
-      _failatwith __FILE__ __LINE__ (spf "Unknown type encountered: %s" ty_str)
+      let ty_str = match ty with None -> "None" | Some t -> Nt.layout t in
+      _failatwith __FILE__ __LINE__
+        (spf "lean_layout_ty: unsupported type '%s'" ty_str)
 
 let leansetting =
   {

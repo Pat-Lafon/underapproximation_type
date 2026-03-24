@@ -22,10 +22,10 @@ let rec normalize_ctx ctx =
   | [] -> ([], [])
   | { x = Fa, x; ty = cty } :: ctx ->
       let fa_ctx, ex_ctx = normalize_ctx ctx in
-      ((x #: cty) :: fa_ctx, ex_ctx)
+      ((x#:cty) :: fa_ctx, ex_ctx)
   | { x = Ex, x; ty = cty } :: ctx ->
       let fa_ctx, ex_ctx = normalize_ctx ctx in
-      (fa_ctx, (x #: cty) :: ex_ctx)
+      (fa_ctx, (x#:cty) :: ex_ctx)
 
 let check_query axioms query =
   (* let query = Simp.peval_prop query in *)
@@ -46,7 +46,9 @@ let check_query axioms query =
             fvs))
       (0 == List.length fvs)
   in
-  Backend.Smtquery.check_bool axioms query
+  let result = Backend.Smtquery.check_bool axioms query in
+  if not result then Lean_dump.dump_failed_query axioms query;
+  result
 
 let aux_sub_cty (axioms, uqvs) cty1 cty2 =
   let fa_ctx, ex_ctx = normalize_ctx uqvs in
@@ -83,7 +85,7 @@ let aux_sub_cty (axioms, uqvs) cty1 cty2 =
   let query =
     match nty with
     | Nt.Ty_unit -> body
-    | _ -> Forall { qv = default_v #: nty; body }
+    | _ -> Forall { qv = default_v#:nty; body }
   in
   let query =
     List.fold_right (fun x body -> forall_cty_to_prop (x, body)) fa_ctx query
@@ -96,7 +98,7 @@ let aux_emptyness (axioms, uqvs) cty =
   let query =
     match nty with
     | Nt.Ty_unit -> body
-    | _ -> Exists { qv = default_v #: nty; body }
+    | _ -> Exists { qv = default_v#:nty; body }
   in
   let query =
     List.fold_right
@@ -120,7 +122,7 @@ let rty_ctx_to_cty_ctx pctx =
         | RtyBaseArr _ | RtyArrArr _ -> aux pctx uqvs
         | RtyBase { ou; cty } ->
             let qt = ou_to_qt ou in
-            let x = (qt, binding.x) #: cty in
+            let x = (qt, binding.x)#:cty in
             aux pctx (x :: uqvs))
   in
   match pctx with Typectx pctx -> aux pctx []

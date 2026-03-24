@@ -19,6 +19,7 @@
         "templates": "data/predefined/templates.ml",
         "normal_typing": "data/predefined/normal_typing.ml",
         "axioms": "data/predefined/axioms.ml",
-        "coverage_typing": "data/predefined/coverage_typing.ml"
+        "coverage_typing": "data/predefined/coverage_typing.ml",
+        "lean_preamble": "data/predefined/lean_preamble.lean"
     }
 }

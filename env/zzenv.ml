@@ -8,6 +8,7 @@ type prim_path = {
   type_decls : string;
   axioms : string;
   templates : string;
+  lean_preamble : string;
 }
 [@@deriving sexp]
 
@@ -52,6 +53,7 @@ let show_debug_debug = show_log "debug"
 let get_resfile () = (get_meta ()).resfile
 let get_abdfile inputname = inputname ^ (get_meta ()).abdfile
 let get_prim_path () = (get_meta ()).prim_path
+let get_lean_preamble_path () = (get_meta ()).prim_path.lean_preamble
 let get_uninterops () = (get_meta ()).abd_templates
 
 let get_measure () =
@@ -86,6 +88,11 @@ let load_meta meta_fname =
   in
   let num_quantifier = metaj |> member "num_quantifier" |> to_int in
   let p = metaj |> member "prim_path" in
+  let lean_preamble =
+    match p |> member "lean_preamble" with
+    | `String s -> s
+    | _ -> "data/predefined/lean_preamble.lean"
+  in
   let prim_path =
     {
       templates = p |> member "templates" |> to_string;
@@ -93,6 +100,7 @@ let load_meta meta_fname =
       coverage_typing = p |> member "coverage_typing" |> to_string;
       type_decls = p |> member "data_type_decls" |> to_string;
       axioms = p |> member "axioms" |> to_string;
+      lean_preamble;
     }
   in
   meta_config :=
