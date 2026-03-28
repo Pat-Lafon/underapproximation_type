@@ -2,7 +2,7 @@
  (public_name underapproximation_type.frontend_opt)
  (name frontend_opt)
  (wrapped true)
- (libraries translate syntax underapproximation_type.zzenv)
+ (libraries translate syntax underapproximation_type.zzenv language_utils.normal5ty)
  (modules
   to_notation
   to_id
