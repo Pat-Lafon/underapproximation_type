@@ -114,6 +114,7 @@ let lean_layout_ty = function
       | "ilist" -> "ilist"
       | "itree" -> "itree"
       | "rbtree" -> "rbtree"
+      | "irbtree" -> "irbtree"
       | "stlc_ty" -> "StlcTy"
       | "stlc_term" -> "StlcTerm"
       | "stlc_tyctx" -> "StlcTyctx"

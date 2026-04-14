@@ -93,3 +93,20 @@ let tree_data_type ctx =
   let dt = create_data_type ctx name cases in
   Hashtbl.add datatype_map name dt;
   dt
+
+let rbtree_data_type ctx =
+  let name = "irbtree" in
+  let rbtleaf = ("rbtleaf", []) in
+  let rbtnode =
+    ( "rbtnode",
+      [
+        ("color", Some (Z3.Boolean.mk_sort ctx));
+        ("left", None);
+        ("value", Some (Z3.Arithmetic.Integer.mk_sort ctx));
+        ("right", None);
+      ] )
+  in
+  let cases = [ rbtleaf; rbtnode ] in
+  let dt = create_data_type ctx name cases in
+  Hashtbl.add datatype_map name dt;
+  dt

@@ -94,6 +94,7 @@ let init_type_context meta_config_file source_file : _ * Env.prim_path * _ * _ =
     (* Initialize builtin datatypes *)
     let _ = Backend.Dtencoding.list_data_type Backend.Smtquery.ctx in
     let _ = Backend.Dtencoding.tree_data_type Backend.Smtquery.ctx in
+    let _ = Backend.Dtencoding.rbtree_data_type Backend.Smtquery.ctx in
     ()
   in
   let code = preprocess source_file () in

@@ -39,12 +39,14 @@ let dump_failed_query axioms query =
            below.\n";
         Printf.fprintf oc
           "-- The axioms are assumptions from the coverage type system.\n\n";
+        (* Preamble should end with an open 'section Axioms' + local attributes *)
         Printf.fprintf oc "%s" (Lazy.force lean_preamble);
         List.iteri
           (fun i ax ->
-            Printf.fprintf oc "theorem ax_%i : %s := by\n  sorry\n\n" i
+            Printf.fprintf oc "theorem ax_%i : %s := by\n  prove_axiom\n\n" i
               (layout_prop_to_lean ax))
           axioms;
+        Printf.fprintf oc "end Axioms\n";
         Printf.fprintf oc
           "\ntheorem failed_subtyping_%i : %s := by\n  sorry\n" idx
           (layout_prop_to_lean query));
