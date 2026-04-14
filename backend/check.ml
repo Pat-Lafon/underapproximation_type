@@ -56,8 +56,11 @@ let smt_format_file ?(double_check = false) ~optional_timeout ~rlimit filename
         optional_timeout
   in
   let query = Z3.Solver.to_string solver in
-  let postlude = "\n(check-sat)\n" in
-  let postlude = if double_check then postlude ^ postlude else postlude in
+  let check_sat = "\n(check-sat)\n" in
+  let postlude =
+    (if double_check then check_sat ^ check_sat else check_sat)
+    ^ "(get-info :reason-unknown)\n"
+  in
   Printf.fprintf oc "%s%s%s" prelude query postlude;
   (* Printf.printf "%s%s%s" prelude query postlude; *)
   close_out oc
