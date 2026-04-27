@@ -1,5 +1,4 @@
 import ProofAutomation
-import PPTheorems
 
 -- Preamble for failed subtyping queries (rbtree only)
 -- This file is prepended to each dumped Lean file.

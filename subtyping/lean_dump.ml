@@ -28,29 +28,29 @@ let dump_failed_query axioms query =
       (Filename.get_temp_dir_name ())
       (Printf.sprintf "subtyping_failed_%i.lean" idx)
   in
-  try
-    let oc = open_out filename in
-    Fun.protect
-      ~finally:(fun () -> close_out oc)
-      (fun () ->
-        Printf.fprintf oc "-- Failed subtyping query #%i\n" idx;
-        Printf.fprintf oc
-          "-- To debug: prove or find a counterexample for the theorem \
-           below.\n";
-        Printf.fprintf oc
-          "-- The axioms are assumptions from the coverage type system.\n\n";
-        (* Preamble should end with an open 'section Axioms' + local attributes *)
-        Printf.fprintf oc "%s" (Lazy.force lean_preamble);
-        List.iteri
-          (fun i ax ->
-            Printf.fprintf oc "theorem ax_%i : %s := by\n  prove_axiom\n\n" i
-              (layout_prop_to_lean ax))
-          axioms;
-        Printf.fprintf oc "end Axioms\n";
-        Printf.fprintf oc
-          "\ntheorem failed_subtyping_%i : %s := by\n  sorry\n" idx
-          (layout_prop_to_lean query));
-    Printf.eprintf "Dumped failed subtyping query to %s\n" filename
-  with exn ->
-    Printf.eprintf "Warning: could not dump lean file %s: %s\n" filename
-      (Printexc.to_string exn)
+  let oc =
+    try open_out filename
+    with exn ->
+      failwith
+        (Printf.sprintf "Could not open lean dump file '%s': %s" filename
+           (Printexc.to_string exn))
+  in
+  Fun.protect
+    ~finally:(fun () -> close_out oc)
+    (fun () ->
+      Printf.fprintf oc "-- Failed subtyping query #%i\n" idx;
+      Printf.fprintf oc
+        "-- To debug: prove or find a counterexample for the theorem below.\n";
+      Printf.fprintf oc
+        "-- The axioms are assumptions from the coverage type system.\n\n";
+      (* Preamble should end with an open 'section Axioms' + local attributes *)
+      Printf.fprintf oc "%s" (Lazy.force lean_preamble);
+      List.iteri
+        (fun i ax ->
+          Printf.fprintf oc "theorem ax_%i : %s := by\n  prove_axiom\n\n" i
+            (layout_prop_to_lean ax))
+        axioms;
+      Printf.fprintf oc "end Axioms\n";
+      Printf.fprintf oc "\ntheorem failed_subtyping_%i : %s := by\n  sorry\n"
+        idx (layout_prop_to_lean query));
+  Printf.eprintf "Dumped failed subtyping query to %s\n" filename

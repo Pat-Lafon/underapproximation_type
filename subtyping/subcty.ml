@@ -46,8 +46,10 @@ let check_query axioms query =
             fvs))
       (0 == List.length fvs)
   in
+  let always_dump = Option.is_some (Sys.getenv_opt "TOTEM_DUMP_LEAN") in
+  if always_dump then Lean_dump.dump_failed_query axioms query;
   let result = Backend.Smtquery.check_bool axioms query in
-  if not result then Lean_dump.dump_failed_query axioms query;
+  if (not result) && (not always_dump) then Lean_dump.dump_failed_query axioms query;
   result
 
 let aux_sub_cty (axioms, uqvs) cty1 cty2 =
