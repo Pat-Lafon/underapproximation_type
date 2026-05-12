@@ -99,11 +99,16 @@ let process_command cmd =
 let run_first_to_decision_alt commands =
   let open Async in
   Thread_safe.block_on_async_exn (fun () ->
+      (* Track every spawned process so we can terminate losers once a
+         winner is decided. Without this, killing Cobb leaves orphaned
+         Z3 processes running until they hit rlimit. *)
+      let procs : Process.t list ref = ref [] in
       let deferred_commands =
         List.map
           (fun cmd ->
             let prog, args = process_command cmd in
             Process.create_exn ~prog ~args () >>= fun proc ->
+            procs := proc :: !procs;
             (* Have to use up stdin and stderr because somehow these don't close
             otherwise? *)
             Writer.close (Process.stdin proc) >>= fun () ->
@@ -114,7 +119,16 @@ let run_first_to_decision_alt commands =
           commands
       in
       first_matching deferred_commands smt_predicate
-      >>| Option.value ~default:"unknown")
+      >>= fun result ->
+      (* Send SIGTERM to every spawned process. The winner has already
+         exited (so it's a no-op for them); the losers are still running
+         and would otherwise leak. Use send_i so a race where a process
+         exits between the check and the signal doesn't raise. *)
+      List.iter
+        (fun proc ->
+          Signal_unix.send_i Signal.term (`Pid (Process.pid proc)))
+        !procs;
+      return (Option.value ~default:"unknown" result))
 
 let run_z3_in_process solver : smt_result =
   (* TODO: Use stdin instead for parallelism *)
