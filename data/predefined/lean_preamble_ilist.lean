@@ -1,5 +1,4 @@
 import ProofAutomation
-import PPTheorems
 
 -- Preamble for failed subtyping queries (ilist only)
 

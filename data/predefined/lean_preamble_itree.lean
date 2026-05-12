@@ -1,5 +1,4 @@
 import ProofAutomation
-import PPTheorems
 
 -- Preamble for failed subtyping queries (itree only)
 
@@ -28,15 +27,27 @@ inductive itree where
   | .Leaf => none
   | .Node _ _ r => some r
 
-def depth : itree → Int → Prop
-  | .Leaf, n => n = 0
-  | .Node _ l r, n => ∃ dl dr : Int, depth l dl ∧ depth r dr ∧ n = 1 + max dl dr
+def depth_impl : itree → Int
+  | .Leaf => 0
+  | .Node _ l r =>
+      if depth_impl l > depth_impl r then 1 + depth_impl l
+      else                                1 + depth_impl r
 
-def complete : itree → Prop
-  | .Leaf => True
-  | .Node _ l r => complete l ∧ complete r ∧ ∃ h : Int, depth l h ∧ depth r h
+def depth (t : itree) (res : Int) : Prop :=
+  depth_impl t = res
 
-def height : itree → Int → Prop := depth
+def complete_impl : itree → Bool
+  | .Leaf => true
+  | .Node _ l r =>
+      complete_impl l && complete_impl r && (depth_impl l == depth_impl r)
+
+def complete (t : itree) (res : Bool) : Prop :=
+  complete_impl t = res
+
+def height_impl : itree → Int := depth_impl
+
+def height (t : itree) (res : Int) : Prop :=
+  height_impl t = res
 
 def leaf : itree → Int → Prop
   | .Leaf, _ => False
@@ -59,7 +70,9 @@ def bst : itree → Prop
 -- lean_dump.ml emits 'end Axioms' after the axioms, before the subtyping query.
 section Axioms
   attribute [local simp] is_leaf is_node value left right
-    depth complete height leaf lower_bound upper_bound bst
+    depth_impl depth complete_impl complete height_impl height
+    leaf lower_bound upper_bound bst
   attribute [local grind cases] itree Bool
   attribute [local grind =] is_leaf is_node value left right
-    depth complete height leaf lower_bound upper_bound bst
+    depth_impl depth complete_impl complete height_impl height
+    leaf lower_bound upper_bound bst
