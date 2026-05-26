@@ -23,7 +23,7 @@ let op_name_for_typectx = function
 *)
 
 let builtin_primop =
-  [ "+"; "-"; "*"; "/"; ">"; ">="; "<"; "<="; "=="; "!="; "&&"; "||" ]
+  [ "+"; "-"; "*"; "/"; ">"; ">="; "<"; "<="; "=="; "!="; "&&"; "||"; "not" ]
 
 let is_builtin_op str = List.exists (String.equal str) builtin_primop
 

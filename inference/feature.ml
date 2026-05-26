@@ -92,24 +92,100 @@ let feature_vec_to_prop (ftab : feature_tab) vec =
 let feature_id_to_prop (ftab : feature_tab) id =
   feature_vec_to_prop ftab @@ feature_id_to_vec (List.length ftab) id
 
-(** make features from template (univerial quantified prop) *)
+(** make features from template (universal quantified prop) *)
 
 type template = { bvars : (t, string) typed list; body : t lit }
 
-let rec destruct_univerial_prop = function
-  | Forall { qv; body } ->
-      let qvs, body = destruct_univerial_prop body in
-      (qv :: qvs, body)
-  | Lit lit -> ([], lit.x)
-  | _ -> _failatwith __FILE__ __LINE__ "die"
+let is_guard_lit (lit : t lit) : (string * t) option =
+  match lit with
+  | AAppOp ({ x = name; _ }, [ { x = AVar w; _ } ])
+    when String.starts_with ~prefix:"is_" name ->
+      Some (w.x, w.ty)
+  | _ -> None
+
+let rec lit_v_under_non_builtin_appop v lit =
+  match lit with
+  | AC _ | AVar _ -> false
+  | ATu ts -> List.exists (fun t -> lit_v_under_non_builtin_appop v t.x) ts
+  | AProj (t, _) -> lit_v_under_non_builtin_appop v t.x
+  | AAppOp (op, args) ->
+      let here =
+        (not (Op.is_builtin_op op.x))
+        && List.exists
+             (fun t ->
+               match t.x with AVar w -> String.equal w.x v | _ -> false)
+             args
+      in
+      here || List.exists (fun t -> lit_v_under_non_builtin_appop v t.x) args
+
+let extract_atom = function
+  | Lit l -> Some (false, l)
+  | Not (Lit l) -> Some (true, l)
+  | _ -> None
+
+let mk_not_lit (l : (t, t lit) typed) : t lit =
+  let op = "not" #: (Nt.construct_arr_tp ([ Nt.bool_ty ], Nt.bool_ty)) in
+  AAppOp (op, [ l ])
+
+let mk_and_lit (lits : (t, t lit) typed list) : t lit =
+  let op =
+    "&&" #: (Nt.construct_arr_tp ([ Nt.bool_ty; Nt.bool_ty ], Nt.bool_ty))
+  in
+  AAppOp (op, lits)
 
 let prop_to_template prop =
-  let fvs = fv_prop prop in
-  let () =
-    if List.length fvs > 0 then _failatwith __FILE__ __LINE__ "die" else ()
+  if fv_prop prop <> [] then _failatwith __FILE__ __LINE__ "die";
+  let rec walk qvs_in_scope = function
+    | Forall { qv; body } ->
+        let qvs, body = walk (qv :: qvs_in_scope) body in
+        (qv :: qvs, body)
+    | Lit lit -> ([], lit.x)
+    | And [ p1; p2 ] ->
+        let atom_of p =
+          match extract_atom p with
+          | Some a -> a
+          | None ->
+              _failatwith __FILE__ __LINE__
+                "template And: each conjunct must be Lit or Not Lit"
+        in
+        let a1 = atom_of p1 and a2 = atom_of p2 in
+        let positive_guard (negated, l) =
+          if negated then None else is_guard_lit l.x
+        in
+        let (v_name, v_ty), pred_atom =
+          match (positive_guard a1, positive_guard a2) with
+          | Some v, None -> (v, a2)
+          | None, Some v -> (v, a1)
+          | Some _, Some _ ->
+              _failatwith __FILE__ __LINE__
+                "template And: both conjuncts look like is_C(v) guards"
+          | None, None ->
+              _failatwith __FILE__ __LINE__
+                "template And: no positive is_C(v) guard found"
+        in
+        let bound =
+          List.exists
+            (fun q -> String.equal q.x v_name && Nt.eq q.ty v_ty)
+            qvs_in_scope
+        in
+        if not bound then
+          _failatwith __FILE__ __LINE__
+            "template And: guarded var is not a bound qvar of the matching type";
+        let _, pred_lit = pred_atom in
+        if not (lit_v_under_non_builtin_appop v_name pred_lit.x) then
+          _failatwith __FILE__ __LINE__
+            "template And: predicate doesn't reference guarded var under a \
+             non-builtin AppOp";
+        let to_typed (negated, l) =
+          if negated then { l with x = mk_not_lit l } else l
+        in
+        ([], mk_and_lit [ to_typed a1; to_typed a2 ])
+    | And _ ->
+        _failatwith __FILE__ __LINE__
+          "template And: exactly two conjuncts required (guard + predicate)"
+    | _ -> _failatwith __FILE__ __LINE__ "unsupported template body shape"
   in
-  (* let () = Printf.printf "template prop: %s\n" (FrontendTyped.layout_prop prop) in *)
-  let bvars, body = destruct_univerial_prop prop in
+  let bvars, body = walk [] prop in
   { bvars; body }
 
 open Zzdatatype.Datatype
@@ -176,3 +252,90 @@ let%test "vec_to_id1" = ___check_vec_to_id [ true; false; true ]
 let%test "vec_to_id2" = Int.equal 1 @@ feature_vec_to_id [ true; false; false ]
 let%test "vec_to_id3" = Int.equal 2 @@ feature_vec_to_id [ false; true; false ]
 let%test "vec_to_id4" = Int.equal 5 @@ feature_vec_to_id [ true; false; true ]
+
+module Test_prop_to_template = struct
+  let irbtree_ty = Nt.Ty_constructor ("irbtree", [])
+
+  let appop name arg_tys ret_ty args : (t, t lit) typed =
+    let op = name #: Nt.(construct_arr_tp (arg_tys, ret_ty)) in
+    (AAppOp (op, args)) #: ret_ty
+
+  let avar name ty : (t, t lit) typed = (AVar (name #: ty)) #: ty
+  let is_rbtnode v = appop "is_rbtnode" [ irbtree_ty ] Nt.bool_ty [ avar v irbtree_ty ]
+  let color v = appop "color" [ irbtree_ty ] Nt.bool_ty [ avar v irbtree_ty ]
+  let true_const = (AC (B true)) #: Nt.bool_ty
+
+  let color_eq_true v =
+    appop "==" [ Nt.bool_ty; Nt.bool_ty ] Nt.bool_ty [ color v; true_const ]
+
+  let forall_v body : t prop = Forall { qv = "v" #: irbtree_ty; body }
+
+  let is_failure f =
+    match f () with _ -> false | exception Failure _ -> true
+
+  let%test "single Lit accepts" =
+    let body = Lit (is_rbtnode "v") in
+    let t = prop_to_template (forall_v body) in
+    match t.body with AAppOp ({ x = "is_rbtnode"; _ }, _) -> true | _ -> false
+
+  let%test "single Lit accepts naked accessor (loose)" =
+    let body = Lit (color_eq_true "v") in
+    let t = prop_to_template (forall_v body) in
+    match t.body with AAppOp ({ x = "=="; _ }, _) -> true | _ -> false
+
+  let%test "guarded conjunction accepts" =
+    let body = And [ Lit (is_rbtnode "v"); Lit (color_eq_true "v") ] in
+    let t = prop_to_template (forall_v body) in
+    match t.body with
+    | AAppOp ({ x = "&&"; _ }, [ _; _ ]) -> true
+    | _ -> false
+
+  let%test "negated predicate accepts" =
+    let body = And [ Lit (is_rbtnode "v"); Not (Lit (color_eq_true "v")) ] in
+    let t = prop_to_template (forall_v body) in
+    match t.body with
+    | AAppOp ({ x = "&&"; _ }, [ _; _ ]) -> true
+    | _ -> false
+
+  let%test "three conjuncts rejects" =
+    let body =
+      And
+        [
+          Lit (is_rbtnode "v"); Lit (color_eq_true "v"); Lit (color_eq_true "v");
+        ]
+    in
+    is_failure (fun () -> prop_to_template (forall_v body))
+
+  let%test "no guard rejects" =
+    let body = And [ Lit (color_eq_true "v"); Lit (color_eq_true "v") ] in
+    is_failure (fun () -> prop_to_template (forall_v body))
+
+  let%test "two guards rejects" =
+    let body = And [ Lit (is_rbtnode "v"); Lit (is_rbtnode "v") ] in
+    is_failure (fun () -> prop_to_template (forall_v body))
+
+  let%test "predicate without non-builtin AppOp rejects" =
+    let bare_eq =
+      appop "==" [ irbtree_ty; irbtree_ty ] Nt.bool_ty
+        [ avar "v" irbtree_ty; avar "v" irbtree_ty ]
+    in
+    let body = And [ Lit (is_rbtnode "v"); Lit bare_eq ] in
+    is_failure (fun () -> prop_to_template (forall_v body))
+
+  let%test "negated guard rejects" =
+    let body = And [ Not (Lit (is_rbtnode "v")); Lit (color_eq_true "v") ] in
+    is_failure (fun () -> prop_to_template (forall_v body))
+
+  let%test "Or body rejects" =
+    let body = Or [ Lit (is_rbtnode "v"); Lit (color_eq_true "v") ] in
+    is_failure (fun () -> prop_to_template (forall_v body))
+
+  let%test "Implies body rejects" =
+    let body = Implies (Lit (is_rbtnode "v"), Lit (color_eq_true "v")) in
+    is_failure (fun () -> prop_to_template (forall_v body))
+
+  let%test "Not (And _) conjunct rejects" =
+    let inner = And [ Lit (color_eq_true "v"); Lit (color_eq_true "v") ] in
+    let body = And [ Lit (is_rbtnode "v"); Not inner ] in
+    is_failure (fun () -> prop_to_template (forall_v body))
+end
