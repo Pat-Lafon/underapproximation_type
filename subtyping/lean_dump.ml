@@ -43,7 +43,10 @@ let dump_failed_query axioms query =
         "-- To debug: prove or find a counterexample for the theorem below.\n";
       Printf.fprintf oc
         "-- The axioms are assumptions from the coverage type system.\n\n";
-      (* Preamble should end with an open 'section Axioms' + local attributes *)
+      (* Preamble ends with an open `namespace Axioms` + local attributes;
+         we close it after the axioms and `open Axioms` at top level so
+         bare `apply ax_0` / `have := ax_5 …` still resolve in the
+         `failed_subtyping_*` body. *)
       Printf.fprintf oc "%s" (Lazy.force lean_preamble);
       List.iteri
         (fun i ax ->
@@ -51,6 +54,7 @@ let dump_failed_query axioms query =
             (layout_prop_to_lean ax))
         axioms;
       Printf.fprintf oc "end Axioms\n";
+      Printf.fprintf oc "open Axioms\n";
       Printf.fprintf oc "\ntheorem failed_subtyping_%i : %s := by\n  sorry\n"
         idx (layout_prop_to_lean query));
   Printf.eprintf "Dumped failed subtyping query to %s\n" filename

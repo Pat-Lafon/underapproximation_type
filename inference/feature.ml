@@ -108,6 +108,7 @@ let prop_to_template prop =
   let () =
     if List.length fvs > 0 then _failatwith __FILE__ __LINE__ "die" else ()
   in
+  (* let () = Printf.printf "template prop: %s\n" (FrontendTyped.layout_prop prop) in *)
   let bvars, body = destruct_univerial_prop prop in
   { bvars; body }
 

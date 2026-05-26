@@ -23,26 +23,73 @@ inductive ilist where
   | .Nil => none
   | .Cons _ t => some t
 
-def len : ilist → Int → Prop
-  | .Nil, n => n = 0
-  | .Cons _ xs, n => len xs (n - 1)
+def len_impl : ilist → Int
+  | .Nil => 0
+  | .Cons _ xs => 1 + len_impl xs
 
-def sorted : ilist → Prop
-  | .Nil => True
-  | .Cons _ .Nil => True
-  | .Cons x (.Cons y ys) => x ≤ y ∧ sorted (.Cons y ys)
+def len (l : ilist) (n : Int) : Prop :=
+  len_impl l = n
 
-def mem : ilist → Int → Prop
-  | .Nil, _ => False
-  | .Cons h t, x => h = x ∨ mem t x
+def is_even_impl (x : Int) : Bool := x % 2 == 0
 
-def uniq : ilist → Prop
-  | .Nil => True
-  | .Cons h t => ¬mem t h ∧ uniq t
+def is_even (x : Int) (res : Bool) : Prop :=
+  is_even_impl x = res
 
--- Axiom section: definitions available to grind/simp for proving axioms.
--- lean_dump.ml emits 'end Axioms' after the axioms, before the subtyping query.
-section Axioms
-  attribute [local simp] is_nil is_cons head tail len sorted mem uniq
+def mem_impl : ilist → Int → Bool
+  | .Nil, _ => false
+  | .Cons h t, x => h == x || mem_impl t x
+
+def mem (l : ilist) (x : Int) (res : Bool) : Prop :=
+  mem_impl l x = res
+
+def uniq_impl : ilist → Bool
+  | .Nil => true
+  | .Cons h t => !mem_impl t h && uniq_impl t
+
+def uniq (l : ilist) (res : Bool) : Prop :=
+  uniq_impl l = res
+
+def sorted_impl : ilist → Bool
+  | .Nil => true
+  | .Cons _ .Nil => true
+  | .Cons x (.Cons y ys) => decide (x ≤ y) && sorted_impl (.Cons y ys)
+
+def sorted (l : ilist) (res : Bool) : Prop :=
+  sorted_impl l = res
+
+def all_evens_impl : ilist → Bool
+  | .Nil => true
+  | .Cons h t => is_even_impl h && all_evens_impl t
+
+def all_evens (l : ilist) (res : Bool) : Prop :=
+  all_evens_impl l = res
+
+def all_equal_impl : ilist → Int → Bool
+  | .Nil, _ => true
+  | .Cons h t, x => h == x && all_equal_impl t x
+
+def all_equal (l : ilist) (x : Int) (res : Bool) : Prop :=
+  all_equal_impl l x = res
+
+-- Axiom namespace: definitions available to grind/simp for proving axioms.
+-- lean_dump.ml emits 'end Axioms' + 'open Axioms' after the axioms, before
+-- the subtyping query. The namespace gives every Cobb axiom a real
+-- `Axioms.ax_<n>` prefix that `Helpers.isAxiomName` can filter on.
+namespace Axioms
+  attribute [local simp] is_nil is_cons head tail
+    len_impl len
+    is_even_impl is_even
+    mem_impl mem
+    uniq_impl uniq
+    sorted_impl sorted
+    all_evens_impl all_evens
+    all_equal_impl all_equal
   attribute [local grind cases] ilist Bool
-  attribute [local grind =] is_nil is_cons head tail len sorted mem uniq
+  attribute [local grind =] is_nil is_cons head tail
+    len_impl len
+    is_even_impl is_even
+    mem_impl mem
+    uniq_impl uniq
+    sorted_impl sorted
+    all_evens_impl all_evens
+    all_equal_impl all_equal

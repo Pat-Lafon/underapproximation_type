@@ -2,7 +2,9 @@ import ProofAutomation
 
 -- Preamble for failed subtyping queries (rbtree only)
 -- This file is prepended to each dumped Lean file.
--- The section Axioms at the end is closed by lean_dump.ml after the axioms.
+-- The `namespace Axioms` at the end is closed by lean_dump.ml after the
+-- axioms; lean_dump.ml then emits `open Axioms` so bare `ax_<n>`
+-- references work in the subtyping query body.
 
 inductive irbtree where
   | Rbtleaf
@@ -85,9 +87,11 @@ def rbtree_invariant_impl (t : irbtree) (h : Int) : Bool :=
 def rbtree_invariant (t : irbtree) (h : Int) (res : Bool) : Prop :=
   rbtree_invariant_impl t h = res
 
--- Axiom section: definitions are available to grind/simp for proving axioms.
--- lean_dump.ml emits 'end Axioms' after the axioms, before the subtyping query.
-section Axioms
+-- Axiom namespace: definitions are available to grind/simp for proving axioms.
+-- lean_dump.ml emits 'end Axioms' + 'open Axioms' after the axioms, before
+-- the subtyping query. The namespace gives every Cobb axiom a real
+-- `Axioms.ax_<n>` prefix that `Helpers.isAxiomName` can filter on.
+namespace Axioms
   attribute [local simp] is_rbtleaf is_rbtnode color value left right
     num_black_impl num_black no_red_red_impl no_red_red
     rbtree_invariant_impl rbtree_invariant

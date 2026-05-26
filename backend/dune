@@ -2,7 +2,7 @@
  (public_name underapproximation_type.backend)
  (name backend)
  (wrapped true)
- (libraries language zzenv z3 async)
+ (libraries language zzenv z3 async core_unix.signal_unix)
  (modules
   z3aux
   litencoding
