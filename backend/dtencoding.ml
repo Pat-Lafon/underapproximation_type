@@ -45,7 +45,9 @@ let create_constructor ctx case =
     List.map (fun (s, t) -> (Z3.Symbol.mk_string ctx s, t)) args |> List.split
   in
   let zeros = List.map (fun _ -> 0) types in
-  let recognizer = Z3.Symbol.mk_string ctx ("is_" ^ name) in
+  let recognizer =
+    Z3.Symbol.mk_string ctx ("is_" ^ String.uncapitalize_ascii name)
+  in
   Z3.Datatype.mk_constructor_s ctx name recognizer symbols types zeros
 
 let create_data_type ctx name cases =
@@ -56,7 +58,7 @@ let create_data_type ctx name cases =
   let constructors = List.combine constructor_names dt_constructors in
   let recognizers =
     List.combine
-      (List.map (fun c -> "is_" ^ c) constructor_names)
+      (List.map (fun c -> "is_" ^ String.uncapitalize_ascii c) constructor_names)
       (Z3.Datatype.get_recognizers sort)
   in
   let accessors =
@@ -66,47 +68,3 @@ let create_data_type ctx name cases =
   in
   { sort; constructors; recognizers; accessors }
 
-let list_data_type ctx =
-  let name = "ilist" in
-  let nil = ("nil", []) in
-  let cons =
-    ( "cons",
-      [ ("head", Some (Z3.Arithmetic.Integer.mk_sort ctx)); ("tail", None) ] )
-  in
-  let cases = [ nil; cons ] in
-  let dt = create_data_type ctx name cases in
-  Hashtbl.add datatype_map name dt;
-  dt
-
-let tree_data_type ctx =
-  let name = "itree" in
-  let leaf = ("leaf", []) in
-  let node =
-    ( "node",
-      [
-        ("value", Some (Z3.Arithmetic.Integer.mk_sort ctx));
-        ("left", None);
-        ("right", None);
-      ] )
-  in
-  let cases = [ leaf; node ] in
-  let dt = create_data_type ctx name cases in
-  Hashtbl.add datatype_map name dt;
-  dt
-
-let rbtree_data_type ctx =
-  let name = "irbtree" in
-  let rbtleaf = ("rbtleaf", []) in
-  let rbtnode =
-    ( "rbtnode",
-      [
-        ("color", Some (Z3.Boolean.mk_sort ctx));
-        ("left", None);
-        ("value", Some (Z3.Arithmetic.Integer.mk_sort ctx));
-        ("right", None);
-      ] )
-  in
-  let cases = [ rbtleaf; rbtnode ] in
-  let dt = create_data_type ctx name cases in
-  Hashtbl.add datatype_map name dt;
-  dt

@@ -109,17 +109,7 @@ let lean_layout_ty = function
   | Some Nt.T.Ty_bool -> "Bool"
   | Some Nt.T.Ty_int -> "Int"
   | Some Nt.T.Ty_unit -> "Unit"
-  | Some (Nt.T.Ty_constructor (name, _)) -> (
-      match name with
-      | "ilist" -> "ilist"
-      | "itree" -> "itree"
-      | "rbtree" -> "rbtree"
-      | "irbtree" -> "irbtree"
-      | "stlc_ty" -> "StlcTy"
-      | "stlc_term" -> "StlcTerm"
-      | "stlc_tyctx" -> "StlcTyctx"
-      | _ -> _failatwith __FILE__ __LINE__
-               (spf "lean_layout_ty: unsupported constructor type '%s'" name))
+  | Some (Nt.T.Ty_constructor (name, _)) -> name
   | ty ->
       let ty_str = match ty with None -> "None" | Some t -> Nt.layout t in
       _failatwith __FILE__ __LINE__

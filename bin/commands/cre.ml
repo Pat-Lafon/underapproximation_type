@@ -91,11 +91,18 @@ let handle_lemma axioms =
 let init_type_context meta_config_file source_file : _ * Env.prim_path * _ * _ =
   let () = Env.load_meta meta_config_file in
   let () =
-    (* Initialize builtin datatypes *)
-    let _ = Backend.Dtencoding.list_data_type Backend.Smtquery.ctx in
-    let _ = Backend.Dtencoding.tree_data_type Backend.Smtquery.ctx in
-    let _ = Backend.Dtencoding.rbtree_data_type Backend.Smtquery.ctx in
-    ()
+    let prim_path = Env.get_prim_path () in
+    let type_decl_items =
+      ocaml_structure_to_items (parse ~sourcefile:prim_path.type_decls)
+    in
+    List.iter
+      (function
+        | Item.MTyDecl { type_name; type_params = []; type_decls }
+          when not (List.mem type_name [ "unit"; "bool" ]) ->
+            Backend.Z3aux.create_and_register_datatype Backend.Smtquery.ctx
+              type_name type_decls
+        | _ -> ())
+      type_decl_items
   in
   let code = preprocess source_file () in
   let () =

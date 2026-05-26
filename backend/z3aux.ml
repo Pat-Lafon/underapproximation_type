@@ -140,19 +140,25 @@ let z3expr_to_bool v =
 
 (* Create and register a Z3 datatype from constructor declarations *)
 let create_and_register_datatype ctx type_name type_decls =
-  (* Convert constructor_declaration to Z3 case format *)
+  let is_self_ref ty =
+    match ty with
+    | Normalty.Ntyped.Ty_constructor (n, []) -> String.equal n type_name
+    | _ -> false
+  in
   let cases : Dtencoding.case list =
     List.map (fun (constr : Constructor_declaration.constructor_declaration) ->
       let arg_list = Constructor_declaration.get_args constr.args in
       let z3_args =
         List.map (fun { x = name; ty } ->
-            (name, Some (tp_to_sort ctx ty)))
+            let sort_opt =
+              if is_self_ref ty then None else Some (tp_to_sort ctx ty)
+            in
+            (name, sort_opt))
           arg_list
       in
       (constr.constr_name, z3_args))
       type_decls
   in
-  
   let dt = Dtencoding.create_data_type ctx type_name cases in
   Dtencoding.register_data_type type_name dt
 
