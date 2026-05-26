@@ -35,28 +35,6 @@ inductive irbtree where
   | .Rbtleaf => none
   | .Rbtnode _ _ _ r => some r
 
-def numblack : irbtree → Int → Prop
-  | .Rbtleaf, n => n = 0
-  | .Rbtnode c l _ r, n =>
-    if ¬c then numblack l (n - 1) ∧ numblack r (n - 1)
-    else numblack l n ∧ numblack r n
-
-def noredred : irbtree → Prop
-  | .Rbtleaf => True
-  | .Rbtnode c l _ r =>
-    if ¬c then noredred l ∧ noredred r
-    else
-      match l, r with
-      | .Rbtnode c' _ _ _, .Rbtnode c'' _ _ _ =>
-          ¬c' ∧ ¬c'' ∧ noredred l ∧ noredred r
-      | .Rbtnode c' _ _ _, .Rbtleaf => ¬c' ∧ noredred l
-      | .Rbtleaf, .Rbtnode c'' _ _ _ => ¬c'' ∧ noredred r
-      | .Rbtleaf, .Rbtleaf => True
-
-def hdcolor : irbtree → Bool → Prop
-  | .Rbtleaf, _ => False
-  | .Rbtnode c _ _ _, c' => c = c'
-
 def num_black_impl : irbtree → Int → Bool
   | .Rbtleaf, h => h == 0
   | .Rbtnode c l _ r, h =>

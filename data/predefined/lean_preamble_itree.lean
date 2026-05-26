@@ -44,16 +44,6 @@ def complete_impl : itree → Bool
 def complete (t : itree) (res : Bool) : Prop :=
   complete_impl t = res
 
-def height_impl : itree → Int := depth_impl
-
-def height (t : itree) (res : Int) : Prop :=
-  height_impl t = res
-
-def leaf : itree → Int → Prop
-  | .Leaf, _ => False
-  | .Node v .Leaf .Leaf, x => v = x
-  | .Node _ l r, x => leaf l x ∨ leaf r x
-
 def lower_bound_impl : itree → Int → Bool
   | .Leaf, _ => true
   | .Node y l r, x => decide (x ≤ y) && lower_bound_impl l x && lower_bound_impl r x
@@ -81,15 +71,13 @@ def bst (t : itree) (res : Bool) : Prop :=
 -- `Axioms.ax_<n>` prefix that `Helpers.isAxiomName` can filter on.
 namespace Axioms
   attribute [local simp] is_leaf is_node value left right
-    depth_impl depth complete_impl complete height_impl height
-    leaf
+    depth_impl depth complete_impl complete
     lower_bound_impl lower_bound
     upper_bound_impl upper_bound
     bst_impl bst
   attribute [local grind cases] itree Bool
   attribute [local grind =] is_leaf is_node value left right
-    depth_impl depth complete_impl complete height_impl height
-    leaf
+    depth_impl depth complete_impl complete
     lower_bound_impl lower_bound
     upper_bound_impl upper_bound
     bst_impl bst
