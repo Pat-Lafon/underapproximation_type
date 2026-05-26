@@ -154,9 +154,6 @@ let run_z3_in_process solver : smt_result =
   if status = "unsat" (* status = WEXITED 0 *) then SmtUnsat else Timeout
 
 let smt_solve ctx assertions =
-  let dt = Hashtbl.find Dtencoding.datatype_map "ilist" in
-  let () = print_endline (Dtencoding.z3_data_type_layout dt) in
-
   (* let _ = printf "check\n" in *)
   let solver = mk_solver ctx None in
   let g = mk_goal ctx true false false in
