@@ -12,7 +12,7 @@ let item_check (axioms, uctx) imps = function
       let imp =
         match StrMap.find_opt imps name with
         | None ->
-            _failatwith __FILE__ __LINE__
+            _die_with [%here]
               (spf "The source code of given refinement type '%s' is missing."
                  name)
         | Some v -> v
@@ -54,7 +54,7 @@ let item_infer (axioms, uctx) imps = function
       let imp =
         match StrMap.find_opt imps name with
         | None ->
-            _failatwith __FILE__ __LINE__
+            _die_with [%here]
               (spf "The source code of given refinement type '%s' is missing."
                  name)
         | Some v -> v

@@ -14,7 +14,7 @@ let inferred_result = ref None
 
 let get_inferred_result () =
   match !inferred_result with
-  | None -> _failatwith __FILE__ __LINE__ "die"
+  | None -> _die_with [%here] "die"
   | Some res -> res
 
 let rec partial_value_type_infer (uctx : uctx) (a : (t, t value) typed)
@@ -26,7 +26,7 @@ let rec partial_value_type_infer (uctx : uctx) (a : (t, t value) typed)
           body #-> (subst_term_instance lamarg.x (VVar arg #: lamarg.ty))
         in
         (* let retty = subst_rty_instance arg (AVar lamarg) retty in *)
-        let argrty = RtyBase { ou = true; cty = argcty } in
+        let argrty = RtyBase { ou = Over; cty = argcty } in
         let* body =
           partial_term_type_infer (add_to_right uctx arg #: argrty) body retty
         in
@@ -42,7 +42,7 @@ let rec partial_value_type_infer (uctx : uctx) (a : (t, t value) typed)
         let lamarg = lamarg.x #: argrty in
         let rty = RtyArrArr { argrty; retty = body.ty } in
         Some (VLam { lamarg; body }) #: rty
-    | VLam _, _ -> _failatwith __FILE__ __LINE__ ""
+    | VLam _, _ -> _die [%here]
     | VFix { fixname; fixarg; body }, RtyBaseArr { argcty; arg; retty } ->
         let _, ret_nty = Nt.destruct_arr_tp fixname.ty in
         (* For STLC, we use a different recursion template *)
@@ -72,8 +72,8 @@ let rec partial_value_type_infer (uctx : uctx) (a : (t, t value) typed)
                         };
                   }
               in
-              let binding = arg #: (RtyBase { ou = true; cty = argcty }) in
-              let binding1 = arg1 #: (RtyBase { ou = true; cty = argcty1 }) in
+              let binding = arg #: (RtyBase { ou = Over; cty = argcty }) in
+              let binding1 = arg1 #: (RtyBase { ou = Over; cty = argcty1 }) in
               let body =
                 body
                 #-> (subst_term_instance fixarg.x (VVar arg #: fixarg.ty))
@@ -93,7 +93,7 @@ let rec partial_value_type_infer (uctx : uctx) (a : (t, t value) typed)
                 (VFix
                    { fixname = fixname.x #: rty; fixarg = binding; body = clam })
                 #: rty
-          | _ -> _failatwith __FILE__ __LINE__ "die"
+          | _ -> _die_with [%here] "die"
         else
           let rec_constraint_cty = apply_rec_arg1 arg #: fixarg.ty in
           let rty' =
@@ -105,7 +105,7 @@ let rec partial_value_type_infer (uctx : uctx) (a : (t, t value) typed)
                 retty = subst_rty_instance arg (AVar a) retty;
               }
           in
-          let binding = arg #: (RtyBase { ou = true; cty = argcty }) in
+          let binding = arg #: (RtyBase { ou = Over; cty = argcty }) in
           let body =
             body #-> (subst_term_instance fixarg.x (VVar arg #: fixarg.ty))
           in

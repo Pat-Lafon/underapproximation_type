@@ -53,28 +53,47 @@ let constructor_declaration_to_ocaml { constr_name; args } =
     pcd_attributes = [];
   }
 
+let label_declaration_of_ocaml ld =
+  ld.pld_name.txt #: (Type.core_type_to_t ld.pld_type)
+
+let label_declaration_to_ocaml x =
+  {
+    pld_name = Location.mknoloc x.x;
+    pld_mutable = Asttypes.Immutable;
+    pld_type = Type.t_to_core_type x.ty;
+    pld_loc = Location.none;
+    pld_attributes = [];
+  }
+
 let of_ocamltypedec { ptype_name; ptype_params; ptype_kind; ptype_manifest; _ }
     =
-  match (ptype_params, ptype_kind, ptype_manifest) with
-  | params, Ptype_variant cds, None ->
-      let type_params =
-        List.map
-          (fun (ct, (_, _)) ->
-            match Type.core_type_to_t ct with
-            | Type.T.Ty_var name -> name
-            | _ -> _failatwith __FILE__ __LINE__ "die")
-          params
-      in
-      MTyDecl
-        {
-          type_name = ptype_name.txt;
-          type_params;
-          type_decls = List.map constructor_declaration_of_ocaml cds;
-        }
+  let type_params =
+    List.map
+      (fun (ct, (_, _)) ->
+        match Type.core_type_to_t ct with
+        | Type.T.Ty_var name -> name
+        | _ -> _die_with [%here] "die")
+      ptype_params
+  in
+  let mk type_decl =
+    MTyDecl { type_name = ptype_name.txt; type_params; type_decl }
+  in
+  match (ptype_kind, ptype_manifest) with
+  | Ptype_variant cds, None ->
+      mk (Decl_constructors (List.map constructor_declaration_of_ocaml cds))
+  | Ptype_record lds, None ->
+      mk (Decl_record (List.map label_declaration_of_ocaml lds))
   | _ -> failwith "unimp complex type decl"
 
 let to_ocamltypedec = function
-  | MTyDecl { type_name; type_params; type_decls } ->
+  | MTyDecl { type_name; type_params; type_decl } ->
+      let ptype_kind =
+        match type_decl with
+        | Decl_constructors cds ->
+            Ptype_variant (List.map constructor_declaration_to_ocaml cds)
+        | Decl_record l ->
+            Ptype_record (List.map label_declaration_to_ocaml l)
+      in
       {
         ptype_name = Location.mknoloc type_name;
         ptype_params =
@@ -84,14 +103,13 @@ let to_ocamltypedec = function
                 (Asttypes.NoVariance, Asttypes.NoInjectivity) ))
             type_params;
         ptype_cstrs = [];
-        ptype_kind =
-          Ptype_variant (List.map constructor_declaration_to_ocaml type_decls);
+        ptype_kind;
         ptype_manifest = None;
         ptype_attributes = [];
         ptype_loc = Location.none;
         ptype_private = Asttypes.Public;
       }
-  | _ -> _failatwith __FILE__ __LINE__ "die"
+  | _ -> _die_with [%here] "die"
 
 let layout_ocaml es =
   let _ = Format.flush_str_formatter () in

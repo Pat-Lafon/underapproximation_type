@@ -16,6 +16,9 @@
   to_rty
   to_type_dec
   to_typectx
-  to_item)
+  to_item
+  smt_export
+  lean_export
+  coq_export)
  (preprocess
-  (pps ppx_optcomp ppx_compare ppx_sexp_conv)))
+  (pps ppx_optcomp ppx_compare ppx_sexp_conv ppx_here)))

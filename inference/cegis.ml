@@ -52,7 +52,7 @@ let cegis_break features verifier sanity_check =
           if get_res () then Some (get_candidate ()) else loop ()
     | None ->
         if get_res () then Some (get_candidate ())
-        else _failatwith __FILE__ __LINE__ "die"
+        else _die_with [%here] "die"
   in
   let res = if get_res () then Some (get_candidate ()) else loop () in
   res
@@ -98,7 +98,7 @@ let cegis_enumerate features verifier sanity_check =
         in
         Some (get_candidate ())
     (* if get_res () then Some (get_candidate ()) *)
-    (* else _failatwith __FILE__ __LINE__ "die" *)
+    (* else _die_with [%here] "die" *)
   in
   let res = loop () in
   res

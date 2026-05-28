@@ -27,7 +27,7 @@ let feature_vec_to_id vec =
 let feature_id_to_vec (num_features : int) id =
   let rec aux (n, res) id =
     if n == num_features then
-      if id == 0 then res else _failatwith __FILE__ __LINE__ "die"
+      if id == 0 then res else _die_with [%here] "die"
     else aux (n + 1, (id mod 2 == 1) :: res) (id / 2)
   in
   aux (0, []) id
@@ -74,7 +74,7 @@ let feature_vec_to_prop (ftab : feature_tab) vec =
 (*         | "is_var" -> IsVar *)
 (*         | "is_abs" -> IsAbs *)
 (*         | "is_app" -> IsApp *)
-(*           | _ -> _failatwith __FILE__ __LINE__ "die" *)
+(*           | _ -> _die_with [%here] "die" *)
 (*       | _ -> false *)
 
 (*       if List.length ass != 1 then ( *)
@@ -134,7 +134,7 @@ let mk_and_lit (lits : (t, t lit) typed list) : t lit =
   AAppOp (op, lits)
 
 let prop_to_template prop =
-  if fv_prop prop <> [] then _failatwith __FILE__ __LINE__ "die";
+  if fv_prop prop <> [] then _die_with [%here] "die";
   let rec walk qvs_in_scope = function
     | Forall { qv; body } ->
         let qvs, body = walk (qv :: qvs_in_scope) body in
@@ -145,7 +145,7 @@ let prop_to_template prop =
           match extract_atom p with
           | Some a -> a
           | None ->
-              _failatwith __FILE__ __LINE__
+              _die_with [%here]
                 "template And: each conjunct must be Lit or Not Lit"
         in
         let a1 = atom_of p1 and a2 = atom_of p2 in
@@ -157,10 +157,10 @@ let prop_to_template prop =
           | Some v, None -> (v, a2)
           | None, Some v -> (v, a1)
           | Some _, Some _ ->
-              _failatwith __FILE__ __LINE__
+              _die_with [%here]
                 "template And: both conjuncts look like is_C(v) guards"
           | None, None ->
-              _failatwith __FILE__ __LINE__
+              _die_with [%here]
                 "template And: no positive is_C(v) guard found"
         in
         let bound =
@@ -169,11 +169,11 @@ let prop_to_template prop =
             qvs_in_scope
         in
         if not bound then
-          _failatwith __FILE__ __LINE__
+          _die_with [%here]
             "template And: guarded var is not a bound qvar of the matching type";
         let _, pred_lit = pred_atom in
         if not (lit_v_under_non_builtin_appop v_name pred_lit.x) then
-          _failatwith __FILE__ __LINE__
+          _die_with [%here]
             "template And: predicate doesn't reference guarded var under a \
              non-builtin AppOp";
         let to_typed (negated, l) =
@@ -181,9 +181,9 @@ let prop_to_template prop =
         in
         ([], mk_and_lit [ to_typed a1; to_typed a2 ])
     | And _ ->
-        _failatwith __FILE__ __LINE__
+        _die_with [%here]
           "template And: exactly two conjuncts required (guard + predicate)"
-    | _ -> _failatwith __FILE__ __LINE__ "unsupported template body shape"
+    | _ -> _die_with [%here] "unsupported template body shape"
   in
   let bvars, body = walk [] prop in
   { bvars; body }
@@ -239,7 +239,7 @@ let init_template props =
 
 let get_template () =
   match !templates with
-  | None -> _failatwith __FILE__ __LINE__ "die"
+  | None -> _die_with [%here] "die"
   | Some ts -> ts
 
 open Base

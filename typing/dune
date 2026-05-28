@@ -3,4 +3,6 @@
  (name typing)
  (wrapped true)
  (libraries language subtyping core zzenv inference)
- (modules checkaux termcheck infer_prop termsyn itemcheck))
+ (modules checkaux termcheck infer_prop termsyn itemcheck)
+ (preprocess
+  (pps ppx_here)))

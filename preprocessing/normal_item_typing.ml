@@ -11,46 +11,45 @@ let constructor_declaration_mk_ (retty, { constr_name; args }) =
   let argsty = Constructor_declaration.get_arg_types args in
   constr_name#:(Nt.construct_arr_tp (argsty, retty))
 
-let item_mk_ctx (e : t option item) =
+let item_mk_ctx (e : t item) =
   match e with
-  | MTyDecl { type_name; type_params; type_decls } ->
+  | MTyDecl { type_name; type_params; type_decl = Decl_constructors cs } ->
       let retty =
         Nt.Ty_constructor
           (type_name, List.map (fun x -> Nt.Ty_var x) type_params)
       in
-      let xs =
-        List.map (fun c -> constructor_declaration_mk_ (retty, c)) type_decls
-      in
-      xs
-  | MValDecl x -> [ __force_typed __FILE__ __LINE__ x ]
-  | MMethodPred mp -> [ __force_typed __FILE__ __LINE__ mp ]
+      List.map (fun c -> constructor_declaration_mk_ (retty, c)) cs
+  | MTyDecl { type_decl = Decl_record _; _ } -> []
+  | MValDecl x -> [ x ]
+  | MMethodPred mp -> [ mp ]
   | MAxiom _ -> []
   | MRty _ -> []
-  | MFuncImpRaw _ | MFuncImp _ -> _failatwith __FILE__ __LINE__ "not predefine"
+  | MFuncImpRaw _ | MFuncImp _ -> _die_with [%here] "not predefine"
 
-let item_erase (e : 'a option item) =
+let item_erase (e : 'a item) =
   match e with
-  | MRty { name; rty; _ } -> MValDecl name#:(Some (erase_rty rty))
+  | MRty { name; rty; _ } -> MValDecl name#:(erase_rty rty)
   | _ -> e
 
-let item_check ctx (e : t option item) : t ctx * t item =
+let item_check ctx (e : t item) : t ctx * t item =
   match e with
-  | MTyDecl { type_name; type_params; type_decls } ->
-      let res = MTyDecl { type_name; type_params; type_decls } in
+  | MTyDecl { type_name; type_params; type_decl = Decl_constructors cs } ->
+      let res =
+        MTyDecl { type_name; type_params; type_decl = Decl_constructors cs }
+      in
       let retty =
         Nt.Ty_constructor
           (type_name, List.map (fun x -> Nt.Ty_var x) type_params)
       in
       let xs =
-        List.map (fun c -> constructor_declaration_mk_ (retty, c)) type_decls
+        List.map (fun c -> constructor_declaration_mk_ (retty, c)) cs
       in
       (add_to_rights ctx xs, res)
+  | MTyDecl ({ type_decl = Decl_record _; _ } as d) -> (ctx, MTyDecl d)
   | MValDecl x ->
-      let x = __force_typed __FILE__ __LINE__ x in
       let res = MValDecl x in
       (add_to_right ctx x, res)
   | MMethodPred x ->
-      let x = __force_typed __FILE__ __LINE__ x in
       let res = MMethodPred x in
       (add_to_right ctx x, res)
   | MAxiom { name; prop } ->
@@ -67,7 +66,7 @@ let item_check ctx (e : t option item) : t ctx * t item =
       let ctx' = add_to_right ctx name in
       let body = bi_typed_term_check ctx' body name.ty in
       (ctx', MFuncImpRaw { name; if_rec = true; body })
-  | MFuncImp _ -> _failatwith __FILE__ __LINE__ "die"
+  | MFuncImp _ -> _die_with [%here] "die"
 
 let struct_mk_ctx ctx l =
   add_to_rights ctx @@ List.concat @@ List.map item_mk_ctx l

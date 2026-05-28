@@ -7,13 +7,13 @@ let constant_to_z3 ctx c =
   let open Constant in
   match c with
   | U | Tu _ | Dt _ ->
-      _failatwith __FILE__ __LINE__ "unimp complex constant encoding"
+      _die_with [%here] "unimp complex constant encoding"
   | B b -> bool_to_z3 ctx b
   | I i -> int_to_z3 ctx i
 
 let rec typed_lit_to_z3 ctx lit =
   match lit.x with
-  | ATu _ | AProj _ -> _failatwith __FILE__ __LINE__ "die"
+  | ATu _ | AProj _ -> _die_with [%here] "die"
   | AC c -> constant_to_z3 ctx c
   | AVar x -> tpedvar_to_z3 ctx (x.ty, x.x)
   | AAppOp (op, args) -> (

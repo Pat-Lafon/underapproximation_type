@@ -3,7 +3,7 @@ open Normal_id_typing
 
 type t = Nt.t
 
-let bi_typed_op_check (ctx : t ctx) (op : (t option, op) typed) (ty : t) :
+let bi_typed_op_check (ctx : t ctx) (op : (t, op) typed) (ty : t) :
     (t, op) typed =
   match op.x with
   | PrimOp id ->
@@ -14,7 +14,7 @@ let bi_typed_op_check (ctx : t ctx) (op : (t option, op) typed) (ty : t) :
       let name = bi_typed_id_check ctx name #: op.ty ty in
       (DtConstructor id) #: name.ty
 
-let bi_typed_op_infer (ctx : t ctx) (op : (t option, op) typed) : (t, op) typed
+let bi_typed_op_infer (ctx : t ctx) (op : (t, op) typed) : (t, op) typed
     =
   match op.x with
   | PrimOp id ->

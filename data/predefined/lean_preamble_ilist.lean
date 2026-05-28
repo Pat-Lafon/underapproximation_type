@@ -5,7 +5,7 @@ import ProofAutomation
 inductive ilist where
   | Nil
   | Cons (head : Int) (tail : ilist)
-  deriving DecidableEq
+  deriving DecidableEq, Repr, Plausible.Arbitrary
 
 @[simp, grind =] def is_nil : ilist → Bool
   | .Nil => true
@@ -93,3 +93,30 @@ namespace Axioms
     sorted_impl sorted
     all_evens_impl all_evens
     all_equal_impl all_equal
+
+  -- Bridge lemmas: assert the wrapper holds at the impl value. Patterns are
+  -- keyed on the impl so they fire after `[local grind =]` unfolds the
+  -- wrapper out of the E-graph. Wrapper-keyed `grind_pattern`s on dumped
+  -- `ax_<n>` theorems (emitted by lean_dump.ml) can then match with the
+  -- output variable bound to `<fn>_impl args`.
+  theorem len_intro (l : ilist) : len l (len_impl l) := rfl
+  grind_pattern len_intro => len_impl l
+
+  theorem is_even_intro (x : Int) : is_even x (is_even_impl x) := rfl
+  grind_pattern is_even_intro => is_even_impl x
+
+  theorem mem_intro (l : ilist) (x : Int) : mem l x (mem_impl l x) := rfl
+  grind_pattern mem_intro => mem_impl l x
+
+  theorem uniq_intro (l : ilist) : uniq l (uniq_impl l) := rfl
+  grind_pattern uniq_intro => uniq_impl l
+
+  theorem sorted_intro (l : ilist) : sorted l (sorted_impl l) := rfl
+  grind_pattern sorted_intro => sorted_impl l
+
+  theorem all_evens_intro (l : ilist) : all_evens l (all_evens_impl l) := rfl
+  grind_pattern all_evens_intro => all_evens_impl l
+
+  theorem all_equal_intro (l : ilist) (x : Int) :
+      all_equal l x (all_equal_impl l x) := rfl
+  grind_pattern all_equal_intro => all_equal_impl l x

@@ -3,4 +3,6 @@
  (name translate)
  (wrapped false)
  (modules raw_term_to_anf anf_to_raw_term)
- (libraries syntax language_utils))
+ (libraries syntax language_utils)
+ (preprocess
+  (pps ppx_here)))

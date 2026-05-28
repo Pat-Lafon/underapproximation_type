@@ -5,7 +5,7 @@ open Sugar
 
 type t = Nt.t
 
-let rec bi_typed_lit_check (ctx : t ctx) (lit : (t option, t option lit) typed)
+let rec bi_typed_lit_check (ctx : t ctx) (lit : (t, t lit) typed)
     (ty : t) : (t, t lit) typed =
   match (lit.x, ty) with
   | AC _, _ | AVar _, _ ->
@@ -22,7 +22,7 @@ let rec bi_typed_lit_check (ctx : t ctx) (lit : (t option, t option lit) typed)
           raise (Failure msg)
       in
       (ATu l) #: ty
-  | AProj _, _ -> _failatwith __FILE__ __LINE__ "unimp"
+  | AProj _, _ -> _die_with [%here] "unimp"
   | AAppOp (mp, args), _ ->
       let mp = bi_typed_id_infer ctx mp in
       let args' = List.map (bi_typed_lit_infer ctx) args in
@@ -45,29 +45,29 @@ let rec bi_typed_lit_check (ctx : t ctx) (lit : (t option, t option lit) typed)
           raise (Failure msg)
       in
       (AAppOp (mp, args)) #: ty
-  | _, _ -> _failatwith __FILE__ __LINE__ "lit type error"
+  | _, _ -> _die_with [%here] "lit type error"
 
-and bi_typed_lit_infer (ctx : t ctx) (lit : (t option, t option lit) typed) :
+and bi_typed_lit_infer (ctx : t ctx) (lit : (t, t lit) typed) :
     (t, t lit) typed =
   match lit.x with
   | AVar id ->
       let id =
         match id.ty with
-        | None -> bi_typed_id_infer ctx id
-        | Some ty ->
+        | Nt.Ty_unknown -> bi_typed_id_infer ctx id
+        | ty ->
             let _ = failwith "endsd" in
             id.x #: ty
       in
       (AVar id) #: id.ty
   | AC c -> (
       match lit.ty with
-      | None -> (AC c) #: (infer_constant c)
-      | Some ty -> (AC c) #: ty)
+      | Nt.Ty_unknown -> (AC c) #: (infer_constant c)
+      | ty -> (AC c) #: ty)
   | ATu l ->
       let l = List.map (bi_typed_lit_infer ctx) l in
       let ty = Nt.mk_tuple (List.map _get_ty l) in
       (ATu l) #: ty
-  | AProj _ -> _failatwith __FILE__ __LINE__ "unimp"
+  | AProj _ -> _die_with [%here] "unimp"
   | AAppOp (mp, args) ->
       let mp = bi_typed_id_infer ctx mp in
       let args' = List.map (bi_typed_lit_infer ctx) args in

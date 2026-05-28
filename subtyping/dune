@@ -3,4 +3,6 @@
  (name subtyping)
  (wrapped true)
  (libraries language core backend zzenv)
- (modules subcty subrty lean_dump))
+ (modules subcty subrty lean_dump)
+ (preprocess
+  (pps ppx_here)))

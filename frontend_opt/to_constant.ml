@@ -1,6 +1,7 @@
 open Ocaml5_parser
 open Mutils
 open Parsetree
+open Pprintast
 open Sugar
 open Zzdatatype.Datatype
 open To_id
@@ -18,7 +19,7 @@ let rec expr_to_constant e =
   let mk_exn () =
     failwith
       (spf "do not support complicate literal: %s"
-         (Pprintast.string_of_expression e))
+         (string_of_expression e))
   in
   match e.pexp_desc with
   | Pexp_tuple es -> Tu (List.map expr_to_constant es)
@@ -47,5 +48,5 @@ let constant_to_expr v =
   in
   aux v
 
-let layout_constant v = Pprintast.string_of_expression @@ constant_to_expr v
+let layout_constant v = string_of_expression @@ constant_to_expr v
 let layout_constants ts = List.split_by_comma layout_constant ts

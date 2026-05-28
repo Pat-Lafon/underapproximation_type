@@ -14,8 +14,8 @@ let rec typed_value_to_typed_raw_term (value_e : ('t, 't value) typed) =
       (* let tmp = (VLam { lamarg = fixarg; body }) #: body.ty in *)
       let tmp = (VLam { lamarg = fixarg; body }) #: value_e.ty in
       typed_value_to_typed_raw_term tmp
-  | VTu _t__tvaluetypedlist0 ->
-      (Tu (List.map typed_value_to_typed_raw_term _t__tvaluetypedlist0))
+  | VTuple _t__tvaluetypedlist0 ->
+      (Tuple (List.map typed_value_to_typed_raw_term _t__tvaluetypedlist0))
       #: value_e.ty
 
 and typed_term_to_typed_raw_term (term_e : ('t, 't term) typed) =
@@ -31,7 +31,7 @@ and typed_term_to_typed_raw_term (term_e : ('t, 't term) typed) =
            if_rec = false;
          })
       #: term_e.ty
-  | CLetDeTu { turhs; tulhs; body } ->
+  | CLetDeTuple { turhs; tulhs; body } ->
       (Let
          {
            rhs = typed_value_to_typed_raw_term turhs;
@@ -55,6 +55,12 @@ and typed_term_to_typed_raw_term (term_e : ('t, 't term) typed) =
            match_cases = List.map macth_case_to_raw_macth_case match_cases;
          })
       #: term_e.ty
+  | CRecord fields ->
+      (Record
+         (List.map (fun (n, v) -> (n, typed_value_to_typed_raw_term v)) fields))
+      #: term_e.ty
+  | CField { rd; field } ->
+      (Field (typed_value_to_typed_raw_term rd, field)) #: term_e.ty
 
 and macth_case_to_raw_macth_case = function
   | CMatchcase { constructor; args; exp } ->

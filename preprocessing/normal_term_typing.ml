@@ -7,30 +7,30 @@ open Normal_op_typing
 type t = Nt.t
 
 let rec bi_typed_term_infer (ctx : t ctx)
-    (x : (t option, t option raw_term) typed) : (t, t raw_term) typed =
+    (x : (t, t raw_term) typed) : (t, t raw_term) typed =
   match x.ty with
-  | None -> bi_term_infer ctx x.x
-  | Some ty -> bi_term_check ctx x.x ty
+  | Nt.Ty_unknown -> bi_term_infer ctx x.x
+  | ty -> bi_term_check ctx x.x ty
 
-and bi_typed_term_check (ctx : t ctx) (x : (t option, t option raw_term) typed)
+and bi_typed_term_check (ctx : t ctx) (x : (t, t raw_term) typed)
     (ty : t) : (t, t raw_term) typed =
   match x.ty with
-  | None -> bi_term_check ctx x.x ty
-  | Some ty' ->
+  | Nt.Ty_unknown -> bi_term_check ctx x.x ty
+  | ty' ->
       let sndty = Nt._type_unify __FILE__ __LINE__ ty' ty in
       bi_term_check ctx x.x sndty
 
-and bi_term_check (ctx : t ctx) (x : t option raw_term) (ty : t) :
+and bi_term_check (ctx : t ctx) (x : t raw_term) (ty : t) :
     (t, t raw_term) typed =
   match (x, ty) with
   | Err, _ -> Err #: ty
   | Const _, _ | Var _, _ ->
       let x = bi_term_infer ctx x in
       x.x #: (Nt._type_unify __FILE__ __LINE__ x.ty ty)
-  | Tu es, Ty_tuple tys ->
+  | Raw_term.Tuple es, Ty_tuple tys ->
       let estys = _safe_combine __FILE__ __LINE__ es tys in
       let es = List.map (fun (e, ty) -> bi_typed_term_check ctx e ty) estys in
-      (Tu es) #: ty
+      (Raw_term.Tuple es) #: ty
   | Lam { lamarg; lambody }, Ty_arrow (t1, _) ->
       let lamarg = bi_typed_id_check ctx lamarg t1 in
       let ty =
@@ -91,24 +91,23 @@ and bi_term_check (ctx : t ctx) (x : t option raw_term) (ty : t) :
       let f = bi_typed_term_check ctx f fty in
       (App (f, args)) #: ty
   | Let { if_rec; rhs; lhs; letbody }, ty ->
-      let lhs = List.map (__force_typed __FILE__ __LINE__) lhs in
       let rhsty = Nt.mk_tuple (List.map _get_ty lhs) in
       let rhs = bi_typed_term_check ctx rhs rhsty in
       let ctx' = add_to_rights ctx lhs in
       let ctx' =
-        if if_rec then _failatwith __FILE__ __LINE__ "todo??"
+        if if_rec then _die_with [%here] "todo??"
           (* Typectx.add_to_right ctx ("f", construct_arr_tp (List.map xsty, ty)) *)
         else ctx'
       in
       let letbody = bi_typed_term_check ctx' letbody ty in
       (Let { if_rec; rhs; lhs; letbody }) #: ty
-  | Ite (e1, e2, e3), _ ->
+  | Ifte (e1, e2, e3), _ ->
       let e1 = bi_typed_term_check ctx e1 Ty_bool in
       let e2 = bi_typed_term_check ctx e2 ty in
       let e3 = bi_typed_term_check ctx e3 ty in
-      (Ite (e1, e2, e3)) #: ty
+      (Ifte (e1, e2, e3)) #: ty
   | Match { match_cases = []; _ }, _ ->
-      _failatwith __FILE__ __LINE__
+      _die_with [%here]
         "bi_term_infer: pattern matching branch is empty"
   | Match { matched; match_cases }, _ ->
       let matched = bi_typed_term_infer ctx matched in
@@ -133,12 +132,12 @@ and bi_term_check (ctx : t ctx) (x : t option raw_term) (ty : t) :
       let match_cases = List.map handle_case match_cases in
       (Match { matched; match_cases }) #: ty
   | e, ty ->
-      _failatwith __FILE__ __LINE__
+      _die_with [%here]
         (spf "bi_term_check: inconsistent term (%s) and type (%s)"
            (FrontendRaw.layout_raw_term e)
            (Nt.layout ty))
 
-and bi_term_infer (ctx : t ctx) (x : t option raw_term) : (t, t raw_term) typed
+and bi_term_infer (ctx : t ctx) (x : t raw_term) : (t, t raw_term) typed
     =
   match x with
   | Err ->
@@ -149,12 +148,11 @@ and bi_term_infer (ctx : t ctx) (x : t option raw_term) : (t, t raw_term) typed
       (* let _ = Printf.printf "id: %s\n" id.x in *)
       let id = bi_typed_id_infer ctx id in
       (Var id) #: id.ty
-  | Tu es ->
+  | Raw_term.Tuple es ->
       let es = List.map (bi_typed_term_infer ctx) es in
       let ty = Nt.mk_tuple (List.map _get_ty es) in
-      (Tu es) #: ty
+      (Raw_term.Tuple es) #: ty
   | Lam { lamarg; lambody } ->
-      let lamarg = __force_typed __FILE__ __LINE__ lamarg in
       let lambody = bi_typed_term_infer (add_to_right ctx lamarg) lambody in
       let ty = Nt.construct_arr_tp ([ lamarg.ty ], lambody.ty) in
       (Lam { lamarg; lambody }) #: ty
@@ -175,25 +173,24 @@ and bi_term_infer (ctx : t ctx) (x : t option raw_term) : (t, t raw_term) typed
       in
       (App (f, args)) #: ty
   | Let { if_rec = true; _ } ->
-      _failatwith __FILE__ __LINE__
+      _die_with [%here]
         "cannot infer ret type of recursive function"
   | Let { if_rec; rhs; lhs; letbody } ->
-      let lhs = List.map (__force_typed __FILE__ __LINE__) lhs in
       let rhsty = Nt.mk_tuple (List.map _get_ty lhs) in
       let rhs = bi_typed_term_check ctx rhs rhsty in
       let ctx' = add_to_rights ctx lhs in
       let ctx' =
-        if if_rec then _failatwith __FILE__ __LINE__ "todo??"
+        if if_rec then _die_with [%here] "todo??"
           (* Typectx.add_to_right ctx ("f", construct_arr_tp (List.map xsty, ty)) *)
         else ctx'
       in
       let letbody = bi_typed_term_infer ctx' letbody in
       (Let { if_rec; rhs; lhs; letbody }) #: letbody.ty
-  | Ite (e1, e2, e3) ->
+  | Ifte (e1, e2, e3) ->
       let e1 = bi_typed_term_check ctx e1 Ty_bool in
       let e2 = bi_typed_term_infer ctx e2 in
       let e3 = bi_typed_term_check ctx e3 e2.ty in
-      (Ite (e1, e2, e3)) #: e2.ty
+      (Ifte (e1, e2, e3)) #: e2.ty
   | Match { matched; match_cases } ->
       let matched = bi_typed_term_infer ctx matched in
       let handle_case = function
@@ -218,7 +215,7 @@ and bi_term_infer (ctx : t ctx) (x : t option raw_term) : (t, t raw_term) typed
       let ty =
         match match_cases with
         | [] ->
-            _failatwith __FILE__ __LINE__
+            _die_with [%here]
               "bi_term_infer: pattern matching branch is empty"
         | Matchcase { exp; _ } :: match_cases ->
             let ty = exp.ty in
@@ -228,10 +225,12 @@ and bi_term_infer (ctx : t ctx) (x : t option raw_term) : (t, t raw_term) typed
                 match_cases
             then ty
             else
-              _failatwith __FILE__ __LINE__
+              _die_with [%here]
                 "bi_term_infer: pattern matching branchs have different types"
       in
       (Match { matched; match_cases }) #: ty
+  | Raw_term.Record _ | Field _ ->
+      _die_with [%here] "record not supported"
 
 let typed_term_infer = bi_typed_term_infer
 let typed_term_check = bi_typed_term_check

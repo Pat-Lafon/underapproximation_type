@@ -19,11 +19,13 @@ type 't raw_term =
     }
   | App of ('t, 't raw_term) typed * ('t, 't raw_term) typed list
   | AppOp of ('t, op) typed * ('t, 't raw_term) typed list
-  | Ite of
+  | Ifte of
       ('t, 't raw_term) typed
       * ('t, 't raw_term) typed
       * ('t, 't raw_term) typed
-  | Tu of ('t, 't raw_term) typed list
+  | Tuple of ('t, 't raw_term) typed list
+  | Record of (string * ('t, 't raw_term) typed) list
+  | Field of ('t, 't raw_term) typed * string
   | Match of {
       matched : ('t, 't raw_term) typed;
       match_cases : 't raw_match_case list;
@@ -56,12 +58,15 @@ let rec fv_raw_term (raw_term_e : 't raw_term) =
       @ typed_fv_raw_term _t__traw_termtyped0
   | AppOp (_, _t__traw_termtypedlist1) ->
       [] @ List.concat (List.map typed_fv_raw_term _t__traw_termtypedlist1)
-  | Ite (_t__traw_termtyped0, _t__traw_termtyped1, _t__traw_termtyped2) ->
+  | Ifte (_t__traw_termtyped0, _t__traw_termtyped1, _t__traw_termtyped2) ->
       (([] @ typed_fv_raw_term _t__traw_termtyped2)
       @ typed_fv_raw_term _t__traw_termtyped1)
       @ typed_fv_raw_term _t__traw_termtyped0
-  | Tu _t__traw_termtypedlist0 ->
+  | Tuple _t__traw_termtypedlist0 ->
       [] @ List.concat (List.map typed_fv_raw_term _t__traw_termtypedlist0)
+  | Record fields ->
+      [] @ List.concat (List.map (fun (_, v) -> typed_fv_raw_term v) fields)
+  | Field (rd, _) -> typed_fv_raw_term rd
   | Match { matched; match_cases } ->
       ([] @ List.concat (List.map fv_raw_match_case match_cases))
       @ typed_fv_raw_term matched
@@ -108,13 +113,17 @@ let rec subst_raw_term (string_x : string) f (raw_term_e : 't raw_term) =
       AppOp
         ( _t_optyped0,
           List.map (typed_subst_raw_term string_x f) _t__traw_termtypedlist1 )
-  | Ite (_t__traw_termtyped0, _t__traw_termtyped1, _t__traw_termtyped2) ->
-      Ite
+  | Ifte (_t__traw_termtyped0, _t__traw_termtyped1, _t__traw_termtyped2) ->
+      Ifte
         ( typed_subst_raw_term string_x f _t__traw_termtyped0,
           typed_subst_raw_term string_x f _t__traw_termtyped1,
           typed_subst_raw_term string_x f _t__traw_termtyped2 )
-  | Tu _t__traw_termtypedlist0 ->
-      Tu (List.map (typed_subst_raw_term string_x f) _t__traw_termtypedlist0)
+  | Tuple _t__traw_termtypedlist0 ->
+      Tuple (List.map (typed_subst_raw_term string_x f) _t__traw_termtypedlist0)
+  | Record fields ->
+      Record
+        (List.map (fun (n, v) -> (n, typed_subst_raw_term string_x f v)) fields)
+  | Field (rd, field) -> Field (typed_subst_raw_term string_x f rd, field)
   | Match { matched; match_cases } ->
       Match
         {
@@ -164,13 +173,16 @@ let rec map_raw_term : 't 's. ('t -> 's) -> 't raw_term -> 's raw_term =
       AppOp
         ( _t_optyped0#=>f,
           List.map (typed_map_raw_term f) _t__traw_termtypedlist1 )
-  | Ite (_t__traw_termtyped0, _t__traw_termtyped1, _t__traw_termtyped2) ->
-      Ite
+  | Ifte (_t__traw_termtyped0, _t__traw_termtyped1, _t__traw_termtyped2) ->
+      Ifte
         ( typed_map_raw_term f _t__traw_termtyped0,
           typed_map_raw_term f _t__traw_termtyped1,
           typed_map_raw_term f _t__traw_termtyped2 )
-  | Tu _t__traw_termtypedlist0 ->
-      Tu (List.map (typed_map_raw_term f) _t__traw_termtypedlist0)
+  | Tuple _t__traw_termtypedlist0 ->
+      Tuple (List.map (typed_map_raw_term f) _t__traw_termtypedlist0)
+  | Record fields ->
+      Record (List.map (fun (n, v) -> (n, typed_map_raw_term f v)) fields)
+  | Field (rd, field) -> Field (typed_map_raw_term f rd, field)
   | Match { matched; match_cases } ->
       Match
         {
@@ -221,12 +233,12 @@ let rec __get_lam_term_ty file line = function
   | Lam { lamarg; lambody } -> (
       let t1 =
         match lamarg.ty with
-        | Some t1 -> t1
-        | None -> _failatwith file line "__get_lam_term_ty"
+        | Nt.Ty_unknown -> _failatwith file line "__get_lam_term_ty"
+        | t1 -> t1
       in
       match lambody.ty with
-      | Some t2 -> Nt.mk_arr t1 t2
-      | None -> Nt.mk_arr t1 (__get_lam_term_ty file line lambody.x))
+      | Nt.Ty_unknown -> Nt.mk_arr t1 (__get_lam_term_ty file line lambody.x)
+      | t2 -> Nt.mk_arr t1 t2)
   | _ -> _failatwith file line "__get_lam_term_ty: not lam "
 
 let rec raw_term_to_ty = function

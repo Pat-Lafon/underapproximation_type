@@ -18,20 +18,22 @@ let ocaml_structure_item_to_item structure =
       Some
         (if String.equal pval_name.txt "method_predicates" then
            let mp = List.nth pval_prim 0 in
-           MMethodPred mp#:(Some (Nt.core_type_to_t pval_type))
+           MMethodPred mp#:(Nt.core_type_to_t pval_type)
          else
            match pval_attributes with
            | [ x ] when String.equal x.attr_name.txt "method_pred" ->
-               MMethodPred pval_name.txt#:(Some (Nt.core_type_to_t pval_type))
-           | _ -> MValDecl pval_name.txt#:(Some (Nt.core_type_to_t pval_type)))
+               MMethodPred pval_name.txt#:(Nt.core_type_to_t pval_type)
+           | _ -> MValDecl pval_name.txt#:(Nt.core_type_to_t pval_type))
   | Pstr_type (_, [ type_dec ]) -> (
       let item = To_type_dec.of_ocamltypedec type_dec in
       match type_dec.ptype_attributes with
       | [ x ] when String.equal x.attr_name.txt "reflect" -> (
           match item with
-          | MTyDecl { type_name; type_params; type_decls } ->
-              add_reflect_type type_name type_params type_decls;
+          | MTyDecl { type_name; type_params; type_decl = Decl_constructors cs } ->
+              add_reflect_type type_name type_params cs;
               Some item
+          | MTyDecl { type_decl = Decl_record _; _ } ->
+              _die_with [%here] "record reflection not supported"
           | _ -> failwith "unexpected item type from To_type_dec.of_ocamltypedec")
       | [] -> Some item
       | _ -> failwith "unimplemented case I can come back to later")
@@ -47,9 +49,8 @@ let ocaml_structure_item_to_item structure =
                  MFuncImpRaw
                    {
                      name =
-                       name#:(Some
-                                (Raw_term.__get_lam_term_ty __FILE__ __LINE__
-                                   body.x));
+                       name#:(Raw_term.__get_lam_term_ty __FILE__ __LINE__
+                                body.x);
                      if_rec = get_if_rec flag;
                      body;
                    }
@@ -70,7 +71,7 @@ let ocaml_structure_item_to_item structure =
                      rty = rty_of_expr value_binding.pvb_expr;
                    }
              | _ as s ->
-                 _failatwith __FILE__ __LINE__
+                 _die_with [%here]
                    ("syntax error: " ^ s
                   ^ " is non known rty kind, not axiom | assert | library"))
          | [] ->
@@ -78,13 +79,12 @@ let ocaml_structure_item_to_item structure =
              MFuncImpRaw
                {
                  name =
-                   name#:(Some
-                            (Raw_term.__get_lam_term_ty __FILE__ __LINE__ body.x));
+                   name#:(Raw_term.__get_lam_term_ty __FILE__ __LINE__ body.x);
                  if_rec = get_if_rec flag;
                  body;
                }
          | _ ->
-             _failatwith __FILE__ __LINE__
+             _die_with [%here]
                ("wrong syntax: "
                ^ (value_binding.pvb_attributes
                  |> List.map (fun x -> x.attr_name.txt)
@@ -94,20 +94,16 @@ let ocaml_structure_item_to_item structure =
       let () =
         Printf.printf "%s\n" (Pprintast.string_of_structure [ structure ])
       in
-      _failatwith __FILE__ __LINE__ "translate not a func_decl"
+      _die_with [%here] "translate not a func_decl"
 
 let ocaml_structure_to_items structure =
   List.filter_map ocaml_structure_item_to_item structure
 
-let layout_ct_opt = function
-  | Some ct -> Nt.layout ct
-  | None -> _failatwith __FILE__ __LINE__ "die"
-
 let layout_item = function
   | MTyDecl _ as item -> To_type_dec.layout_type_dec item
   | MMethodPred x ->
-      spf "val[@method_predicate] %s: %s" x.x @@ layout_ct_opt x.ty
-  | MValDecl x -> spf "val %s: %s" x.x @@ layout_ct_opt x.ty
+      spf "val[@method_predicate] %s: %s" x.x (Nt.layout x.ty)
+  | MValDecl x -> spf "val %s: %s" x.x (Nt.layout x.ty)
   | MAxiom { name; prop } -> spf "let[@axiom] %s = %s" name (layout_prop prop)
   | MFuncImpRaw { name; if_rec; body } ->
       spf "let %s%s = %s"
@@ -124,17 +120,5 @@ let layout_item = function
       spf "let[@assert] %s = %s" name (layout_rty rty)
   | MRty { is_assumption = true; name; rty } ->
       spf "let[@library] %s = %s" name (layout_rty rty)
-
-let layout_item_to_coq = function
-  | MAxiom { name; prop } ->
-      spf "Lemma %s : %s. Proof. Qed. Hint Resolve %s: core." name
-        (layout_prop_to_coq prop) name
-  | _ -> _failatwith __FILE__ __LINE__ "not implemented"
-
-let layout_item_to_lean = function
-  | MAxiom { name; prop } ->
-      spf "@[grind]\ntheorem %s : %s := by grind" name
-        (layout_prop_to_lean prop)
-  | _ -> _failatwith __FILE__ __LINE__ "not implemented"
 
 let layout_structure l = spf "%s\n" (List.split_by "\n" layout_item l)

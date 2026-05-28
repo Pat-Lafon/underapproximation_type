@@ -1,4 +1,5 @@
 open Ocaml5_parser
+open Pprintast
 open Mtyped
 open Zzdatatype.Datatype
 module Nt = Normalty.Frontend
@@ -18,13 +19,13 @@ let rec lit_to_raw_term expr =
         let op = op #-> (fun x -> PrimOp x) in
         let args = List.map typed_lit_to_typed_raw_term args in
         AppOp (op, args)
-    | ATu l -> Tu (List.map typed_lit_to_typed_raw_term l)
-    | AProj _ -> _failatwith __FILE__ __LINE__ "unimp"
-    | AVar x -> Var x.x#:None
+    | ATu l -> Tuple (List.map typed_lit_to_typed_raw_term l)
+    | AProj _ -> _die_with [%here] "unimp"
+    | AVar x -> Var x.x#:Nt.Ty_unknown
   in
   aux expr
 
-and typed_lit_to_typed_raw_term expr = (lit_to_raw_term expr.x)#:None
+and typed_lit_to_typed_raw_term expr = (lit_to_raw_term expr.x)#:Nt.Ty_unknown
 
 let rec layout_lit_to_smtlib2 expr =
   let aux expr =
@@ -33,8 +34,8 @@ let rec layout_lit_to_smtlib2 expr =
     | AAppOp (op, args) ->
         let op = match op.x with "==" -> "=" | _ -> op.x in
         spf "(%s %s)" op (List.split_by " " layout_typed_lit_to_smtlib2 args)
-    | ATu _ -> _failatwith __FILE__ __LINE__ "unimp"
-    | AProj _ -> _failatwith __FILE__ __LINE__ "unimp"
+    | ATu _ -> _die_with [%here] "unimp"
+    | AProj _ -> _die_with [%here] "unimp"
     | AVar x -> x.x
   in
   aux expr
@@ -45,7 +46,7 @@ let typed_lit_to_expr expr =
   typed_raw_term_to_expr @@ typed_lit_to_typed_raw_term expr
 
 let lit_to_expr expr = raw_term_to_expr @@ lit_to_raw_term expr
-let layout lit = Pprintast.string_of_expression @@ lit_to_expr lit
+let layout lit = string_of_expression @@ lit_to_expr lit
 let layout_typed_lit lit = layout lit.x
 
 let rec raw_term_to_lit e =
@@ -58,9 +59,9 @@ let rec raw_term_to_lit e =
       let x = to_typed_ids op in
       assert (List.length x = 1);
       AAppOp (List.hd x, List.map typed_raw_term_to_typed_lit args)
-  | Tu es -> ATu (List.map typed_raw_term_to_typed_lit es)
+  | Tuple es -> ATu (List.map typed_raw_term_to_typed_lit es)
   | _ ->
-      (*  _failatwith __FILE__ __LINE__
+      (*  _die_with [%here]
       @@ spf "parsing: not a op (%s)"
       @@ layout_raw_term e *)
       failwith "raw_term_to_lit: unimplemented"
@@ -74,15 +75,15 @@ let value_to_lit (v : (_, _ Term.value) typed) : (_, _ lit) typed =
   match v.x with
   | VConst c -> (AC c)#:v.ty
   | VVar id -> (AVar id)#:v.ty
-  | _ -> _failatwith __FILE__ __LINE__ "val_to_lit:unimplemented"
+  | _ -> _die_with [%here] "val_to_lit:unimplemented"
 
 let term_to_lit (term : ('t, 't Term.term) typed) : (_, _ lit) typed =
   match term.x with
   | CVal { x = VConst c; ty } -> (AC c)#:ty
   | CVal { x = VVar id; ty } -> (AVar id)#:ty
-  | CVal _ -> _failatwith __FILE__ __LINE__ "term_to_lit:CVal:unimplemented"
+  | CVal _ -> _die_with [%here] "term_to_lit:CVal:unimplemented"
   | CLetE _ -> failwith "unsupported term_to_lit: CLetE"
   | CApp { appf = { x = VVar f; ty }; apparg } ->
       let args = value_to_lit apparg in
       (AAppOp (f, [ args ]))#:ty
-  | _ -> _failatwith __FILE__ __LINE__ "term_to_lit:unimplemented"
+  | _ -> _die_with [%here] "term_to_lit:unimplemented"

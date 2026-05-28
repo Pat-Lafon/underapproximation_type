@@ -5,7 +5,7 @@ import ProofAutomation
 inductive itree where
   | Leaf
   | Node (value : Int) (left : itree) (right : itree)
-  deriving DecidableEq
+  deriving DecidableEq, Repr, Plausible.Arbitrary
 
 @[simp, grind =] def is_leaf : itree → Bool
   | .Leaf => true

@@ -3,6 +3,8 @@
  (public_name underapproximation_type.preprocessing)
  (wrapped true)
  (libraries syntax language)
+ (preprocess
+  (pps ppx_here))
  (modules
   normal_constant_typing
   normal_id_typing

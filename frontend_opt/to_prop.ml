@@ -1,5 +1,6 @@
 open Ocaml5_parser
 open Parsetree
+open Pprintast
 open Mtyped
 open Mutils
 open Zzdatatype.Datatype
@@ -19,31 +20,6 @@ let quantifier_to_pattern (q, u) =
     (Ppat_constraint
        ( dest_to_pat (Ppat_var (Location.mknoloc u.x)),
          notated (Normalty.Connective.qt_to_string q, u.ty) ))
-
-let smt_layout_ty = function
-  | Some Nt.T.Ty_bool -> "Bool"
-  | Some Nt.T.Ty_int -> "Int"
-  | Some (Nt.T.Ty_constructor _) -> "Int"
-  | _ -> _failatwith __FILE__ __LINE__ "unimp"
-
-let rec layout_to_smtlib2 = function
-  | Lit lit -> layout_typed_lit_to_smtlib2 lit
-  | Implies (p1, p2) ->
-      spf "(=> %s %s)" (layout_to_smtlib2 p1) (layout_to_smtlib2 p2)
-  | And [ p ] -> layout_to_smtlib2 p
-  | Or [ p ] -> layout_to_smtlib2 p
-  | And ps -> spf "(and %s)" @@ List.split_by " " layout_to_smtlib2 ps
-  | Or ps -> spf "(or %s)" @@ List.split_by " " layout_to_smtlib2 ps
-  | Not p -> spf "(not %s)" (layout_to_smtlib2 p)
-  | Iff (p1, p2) ->
-      spf "(= %s %s)" (layout_to_smtlib2 p1) (layout_to_smtlib2 p2)
-  | Ite _ -> _failatwith __FILE__ __LINE__ "unimp"
-  | Forall { qv; body } ->
-      spf "(forall ((%s %s)) %s)" qv.x (smt_layout_ty qv.ty)
-        (layout_to_smtlib2 body)
-  | Exists { qv; body } ->
-      spf "(exists ((%s %s)) %s)" qv.x (smt_layout_ty qv.ty)
-        (layout_to_smtlib2 body)
 
 type 't layout_setting = {
   sym_true : string;
@@ -88,46 +64,6 @@ let psetting =
     layout_typedid = (fun x -> x.x);
     (* (fun x ->          Printf.spf "(%s:%s)" x.x (Ty.layout x.ty)); *)
     layout_mp = (fun x -> x);
-  }
-
-let coqsetting =
-  {
-    sym_true = "True";
-    sym_false = "False";
-    sym_and = " /\\ ";
-    sym_or = " \\/ ";
-    sym_not = "~";
-    sym_implies = "->";
-    sym_iff = "<->";
-    sym_forall = "forall ";
-    sym_exists = "exists ";
-    layout_typedid = (fun x -> x.x);
-    layout_mp = (function "==" -> "=" | x -> x);
-  }
-
-let lean_layout_ty = function
-  | Some Nt.T.Ty_bool -> "Bool"
-  | Some Nt.T.Ty_int -> "Int"
-  | Some Nt.T.Ty_unit -> "Unit"
-  | Some (Nt.T.Ty_constructor (name, _)) -> name
-  | ty ->
-      let ty_str = match ty with None -> "None" | Some t -> Nt.layout t in
-      _failatwith __FILE__ __LINE__
-        (spf "lean_layout_ty: unsupported type '%s'" ty_str)
-
-let leansetting =
-  {
-    sym_true = "True";
-    sym_false = "False";
-    sym_and = " ∧ ";
-    sym_or = " ∨ ";
-    sym_not = "¬";
-    sym_implies = "→";
-    sym_iff = "↔";
-    sym_forall = "∀ ";
-    sym_exists = "∃ ";
-    layout_typedid = (fun x -> spf "(%s : %s)" x.x (lean_layout_ty x.ty));
-    layout_mp = (function "==" -> "=" | x -> x);
   }
 
 let layout_prop_
@@ -189,8 +125,8 @@ let rec prop_to_expr expr =
     | Forall { qv; body } ->
         let qv =
           match qv.ty with
-          | Some ty -> qv.x #: ty
-          | None -> _failatwith __FILE__ __LINE__ "die"
+          | Nt.Ty_unknown -> _die_with [%here] "die"
+          | ty -> qv.x #: ty
         in
         mklam
           (quantifier_to_pattern (Normalty.Connective.Fa, qv))
@@ -198,8 +134,8 @@ let rec prop_to_expr expr =
     | Exists { qv; body } ->
         let qv =
           match qv.ty with
-          | Some ty -> qv.x #: ty
-          | None -> _failatwith __FILE__ __LINE__ "die"
+          | Nt.Ty_unknown -> _die_with [%here] "die"
+          | ty -> qv.x #: ty
         in
         mklam
           (quantifier_to_pattern (Normalty.Connective.Ex, qv))
@@ -215,7 +151,7 @@ let quantifier_of_expr arg =
         | None ->
             Normalty.Connective.Fa
             (* here we assume it has forall by default. *)
-            (* _failatwith __FILE__ __LINE__ *)
+            (* _die_with [%here] *)
             (* "quantifier needs be [@forall] or [@exists]" *)
         | Some q -> Normalty.Connective.qt_of_string q
       in
@@ -225,8 +161,8 @@ let quantifier_of_expr arg =
         | _ -> failwith "parsing: prop function"
       in
       let ty = Nt.core_type_to_t ct in
-      (q, arg #: (Some ty))
-  | _ -> _failatwith __FILE__ __LINE__ "quantifier needs type notation"
+      (q, arg #: ty)
+  | _ -> _die_with [%here] "quantifier needs type notation"
 
 let prop_of_expr expr =
   let rec aux expr =
@@ -236,7 +172,7 @@ let prop_of_expr expr =
     | Pexp_match _ -> failwith "parsing: prop does not have match"
     | Pexp_apply (func, args) -> (
         (*     let () = *)
-        (*       Printf.printf "expr: %s\n" (Pprintast.string_of_expression expr) *)
+        (*       Printf.printf "expr: %s\n" (string_of_expression expr) *)
         (*     in *)
         let f = id_of_expr func in
         let args = List.map snd args in
@@ -271,7 +207,7 @@ let prop_of_expr expr =
         | Normalty.Connective.Ex -> Exists { qv; body })
     | Pexp_construct _ ->
         (* let () = *)
-        (*   Printf.printf "expr: %s\n" (Pprintast.string_of_expression expr) *)
+        (*   Printf.printf "expr: %s\n" (string_of_expression expr) *)
         (* in *)
         Lit (typed_lit_of_expr expr)
     | Pexp_tuple _ | Pexp_ident _ | Pexp_constant _ ->
@@ -280,11 +216,9 @@ let prop_of_expr expr =
         raise
         @@ failwith
              (spf "not imp client parsing:%s"
-             @@ Pprintast.string_of_expression expr)
+             @@ string_of_expression expr)
   in
   aux expr
 
-let layout_prop__raw x = Pprintast.string_of_expression @@ prop_to_expr x
+let layout_prop__raw x = string_of_expression @@ prop_to_expr x
 let layout_prop = layout_prop_ psetting
-let layout_prop_to_coq = layout_prop_ coqsetting
-let layout_prop_to_lean = layout_prop_ leansetting

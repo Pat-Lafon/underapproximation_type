@@ -30,7 +30,7 @@ let get_int_by_name m x =
   | Some i -> (
       match Z3.Model.eval m i false with
       (* match Z3.Model.get_const_interp m i with *)
-      | None -> _failatwith __FILE__ __LINE__ "get_int"
+      | None -> _die_with [%here] "get_int"
       | Some v ->
           (* Printf.printf "get_int(%s)\n" (Z3.Expr.to_string v); *)
           Some (int_of_string @@ Z3.Arithmetic.Integer.numeral_to_string v))
@@ -42,7 +42,7 @@ let get_string_by_name m x =
   | Some i -> (
       match Z3.Model.eval m i false with
       (* match Z3.Model.get_const_interp m i with *)
-      | None -> _failatwith __FILE__ __LINE__ "get_string"
+      | None -> _die_with [%here] "get_string"
       | Some v ->
           let str = Expr.to_string v in
           let str = List.of_seq @@ String.to_seq str in

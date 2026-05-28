@@ -8,7 +8,7 @@ type prim_path = {
   type_decls : string;
   axioms : string;
   templates : string;
-  lean_preamble : string;
+  lean_preamble : string option;
 }
 [@@deriving sexp]
 
@@ -53,7 +53,18 @@ let show_debug_debug = show_log "debug"
 let get_resfile () = (get_meta ()).resfile
 let get_abdfile inputname = inputname ^ (get_meta ()).abdfile
 let get_prim_path () = (get_meta ()).prim_path
-let get_lean_preamble_path () = (get_meta ()).prim_path.lean_preamble
+let get_lean_preamble_path () =
+  match (get_meta ()).prim_path.lean_preamble with
+  | Some p -> p
+  | None ->
+      failwith
+        "meta-config is missing required key 'prim_path.lean_preamble' \
+         (needed to dump Lean subtyping queries). Add it to your \
+         meta-config.json, pointing at one of \
+         data/predefined/lean_preamble_ilist.lean, \
+         data/predefined/lean_preamble_rbtree.lean, or \
+         data/predefined/lean_preamble_itree.lean (path is resolved \
+         relative to the cobb invocation's cwd)."
 let get_uninterops () = (get_meta ()).abd_templates
 
 let get_measure () =
@@ -90,8 +101,9 @@ let load_meta meta_fname =
   let p = metaj |> member "prim_path" in
   let lean_preamble =
     match p |> member "lean_preamble" with
-    | `String s -> s
-    | _ -> "data/predefined/lean_preamble.lean"
+    | `Null -> None
+    | `String s -> Some s
+    | _ -> failwith "config: prim_path.lean_preamble must be a string"
   in
   let prim_path =
     {

@@ -2,11 +2,15 @@ open Sexplib.Std
 open Mtyped
 open Cty
 
+type ou = Over | Under [@@deriving sexp]
+
 type 't rty =
-  | RtyBase of { ou : bool; cty : 't cty }
+  | RtyBase of { ou : ou; cty : 't cty }
   | RtyBaseArr of { argcty : 't cty; arg : (string[@bound]); retty : 't rty }
   | RtyArrArr of { argrty : 't rty; retty : 't rty }
   | RtyTuple of 't rty list
+  | RtyPolyType of { pt : string; rty : 't rty }
+  | RtyPolyPred of { pred : ('t, string) typed; rty : 't rty }
 [@@deriving sexp]
 
 (* NOTE: modified *)
@@ -23,6 +27,8 @@ let rec fv_rty (rty_e : 't rty) =
       res @ fv_cty argcty
   | RtyArrArr { argrty; retty } -> ([] @ fv_rty retty) @ fv_rty argrty
   | RtyTuple _trtylist0 -> [] @ List.concat (List.map fv_rty _trtylist0)
+  | RtyPolyType { rty; _ } -> fv_rty rty
+  | RtyPolyPred { rty; _ } -> fv_rty rty
 
 and typed_fv_rty (rty_e : ('t, 't rty) typed) = fv_rty rty_e.x
 
@@ -46,6 +52,10 @@ let rec subst_rty (string_x : string) f (rty_e : 't rty) =
           retty = subst_rty string_x f retty;
         }
   | RtyTuple _trtylist0 -> RtyTuple (List.map (subst_rty string_x f) _trtylist0)
+  | RtyPolyType { pt; rty } ->
+      RtyPolyType { pt; rty = subst_rty string_x f rty }
+  | RtyPolyPred { pred; rty } ->
+      RtyPolyPred { pred; rty = subst_rty string_x f rty }
 
 and typed_subst_rty (string_x : string) f (rty_e : ('t, 't rty) typed) =
   rty_e #-> (subst_rty string_x f)
@@ -58,6 +68,9 @@ let rec map_rty (f : 't -> 's) (rty_e : 't rty) =
   | RtyArrArr { argrty; retty } ->
       RtyArrArr { argrty = map_rty f argrty; retty = map_rty f retty }
   | RtyTuple _trtylist0 -> RtyTuple (List.map (map_rty f) _trtylist0)
+  | RtyPolyType { pt; rty } -> RtyPolyType { pt; rty = map_rty f rty }
+  | RtyPolyPred { pred; rty } ->
+      RtyPolyPred { pred = pred #=> f; rty = map_rty f rty }
 
 and typed_map_rty (f : 't -> 's) (rty_e : ('t, 't rty) typed) =
   rty_e #=> f #-> (map_rty f)
@@ -77,6 +90,8 @@ let rec erase_rty = function
   | RtyArrArr { argrty; retty } ->
       Nt.mk_arr (erase_rty argrty) (erase_rty retty)
   | RtyTuple _trtylist0 -> Nt.mk_tuple (List.map erase_rty _trtylist0)
+  | RtyPolyType { rty; _ } -> erase_rty rty
+  | RtyPolyPred { rty; _ } -> erase_rty rty
 
 let is_base_rty = function RtyBase _ -> true | _ -> false
 
@@ -85,9 +100,9 @@ let assume_base_rty = function
   | _ -> failwith "assume_base_rty"
 
 let ou_to_qt = function
-  | true -> Normalty.Connective.Fa
-  | false -> Normalty.Connective.Ex
+  | Over -> Normalty.Connective.Fa
+  | Under -> Normalty.Connective.Ex
 
 let qt_to_ou = function
-  | Normalty.Connective.Fa -> true
-  | Normalty.Connective.Ex -> false
+  | Normalty.Connective.Fa -> Over
+  | Normalty.Connective.Ex -> Under

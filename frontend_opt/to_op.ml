@@ -9,7 +9,7 @@ let string_to_op_opt str =
 let string_to_op str =
   match string_to_op_opt str with
   | Some op -> op
-  | None -> _failatwith __FILE__ __LINE__ "unknown operator of string"
+  | None -> _die_with [%here] "unknown operator of string"
 
 let _string_to_dt_op file line str =
   match string_to_op str with

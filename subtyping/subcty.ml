@@ -120,12 +120,14 @@ let rty_ctx_to_cty_ctx pctx =
     | None -> uqvs
     | Some (pctx, binding) -> (
         match binding.ty with
-        | RtyTuple _ -> _failatwith __FILE__ __LINE__ "unimp"
+        | RtyTuple _ -> _die_with [%here] "unimp"
         | RtyBaseArr _ | RtyArrArr _ -> aux pctx uqvs
         | RtyBase { ou; cty } ->
             let qt = ou_to_qt ou in
             let x = (qt, binding.x)#:cty in
-            aux pctx (x :: uqvs))
+            aux pctx (x :: uqvs)
+        | RtyPolyType _ | RtyPolyPred _ ->
+            _die_with [%here] "polymorphic rty not supported")
   in
   match pctx with Typectx pctx -> aux pctx []
 
@@ -141,5 +143,5 @@ let is_nonempty_cty pctx cty =
 
 let is_nonempty_rty pctx rty =
   match rty with
-  | RtyBase { ou = false; cty } -> is_nonempty_cty pctx cty
+  | RtyBase { ou = Under; cty } -> is_nonempty_cty pctx cty
   | _ -> false

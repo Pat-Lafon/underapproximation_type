@@ -52,9 +52,9 @@ and normalize_get_comp (k : Nt.t cont) (expr : (Nt.t, Nt.t raw_term) typed) :
   let kv v = k (value_to_term v) in
   match expr.x with
   | Err -> k CErr#:expr.ty
-  | Tu es ->
+  | Tuple es ->
       normalize_get_values
-        (fun vs -> kv (VTu vs)#:(Nt.mk_tuple (List.map _get_ty vs)))
+        (fun vs -> kv (VTuple vs)#:(Nt.mk_tuple (List.map _get_ty vs)))
         es
   | Var var -> kv (VVar var)#:expr.ty
   | Const c -> kv (VConst c)#:expr.ty
@@ -74,8 +74,8 @@ and normalize_get_comp (k : Nt.t cont) (expr : (Nt.t, Nt.t raw_term) typed) :
               let rhs = value_to_term @@ mk_fix fixname fixarg fixbody in
               construct_lete fixname rhs (normalize_get_comp k letbody))
             rhs
-      | true, _ -> _failatwith __FILE__ __LINE__ "bad"
-      | false, [] -> _failatwith __FILE__ __LINE__ "bad"
+      | true, _ -> _die_with [%here] "bad"
+      | false, [] -> _die_with [%here] "bad"
       | false, [ lhs ] ->
           normalize_get_comp
             (fun rhs -> construct_lete lhs rhs (normalize_get_comp k letbody))
@@ -84,7 +84,7 @@ and normalize_get_comp (k : Nt.t cont) (expr : (Nt.t, Nt.t raw_term) typed) :
           normalize_get_value
             (fun rhs ->
               let body = normalize_get_comp k letbody in
-              (CLetDeTu { tulhs; turhs = rhs; body })#:body.ty)
+              (CLetDeTuple { tulhs; turhs = rhs; body })#:body.ty)
             rhs)
   | AppOp (op, es) ->
       normalize_get_values (fun appopargs -> k (mk_appop op appopargs)) es
@@ -93,7 +93,7 @@ and normalize_get_comp (k : Nt.t cont) (expr : (Nt.t, Nt.t raw_term) typed) :
         (fun appf -> normalize_get_value (fun arg -> k (mk_app appf arg)) arg)
         func
   | App (func, args) -> normalize_get_comp k (decurry (func, args))
-  | Ite (cond, et, ef) ->
+  | Ifte (cond, et, ef) ->
       normalize_get_comp k
         (Match
            {
@@ -119,6 +119,7 @@ and normalize_get_comp (k : Nt.t cont) (expr : (Nt.t, Nt.t raw_term) typed) :
           in
           (CMatch { matched; match_cases })#:expr.ty)
         matched
+  | Record _ | Field _ -> _die_with [%here] "record not supported"
 
 let normalize_item (item : Nt.t item) =
   match item with

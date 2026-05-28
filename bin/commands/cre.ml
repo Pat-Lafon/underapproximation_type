@@ -39,10 +39,7 @@ let preprocess source_file () =
   let reflectable_functions = normalize_structure reflectable_functions in *)
   let () =
     List.iter
-      (fun i ->
-        i
-        |> Item.map_item (fun t -> Some t)
-        |> Frontend_opt.To_item.layout_item |> print_endline)
+      (fun i -> Frontend_opt.To_item.layout_item i |> print_endline)
       reflectable_functions
   in
 
@@ -76,7 +73,7 @@ let handle_template templates =
     List.map
       (fun name ->
         match List.find_opt (fun x -> String.equal name x.x) templates with
-        | None -> Sugar._failatwith __FILE__ __LINE__ "die"
+        | None -> Sugar._die_with [%here] "die"
         | Some x -> x.ty)
       temp_names
   in
@@ -97,19 +94,21 @@ let init_type_context meta_config_file source_file : _ * Env.prim_path * _ * _ =
     in
     List.iter
       (function
-        | Item.MTyDecl { type_name; type_params = []; type_decls }
+        | Item.MTyDecl
+            { type_name; type_params = []; type_decl = Decl_constructors cs }
           when not (List.mem type_name [ "unit"; "bool" ]) ->
             Backend.Z3aux.create_and_register_datatype Backend.Smtquery.ctx
-              type_name type_decls
+              type_name cs
         | _ -> ())
       type_decl_items
   in
   let code = preprocess source_file () in
   let () =
     Core.List.iter code ~f:(function
-      | Item.MTyDecl { type_name; type_params = _; type_decls } ->
+      | Item.MTyDecl
+          { type_name; type_params = _; type_decl = Decl_constructors cs } ->
           Backend.Z3aux.create_and_register_datatype Backend.Smtquery.ctx
-            type_name type_decls
+            type_name cs
       | _ -> ())
   in
   let prim_path = Env.get_prim_path () in

@@ -20,5 +20,5 @@
   ; cgen
   cre)
  (preprocess
-  (pps ppx_inline_test ppx_assert ppx_jane))
+  (pps ppx_inline_test ppx_assert ppx_jane ppx_here))
  (inline_tests))

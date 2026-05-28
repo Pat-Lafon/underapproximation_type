@@ -15,17 +15,19 @@ type 't value =
       fixarg : (('t, string) typed[@bound]);
       body : ('t, 't term) typed;
     }
-  | VTu of ('t, 't value) typed list
+  | VTuple of ('t, 't value) typed list
 
 and 't term =
   | CErr
   | CVal of ('t, 't value) typed
+  | CRecord of (string * ('t, 't value) typed) list
+  | CField of { rd : ('t, 't value) typed; field : string }
   | CLetE of {
       rhs : ('t, 't term) typed;
       lhs : (('t, string) typed[@bound]);
       body : ('t, 't term) typed;
     }
-  | CLetDeTu of {
+  | CLetDeTuple of {
       turhs : ('t, 't value) typed;
       tulhs : (('t, string) typed list[@bound]);
       body : ('t, 't term) typed;

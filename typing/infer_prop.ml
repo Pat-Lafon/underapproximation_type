@@ -9,7 +9,7 @@ type t = Nt.t
 let abductive_infer_subtyping_query ~(features : t lit list)
     ~(verifier : t prop -> bool) ~(sanity_check : t prop -> bool) =
   match Cegis.cegis features verifier sanity_check with
-  | None -> _failatwith __FILE__ __LINE__ "end"
+  | None -> _die_with [%here] "end"
   | Some res -> res
 
 let abductive_infer_cty uctx cty1 cty2 =
@@ -19,7 +19,7 @@ let abductive_infer_cty uctx cty1 cty2 =
         List.filter_map
           (fun x ->
             match x.ty with
-            | RtyBase { ou = true; _ } -> Some x.x #: (erase_rty x.ty)
+            | RtyBase { ou = Over; _ } -> Some x.x #: (erase_rty x.ty)
             | _ -> None)
           l
   in
@@ -55,9 +55,9 @@ let abductive_infer_cty uctx cty1 cty2 =
 
 let abductive_infer_rty uctx rty1 rty2 =
   match (rty1, rty2) with
-  | RtyBase { ou = false; cty = cty1 }, RtyBase { ou = false; cty = cty2 } ->
+  | RtyBase { ou = Under; cty = cty1 }, RtyBase { ou = Under; cty = cty2 } ->
       let cty = abductive_infer_cty uctx cty1 cty2 in
-      let result = RtyBase { ou = false; cty } in
+      let result = RtyBase { ou = Under; cty } in
       ( Env.show_debug_result @@ fun _ ->
         let open Language.FrontendTyped in
         Pp.printf "@{<bold>Abduction:@}\n";
@@ -65,4 +65,4 @@ let abductive_infer_rty uctx rty1 rty2 =
         Pp.printf "@{<bold>  Expected (spec):@} %s\n" (layout_rty rty2);
         Pp.printf "@{<bold>  Missing coverage:@} %s\n" (layout_rty result) );
       result
-  | _, _ -> _failatwith __FILE__ __LINE__ "unimp"
+  | _, _ -> _die_with [%here] "unimp"

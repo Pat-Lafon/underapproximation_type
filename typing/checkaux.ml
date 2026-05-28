@@ -14,7 +14,7 @@ let make_order_constraint a x =
           Lit (AAppOp (lt, [ x; a ])) #: Nt.Ty_bool;
           Lit (AAppOp (geq, [ x; (AC (I 0)) #: Nt.Ty_int ])) #: Nt.Ty_bool;
         ]
-  | _ -> _failatwith __FILE__ __LINE__ "unimp"
+  | _ -> _die_with [%here] "unimp"
 
 let typed_value_to_typed_lit file line v =
   match v.x with
@@ -60,7 +60,7 @@ let typed_value_to_typed_lit file line v =
 (*             else *)
 (*               let all_mps = *)
 (*                 match !Env.config with *)
-(*                 | None -> _failatwith __FILE__ __LINE__ "" *)
+(*                 | None -> _die [%here] *)
 (*                 | Some config -> config.all_mps *)
 (*               in *)
 (*               let () = *)
@@ -69,7 +69,7 @@ let typed_value_to_typed_lit file line v =
 (*               in *)
 (*               Dt_eq.make_eq_type all_mps id *)
 (*           else idty *)
-(*       | _ -> _failatwith __FILE__ __LINE__ "") *)
+(*       | _ -> _die [%here]) *)
 
 (* let subtyping_check file line uctx t1 t2 = *)
 (*   let t1 = ut_eq_to_ut_underctx uctx t1 in *)
@@ -91,12 +91,12 @@ let typed_value_to_typed_lit file line v =
 (*             MethodPred ("<", [ AVar { x; ty }; AVar { x = a; ty } ]); *)
 (*             MethodPred (">=", [ AVar { x; ty }; ACint 0 ]); *)
 (*           ]) *)
-(*   | _ -> _failatwith __FILE__ __LINE__ "unimp" *)
+(*   | _ -> _die_with [%here] "unimp" *)
 
 (* let dt_expand f argsty = *)
 (*   let measure = *)
 (*     match !Env.config with *)
-(*     | None -> _failatwith __FILE__ __LINE__ "" *)
+(*     | None -> _die [%here] *)
 (*     | Some c -> c.measure *)
 (*   in *)
 (*   let argsty = *)
@@ -105,7 +105,7 @@ let typed_value_to_typed_lit file line v =
 (*          (fun uty -> *)
 (*            if NT.is_dt (MMT.ut_erase_ uty) then *)
 (*              match uty with *)
-(*              | UtNormal _ -> _failatwith __FILE__ __LINE__ "unimp" *)
+(*              | UtNormal _ -> _die_with [%here] "unimp" *)
 (*              | UtCopy id -> *)
 (*                  let sizeargty = *)
 (*                    UT.make_basic_from_prop NT.Ty_int (fun v -> *)

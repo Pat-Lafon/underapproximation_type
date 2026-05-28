@@ -6,11 +6,18 @@ open Rty
 open Prop
 open Constructor_declaration
 
+module Nt = Normalty.Ntyped
+
+type type_decl =
+  | Decl_constructors of constructor_declaration list
+  | Decl_record of (Nt.t, string) typed list
+[@@deriving sexp]
+
 type 't item =
   | MTyDecl of {
       type_name : string;
       type_params : string list;
-      type_decls : constructor_declaration list;
+      type_decl : type_decl;
     }
   | MValDecl of ('t, string) typed
   | MMethodPred of ('t, string) typed
@@ -42,8 +49,8 @@ and typed_fv_item (item_e : ('t, 't item) typed) = fv_item item_e.x
 
 let rec map_item (f : 't -> 's) (item_e : 't item) =
   match item_e with
-  | MTyDecl { type_name; type_params; type_decls } ->
-      MTyDecl { type_name; type_params; type_decls }
+  | MTyDecl { type_name; type_params; type_decl } ->
+      MTyDecl { type_name; type_params; type_decl }
   | MValDecl _t_stringtyped0 -> MValDecl _t_stringtyped0#=>f
   | MMethodPred _t_stringtyped0 -> MMethodPred _t_stringtyped0#=>f
   | MAxiom { name; prop } -> MAxiom { name; prop = map_prop f prop }
@@ -72,6 +79,6 @@ let get_rty_by_name (item_e : 't item list) (x : string) =
       item_e
   in
   match res with
-  | [] -> Sugar._failatwith __FILE__ __LINE__ ("Can't find rty by name: " ^ x)
+  | [] -> Sugar._die_with [%here] ("Can't find rty by name: " ^ x)
   | [ x ] -> x
-  | _ -> Sugar._failatwith __FILE__ __LINE__ "die"
+  | _ -> Sugar._die_with [%here] "die"

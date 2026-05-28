@@ -8,4 +8,4 @@ let rec infer_constant (c : constant) =
   | I _ -> Ty_int
   | B _ -> Ty_bool
   | Tu l -> Ty_tuple (List.map infer_constant l)
-  | Dt _ -> _failatwith __FILE__ __LINE__ "unimp datatype instance"
+  | Dt _ -> _die_with [%here] "unimp datatype instance"

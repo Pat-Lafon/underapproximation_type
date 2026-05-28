@@ -3,7 +3,7 @@ open Normal_prop_typing
 
 type t = Nt.t
 
-let bi_typed_cty_check (ctx : t ctx) (cty : t option cty) : t cty =
+let bi_typed_cty_check (ctx : t ctx) (cty : t cty) : t cty =
   match cty with
   | Cty { phi; nty } ->
       let v = default_v #: nty in

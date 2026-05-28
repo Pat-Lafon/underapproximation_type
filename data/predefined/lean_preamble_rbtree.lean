@@ -9,7 +9,7 @@ import ProofAutomation
 inductive irbtree where
   | Rbtleaf
   | Rbtnode (color : Bool) (left : irbtree) (value : Int) (right : irbtree)
-  deriving DecidableEq
+  deriving DecidableEq, Repr, Plausible.Arbitrary
 
 @[simp, grind =] def is_rbtleaf : irbtree → Bool
   | .Rbtleaf => true

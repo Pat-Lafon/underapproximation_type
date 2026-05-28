@@ -15,17 +15,19 @@ type 't value =
       fixarg : (('t, string) typed[@bound]);
       body : ('t, 't term) typed;
     }
-  | VTu of ('t, 't value) typed list
+  | VTuple of ('t, 't value) typed list
 
 and 't term =
   | CErr
   | CVal of ('t, 't value) typed
+  | CRecord of (string * ('t, 't value) typed) list
+  | CField of { rd : ('t, 't value) typed; field : string }
   | CLetE of {
       rhs : ('t, 't term) typed;
       lhs : (('t, string) typed[@bound]);
       body : ('t, 't term) typed;
     }
-  | CLetDeTu of {
+  | CLetDeTuple of {
       turhs : ('t, 't value) typed;
       tulhs : (('t, string) typed list[@bound]);
       body : ('t, 't term) typed;
@@ -59,7 +61,7 @@ let rec fv_value (value_e : 't value) =
            ([] @ typed_fv_term body)
            [ fixarg ])
         [ fixname ]
-  | VTu _t__tvaluetypedlist0 ->
+  | VTuple _t__tvaluetypedlist0 ->
       [] @ List.concat (List.map typed_fv_value _t__tvaluetypedlist0)
 
 and typed_fv_value (value_e : ('t, 't value) typed) = fv_value value_e.x
@@ -68,12 +70,15 @@ and fv_term (term_e : 't term) =
   match term_e with
   | CErr -> []
   | CVal _t__tvaluetyped0 -> [] @ typed_fv_value _t__tvaluetyped0
+  | CRecord fields ->
+      [] @ List.concat (List.map (fun (_, v) -> typed_fv_value v) fields)
+  | CField { rd; _ } -> typed_fv_value rd
   | CLetE { rhs; lhs; body } ->
       Zzdatatype.Datatype.List.substract (typed_eq String.equal)
         ([] @ typed_fv_term body)
         [ lhs ]
       @ typed_fv_term rhs
-  | CLetDeTu { turhs; tulhs; body } ->
+  | CLetDeTuple { turhs; tulhs; body } ->
       Zzdatatype.Datatype.List.substract (typed_eq String.equal)
         ([] @ typed_fv_term body)
         tulhs
@@ -110,8 +115,8 @@ let rec subst_value (string_x : string) f (value_e : 't value) =
       if String.equal fixname.x string_x then VFix { fixname; fixarg; body }
       else if String.equal fixarg.x string_x then VFix { fixname; fixarg; body }
       else VFix { fixname; fixarg; body = typed_subst_term string_x f body }
-  | VTu _t__tvaluetypedlist0 ->
-      VTu (List.map (typed_subst_value string_x f) _t__tvaluetypedlist0)
+  | VTuple _t__tvaluetypedlist0 ->
+      VTuple (List.map (typed_subst_value string_x f) _t__tvaluetypedlist0)
 
 and typed_subst_value (string_x : string) f (value_e : ('t, 't value) typed) =
   value_e#->(subst_value string_x f)
@@ -121,6 +126,11 @@ and subst_term (string_x : string) f (term_e : 't term) =
   | CErr -> CErr
   | CVal _t__tvaluetyped0 ->
       CVal (typed_subst_value string_x f _t__tvaluetyped0)
+  | CRecord fields ->
+      CRecord
+        (List.map (fun (n, v) -> (n, typed_subst_value string_x f v)) fields)
+  | CField { rd; field } ->
+      CField { rd = typed_subst_value string_x f rd; field }
   | CLetE { rhs; lhs; body } ->
       if String.equal lhs.x string_x then
         CLetE { rhs = typed_subst_term string_x f rhs; lhs; body }
@@ -131,11 +141,11 @@ and subst_term (string_x : string) f (term_e : 't term) =
             lhs;
             body = typed_subst_term string_x f body;
           }
-  | CLetDeTu { turhs; tulhs; body } ->
+  | CLetDeTuple { turhs; tulhs; body } ->
       if List.exists (fun x -> String.equal string_x x.x) tulhs then
-        CLetDeTu { turhs = typed_subst_value string_x f turhs; tulhs; body }
+        CLetDeTuple { turhs = typed_subst_value string_x f turhs; tulhs; body }
       else
-        CLetDeTu
+        CLetDeTuple
           {
             turhs = typed_subst_value string_x f turhs;
             tulhs;
@@ -185,8 +195,8 @@ let rec map_value (f : 't -> 's) (value_e : 't value) =
           fixarg = fixarg#=>f;
           body = typed_map_term f body;
         }
-  | VTu _t__tvaluetypedlist0 ->
-      VTu (List.map (typed_map_value f) _t__tvaluetypedlist0)
+  | VTuple _t__tvaluetypedlist0 ->
+      VTuple (List.map (typed_map_value f) _t__tvaluetypedlist0)
 
 and typed_map_value (f : 't -> 's) (value_e : ('t, 't value) typed) =
   value_e#=>f#->(map_value f)
@@ -196,6 +206,9 @@ and map_term : 't 's. ('t -> 's) -> 't term -> 's term =
   match term_e with
   | CErr -> CErr
   | CVal _t__tvaluetyped0 -> CVal (typed_map_value f _t__tvaluetyped0)
+  | CRecord fields ->
+      CRecord (List.map (fun (n, v) -> (n, typed_map_value f v)) fields)
+  | CField { rd; field } -> CField { rd = typed_map_value f rd; field }
   | CLetE { rhs; lhs; body } ->
       CLetE
         {
@@ -203,8 +216,8 @@ and map_term : 't 's. ('t -> 's) -> 't term -> 's term =
           lhs = lhs#=>f;
           body = typed_map_term f body;
         }
-  | CLetDeTu { turhs; tulhs; body } ->
-      CLetDeTu
+  | CLetDeTuple { turhs; tulhs; body } ->
+      CLetDeTuple
         {
           turhs = typed_map_value f turhs;
           tulhs = List.map (fun x -> x#=>f) tulhs;
@@ -270,7 +283,7 @@ let value_to_term v = (CVal v)#:v.ty
 let term_to_value e =
   match e.x with
   | CVal v -> v.x#:e.ty
-  | _ -> _failatwith __FILE__ __LINE__ "die"
+  | _ -> _die_with [%here] "die"
 
 let id_to_value v = (VVar v)#:v.ty
 let id_to_term v = value_to_term @@ id_to_value v
@@ -285,7 +298,7 @@ let mk_fix fixname fixarg body = (VFix { fixname; fixarg; body })#:fixname.ty
 let lam_to_fix fixname body =
   match body.x with
   | VLam { lamarg; body } -> mk_fix fixname lamarg body
-  | _ -> _failatwith __FILE__ __LINE__ ""
+  | _ -> _die [%here]
 
 let lam_to_fix_comp fixname body =
   value_to_term (lam_to_fix fixname (term_to_value body))
@@ -299,7 +312,7 @@ let mk_appop op appopargs =
 let rec ast_size_value (v : _ value) : int =
   match v with
   | VConst _ | VVar _ -> 1
-  | VTu v_l -> List.fold_left (fun acc v -> acc + ast_size_value v.x) 1 v_l
+  | VTuple v_l -> List.fold_left (fun acc v -> acc + ast_size_value v.x) 1 v_l
   | VLam _ -> failwith "ast_size_value::VLam::unimplemented"
   | VFix _ -> failwith "ast_size_value::VFix::unimplemented"
 
@@ -311,13 +324,14 @@ let rec ast_size_term (t : _ term) : int =
   | CAppOp { op; appopargs } ->
       List.fold_left (fun acc v -> acc + ast_size_value v.x) 1 appopargs
   | CLetE { lhs; rhs; body } -> 1 + ast_size_term rhs.x + ast_size_term body.x
-  | CLetDeTu _ -> failwith "ast_size_term::CLetDeTu::unimplemented"
+  | CLetDeTuple _ -> failwith "ast_size_term::CLetDeTuple::unimplemented"
   | CMatch { matched; match_cases } ->
       1 + ast_size_value matched.x
       + List.fold_left
           (fun acc (CMatchcase { constructor; args; exp }) ->
             acc + ast_size_term exp.x)
           0 match_cases
+  | CRecord _ | CField _ -> failwith "ast_size_term::CRecord/CField::unimplemented"
 
 let rec destruct_lam_values (v : _ value) : _ list * (_, _ term) typed =
   match v with

@@ -28,35 +28,23 @@ module FrontendRaw = struct
 end
 
 module FrontendTyped = struct
-  let some ty = Some ty
   let layout_constant = Frontend_opt.To_constant.layout_constant
   let layout_constants = Frontend_opt.To_constant.layout_constants
   let layout_op = Frontend_opt.To_op.layout_op
-
-  let layout_typed_lit e =
-    Frontend_opt.To_lit.layout_typed_lit (map_lit some e.x) #: (some e.ty)
-
-  let layout_lit e = Frontend_opt.To_lit.layout @@ map_lit some e
-  let layout_prop prop = Frontend_opt.To_prop.layout_prop @@ map_prop some prop
-  let layout_prop_to_coq prop = Frontend_opt.To_prop.layout_prop_to_coq @@ map_prop some prop
-  let layout_prop_to_lean prop = Frontend_opt.To_prop.layout_prop_to_lean @@ map_prop some prop
-
-  let layout_prop_to_smtlib2 prop =
-    Frontend_opt.To_prop.layout_to_smtlib2 @@ map_prop some prop
-
-  let layout_cty cty = Frontend_opt.To_cty.layout_cty @@ map_cty some cty
-  let layout_rty rty = Frontend_opt.To_rty.layout_rty @@ map_rty some rty
-  let layout_raw_term e = Frontend_opt.To_raw_term.layout_raw_term @@ map_raw_term some e
-
-  let layout_typed_raw_term e =
-    Frontend_opt.To_raw_term.layout_typed_raw_term (map_raw_term some e.x) #: (some e.ty)
-
-  let layout_item item = Frontend_opt.To_item.layout_item @@ map_item some item
-  let layout_item_to_coq item = Frontend_opt.To_item.layout_item_to_coq @@ map_item some item
-  let layout_item_to_lean item = Frontend_opt.To_item.layout_item_to_lean @@ map_item some item
-
-  let layout_structure s =
-    Frontend_opt.To_item.layout_structure @@ List.map (map_item some) s
+  let layout_typed_lit = Frontend_opt.To_lit.layout_typed_lit
+  let layout_lit = Frontend_opt.To_lit.layout
+  let layout_prop = Frontend_opt.To_prop.layout_prop
+  let layout_prop_to_coq = Frontend_opt.Coq_export.layout_prop_to_coq
+  let layout_prop_to_lean = Frontend_opt.Lean_export.layout_prop_to_lean
+  let layout_prop_to_smtlib2 = Frontend_opt.Smt_export.layout_to_smtlib2
+  let layout_cty = Frontend_opt.To_cty.layout_cty
+  let layout_rty = Frontend_opt.To_rty.layout_rty
+  let layout_raw_term = Frontend_opt.To_raw_term.layout_raw_term
+  let layout_typed_raw_term = Frontend_opt.To_raw_term.layout_typed_raw_term
+  let layout_item = Frontend_opt.To_item.layout_item
+  let layout_item_to_coq = Frontend_opt.Coq_export.layout_item_to_coq
+  let layout_item_to_lean = Frontend_opt.Lean_export.layout_item_to_lean
+  let layout_structure = Frontend_opt.To_item.layout_structure
 
   let layout_typed_term e =
     let e = Anf_to_raw_term.denormalize_term e in
@@ -64,7 +52,7 @@ module FrontendTyped = struct
 
   let layout_typed_erased_term e =
     let e = Anf_to_raw_term.denormalize_term e in
-    let e = (map_raw_term (fun _ -> None) e.x) #: None in
+    let e = (map_raw_term (fun _ -> Nt.Ty_unknown) e.x) #: Nt.Ty_unknown in
     Frontend_opt.To_raw_term.layout_typed_raw_term e
 
   let layout_typed_value e =
@@ -240,8 +228,8 @@ module FrontendTyped = struct
     match p with
     | Forall { qv; body } ->
         if Nt.eq qv.ty lit.ty then subst_prop_instance qv.x lit.x body
-        else _failatwith __FILE__ __LINE__ "die"
-    | _ -> _failatwith __FILE__ __LINE__ "die"
+        else _die_with [%here] "die"
+    | _ -> _die_with [%here] "die"
 
   (* Cty *)
   let prop_to_cty nty prop = Cty { nty; phi = prop }
@@ -251,22 +239,22 @@ module FrontendTyped = struct
     Cty { nty; phi = mk_prop_var_eq_c nty (id, c) }
 
   let mk_rty_var_eq_c nty (id, c) =
-    RtyBase { ou = false; cty = mk_cty_var_eq_c nty (id, c) }
+    RtyBase { ou = Under; cty = mk_cty_var_eq_c nty (id, c) }
 
   let mk_cty_var_eq_var nty (id, c) =
     Cty { nty; phi = mk_prop_var_eq_var nty (id, c) }
 
   let mk_rty_var_eq_var nty (id, c) =
-    RtyBase { ou = false; cty = mk_cty_var_eq_var nty (id, c) }
+    RtyBase { ou = Under; cty = mk_cty_var_eq_var nty (id, c) }
 
   let mk_rty_var_eq_v (id, v) =
     match v.x with
     | VConst c -> mk_rty_var_eq_c v.ty (id, c)
     | VVar c -> mk_rty_var_eq_var v.ty (id, c.x)
-    | _ -> _failatwith __FILE__ __LINE__ "die"
+    | _ -> _die_with [%here] "die"
 
   let n_to_one_ctys prop_f = function
-    | [] -> _failatwith __FILE__ __LINE__ "die"
+    | [] -> _die_with [%here] "die"
     | Cty { nty; phi } :: ctys ->
         if
           List.for_all (function Cty { nty = nty'; _ } -> Nt.eq nty nty') ctys
@@ -275,7 +263,7 @@ module FrontendTyped = struct
             prop_f (phi :: List.map (function Cty { phi; _ } -> phi) ctys)
           in
           Cty { nty; phi }
-        else _failatwith __FILE__ __LINE__ "die"
+        else _die_with [%here] "die"
 
   let union_ctys = n_to_one_ctys smart_or
   let intersect_ctys = n_to_one_ctys smart_and
@@ -312,6 +300,8 @@ module FrontendTyped = struct
       | RtyBaseArr { argcty; arg; retty } ->
           RtyBaseArr { argcty; arg; retty = aux retty }
       | RtyArrArr { argrty; retty } -> RtyArrArr { argrty; retty = aux retty }
+      | RtyPolyType { pt; rty } -> RtyPolyType { pt; rty = aux rty }
+      | RtyPolyPred { pred; rty } -> RtyPolyPred { pred; rty = aux rty }
     in
     aux t
 
@@ -323,6 +313,8 @@ module FrontendTyped = struct
       | RtyBaseArr { argcty; arg; retty } ->
           RtyBaseArr { argcty; arg; retty = aux retty }
       | RtyArrArr { argrty; retty } -> RtyArrArr { argrty; retty = aux retty }
+      | RtyPolyType { pt; rty } -> RtyPolyType { pt; rty = aux rty }
+      | RtyPolyPred { pred; rty } -> RtyPolyPred { pred; rty = aux rty }
     in
     aux t
 
@@ -340,41 +332,41 @@ module FrontendTyped = struct
     { x = map_value f v.x; ty = f v.ty }
 
   let union_rtys = function
-    | [] -> _failatwith __FILE__ __LINE__ "die"
+    | [] -> _die_with [%here] "die"
     | _ as rtys ->
         let ctys =
           List.map
             (function
-              | RtyBase { ou = false; cty } -> cty
-              | _ -> _failatwith __FILE__ __LINE__ "die")
+              | RtyBase { ou = Under; cty } -> cty
+              | _ -> _die_with [%here] "die")
             rtys
         in
-        RtyBase { ou = false; cty = union_ctys ctys }
+        RtyBase { ou = Under; cty = union_ctys ctys }
 
   let exists_rty_to_cty (x, cty') =
     match x.ty with
-    | RtyBase { ou = false; cty } -> exists_cty_to_cty (x.x #: cty, cty')
+    | RtyBase { ou = Under; cty } -> exists_cty_to_cty (x.x #: cty, cty')
     | RtyArrArr _ | RtyBaseArr _ -> cty'
     | _ ->
         let () = Printf.printf "Fatal Error: %s:%s\n" x.x (layout_rty x.ty) in
-        _failatwith __FILE__ __LINE__ "die"
+        _die_with [%here] "die"
 
   let exists_cty_to_rty = function
-    | x, RtyBase { ou = false; cty = cty' } -> exists_cty_to_cty (x, cty')
-    | _ -> _failatwith __FILE__ __LINE__ "die"
+    | x, RtyBase { ou = Under; cty = cty' } -> exists_cty_to_cty (x, cty')
+    | _ -> _die_with [%here] "die"
 
   let exists_rty_to_rty = function
-    | x, RtyBase { ou = false; cty } ->
-        RtyBase { ou = false; cty = exists_rty_to_cty (x, cty) }
-    | _ -> _failatwith __FILE__ __LINE__ "die"
+    | x, RtyBase { ou = Under; cty } ->
+        RtyBase { ou = Under; cty = exists_rty_to_cty (x, cty) }
+    | _ -> _die_with [%here] "die"
 
   let exists_rtys_to_rty bindings rty =
     List.fold_right (fun x res_ty -> exists_rty_to_rty (x, res_ty)) bindings rty
 
   let and_cty_to_rty cty1 = function
-    | RtyBase { ou = false; cty } ->
-        RtyBase { ou = false; cty = and_cty_to_cty (cty1, cty) }
-    | _ -> _failatwith __FILE__ __LINE__ "die"
+    | RtyBase { ou = Under; cty } ->
+        RtyBase { ou = Under; cty = and_cty_to_cty (cty1, cty) }
+    | _ -> _die_with [%here] "die"
 
   (* typectx *)
 
