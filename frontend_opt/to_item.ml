@@ -1,116 +1,124 @@
-open Zutils
-open OcamlParser
-open Oparse
-open Mutils
-open Prop
+open Ocaml5_parser
 open Parsetree
-open Zdatatype
-open Ast
-open Sugar
-open To_rty
+open Mtyped
+open Mutils
+open Zzdatatype.Datatype
+module Nt = Normalty.Frontend
+open Item
 open To_raw_term
-open Common
+open To_rty
+open To_prop
+open To_id
+open Sugar
+open Reflect
 
-(* NOTE: The top level normal type need to be closed by Nt.close_poly_nt *)
 let ocaml_structure_item_to_item structure =
   match structure.pstr_desc with
   | Pstr_primitive { pval_name; pval_type; pval_prim; pval_attributes; _ } ->
-      let t = Nt.close_poly_nt [%here] (core_type_to_t pval_type) in
       Some
         (if String.equal pval_name.txt "method_predicates" then
            let mp = List.nth pval_prim 0 in
-           MMethodPred mp#:t
+           MMethodPred mp#:(Nt.core_type_to_t pval_type)
          else
            match pval_attributes with
            | [ x ] when String.equal x.attr_name.txt "method_pred" ->
-               MMethodPred pval_name.txt#:t
-           | _ -> MValDecl pval_name.txt#:t)
-  | Pstr_type (_, [ type_dec ]) -> To_type_dec.of_ocamltypedec type_dec
+               MMethodPred pval_name.txt#:(Nt.core_type_to_t pval_type)
+           | _ -> MValDecl pval_name.txt#:(Nt.core_type_to_t pval_type))
+  | Pstr_type (_, [ type_dec ]) -> (
+      let item = To_type_dec.of_ocamltypedec type_dec in
+      match type_dec.ptype_attributes with
+      | [ x ] when String.equal x.attr_name.txt "reflect" -> (
+          match item with
+          | MTyDecl { type_name; type_params; type_decl = Decl_constructors cs } ->
+              add_reflect_type type_name type_params cs;
+              Some item
+          | MTyDecl { type_decl = Decl_record _; _ } ->
+              _die_with [%here] "record reflection not supported"
+          | _ -> failwith "unexpected item type from To_type_dec.of_ocamltypedec")
+      | [] -> Some item
+      | _ -> failwith "unimplemented case I can come back to later")
   | Pstr_value (flag, [ value_binding ]) ->
       Some
-        (let name = Prop.typed_id_of_pattern value_binding.pvb_pat in
-         let name, ty = (name.x, desugar_basic_coverage_monad name.ty) in
+        (let name = id_of_pattern value_binding.pvb_pat in
          match value_binding.pvb_attributes with
          | [ x ] -> (
              match x.attr_name.txt with
+             | "reflect" ->
+                 add_reflect_func name;
+                 let body = typed_raw_term_of_expr value_binding.pvb_expr in
+                 MFuncImpRaw
+                   {
+                     name =
+                       name#:(Raw_term.__get_lam_term_ty __FILE__ __LINE__
+                                body.x);
+                     if_rec = get_if_rec flag;
+                     body;
+                   }
              | "axiom" ->
-                 let tasks =
-                   match x.attr_payload with
-                   | PStr [] -> []
-                   | PPat (pat, None) -> Prop.tuple_id_of_pattern pat
-                   | _ -> _die [%here]
-                 in
-                 MAxiom
-                   { name; tasks; prop = prop_of_expr value_binding.pvb_expr }
-             | "assert" -> (
-                 let rty = rty_of_expr value_binding.pvb_expr in
-                 match x.attr_payload with
-                 | PStr [] -> MRty { is_assumption = false; name; rty }
-                 | PPat (pat, Some e) ->
-                     let host_name = id_of_pattern pat in
-                     let e = typed_raw_term_of_expr e in
-                     let captured =
-                       match raw_term_to_tuple raw_term_to_str_list e with
-                       | [] -> mk_capture [] [] []
-                       | [ a ] -> mk_capture a [] []
-                       | [ a; b ] -> mk_capture a b []
-                       | [ a; b; c ] -> mk_capture a b c
-                       | _ -> _die [%here]
-                     in
-                     MLocalRty { host_name; name; captured; rty }
-                 | PStr _ -> _die_with [%here] "Pstr"
-                 | PSig _ -> _die_with [%here] "Psig"
-                 | PTyp _ -> _die_with [%here] "PTyp"
-                 | PPat _ -> _die_with [%here] "PPat")
-             | "library" | "assume" ->
-                 let rty = rty_of_expr value_binding.pvb_expr in
-                 MRty { is_assumption = true; name; rty }
-             | _ ->
-                 _failatwith [%here]
-                   "syntax error: non known rty kind, not axiom | assert | \
-                    library")
+                 MAxiom { name; prop = prop_of_expr value_binding.pvb_expr }
+             | "assert" ->
+                 MRty
+                   {
+                     is_assumption = false;
+                     name;
+                     rty = rty_of_expr value_binding.pvb_expr;
+                   }
+             | "library" ->
+                 MRty
+                   {
+                     is_assumption = true;
+                     name;
+                     rty = rty_of_expr value_binding.pvb_expr;
+                   }
+             | _ as s ->
+                 _die_with [%here]
+                   ("syntax error: " ^ s
+                  ^ " is non known rty kind, not axiom | assert | library"))
          | [] ->
              let body = typed_raw_term_of_expr value_binding.pvb_expr in
-             (* let () = Printf.printf "if_rec: %b\n" (get_if_rec flag) in *)
-             (* let () = failwith "end" in *)
-             let ty =
-               if Nt.is_unkown ty then
-                 Nt.close_poly_nt [%here] @@ __get_lam_term_ty [%here] body.x
-               else ty
-             in
              MFuncImpRaw
-               { name = name#:ty; if_rec = get_if_rec flag; body = body.x#:ty }
-         | _ -> _failatwith [%here] (spf "wrong syntax in %s" name))
+               {
+                 name =
+                   name#:(Raw_term.__get_lam_term_ty __FILE__ __LINE__ body.x);
+                 if_rec = get_if_rec flag;
+                 body;
+               }
+         | _ ->
+             _die_with [%here]
+               ("wrong syntax: "
+               ^ (value_binding.pvb_attributes
+                 |> List.map (fun x -> x.attr_name.txt)
+                 |> String.concat ", ")))
   | Pstr_attribute _ -> None
   | _ ->
-      let () = Printf.printf "%s\n" (string_of_structure [ structure ]) in
-      _failatwith [%here] "translate not a func_decl"
+      let () =
+        Printf.printf "%s\n" (Pprintast.string_of_structure [ structure ])
+      in
+      _die_with [%here] "translate not a func_decl"
 
 let ocaml_structure_to_items structure =
   List.filter_map ocaml_structure_item_to_item structure
 
 let layout_item = function
   | MTyDecl _ as item -> To_type_dec.layout_type_dec item
-  | MMethodPred x -> spf "val[@method_predicate] %s: %s" x.x @@ Nt.layout x.ty
-  | MValDecl x -> spf "val %s: %s" x.x @@ Nt.layout x.ty
-  | MAxiom { name; prop; tasks } ->
-      spf "let[@axiom ? (%s)] %s = %s" name (StrList.to_string tasks)
-        (layout_prop prop)
+  | MMethodPred x ->
+      spf "val[@method_predicate] %s: %s" x.x (Nt.layout x.ty)
+  | MValDecl x -> spf "val %s: %s" x.x (Nt.layout x.ty)
+  | MAxiom { name; prop } -> spf "let[@axiom] %s = %s" name (layout_prop prop)
   | MFuncImpRaw { name; if_rec; body } ->
-      spf "let %s%s : %s ? %s = %s"
+      spf "let %s%s = %s"
         (if if_rec then "rec " else "")
-        name.x (Nt.layout name.ty) (Nt.layout body.ty)
+        name.x
         (layout_typed_raw_term body)
   | MFuncImp { name; if_rec; body } ->
-      spf "let %s%s : %s = %s"
+      spf "let %s%s = %s"
         (if if_rec then "rec " else "")
-        name.x (Nt.layout body.ty)
-        (denormalize_term body |> layout_typed_raw_term)
+        name.x
+        (Anf_to_raw_term.typed_term_to_typed_raw_term body
+        |> layout_typed_raw_term)
   | MRty { is_assumption = false; name; rty } ->
       spf "let[@assert] %s = %s" name (layout_rty rty)
   | MRty { is_assumption = true; name; rty } ->
       spf "let[@library] %s = %s" name (layout_rty rty)
-  | MLocalRty { name; rty; _ } ->
-      spf "let[@assert] %s = %s" name (layout_rty rty)
 
 let layout_structure l = spf "%s\n" (List.split_by "\n" layout_item l)

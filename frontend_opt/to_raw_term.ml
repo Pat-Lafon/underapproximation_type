@@ -1,31 +1,22 @@
-open Zutils
-open OcamlParser
-open Oparse
+open Ocaml5_parser
 open Mutils
-open Prop
+open Pprintast
+open Mtyped
 open Parsetree
-open Zdatatype
-open Ast
+open Zzdatatype.Datatype
+module Nt = Normalty.Frontend
+open Raw_term
+open Op
+open To_id
+open To_constant
+open To_op
 open Sugar
-open Common
 
 let typed_to_expr f expr =
-  if Myconfig.get_bool_option "show_var_type_in_term" then
-    match expr.ty with
-    | Nt.Ty_unknown -> f expr.x
-    | _ ->
-        desc_to_ocamlexpr
-        @@ Pexp_constraint (f expr.x, Nt.t_to_core_type expr.ty)
-  else f expr.x
-
-let typed_id_to_pattern id =
-  let pat = string_to_pattern id.x in
-  match id.ty with
-  | Nt.Ty_unknown -> pat
-  | _ -> typed_to_pattern (pat, Nt.t_to_core_type id.ty)
-
-let typed_ids_to_pattern ids =
-  Ast_helper.Pat.tuple (List.map typed_id_to_pattern ids)
+  match expr.ty with
+  | Nt.Ty_unknown -> f expr.x
+  | ty ->
+      desc_to_ocamlexpr @@ Pexp_constraint (f expr.x, Nt.t_to_core_type ty)
 
 let rec typed_raw_term_to_expr expr = typed_to_expr raw_term_to_expr expr
 
@@ -47,12 +38,24 @@ and raw_term_to_expr (expr : Nt.t raw_term) =
   | Const v -> constant_to_expr v
   | Let { if_rec; lhs; rhs; letbody } ->
       let flag = if if_rec then Asttypes.Recursive else Asttypes.Nonrecursive in
-      let vb = mk_vb (typed_ids_to_pattern lhs, typed_raw_term_to_expr rhs) in
+      let vb =
+        mk_vb (typed_ids_to_pattern lhs, typed_raw_term_to_expr rhs)
+      in
       desc_to_ocamlexpr
       @@ Pexp_let (flag, [ vb ], typed_raw_term_to_expr letbody)
+  | AppOp ({ x = DtConstructor v; _ }, args) ->
+      (* NOTE: to make the printed code looks clearer, we don't print type of
+         operators. *)
+      let args = List.map (fun x -> typed_raw_term_to_expr x) args in
+
+      desc_to_ocamlexpr
+      @@ Pexp_construct
+           ( Longident.Lident v |> Location.mknoloc,
+             if args = [] then None
+             else Some (desc_to_ocamlexpr @@ Pexp_tuple args) )
   | AppOp (op, args) ->
       (* NOTE: to make the printed code looks clearer, we don't print type of operators. *)
-      mk_op_apply (mkvar (layout_op op.x), List.map typed_raw_term_to_expr args)
+      mk_op_apply (layout_op op.x, List.map typed_raw_term_to_expr args)
   | App (func, args) ->
       (* NOTE: to make the printed code looks clearer, we don't print type of function in its application. *)
       let func = raw_term_to_expr func.x in
@@ -98,8 +101,8 @@ let constructor_to_term_or_op c =
       C_is_term { x = Const (string_to_constant c); ty = Nt.Ty_unknown }
   | name -> (
       match string_to_op_opt name with
-      | None -> _failatwith [%here] "die: pat"
-      | Some op -> C_is_op op#:Nt.Ty_unknown)
+      | None -> _die_with [%here] "die: pat"
+      | Some op -> C_is_op op #: Nt.Ty_unknown)
 
 (* TODO: Check nested tuple *)
 let to_typed_ids x =
@@ -118,16 +121,15 @@ let de_tuple_term e = match e.x with Tuple xs -> xs | _ -> [ e ]
 let term_force_var e =
   match e.x with
   | Var x -> x
-  | _ -> _failatwith [%here] "fail to convert a term to a variable"
+  | _ -> _die_with [%here] "fail to convert a term to a variable"
 
 let rec typed_raw_term_of_pattern pattern =
   match pattern.ppat_desc with
-  | Ppat_tuple ps ->
-      (Tuple (List.map typed_raw_term_of_pattern ps))#:Nt.Ty_unknown
-  | Ppat_var ident -> (Var ident.txt#:Nt.Ty_unknown)#:Nt.Ty_unknown
+  | Ppat_tuple ps -> (Tuple (List.map typed_raw_term_of_pattern ps)) #: Nt.Ty_unknown
+  | Ppat_var ident -> (Var ident.txt #: Nt.Ty_unknown) #: Nt.Ty_unknown
   | Ppat_constraint (ident, tp) ->
       let term = typed_raw_term_of_pattern ident in
-      term.x#:(core_type_to_t tp)
+      term.x #: (Nt.core_type_to_t tp)
   | Ppat_construct (c, args) -> (
       let c = longid_to_id c in
       match constructor_to_term_or_op c with
@@ -139,39 +141,28 @@ let rec typed_raw_term_of_pattern pattern =
             | Some args ->
                 de_tuple_term @@ typed_raw_term_of_pattern @@ snd args
           in
-          (AppOp (op, args))#:Nt.Ty_unknown)
-  | Ppat_any -> (Var "_"#:Nt.Ty_unknown)#:Nt.Ty_unknown
+          (AppOp (op, args)) #: Nt.Ty_unknown)
+  | Ppat_any -> (Var "_" #: Nt.Ty_unknown) #: Nt.Ty_unknown
   | _ ->
-      Printf.printf "%s\n" @@ string_of_pattern pattern;
-      _die_with [%here] "wrong pattern name, maybe untyped"
+      Pprintast.pattern Format.std_formatter pattern;
+      failwith "wrong pattern name, maybe untyped"
 
 let typed_ids_of_pattern pattern =
   to_typed_ids @@ typed_raw_term_of_pattern pattern
 
-let typed_id_of_pattern pattern =
-  match typed_ids_of_pattern pattern with
-  | [ id ] -> id
-  | ids ->
-      _die_with [%here]
-        (spf "unexpected multiple variables: %s"
-           (List.split_by_comma _get_x ids))
-
-(* let monadic_operator = [ _bind; _fmap; _return ] *)
-(* let monadic_operator = [] *)
-
 let typed_raw_term_of_expr expr =
   let rec aux expr =
     match expr.pexp_desc with
-    | Pexp_tuple es -> (Tuple (List.map aux es))#:Nt.Ty_unknown
+    | Pexp_tuple es -> (Tuple (List.map aux es)) #: Nt.Ty_unknown
     | Pexp_record (l, _) ->
         let l = List.map (fun (x, e) -> (longid_to_id x, aux e)) l in
-        (Record l)#:Nt.Ty_unknown
+        (Record l) #: Nt.Ty_unknown
     | Pexp_field (e, field) ->
-        (Field (aux e, longid_to_id field))#:Nt.Ty_unknown
+        (Field (aux e, longid_to_id field)) #: Nt.Ty_unknown
     | Pexp_constraint (expr, ty) ->
         (* let () = Printf.printf "Pexp_constraint: %s\n" (layout_ct ty) in *)
-        update_ty (aux expr) (core_type_to_t ty)
-    | Pexp_ident id -> (Var (longid_to_id id)#:Nt.Ty_unknown)#:Nt.Ty_unknown
+        update_ty (aux expr) (Nt.core_type_to_t ty)
+    | Pexp_ident id -> (Var (longid_to_id id) #: Nt.Ty_unknown) #: Nt.Ty_unknown
     | Pexp_construct (c, args) -> (
         let args =
           match args with
@@ -180,17 +171,11 @@ let typed_raw_term_of_expr expr =
               let args = aux args in
               match args.x with Tuple es -> es | _ -> [ args ])
         in
-        (* let () = if String.equal (longid_to_id c) "None" then _die [%here] in *)
         let c = constructor_to_term_or_op @@ longid_to_id c in
         match c with
         | C_is_term tm -> tm
-        | C_is_op op ->
-            (* let () = *)
-            (*   if String.equal (Prop.layout_op op.x) "None" then _die [%here] *)
-            (* in *)
-            (* let () = Printf.printf "MK op: %s\n" (layout_op op.x) in *)
-            (AppOp (op, args))#:Nt.Ty_unknown)
-    | Pexp_constant _ -> (Const (expr_to_constant expr))#:Nt.Ty_unknown
+        | C_is_op op -> (AppOp (op, args)) #: Nt.Ty_unknown)
+    | Pexp_constant _ -> (Const (expr_to_constant expr)) #: Nt.Ty_unknown
     | Pexp_let (flag, vbs, e) ->
         List.fold_right
           (fun vb letbody ->
@@ -200,25 +185,27 @@ let typed_raw_term_of_expr expr =
                  lhs = typed_ids_of_pattern vb.pvb_pat;
                  rhs = aux vb.pvb_expr;
                  letbody;
-               })#:Nt.Ty_unknown)
+               })
+            #: Nt.Ty_unknown)
           vbs (aux e)
     | Pexp_apply (func, args) ->
         let args = List.map (fun x -> aux @@ snd x) args in
         let func = aux func in
-        (* let res = *)
-        (*   match func.x with *)
-        (*   | Var f -> ( *)
-        (*       match string_to_op_opt f.x with *)
-        (*       | Some op -> AppOp (op#:f.ty, args) *)
-        (*       | None -> App (func, args)) *)
-        (*   | _ -> App (func, args) *)
-        (* in *)
-        let res = App (func, args) in
-        res#:Nt.Ty_unknown
+        let res =
+          match func.x with
+          | Var f -> (
+              match string_to_op_opt f.x with
+              | Some op ->
+                  let op = op #: f.ty in
+                  AppOp (op, args)
+              | None -> App (func, args))
+          | _ -> App (func, args)
+        in
+        res #: Nt.Ty_unknown
     | Pexp_ifthenelse (e1, e2, Some e3) ->
-        (Ifte (aux e1, aux e2, aux e3))#:Nt.Ty_unknown
+        (Ifte (aux e1, aux e2, aux e3)) #: Nt.Ty_unknown
     | Pexp_ifthenelse (e1, e2, None) ->
-        (Ifte (aux e1, aux e2, (Const U)#:Nt.unit_ty))#:Nt.Ty_unknown
+        (Ifte (aux e1, aux e2, (Const U) #: Nt.unit_ty)) #: Nt.Ty_unknown
     | Pexp_match (matched, match_cases) ->
         let match_cases =
           List.map
@@ -232,20 +219,13 @@ let typed_raw_term_of_expr expr =
                       exp = aux case.pc_rhs;
                     }
               | _ ->
-                  Printf.printf "case.pc_lhs: %s\n"
-                    (OcamlParser.Oparse.string_of_pattern case.pc_lhs);
-                  _failatwith [%here] "?")
+                  _die_with [%here]
+                    "Expected a data constructor in match")
             match_cases
         in
-        (Match { matched = aux matched; match_cases })#:Nt.Ty_unknown
+        (Match { matched = aux matched; match_cases }) #: Nt.Ty_unknown
     | Pexp_fun (_, _, arg0, expr) ->
         let arg = typed_raw_term_of_pattern arg0 in
-        (* fun () -> is equal to fun (dummy_unit: unit) -> *)
-        let arg =
-          match arg.x with
-          | Const U -> (Var (Rename.dummy_var ())#:Nt.unit_ty)#:Nt.unit_ty
-          | _ -> arg
-        in
         let () =
           match arg.ty with
           | Nt.Ty_unknown ->
@@ -256,28 +236,23 @@ let typed_raw_term_of_expr expr =
         in
         let lamarg =
           match arg.x with
-          | Var x -> x.x#:arg.ty
+          | Var x -> x.x #: arg.ty
           | _ ->
               let () = Printf.printf "%s\n" (layout_ arg0) in
               failwith "Syntax error: lambda function wrong argument"
         in
-        (Lam { lamarg; lambody = aux expr })#:Nt.Ty_unknown
+        (Lam { lamarg; lambody = aux expr }) #: Nt.Ty_unknown
         (* un-curry *)
     | Pexp_sequence (e1, e2) ->
         let lhs = [ { x = Rename.dummy_var (); ty = Nt.unit_ty } ] in
         let rhs = aux e1 in
         let letbody = aux e2 in
-        (Let { if_rec = false; lhs; rhs; letbody })#:Nt.Ty_unknown
-    | Pexp_newtype (pt, _) ->
-        raise @@ failwith (Sugar.spf "poly type:%s" pt.txt)
-    | Pexp_poly (_, Some pt) ->
-        raise
-        @@ failwith
-             (Sugar.spf "poly type:%s" @@ Nt.layout (Nt.core_type_to_t pt))
+        (Let { if_rec = false; lhs; rhs; letbody }) #: Nt.Ty_unknown
     | _ ->
         raise
         @@ failwith
-             (Sugar.spf "not imp client parsing:%s" @@ string_of_expression expr)
+             (Sugar.spf "not imp client parsing:%s"
+             @@ string_of_expression expr)
   in
   aux expr
 
@@ -286,14 +261,15 @@ let raw_term_of_expr expr = (typed_raw_term_of_expr expr).x
 let typed_id_of_expr expr =
   let x = typed_raw_term_of_expr expr in
   match x.x with
-  | Var id -> id#:x.ty
-  | _ -> _failatwith [%here] (spf "die: %s" (string_of_expression expr))
+  | Var id -> id #: x.ty
+  | _ ->
+      _die_with [%here]
+        (spf "die: %s" (string_of_expression expr))
 
 let id_of_expr expr = (typed_id_of_expr expr).x
 let layout_raw_term x = string_of_expression @@ raw_term_to_expr x
-let layout_typed_raw_term x = string_of_expression @@ raw_term_to_expr x.x
+
+let layout_typed_raw_term x =
+  string_of_expression @@ raw_term_to_expr x.x
+
 let layout_omit_type x = layout_raw_term @@ (typed_raw_term_of_expr x).x
-let layout_typed_term x = layout_typed_raw_term @@ denormalize_term x
-let layout_term x = layout_typed_raw_term @@ denormalize_term x#:Nt.Ty_unknown
-let layout_typed_value x = layout_typed_raw_term @@ denormalize_value x
-let layout_value x = layout_typed_raw_term @@ denormalize_value x#:Nt.Ty_unknown

@@ -1,10 +1,11 @@
 (library
- (public_name CoverageType.language)
+ (public_name underapproximation_type.language)
  (name language)
- (wrapped true)
- (libraries ast core zutils frontend_opt)
+ (wrapped false)
  (modules
-  language
+   language
+   simp
  )
- (preprocess (pps ppx_optcomp ppx_compare ppx_sexp_conv ppx_inline_test ppx_assert ppx_deriving.show ppx_deriving.eq ppx_deriving.ord ppx_here))
-)
+ (preprocess
+  (pps ppx_optcomp ppx_compare ppx_sexp_conv ppx_here))
+ (libraries syntax frontend_opt language_utils translate))

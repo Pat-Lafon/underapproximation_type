@@ -1,104 +1,129 @@
 open Language
-open Zutils
-open Bidirect
-open Zdatatype
+open Sugar
+open Zzdatatype.Datatype
 
-let _log = Myconfig._log_result
+let item_check (axioms, uctx) imps = function
+  | MFuncImp { name; body; _ } ->
+      let body = term_to_value body in
+      Some (uctx, StrMap.add name.x body imps)
+  | MRty { is_assumption = true; name; rty } ->
+      Some (add_to_right uctx name #: rty, imps)
+  | MRty { is_assumption = false; name; rty } -> (
+      let imp =
+        match StrMap.find_opt imps name with
+        | None ->
+            _die_with [%here]
+              (spf "The source code of given refinement type '%s' is missing."
+                 name)
+        | Some v -> v
+      in
+      let () =
+        Env.show_debug_result @@ fun _ ->
+        Pp.printf "@{<bold>Type Check %s:@}\n" name
+      in
+      let () =
+        Env.show_debug_result @@ fun _ ->
+        Pp.printf "@{<bold>check against with:@} %s\n"
+          (FrontendTyped.layout_rty rty)
+      in
+      let _ = Nt._type_unify __FILE__ __LINE__ imp.ty (erase_rty rty) in
+      (* let _ = failwith "end" in *)
+      match
+        Termcheck.value_type_check_with_rec_check
+          { builtin_ctx = uctx; local_ctx = emp; axioms }
+          imp rty
+      with
+      | Some _ ->
+          ( Env.show_debug_result @@ fun _ ->
+            Pp.printf "@{<bold>@{<yellow>Task %s, type check succeeded@}@}\n"
+              name );
+          Some (add_to_right uctx name #: rty, imps)
+      | None ->
+          ( Env.show_debug_result @@ fun _ ->
+            Pp.printf "@{<bold>@{<red>Task %s, type check failed@}@}\n" name );
+          None)
+  | _ -> Some (uctx, imps)
 
-let _task_info name rty =
-  _log @@ fun _ ->
-  Pp.printf "@{<bold>Type Check %s:@}\n" name;
-  Pp.printf "@{<bold>check against with:@} %s\n" (layout_rty rty)
+let item_infer (axioms, uctx) imps = function
+  | MFuncImp { name; body; _ } ->
+      let body = term_to_value body in
+      Some (uctx, StrMap.add name.x body imps)
+  | MRty { is_assumption = true; name; rty } ->
+      Some (add_to_right uctx name #: rty, imps)
+  | MRty { is_assumption = false; name; rty } -> (
+      let imp =
+        match StrMap.find_opt imps name with
+        | None ->
+            _die_with [%here]
+              (spf "The source code of given refinement type '%s' is missing."
+                 name)
+        | Some v -> v
+      in
+      let () =
+        Env.show_debug_result @@ fun _ ->
+        Pp.printf "@{<bold>Type partial infer %s:@}\n" name
+      in
+      let () =
+        Env.show_debug_result @@ fun _ ->
+        Pp.printf "@{<bold>Expected type:@} %s\n"
+          (FrontendTyped.layout_rty rty)
+      in
+      let _ = Nt._type_unify __FILE__ __LINE__ imp.ty (erase_rty rty) in
+      match
+        Termsyn.partial_value_type_infer
+          { builtin_ctx = uctx; local_ctx = emp; axioms }
+          imp rty
+      with
+      | Some inferred_typed ->
+          ( Env.show_debug_result @@ fun _ ->
+            Pp.printf "@{<bold>@{<yellow>Task %s, type infer succeeded@}@}\n"
+              name );
+          ( Env.show_debug_result @@ fun _ ->
+            Pp.printf "@{<bold>Inferred coverage:@} %s\n"
+              (FrontendTyped.layout_rty inferred_typed.ty) );
+          Some (add_to_right uctx name #: inferred_typed.ty, imps)
+      | None ->
+          ( Env.show_debug_result @@ fun _ ->
+            Pp.printf "@{<bold>@{<red>Task %s, type infer failed@}@}\n" name );
+          None)
+  | _ -> Some (uctx, imps)
 
-let _task_succ name =
-  _log @@ fun _ ->
-  Pp.printf "@{<bold>@{<yellow>Task %s, type check succeeded@}@}\n" name
-
-let _task_fail name =
-  _log @@ fun _ ->
-  Pp.printf "@{<bold>@{<red>Task %s, type check failed@}@}\n" name
-
-let mk_imp_m bctx items =
-  List.fold_left
-    (fun (bctx, imp_m) item ->
-      match item with
-      | MFuncImp { name; body; _ } -> (bctx, StrMap.add name.x body imp_m)
-      | MRty { is_assumption = true; name; rty } ->
-          (rty_add_to_right bctx name#:rty, imp_m)
-      | _ -> (bctx, imp_m))
-    (bctx, StrMap.empty) items
-
-let mk_invs items =
-  List.fold_left
-    (fun m -> function
-      | MLocalRty { host_name; name; rty; _ } ->
-          StrMap.update host_name
-            (function
-              | None -> Some [ name#:rty ] | Some l -> Some ((name#:rty) :: l))
-            m
-      | _ -> m)
-    StrMap.empty items
-
-let mk_tasks items =
-  List.filter_map
-    (function
-      | MRty { is_assumption = false; name; rty } -> Some (name, rty)
-      | _ -> None)
-    items
-
-type resu = Suc of built_in_ctx | Fai of string
-
-let item_check bctx inv_m imp_m (name, rty) =
-  let imp =
-    StrMap.find
-      (spf "The source code of given refinement type '%s' is missing." name)
-      imp_m name
+let gather_uctx l =
+  let l =
+    List.filter_map
+      (function
+        | MRty { is_assumption = true; name; rty } -> Some name #: rty
+        | _ -> None)
+      l
   in
-  let () =
-    _log @@ fun _ ->
-    Pp.printf "@{<bold>imp_m(%s)@}\n%s\n" name (layout_typed_term imp)
-  in
-  let () = Statistic.create_stat name imp in
-  let () = Statistic.stat_update_rty (name, counter_rty_qt_qpred rty) in
-  let invs = match StrMap.find_opt inv_m name with None -> [] | Some l -> l in
-  let sol, rty = instantiate_rty_by_nty [%here] rty imp.ty in
-  let invs = List.map (fun x -> x#=>(map_rty (Nt.msubst_nt sol))) invs in
-  let () = _task_info name rty in
-  let time, res =
-    clock (fun () ->
-        term_type_check bctx (Common.Rctx.emp name [] invs) (imp, rty))
-  in
-  let () = Statistic.stat_total_time (name, time) in
-  let () = Statistic.store_stat stat_file in
-  match res with
-  | Some _ ->
-      _task_succ name;
-      Suc (rty_add_to_right bctx name#:rty)
-  | None ->
-      _task_fail name;
-      (* let () = _die [%here] in *)
-      Fai name
+  add_to_rights emp l
 
-let struc_check bctx items =
-  let bctx, imp_m = mk_imp_m bctx items in
-  let inv_m = mk_invs items in
-  let tasks = mk_tasks items in
-  let _, passed, failed =
+let gather_axioms l =
+  let l =
+    List.filter_map
+      (function MAxiom { name; prop } -> Some name #: prop | _ -> None)
+      l
+  in
+  l
+
+let struc_check (axioms, uctx) items =
+  let res =
     List.fold_left
-      (fun (bctx, passed, failed) (name, rty) ->
-        match item_check bctx inv_m imp_m (name, rty) with
-        | Suc bctx -> (bctx, passed @ [ name ], failed)
-        | Fai name -> (bctx, passed, failed @ [ name ]))
-      (bctx, [], []) tasks
+      (fun res item ->
+        let* uctx, imps = res in
+        item_check (axioms, uctx) imps item)
+      (Some (uctx, StrMap.empty))
+      items
   in
-  let () =
-    _log @@ fun _ ->
-    Pp.printf "@{<bold>Summary (total %i tasks):@}\n" (List.length tasks)
+  match res with Some _ -> true | None -> false
+
+let struc_infer (axioms, uctx) items =
+  let res =
+    List.fold_left
+      (fun res item ->
+        let* uctx, imps = res in
+        item_infer (axioms, uctx) imps item)
+      (Some (uctx, StrMap.empty))
+      items
   in
-  let () =
-    match failed with
-    | [] ->
-        _log @@ fun _ -> Pp.printf "@{<bold>@{<yellow>All tasks succeeded@}@}\n"
-    | _ -> _log @@ fun _ -> List.iter _task_fail failed
-  in
-  (Some bctx, passed, failed)
+  match res with Some _ -> true | None -> false

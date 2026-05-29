@@ -1,0 +1,24 @@
+(library
+ (name commands)
+ (public_name underapproximation_type.commands)
+ (libraries
+  core
+  core_unix.sys_unix
+  frontend_opt
+  syntax
+  language
+  preprocessing
+  translate
+  typing
+  backend
+  ; inferrty
+  ; inference
+  )
+ (modules
+  caux
+  ; ctest
+  ; cgen
+  cre)
+ (preprocess
+  (pps ppx_inline_test ppx_assert ppx_jane ppx_here))
+ (inline_tests))

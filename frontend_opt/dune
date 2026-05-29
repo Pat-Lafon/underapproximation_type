@@ -1,18 +1,24 @@
 (library
- (public_name CoverageType.frontend_opt)
+ (public_name underapproximation_type.frontend_opt)
  (name frontend_opt)
  (wrapped true)
- (libraries ast core zutils)
+ (libraries translate syntax underapproximation_type.zzenv)
  (modules
-  common
+  reflect
+  to_notation
+  to_id
+  to_op
+  to_constant
   to_raw_term
+  to_lit
+  to_prop
   to_cty
   to_rty
   to_type_dec
-  to_judgement
-  ; to_axiom
+  to_typectx
   to_item
-  frontend_opt
- )
- (preprocess (pps ppx_optcomp ppx_compare ppx_sexp_conv ppx_inline_test ppx_assert ppx_deriving.show ppx_deriving.eq ppx_deriving.ord ppx_here))
-)
+  smt_export
+  lean_export
+  coq_export)
+ (preprocess
+  (pps ppx_optcomp ppx_compare ppx_sexp_conv ppx_here)))
