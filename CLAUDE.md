@@ -76,15 +76,6 @@ Key: `syntax` and `language`/`translate` are **unwrapped** libraries (modules ex
 - **`Env`** — global environment: `load_meta`, `get_prim_path`, `show_debug_typing`, `get_resfile`, debug flag accessors
 - **`Item`** — top-level declaration ADT: `MFuncImp`, `MRty`, `MAxiom`, `MTyDecl`, `MMethodPred`, `MValDecl`
 
-### Two Entry Point Commands
-
-The executable (`bin/main.ml`) dispatches to one of two command groups:
-
-- **`cre.ml`** — the main Poirot commands: `type-check`, `type-infer`, `subtype-check`, `coq-axioms`, `lean-axioms`, `print-source-code`
-- **`ctest.ml`** — legacy/alternate commands: `coverage-type-check`, `print-coverage-types`, `split-source-code`, `check-fv-in-code`
-
-Currently `main.ml` uses `Cre.test` as the entry point. The `coverage-type-check` command is in `ctest.ml` while `type-check` is in `cre.ml` — they have different interfaces (ctest takes a separate refinement type file, cre loads it from config).
-
 ### Type System Concepts
 
 - **Coverage type** `[v:b | φ]` — underapproximation base type (generator must produce values satisfying φ)
@@ -120,7 +111,7 @@ Currently `main.ml` uses `Cre.test` as the entry point. The `coverage-type-check
   - `coverage_typing.ml` — coverage type annotations for primitives
   - `axioms.ml` — axioms about method predicates
   - `templates.ml` — templates including `rec_arg` constraints for recursive functions
-  - `lean_preamble.lean` — prepended to dumped Lean subtyping query files; contains type declarations, helper predicates, method predicates, and imports (e.g., `ProofAutomation`)
+  - `lean_preamble_{ilist,itree,rbtree}.lean` — per-datatype Lean preambles prepended to dumped subtyping query files; contain type declarations, helper predicates, method predicates, and imports (e.g., `ProofAutomation`)
   - `builtin_datatype_coverage_typing/` — per-datatype coverage type files
 - `data/benchmark/` — evaluation benchmarks from the PLDI paper
 - `data/validation/` — validation benchmarks (including `*_imprecise` for synthesis testing)

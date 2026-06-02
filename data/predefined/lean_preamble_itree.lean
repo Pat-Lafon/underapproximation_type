@@ -81,3 +81,25 @@ namespace Axioms
     lower_bound_impl lower_bound
     upper_bound_impl upper_bound
     bst_impl bst
+
+  -- Bridge lemmas: assert the wrapper holds at the impl value. Patterns are
+  -- keyed on the impl so they fire after `[local grind =]` unfolds the
+  -- wrapper out of the E-graph. Wrapper-keyed `grind_pattern`s on dumped
+  -- `ax_<n>` theorems (emitted by lean_dump.ml) can then match with the
+  -- output variable bound to `<fn>_impl args`.
+  theorem depth_intro (t : itree) : depth t (depth_impl t) := rfl
+  grind_pattern depth_intro => depth_impl t
+
+  theorem complete_intro (t : itree) : complete t (complete_impl t) := rfl
+  grind_pattern complete_intro => complete_impl t
+
+  theorem lower_bound_intro (t : itree) (x : Int) :
+      lower_bound t x (lower_bound_impl t x) := rfl
+  grind_pattern lower_bound_intro => lower_bound_impl t x
+
+  theorem upper_bound_intro (t : itree) (x : Int) :
+      upper_bound t x (upper_bound_impl t x) := rfl
+  grind_pattern upper_bound_intro => upper_bound_impl t x
+
+  theorem bst_intro (t : itree) : bst t (bst_impl t) := rfl
+  grind_pattern bst_intro => bst_impl t
