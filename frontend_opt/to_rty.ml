@@ -29,10 +29,10 @@ and layout_rty_bracket rty =
   | _ -> spf "(%s)" (layout_rty rty)
 
 (* Round-trippable counterpart to [layout_rty]: emits ASCII operators via
-   [layout_ctyRaw]/[layout_propRaw] so the output can be re-parsed by the
-   OCaml frontend. TODO: Validate this *)
+   [layout_cty_ocaml]/[layout_prop_ocaml] so the output can be re-parsed by the
+   OCaml frontend. *)
 let rec layout_rty_ocaml = function
-  | RtyBase { ou; cty } -> layout_ou_bracket ou @@ layout_ctyRaw cty
+  | RtyBase { ou; cty } -> layout_ou_bracket ou @@ layout_cty_ocaml cty
   | RtyArr { argrty; arg; retty } ->
       let argrty = layout_rty_ocaml_bracket argrty in
       let arr = "->" in
