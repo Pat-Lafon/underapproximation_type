@@ -467,23 +467,16 @@ let type_check_group (bctx : built_in_ctx) =
           (CMatchcase
              { constructor = constructor.x#:constructor_rty; args; exp = exp' })
   in
-  (value_type_check, term_type_check, term_type_infer, value_type_infer)
-
-(* A recursive call whose argument does not decrease fails the whole function. *)
-let or_rec_arg_failure f = try f () with RecArgCheckFailure -> None
-
-let value_type_check bctx ctx (value, rty) =
-  let f, _, _, _ = type_check_group bctx in
-  f ctx value rty
+  (term_type_check, term_type_infer, value_type_infer)
 
 let term_type_check bctx ctx (value, rty) =
-  let _, f, _, _ = type_check_group bctx in
+  let f, _, _ = type_check_group bctx in
   f ctx value rty
 
 let term_type_infer bctx ctx e =
-  let _, _, f, _ = type_check_group bctx in
+  let _, f, _ = type_check_group bctx in
   f ctx e
 
 let value_type_infer bctx ctx v =
-  let _, _, _, f = type_check_group bctx in
+  let _, _, f = type_check_group bctx in
   f ctx v
