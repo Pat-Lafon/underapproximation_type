@@ -1,0 +1,109 @@
+open Language
+open Zutils
+open Sugar
+open Zdatatype
+
+type t = Nt.t
+type feature_tab = t lit list
+type feature_vec = bool list
+type feature_vec_id = int
+type label = Pos | Neg | Unknown
+
+let is_not_neg = function Neg -> false | _ -> true
+let is_positive = function Pos -> true | _ -> false
+
+let feature_vec_to_id vec =
+  let rec aux = function
+    | [] -> 0
+    | true :: vec -> 1 + (2 * aux vec)
+    | false :: vec -> 0 + (2 * aux vec)
+  in
+  aux vec
+
+let feature_id_to_vec (num_features : int) id =
+  let rec aux (n, res) id =
+    if n == num_features then
+      if id == 0 then res else _failatwith [%here] "die"
+    else aux (n + 1, (id mod 2 == 1) :: res) (id / 2)
+  in
+  aux (0, []) id
+
+let feature_vec_to_prop (ftab : feature_tab) vec =
+  let props =
+    List.map (fun (b, lit) ->
+        let lit = lit #: Nt.bool_ty in
+        if b then Lit lit else Not (Lit lit))
+    @@ List.combine vec ftab
+  in
+  match props with [] -> mk_true | _ -> And props
+
+let feature_id_to_prop (ftab : feature_tab) id =
+  feature_vec_to_prop ftab @@ feature_id_to_vec (List.length ftab) id
+
+type template = { bvars : (t, string) typed list; body : t lit }
+
+let rec destruct_univerial_prop = function
+  | Forall { qv; body } ->
+      let qvs, body = destruct_univerial_prop body in
+      (qv :: qvs, body)
+  | Lit lit -> ([], lit.x)
+  | _ -> _failatwith [%here] "die"
+
+let prop_to_template prop =
+  let fvs = fv_prop prop in
+  let () =
+    if List.length fvs > 0 then _failatwith [%here] "die" else ()
+  in
+  let bvars, body = destruct_univerial_prop prop in
+  { bvars; body }
+
+let instantiate_template vars { bvars; body } =
+  let vars_list =
+    List.map (fun bvar -> List.filter (fun y -> Nt.equal_nt bvar.ty y.ty) vars) bvars
+  in
+  let args_settings = List.choose_list_list vars_list in
+  let args_settings = List.map (fun a -> List.combine bvars a) args_settings in
+  let features =
+    List.map
+      (fun args_setting ->
+        List.fold_right
+          (fun (x, y) -> subst_lit_instance x.x (AVar y))
+          args_setting body)
+      args_settings
+  in
+  features
+
+let name_to_avoid = [ "inv"; "mx"; "lo"; "hi" ]
+
+let mk_features templates vars =
+  let vars =
+    List.filter
+      (fun x -> List.for_all (fun y -> not (String.equal x.x y)) name_to_avoid)
+      vars
+  in
+  let features =
+    List.concat @@ List.map (instantiate_template vars) templates
+  in
+  let features =
+    features
+    @ List.filter_map
+        (fun x -> if Nt.equal_nt x.ty Nt.bool_ty then Some (AVar x) else None)
+        vars
+  in
+  let () =
+    Myconfig._log_queries @@ fun _ ->
+    Pp.printf "@{<bold>@{<orange>Features:@}@} %s\n"
+      (List.split_by_comma layout_lit features)
+  in
+  features
+
+let templates : template list option ref = ref None
+
+let init_template props =
+  let ts = List.map prop_to_template props in
+  templates := Some ts
+
+let get_template () =
+  match !templates with
+  | None -> _failatwith [%here] "die"
+  | Some ts -> ts

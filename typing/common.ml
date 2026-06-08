@@ -113,9 +113,8 @@ let pprint_typing_check_term rctx (e, ty) =
   @@ pprint_typing_check (pprint rctx) (layout_typed_term e, layout_rty ty)
 
 let pprint_typing_infer_term_before rctx e =
-  if ZUtilsConfig.get_show_type_infer_pre_judgement () then
-    TypecheckerLog.typing
-    @@ pprint_typing_infer (pprint rctx) (layout_typed_term e, "??")
+  if Myconfig.get_show_type_infer_pre_judgement () then
+    _log @@ pprint_typing_infer (pprint rctx) (layout_typed_term e, "??")
   else ()
 
 let layout_rty_opt res =

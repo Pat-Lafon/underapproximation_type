@@ -36,17 +36,17 @@ let type_check_group (bctx : built_in_ctx) =
           let () = if String.equal id.x "None" then _die [%here] in
           let rty = _id_type_infer [%here] rctx id in
           let res = Some (VVar id.x#:rty)#:rty in
-          if ZUtilsConfig.get_show_type_infer_variable_judgement () then
+          if Myconfig.get_show_type_infer_variable_judgement () then
             pprint_typing_infer_value_after rctx (v, res);
           res
       | VConst U ->
           let res = Some (VConst U)#:(mk_top_underrty Nt.unit_ty) in
-          if ZUtilsConfig.get_show_type_infer_constant_judgement () then
+          if Myconfig.get_show_type_infer_constant_judgement () then
             pprint_typing_infer_value_after rctx (v, res);
           res
       | VConst c ->
           let res = Some (VConst c)#:(mk_eq_c_underrty c) in
-          if ZUtilsConfig.get_show_type_infer_constant_judgement () then
+          if Myconfig.get_show_type_infer_constant_judgement () then
             pprint_typing_infer_value_after rctx (v, res);
           res
       | VTuple vs ->
@@ -467,13 +467,23 @@ let type_check_group (bctx : built_in_ctx) =
           (CMatchcase
              { constructor = constructor.x#:constructor_rty; args; exp = exp' })
   in
-  (value_type_check, term_type_check)
+  (value_type_check, term_type_check, term_type_infer, value_type_infer)
 
 (* A recursive call whose argument does not decrease fails the whole function. *)
 let or_rec_arg_failure f = try f () with RecArgCheckFailure -> None
 
 let value_type_check bctx ctx (value, rty) =
-  or_rec_arg_failure (fun () -> (fst @@ type_check_group bctx) ctx value rty)
+  let f, _, _, _ = type_check_group bctx in
+  f ctx value rty
 
 let term_type_check bctx ctx (value, rty) =
-  or_rec_arg_failure (fun () -> (snd @@ type_check_group bctx) ctx value rty)
+  let _, f, _, _ = type_check_group bctx in
+  f ctx value rty
+
+let term_type_infer bctx ctx e =
+  let _, _, f, _ = type_check_group bctx in
+  f ctx e
+
+let value_type_infer bctx ctx v =
+  let _, _, _, f = type_check_group bctx in
+  f ctx v
