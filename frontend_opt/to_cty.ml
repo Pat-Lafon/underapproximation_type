@@ -28,10 +28,19 @@ let pprint = function
       else if Nt.equal_nt Nt.unit_ty nty then layout_prop phi
       else spf "%s:%s | %s" default_v (Nt.layout nty) (layout_prop phi)
 
+(* Round-trippable counterpart to [pprint]: uses [layout_propRaw] so the
+   emitted text can be re-parsed by the OCaml frontend. TODO: Maybe validate this roundtripping property?*)
+let pprintRaw = function
+  | { nty; phi } ->
+      if is_true phi then Nt.layout nty
+      else if Nt.equal_nt Nt.unit_ty nty then layout_propRaw phi
+      else spf "%s:%s | %s" default_v (Nt.layout nty) (layout_propRaw phi)
+
 let layout_ou_bracket ou x =
   match ou with Over -> spf "{%s}" x | Under -> spf "[%s]" x
 
 let layout_cty = pprint
+let layout_ctyRaw = pprintRaw
 
 let layout_ou_cty ou = function
   | { nty; phi } ->
