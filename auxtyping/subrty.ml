@@ -37,8 +37,6 @@ let rec sub_rty rctx (rty1, rty2) =
   let () = Statistic.stat_count_query rctx.task_name in
   aux rctx (rty1, rty2)
 
-let sub_rty_bool rctx (rty1, rty2) = sub_rty rctx (rty1, rty2)
-
 let non_emptiness_rty rctx rty =
   let () = Statistic.stat_count_query rctx.task_name in
   match rty with
