@@ -76,12 +76,6 @@ def no_red_red_impl : irbtree → Bool
 def no_red_red (t : irbtree) (res : Bool) : Prop :=
   no_red_red_impl t = res
 
-def rbtree_invariant_impl (t : irbtree) (h : Int) : Bool :=
-  no_red_red_impl t && num_black_impl t h
-
-def rbtree_invariant (t : irbtree) (h : Int) (res : Bool) : Prop :=
-  rbtree_invariant_impl t h = res
-
 -- Axiom namespace: definitions are available to grind/simp for proving axioms.
 -- lean_dump.ml emits 'end Axioms' + 'open Axioms' after the axioms, before
 -- the subtyping query. The namespace gives every Cobb axiom a real
@@ -89,8 +83,6 @@ def rbtree_invariant (t : irbtree) (h : Int) (res : Bool) : Prop :=
 namespace Axioms
   attribute [local simp] is_rbtleaf is_rbtnode color value left right
     num_black_impl num_black no_red_red_impl no_red_red
-    rbtree_invariant_impl rbtree_invariant
   attribute [local grind cases] irbtree Bool
   attribute [local grind =] is_rbtleaf is_rbtnode color value left right
     num_black_impl num_black no_red_red_impl no_red_red
-    rbtree_invariant_impl rbtree_invariant

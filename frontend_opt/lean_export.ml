@@ -1,6 +1,5 @@
 open Zutils
 open Prop
-open Ast
 open Sugar
 
 let lean_layout_ty = function
@@ -30,9 +29,3 @@ let leansetting =
   }
 
 let layout_prop_to_lean = layout_prop_ leansetting
-
-let layout_item_to_lean = function
-  | MAxiom { name; prop; _ } ->
-      spf "@[grind]\ntheorem %s : %s := by grind" name
-        (layout_prop_to_lean prop)
-  | _ -> _die_with [%here] "not implemented"
