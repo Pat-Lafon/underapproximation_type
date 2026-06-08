@@ -11,7 +11,7 @@ let value_infer_mode = PolyPredParam
 
 let type_check_group (bctx : built_in_ctx) =
   let _find_in_ctx loc (rctx : rctx) (id : (Nt.t, string) typed) =
-    let res = lookup_ctxs [ rctx.rty_ctx; bctx.builtin_ctx ] id.x in
+    let res = lookup_id rctx bctx id.x in
     match res with
     | Some res ->
         let rty = fresh_name_rty res in

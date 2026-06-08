@@ -155,4 +155,7 @@ let rec lookup_ctxs ctxs id =
       | Some res -> Some res
       | None -> lookup_ctxs ctxs id)
 
+let lookup_id (rctx : rctx) (bctx : built_in_ctx) id =
+  lookup_ctxs [ rctx.rty_ctx; bctx.builtin_ctx ] id
+
 (** Debug *)
