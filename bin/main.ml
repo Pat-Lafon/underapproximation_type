@@ -29,7 +29,8 @@ let subtype_check source_file () =
   let res =
     Auxtyping.sub_rty (Typing.Rctx.emp "subtyping" [] []) (rty1, rty2)
   in
-  Pp.printf "@{<bold>Result: %b@}\n" res
+  Pp.printf "@{<bold>Result: %b@}\n" res;
+  Stdlib.exit (if res then 0 else 1)
 
 let type_check source_file () =
   let code = Preprocess.preprocess [ source_file ] in
