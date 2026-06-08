@@ -31,23 +31,23 @@ and layout_rty_bracket rty =
 (* Round-trippable counterpart to [layout_rty]: emits ASCII operators via
    [layout_ctyRaw]/[layout_propRaw] so the output can be re-parsed by the
    OCaml frontend. TODO: Validate this *)
-let rec layout_rtyRaw = function
+let rec layout_rty_ocaml = function
   | RtyBase { ou; cty } -> layout_ou_bracket ou @@ layout_ctyRaw cty
   | RtyArr { argrty; arg; retty } ->
-      let argrty = layout_rtyRaw_bracket argrty in
+      let argrty = layout_rty_ocaml_bracket argrty in
       let arr = "->" in
       if List.exists (String.equal arg) @@ fv_rty_id retty then
-        spf "%s:%s %s %s" arg argrty arr (layout_rtyRaw retty)
-      else spf "%s %s %s" argrty arr (layout_rtyRaw retty)
-  | RtyPolyType { pt; rty } -> spf "forall %s.%s" pt (layout_rtyRaw rty)
+        spf "%s:%s %s %s" arg argrty arr (layout_rty_ocaml retty)
+      else spf "%s %s %s" argrty arr (layout_rty_ocaml retty)
+  | RtyPolyType { pt; rty } -> spf "forall %s.%s" pt (layout_rty_ocaml rty)
   | RtyPolyPred { pred; rty } ->
       spf "forall (%s: %s).%s" pred.x (Nt.layout_nt pred.ty)
-        (layout_rtyRaw rty)
+        (layout_rty_ocaml rty)
 
-and layout_rtyRaw_bracket rty =
+and layout_rty_ocaml_bracket rty =
   match rty with
-  | RtyBase _ -> layout_rtyRaw rty
-  | _ -> spf "(%s)" (layout_rtyRaw rty)
+  | RtyBase _ -> layout_rty_ocaml rty
+  | _ -> spf "(%s)" (layout_rty_ocaml rty)
 
 let get_ou expr =
   match expr.pexp_attributes with
