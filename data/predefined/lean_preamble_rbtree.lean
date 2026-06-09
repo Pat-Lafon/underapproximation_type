@@ -44,23 +44,6 @@ def num_black_impl : irbtree → Int → Bool
 def num_black (t : irbtree) (h : Int) (res : Bool) : Prop :=
   num_black_impl t h = res
 
--- Bridge lemma: every num_black-witnessed height is non-negative. Closes the
--- `(num_black t 0 true) ∧ color t = false → False`-shape axioms (e.g. ax_30)
--- by making the height-non-neg fact reachable from `num_black_impl t h` via
--- E-matching, without prove_axiom having to unfold the recursive impl.
-@[grind →]
-theorem num_black_nonneg (t : irbtree) (h : Int) :
-    num_black t h true → h ≥ 0 := by
-  induction t generalizing h with
-  | Rbtleaf => simp [num_black, num_black_impl]; omega
-  | Rbtnode c l _ r ihl _ =>
-    simp only [num_black, num_black_impl]
-    cases c <;> simp <;> intro hyp _
-    · have := ihl (h - 1) hyp; omega
-    · exact ihl h hyp
-
-grind_pattern num_black_nonneg => num_black_impl t h
-
 def no_red_red_impl : irbtree → Bool
   | .Rbtleaf => true
   | .Rbtnode c l _ r =>

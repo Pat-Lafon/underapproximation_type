@@ -10,11 +10,6 @@ type t = Nt.t
 let layout_ty = Nt.layout
 let inferred_result = ref None
 
-let get_inferred_result () =
-  match !inferred_result with
-  | None -> _failatwith [%here] "die"
-  | Some res -> res
-
 let rec partial_value_type_infer (uctx : uctx) (a : (t, t value) typed)
     (rty : t rty) : (t rty, t rty value) typed option =
   let res =
