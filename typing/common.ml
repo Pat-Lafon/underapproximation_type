@@ -4,9 +4,20 @@ open Sugar
 open Typectx
 open Auxtyping
 
-(* [CMatch] reads [None] as "unreachable arm" and drops it, so a failed decrease
-   check can't report [None] — it has to fail the whole function. *)
+let _log = Myconfig._log_typing
+let _decreasing = "decreasing"
+
 exception RecArgCheckFailure
+
+let _cur_rec_func_name : (string * Nt.t cty * Nt.t) option ref = ref None
+let init_cur_rec_func_name v = _cur_rec_func_name := Some v
+let get_cur_rec_func_name () = !_cur_rec_func_name
+
+let mk_self_wf_dec x =
+  let open Prop in
+  let lt = if Nt.equal_nt x.ty Nt.int_ty then "<" else _decreasing in
+  let lt = lt#:Nt.(construct_arr_tp ([ x.ty; x.ty ], bool_ty)) in
+  lit_to_prop (AAppOp (lt, List.map tvar_to_lit [ default_v#:x.ty; x ]))
 
 module Rctx = struct
   let emp task_name tyvar_ctx invs =

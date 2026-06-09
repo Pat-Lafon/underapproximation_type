@@ -39,10 +39,10 @@ let check_valid (task, query) =
   let () = report_unclosed [%here] query in
   let axioms = Prover.select_axioms (task, query) in
   let always_dump = Option.is_some (Sys.getenv_opt "TOTEM_DUMP_LEAN") in
-  if always_dump then Lean_dump.dump_failed_query axioms query;
+  if always_dump then Lean_dump.dump_query axioms query;
   let result = Prover.check_valid ~axioms (task, query) in
   if (not result) && not always_dump then
-    Lean_dump.dump_failed_query axioms query;
+    Lean_dump.dump_query axioms query;
   result
 
 let simplify_sub_typectx ctx (rty1, rty2) =

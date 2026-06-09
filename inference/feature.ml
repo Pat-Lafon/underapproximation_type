@@ -73,9 +73,8 @@ let instantiate_template vars { bvars; body } =
   in
   features
 
-let name_to_avoid = [ "inv"; "mx"; "lo"; "hi" ]
-
 let mk_features templates vars =
+  let name_to_avoid = Myconfig.get_name_to_avoid () in
   let vars =
     List.filter
       (fun x -> List.for_all (fun y -> not (String.equal x.x y)) name_to_avoid)

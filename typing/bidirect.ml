@@ -302,15 +302,18 @@ let type_check_group (bctx : built_in_ctx) =
               let poly_preds, appf_ty, apparg_rty =
                 instantiate_poly_pred_rty rctx.pred_ctx appf.ty apparg'.ty
               in
-              let rctx = Rctx.add_preds rctx poly_preds in
-              (* Termination: a recursive call's argument must decrease. *)
+              let rctx' = Rctx.add_preds rctx poly_preds in
+              (* Rec-arg soundness: at the fix's own call site, apparg must
+                 lie within the well-foundedness bound from _cur_rec_func_name.
+                 RecArgCheckFailure is caught at the enumeration boundary. *)
               let () =
-                match (rctx.rec_bound, appf.x) with
-                | Some (recname, bound_cty), VVar id
+                match (get_cur_rec_func_name (), appf.x) with
+                | Some (recname, argcty, _), VVar id
                   when String.equal id.x recname ->
-                    let bound_rty = cty_to_overrty bound_cty in
-                    if not (sub_rty_as_over rctx (apparg_rty, bound_rty)) then (
-                      _warinning_subtyping_error [%here] (apparg_rty, bound_rty);
+                    let rec_arg_rty = RtyBase { ou = Under; cty = argcty } in
+                    if not (subtyping rctx' (rec_arg_rty, apparg_rty)) then (
+                      _warinning_subtyping_error [%here]
+                        (rec_arg_rty, apparg_rty);
                       raise RecArgCheckFailure)
                 | _ -> ()
               in

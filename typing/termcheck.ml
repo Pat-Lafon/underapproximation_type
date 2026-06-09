@@ -16,13 +16,6 @@ let term_type_infer (uctx : uctx) body =
 let value_type_infer (uctx : uctx) v =
   Bidirect.value_type_infer uctx.bctx uctx.rctx v
 
-exception RecArgCheckFailure
-
-let _cur_rec_func_name : (string * Nt.t cty * Nt.t) option ref = ref None
-
-let init_cur_rec_func_name v = _cur_rec_func_name := Some v
-let get_cur_rec_func_name () = !_cur_rec_func_name
-
 let _mk_rec_arg_phi name typed_args =
   let open Prop in
   let arr_ty =
