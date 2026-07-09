@@ -2,7 +2,7 @@
  (public_name CoverageType.language)
  (name language)
  (wrapped true)
- (libraries ast core zutils frontend_opt CoverageType.typechecker_config)
+ (libraries ast core zutils frontend_opt)
  (modules language)
  (preprocess
   (pps

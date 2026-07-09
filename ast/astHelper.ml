@@ -469,17 +469,17 @@ let rec fresh_name_rty rty =
       RtyBase { ou; cty = { nty; phi = fresh_name_prop phi } }
   | RtyArr { argrty; arg; retty } ->
       let argrty = fresh_name_rty argrty in
-      let arg' = Rename.unique_var arg in
+      let arg' = Rename.unique arg in
       let retty =
         subst_rty_instance arg (AVar arg'#:(erase_rty argrty)) retty
       in
       RtyArr { argrty; arg = arg'; retty = fresh_name_rty retty }
   | RtyPolyType { pt; rty } ->
-      let pt' = Rename.unique_type_var pt in
+      let pt' = Rename.unique pt in
       let rty = map_rty (Nt.subst_nt (pt, Nt.Ty_var pt')) rty in
       RtyPolyType { pt = pt'; rty = fresh_name_rty rty }
   | RtyPolyPred { pred; rty } ->
-      let pred' = pred#->Rename.unique_var in
+      let pred' = pred#->Rename.unique in
       let rty = rename_pred_rty pred.x pred'.x rty in
       RtyPolyPred { pred = pred'; rty = fresh_name_rty rty }
 

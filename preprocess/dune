@@ -2,7 +2,13 @@
  (public_name CoverageType.preprocess)
  (name preprocess)
  (wrapped true)
- (libraries core zutils language CoverageType.typechecker_config)
+ (libraries
+  core
+  zutils
+  language
+  CoverageType.typechecker_config
+  CoverageType.measure
+  z3)
  (modules type_alias basic_typing normalization preprocess)
  (preprocess
   (pps

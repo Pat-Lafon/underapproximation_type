@@ -2,6 +2,8 @@ open Language
 open Zutils
 open Zdatatype
 
+let _log = ZUtilsConfig._log "inline"
+
 type constructor_type = string list * Nt.nt
 
 let layout_constructor_type x =

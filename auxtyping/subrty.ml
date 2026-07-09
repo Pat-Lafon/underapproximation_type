@@ -2,6 +2,8 @@ open Language
 open Zutils
 open Subcty
 
+let _log = ZUtilsConfig._log_typing
+
 let rec sub_rty rctx (rty1, rty2) =
   ( TypecheckerLog.typing @@ fun _ ->
     pprint_subtyping
