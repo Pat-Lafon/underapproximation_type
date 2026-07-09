@@ -15,7 +15,7 @@ open Zdatatype
 
 type solution = { args : (Nt.t, string) typed list; body : Nt.t prop }
 
-let _log = Myconfig._log "instantiateRty"
+let _log = ZUtilsConfig._log "instantiateRty"
 
 let layout_solution (p, sol) =
   spf "%s(%s) := %s" p
@@ -209,7 +209,7 @@ let instantiate_poly_pred_rty predctx frty xty =
       (fun m pred ->
         match Typectx.get_opt predctx pred.x with
         | None -> m
-        | Some _ -> (pred.x, Rename.unique_var pred.x) :: m)
+        | Some _ -> (pred.x, Rename.unique pred.x) :: m)
       [] pds
   in
   let pds =

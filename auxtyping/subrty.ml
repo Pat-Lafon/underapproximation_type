@@ -1,9 +1,8 @@
 open Language
 open Zutils
 open Subcty
-(* open Myconfig *)
 
-let _log = Myconfig._log_typing
+let _log = ZUtilsConfig._log_typing
 
 let rec sub_rty rctx (rty1, rty2) =
   ( _log @@ fun _ ->

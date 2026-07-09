@@ -1,0 +1,15 @@
+(library
+ (public_name CoverageType.typechecker_config)
+ (name typechecker_config)
+ (wrapped false)
+ (libraries core zutils yojson)
+ (modules typecheckerConfig)
+ (preprocess
+  (pps
+   ppx_optcomp
+   ppx_compare
+   ppx_sexp_conv
+   ppx_inline_test
+   ppx_assert
+   ppx_deriving_yojson
+   ppx_here)))

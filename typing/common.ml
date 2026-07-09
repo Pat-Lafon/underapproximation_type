@@ -4,7 +4,7 @@ open Sugar
 open Typectx
 open Auxtyping
 
-let _log = Myconfig._log_typing
+let _log = ZUtilsConfig._log_typing
 let _decreasing = "decreasing"
 
 exception RecArgCheckFailure
@@ -121,7 +121,7 @@ let pprint_typing_check_term rctx (e, ty) =
   _log @@ pprint_typing_check (pprint rctx) (layout_typed_term e, layout_rty ty)
 
 let pprint_typing_infer_term_before rctx e =
-  if Myconfig.get_show_type_infer_pre_judgement () then
+  if ZUtilsConfig.get_show_type_infer_pre_judgement () then
     _log @@ pprint_typing_infer (pprint rctx) (layout_typed_term e, "??")
   else ()
 

@@ -10,7 +10,7 @@ open Sugar
 open Common
 
 let typed_to_expr f expr =
-  if Myconfig.get_show_var_type_in_term () then
+  if ZUtilsConfig.get_show_var_type_in_term () then
     match expr.ty with
     | Nt.Ty_unknown -> f expr.x
     | _ ->
@@ -124,6 +124,12 @@ let rec typed_raw_term_of_pattern pattern =
   match pattern.ppat_desc with
   | Ppat_tuple ps ->
       (Tuple (List.map typed_raw_term_of_pattern ps))#:Nt.Ty_unknown
+  | Ppat_record (fields, _) ->
+      (* Drop labels: these are inline-record constructor args, positional in
+         declaration order, which the enclosing Ppat_construct de_tuple_terms
+         back into the constructor's argument list. *)
+      (Tuple (List.map (fun (_, p) -> typed_raw_term_of_pattern p) fields))#:Nt
+                                                                             .Ty_unknown
   | Ppat_var ident -> (Var ident.txt#:Nt.Ty_unknown)#:Nt.Ty_unknown
   | Ppat_constraint (ident, tp) ->
       let term = typed_raw_term_of_pattern ident in
@@ -158,6 +164,10 @@ let typed_id_of_pattern pattern =
 
 (* let monadic_operator = [ _bind; _fmap; _return ] *)
 (* let monadic_operator = [] *)
+
+(* program.ml measures use OCaml structural [=]/[<>]; Cobb's prop language spells value
+   equality [==]/[!=] (ast.ml builtin_primop). Map at the measure operator head. *)
+let normalize_eq_op = function "=" -> "==" | "<>" -> "!=" | op -> op
 
 let typed_raw_term_of_expr expr =
   let rec aux expr =
@@ -205,15 +215,14 @@ let typed_raw_term_of_expr expr =
     | Pexp_apply (func, args) ->
         let args = List.map (fun x -> aux @@ snd x) args in
         let func = aux func in
-        (* let res = *)
-        (*   match func.x with *)
-        (*   | Var f -> ( *)
-        (*       match string_to_op_opt f.x with *)
-        (*       | Some op -> AppOp (op#:f.ty, args) *)
-        (*       | None -> App (func, args)) *)
-        (*   | _ -> App (func, args) *)
-        (* in *)
-        let res = App (func, args) in
+        (* A builtin-operator head ([&&], [==], [+]) encodes as [AppOp PrimOp], not a
+           free-variable [App] — rec-def measure bodies apply such operators. *)
+        let res =
+          match func.x with
+          | Var f when is_builtin_op (normalize_eq_op f.x) ->
+              AppOp ((PrimOp (normalize_eq_op f.x))#:f.ty, args)
+          | _ -> App (func, args)
+        in
         res#:Nt.Ty_unknown
     | Pexp_ifthenelse (e1, e2, Some e3) ->
         (Ifte (aux e1, aux e2, aux e3))#:Nt.Ty_unknown

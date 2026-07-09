@@ -13,8 +13,7 @@ let constructor_declaration_of_ocaml { pcd_name; pcd_args; _ } =
     | Pcstr_tuple cts ->
         CtorTuple
           (List.mapi
-             (fun i ct ->
-               (Printf.sprintf "field_%d" i)#:(core_type_to_t ct))
+             (fun i ct -> (Printf.sprintf "field_%d" i)#:(core_type_to_t ct))
              cts)
     | Pcstr_record lds ->
         CtorRecord

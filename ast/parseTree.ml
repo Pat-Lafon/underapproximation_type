@@ -134,7 +134,7 @@ type 't item =
     }
   | MValDecl of ('t, string) typed
   | MMethodPred of ('t, string) typed
-  | MAxiom of { name : string; tasks : string list; prop : 't prop }
+  | MAxiom of { name : string; prop : 't prop }
   | MFuncImpRaw of {
       name : ('t, string) typed;
       if_rec : bool;

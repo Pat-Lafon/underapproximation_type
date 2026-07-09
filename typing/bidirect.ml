@@ -36,17 +36,17 @@ let type_check_group (bctx : built_in_ctx) =
           let () = if String.equal id.x "None" then _die [%here] in
           let rty = _id_type_infer [%here] rctx id in
           let res = Some (VVar id.x#:rty)#:rty in
-          if Myconfig.get_show_type_infer_variable_judgement () then
+          if ZUtilsConfig.get_show_type_infer_variable_judgement () then
             pprint_typing_infer_value_after rctx (v, res);
           res
       | VConst U ->
           let res = Some (VConst U)#:(mk_top_underrty Nt.unit_ty) in
-          if Myconfig.get_show_type_infer_constant_judgement () then
+          if ZUtilsConfig.get_show_type_infer_constant_judgement () then
             pprint_typing_infer_value_after rctx (v, res);
           res
       | VConst c ->
           let res = Some (VConst c)#:(mk_eq_c_underrty c) in
-          if Myconfig.get_show_type_infer_constant_judgement () then
+          if ZUtilsConfig.get_show_type_infer_constant_judgement () then
             pprint_typing_infer_value_after rctx (v, res);
           res
       | VTuple vs ->
@@ -79,8 +79,8 @@ let type_check_group (bctx : built_in_ctx) =
               match value_infer_mode with
               | PolyPredParam ->
                   let pred =
-                    (Rename.unique_var "p")#:(Nt.construct_arr_tp
-                                                ([ nty ], Nt.bool_ty))
+                    (Rename.unique "p")#:(Nt.construct_arr_tp
+                                            ([ nty ], Nt.bool_ty))
                   in
                   let open Prop in
                   let phi =
@@ -164,7 +164,7 @@ let type_check_group (bctx : built_in_ctx) =
         (* let () = Printf.printf "fix retty %s\n" (layout_rty retty) in *)
         let arg, retty =
           if String.equal arg fixarg.x then
-            let arg' = Rename.unique_var arg in
+            let arg' = Rename.unique arg in
             (arg', subst_rty_instance arg (AVar arg'#:fixarg.ty) retty)
           else (arg, retty)
         in

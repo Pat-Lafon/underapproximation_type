@@ -1,18 +1,3 @@
-(** Premitive type *)
-
-type unit = TT
-type bool = True | False
-type 'a option = None | Some of 'a
-
-type 'a tezosTree =
-  | TezosLeaf of 'a
-  | TezosNode1 of 'a * 'a tezosTree
-  | TezosNode2 of 'a * 'a tezosTree * 'a tezosTree
-
-(* NOTE: pair are builtin *)
-(* val fst : 'a * 'b -> 'a *)
-(* val snd : 'a * 'b -> 'b *)
-
 (** Arithmatic operators *)
 
 val ( == ) : 'a. 'a -> 'a -> bool
@@ -79,10 +64,6 @@ val tezos_leaf : 'a tezosTree -> 'a -> bool
 val tezos_node1 : 'a tezosTree -> 'a -> 'a tezosTree -> bool
 val tezos_node2 : 'a tezosTree -> 'a -> 'a tezosTree -> 'a tezosTree -> bool
 
-(** lists *)
-
-type 'a list = Nil | Cons of 'a * 'a list
-
 (** list predicates *)
 
 val list_len : 'a list -> int
@@ -106,10 +87,6 @@ val list_index : 'a list -> int -> 'a -> bool (* for STLC *)
 val list_length : 'a list -> int
 val list_nth : 'a list -> int -> 'a
 
-(** trees *)
-
-type 'a tree = Leaf | Node of 'a * 'a tree * 'a tree
-
 (** tree predicates *)
 
 val depth : 'a tree -> int
@@ -122,11 +99,6 @@ val heap : 'a tree -> bool
 val complete : 'a tree -> bool
 val tree_num_node : 'a tree -> int
 
-(** Stream *)
-
-type 'a lazyty = Lazyty of 'a
-type 'a stream = Streamnil | Streamlazycons of 'a * 'a stream lazyty
-
 (** stream predicates *)
 
 val forc : 'a stream lazyty -> 'a stream
@@ -135,12 +107,6 @@ val stream_len : 'a stream -> int
 val stream_hd : 'a stream -> 'a -> bool
 val stream_tl : 'a stream -> 'a stream -> bool
 
-(** leftisthp *)
-
-type 'a leftisthp =
-  | Lhpleaf
-  | Lhpnode of int * 'a * 'a leftisthp * 'a leftisthp
-
 (** leftisthp predicates *)
 
 val leftisthp_depth : 'a leftisthp -> int
@@ -148,10 +114,6 @@ val leftisthp_root : 'a leftisthp -> 'a -> bool
 val leftisthp_rank : 'a leftisthp -> int -> bool
 val leftisthp_lch : 'a leftisthp -> 'a leftisthp -> bool
 val leftisthp_rch : 'a leftisthp -> 'a leftisthp -> bool
-
-(** rbtree *)
-
-type 'a rbtree = Rbtleaf | Rbtnode of bool * 'a rbtree * 'a * 'a rbtree
 
 (** rbtree predicates *)
 
@@ -162,18 +124,6 @@ val rb_root_color : 'a rbtree -> bool -> bool
 val rb_lch : 'a rbtree -> 'a rbtree -> bool
 val rb_rch : 'a rbtree -> 'a rbtree -> bool
 val no_red_red : 'a rbtree -> bool
-
-(** stlc *)
-
-type stlc_ty = Stlc_ty_nat | Stlc_ty_arr of stlc_ty * stlc_ty
-
-type stlc_term =
-  | Stlc_const of int
-  | Stlc_id of int
-  | Stlc_app of stlc_term * stlc_term
-  | Stlc_abs of stlc_ty * stlc_term
-
-type stlc_measure = Measure of int * int
 
 (** stlc predicates *)
 
@@ -201,30 +151,7 @@ val choose_by_fq : int list -> int (* for frequency *)
 val char_of_int : int -> char
 val swap : 'a list -> int -> int -> 'a list (* for shuffle *)
 
-(** Xen API *)
-
-(** enum type encoded as int; *)
-
-(* type file_kind = *)
-(*   | S_BLK = 0 *)
-(*   | S_CHR = 1 *)
-(*   | S_DIR = 2 *)
-(*   | S_FIFO = 3 *)
-(*   | S_LNK = 4 *)
-(*   | S_REG = 5 *)
-(*   | S_SOCK = 6 *)
-
-type fd = {
-  size : int;
-  delay_read : Delay.t option;
-  delay_write : Delay.t option;
-  kind : int;
-}
-
-(** [select_fd_spec] defines a behaviour for a select input: a file descriptor
-    kind and how long before any event happens on it *)
-
-type select_fd_spec = { kind : int; wait : float }
+(** Xen API predicates *)
 
 val wf_file_kind : int -> bool
 val is_testable_kind : int -> bool
@@ -238,23 +165,7 @@ val wf_fd_size : int -> bool
 val wf_delay_size : Delay.t option -> float -> int -> bool
 val wf_fd : fd -> bool
 
-(** Vellvm *)
-
-(* LLVM types *)
-type typ =
-  | TYPE_I of int
-  | TYPE_Void
-  | TYPE_Vector of int * typ
-  | TYPE_Array of int * typ
-  | TYPE_Others
-
-(* LLVM dynamic values *)
-type dvalue =
-  | DVALUE_I of int * int
-  | DVALUE_None
-  | DVALUE_Vector of typ * dvalue list
-  | DVALUE_Array of typ * dvalue list
-  | DVALUE_Others
+(** Vellvm predicates *)
 
 val type_i : typ -> int -> bool
 val type_void : typ -> bool
@@ -277,36 +188,7 @@ val dvalue_others : dvalue -> bool
 val llvm_typing : dvalue -> typ -> bool
 val dvalue_list : dvalue list -> dvalue -> bool
 
-(** Herdtools7 *)
-
-type literal =
-  | L_Int of int
-  | L_Bool of bool
-  | L_Real of float
-  | L_BitVector of char list
-  | L_String of string
-
-type expr =
-  | E_Literal of literal
-  | E_Var of string
-  | E_Binop of string * expr * expr
-  | E_Unop of string * expr
-  | E_Slice of expr * slice list
-  | E_Cond of expr * expr * expr
-  | E_Tuple of expr list
-  | E_Others
-
-type slice =
-  | Slice_Single of expr
-      (** [Slice_Single i] is the slice of length [1] at position [i]. *)
-  | Slice_Range of expr * expr
-      (** [Slice_Range (j, i)] denotes the slice from [i] to [j - 1]. *)
-  | Slice_Length of expr * expr
-      (** [Slice_Length (i, n)] denotes the slice starting at [i] of length [n].
-      *)
-  | Slice_Star of expr * expr
-      (** [Slice_Start (factor, length)] denotes the slice starting at
-          [factor * length] of length [n]. *)
+(** Herdtools7 predicates *)
 
 val herd_l_int : literal -> int -> bool
 val herd_l_bool : literal -> bool -> bool
@@ -323,12 +205,7 @@ val is_printable : string -> bool
 val is_binop : string -> bool
 val is_unop : string -> bool
 
-(** Zipperposition *)
-
-type pt_term =
-  | PT_Var of string
-  | PT_Ite of pt_term * pt_term * pt_term
-  | PT_App of pt_term * pt_term list
+(** Zipperposition predicates *)
 
 val pt_var : pt_term -> string -> bool
 val pt_ite : pt_term -> pt_term -> pt_term -> pt_term -> bool

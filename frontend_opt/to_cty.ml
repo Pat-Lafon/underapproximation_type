@@ -28,19 +28,10 @@ let pprint = function
       else if Nt.equal_nt Nt.unit_ty nty then layout_prop phi
       else spf "%s:%s | %s" default_v (Nt.layout nty) (layout_prop phi)
 
-(* Round-trippable counterpart to [pprint]: uses [layout_prop_ocaml] so the
-   emitted text can be re-parsed by the OCaml frontend. *)
-let pprint_ocaml = function
-  | { nty; phi } ->
-      if is_true phi then Nt.layout nty
-      else if Nt.equal_nt Nt.unit_ty nty then layout_prop_ocaml phi
-      else spf "%s:%s | %s" default_v (Nt.layout nty) (layout_prop_ocaml phi)
-
 let layout_ou_bracket ou x =
   match ou with Over -> spf "{%s}" x | Under -> spf "[%s]" x
 
 let layout_cty = pprint
-let layout_cty_ocaml = pprint_ocaml
 
 let layout_ou_cty ou = function
   | { nty; phi } ->
@@ -78,3 +69,9 @@ let cty_of_expr expr =
   match vars_phi_of_expr expr with
   | [ { x; ty } ], phi when String.equal x default_v -> { nty = ty; phi }
   | _ -> _failatwith [%here] (string_of_expression expr)
+
+(* Inverse of [cty_of_expr]: the re-parseable [(phi : [%v: nty])] source form
+   that [rty_of_expr] reads back, versus [pprint]'s [v:nty | phi] display form. *)
+let cty_to_expr { nty; phi } =
+  desc_to_ocamlexpr
+  @@ Pexp_constraint (prop_to_expr phi, notated (default_v, nty))

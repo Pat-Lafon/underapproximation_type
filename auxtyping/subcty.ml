@@ -1,7 +1,7 @@
 open Language
 open Zutils
 open Prop
-open Myconfig
+open ZUtilsConfig
 open Zdatatype
 
 let _log_auxtyping = _log "auxtyping"
@@ -35,18 +35,42 @@ let report_unclosed loc query =
           fvs))
     (0 == List.length fvs)
 
-let check_valid (task, query) =
+let functional_bodies prop =
+  match get_smt_encoding () with
+  | Both -> Option.to_list (Recdef_z3.build_functional_query prop)
+  | Axiom -> []
+
+let record_nondecisive ~reason ~coerced_to =
+  Printf.eprintf
+    "[non-decisive Z3 verdict] q%i: timeout/unknown coerced to %s; %s.\n"
+    !Prover.query_counter coerced_to
+    (Prover.coercion_hint reason)
+
+let check_valid query =
   let () =
     _log_debug @@ fun _ ->
     Printf.printf "check valid: %s\n" (layout_prop_ query)
   in
   let () = report_unclosed [%here] query in
-  let axioms = Prover.select_axioms (task, query) in
-  let always_dump = Option.is_some (Sys.getenv_opt "TOTEM_DUMP_LEAN") in
-  if always_dump then Lean_dump.dump_query axioms query;
-  let result = Prover.check_valid ~axioms (task, query) in
-  if (not result) && not always_dump then
-    Lean_dump.dump_query axioms query;
+  (* Freshen bound-var names once, then share this one prop with both Z3 and the [Emit]
+     dump so they check the identical query. Only Z3 needs it — [Propencoding.to_z3] keys
+     quantifiers by name and needs them globally unique — but feeding the same prop to the
+     dump keeps the emitted Lean/Coq a faithful copy of what Z3 saw. *)
+  let query = fresh_name_prop query in
+  let axioms = Prover.select_axioms query in
+  (* validity = the negation is unsat. *)
+  let neg = smart_not query in
+  let extra_bodies = functional_bodies neg in
+  let result =
+    match Prover.check_sat ~axioms:(List.map snd axioms) ~extra_bodies neg with
+    | SmtUnsat -> true
+    | SmtSat -> false
+    | Unknown reason ->
+        record_nondecisive ~reason ~coerced_to:"invalid";
+        false
+  in
+  if not result then
+    Emit.emit_query (TypecheckerConfig.get_emit_backend ()) axioms query;
   result
 
 let simplify_sub_typectx ctx (rty1, rty2) =
@@ -74,8 +98,6 @@ let simplify_sub_typectx ctx (rty1, rty2) =
 
 let sub_cty ou rctx cty1 cty2 =
   let ctx_list, cty1, cty2 = simplify_sub_typectx rctx.rty_ctx (cty1, cty2) in
-  let cty1 = { cty1 with phi = fresh_name_prop cty1.phi } in
-  let cty2 = { cty2 with phi = fresh_name_prop cty2.phi } in
   let () =
     _log_auxtyping @@ fun _ ->
     Printf.printf "ctx_list: %s\n" (List.split_by_comma _get_x ctx_list)
@@ -150,7 +172,7 @@ let sub_cty ou rctx cty1 cty2 =
           _log_auxtyping @@ fun _ ->
           Printf.printf "let[@axiom] tmp = %s\n" (layout_prop__raw query)
         in
-        check_valid (Some rctx.task_name, query))
+        check_valid query)
   in
   let () = Statistic.stat_query_time (rctx.task_name, time) in
   (* let () = if not res then _die [%here] in *)
@@ -164,7 +186,6 @@ let lazy_emptiness_check = false
 let non_emptiness_cty rctx cty =
   if lazy_emptiness_check then true
   else
-    let cty = { cty with phi = fresh_name_prop cty.phi } in
     let overctx, underctx = build_wf_ctx (Typectx.ctx_to_list rctx.rty_ctx) in
     let underctx = underctx @ [ (default_v, mk_top_cty cty.nty) ] in
     let () =
@@ -188,6 +209,10 @@ let non_emptiness_cty rctx cty =
     let query =
       List.fold_right smart_dependent_exists (overctx @ underctx) cty.phi
     in
+    (* Folding independently-named context-entry phis with [cty.phi] can collide
+       bound-var names; freshen the assembled query for [Propencoding.to_z3]'s
+       unique-quantifiers invariant, as in [check_valid]. *)
+    let query = fresh_name_prop query in
     let () = Statistic.stat_query_formula (rctx.task_name, query) in
     let time, res =
       clock (fun () ->
@@ -199,13 +224,18 @@ let non_emptiness_cty rctx cty =
             _log_auxtyping @@ fun _ ->
             Printf.printf "let[@axiom] tmp = %s\n" (layout_prop__raw query)
           in
-          let axioms = Prover.select_axioms (Some rctx.task_name, query) in
-          Prover.check_sat ~axioms (Some rctx.task_name, query))
+          let axioms = Prover.select_axioms query in
+          let extra_bodies = functional_bodies query in
+          Prover.check_sat ~axioms:(List.map snd axioms) ~extra_bodies query)
     in
     let () = Statistic.stat_query_time (rctx.task_name, time) in
     let res =
-      match res with SmtUnsat -> false | SmtSat _ -> true | Timeout -> true
-      (* NOTE: we cannot decide if this control flow is unreachable, thus continue *)
+      match res with
+      | SmtUnsat -> false
+      | SmtSat -> true
+      | Unknown reason ->
+          record_nondecisive ~reason ~coerced_to:"inhabited";
+          true
     in
     (* let () = if List.length underctx > 1 then _die [%here] in *)
     (* let () = if not res then _die [%here] in *)
