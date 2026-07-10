@@ -52,26 +52,16 @@ let check_valid query =
     Printf.printf "check valid: %s\n" (layout_prop_ query)
   in
   let () = report_unclosed [%here] query in
-  (* Freshen bound-var names once, then share this one prop with both Z3 and the [Emit]
-     dump so they check the identical query. Only Z3 needs it — [Propencoding.to_z3] keys
-     quantifiers by name and needs them globally unique — but feeding the same prop to the
-     dump keeps the emitted Lean/Coq a faithful copy of what Z3 saw. *)
   let query = fresh_name_prop query in
   let axioms = Prover.select_axioms query in
-  (* validity = the negation is unsat. *)
   let neg = smart_not query in
   let extra_bodies = functional_bodies neg in
-  let result =
-    match Prover.check_sat ~axioms:(List.map snd axioms) ~extra_bodies neg with
-    | SmtUnsat -> true
-    | SmtSat -> false
-    | Unknown reason ->
-        record_nondecisive ~reason ~coerced_to:"invalid";
-        false
-  in
-  if not result then
-    Emit.emit_query (TypecheckerConfig.get_emit_backend ()) axioms query;
-  result
+  match Prover.check_sat ~axioms:(List.map snd axioms) ~extra_bodies neg with
+  | SmtUnsat -> true
+  | SmtSat -> false
+  | Unknown reason ->
+      record_nondecisive ~reason ~coerced_to:"invalid";
+      false
 
 let simplify_sub_typectx ctx (rty1, rty2) =
   let ctx = Typectx.ctx_to_list ctx in
@@ -172,7 +162,15 @@ let sub_cty ou rctx cty1 cty2 =
           _log_auxtyping @@ fun _ ->
           Printf.printf "let[@axiom] tmp = %s\n" (layout_prop__raw query)
         in
-        check_valid query)
+        let valid = check_valid query in
+        (* [sub_cty] runs on the synthesis enumeration path, where most checks
+           fail by design; gate the dump so it doesn't flood. *)
+        if not valid then
+          (_log_queries @@ fun _ ->
+           Emit.emit_query
+             (TypecheckerConfig.get_emit_backend ())
+             (Prover.select_axioms query) query);
+        valid)
   in
   let () = Statistic.stat_query_time (rctx.task_name, time) in
   (* let () = if not res then _die [%here] in *)
