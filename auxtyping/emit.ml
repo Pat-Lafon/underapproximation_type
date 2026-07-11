@@ -98,7 +98,9 @@ let emit_axiom_preamble p oc axioms =
 let query_dir =
   lazy
     (let dir =
-       Filename.concat (Filename.get_temp_dir_name ()) "cobb_subtyping_queries"
+       Filename.concat
+         (Filename.get_temp_dir_name ())
+         "coverage_subtyping_queries"
      in
      (try Sys.mkdir dir 0o755 with Sys_error _ when Sys.file_exists dir -> ());
      dir)

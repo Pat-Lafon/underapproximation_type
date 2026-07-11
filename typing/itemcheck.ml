@@ -159,8 +159,7 @@ let no_duplicate_names tasks =
   List.length names = List.length (List.slow_rm_dup String.equal names)
 
 (* Check each task independently, returning one [(name, passed)] per task in
-   source order ([true] = type-checked). Mirrors [Iteminfer.infer_one]'s per-task shape;
-   bctx is threaded through tasks but not returned. *)
+   source order ([true] = type-checked). bctx is threaded through tasks but not returned. *)
 let struc_check bctx items =
   let bctx, imp_m = mk_imp_m bctx items in
   let inv_m = mk_invs items in

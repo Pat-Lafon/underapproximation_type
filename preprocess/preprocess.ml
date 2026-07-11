@@ -177,9 +177,10 @@ let load_ctxs () =
         | ZUtilsConfig.Both
           when not
                  (List.exists
-                    (function MFuncImpRaw _ -> true | _ -> false)
+                    (function
+                      | MFuncImpRaw { if_rec = true; _ } -> true | _ -> false)
                     items) ->
-            failwith
+            _failatwith [%here]
               "zutils.smt_encoding=both requires at least one recursive \
                measure in the typing context"
         | ZUtilsConfig.Axiom | ZUtilsConfig.Both -> ()

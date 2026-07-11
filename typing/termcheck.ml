@@ -3,10 +3,11 @@ open Zutils
 open Common
 
 let term_type_check (bctx : built_in_ctx) (rctx : rctx) body rty =
-  Bidirect.term_type_check bctx rctx (body, rty)
+  try Bidirect.term_type_check bctx rctx (body, rty)
+  with RecArgCheckFailure -> None
 
 let term_type_infer (bctx : built_in_ctx) (rctx : rctx) body =
-  Bidirect.term_type_infer bctx rctx body
+  try Bidirect.term_type_infer bctx rctx body with RecArgCheckFailure -> None
 
 let value_type_infer (bctx : built_in_ctx) (rctx : rctx) v =
   Bidirect.value_type_infer bctx rctx v
@@ -27,6 +28,3 @@ let apply_rec_arg2 (arg : (Nt.t, string) typed) (arg' : (Nt.t, string) typed)
   let nty = arg1.ty in
   let phi = _mk_rec_arg_phi "rec_arg2" [ arg; arg'; arg1; default_v#:nty ] in
   { nty; phi }
-
-let term_type_infer_with_rec_check bctx rctx body =
-  try term_type_infer bctx rctx body with RecArgCheckFailure -> None
