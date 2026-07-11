@@ -131,7 +131,7 @@ let rec normalize_rty = function
 
 let%test_module "abd rty source round-trip" =
   (module struct
-    (* The renderers read the global zutils config; seed it as [rename_test] does. *)
+    (* The renderers read the global zutils config; seed it before round-tripping. *)
     let () = ZUtilsConfig.set ZUtilsConfig.default
     let eq = equal_rty (fun _ _ -> true)
 

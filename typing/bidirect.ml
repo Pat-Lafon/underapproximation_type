@@ -298,7 +298,8 @@ let type_check_group (bctx : built_in_ctx) =
               let rctx' = Rctx.add_preds rctx poly_preds in
               (* Rec-arg soundness: at the fix's own call site, apparg must
                  lie within the well-foundedness bound from _cur_rec_func_name.
-                 RecArgCheckFailure is caught at the enumeration boundary. *)
+                 RecArgCheckFailure collapses to [None] in Termcheck's entry
+                 points, so every caller sees "does not type-check". *)
               let () =
                 match (get_cur_rec_func_name (), appf.x) with
                 | Some (recname, argcty, _), VVar id

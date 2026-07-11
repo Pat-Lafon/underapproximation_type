@@ -1,10 +1,8 @@
 (library
- (name fast)
- (inline_tests
-  (deps
-   (glob_files_rec ../../data/**)
-   (file ../meta-config.json)))
- (libraries auxtest)
- (modules fast)
- (preprocess
-  (pps ppx_expect)))
+  (name fast)
+  (inline_tests
+    (deps (glob_files_rec ../../data/**)
+          (file ../meta-config.json)))
+  (libraries auxtest)
+  (modules fast)
+  (preprocess (pps ppx_expect)))

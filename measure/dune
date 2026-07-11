@@ -2,18 +2,7 @@
  (public_name CoverageType.measure)
  (name measure)
  (wrapped true)
- (libraries ast core zutils)
+ (libraries ast zutils)
  (modules measure)
  (preprocess
-  (pps
-   ppx_optcomp
-   ppx_compare
-   ppx_sexp_conv
-   ppx_inline_test
-   ppx_assert
-   ppx_deriving.show
-   ppx_deriving.eq
-   ppx_deriving.ord
-   ppx_here
-   ppx_inline_test))
- (inline_tests))
+  (pps ppx_here)))

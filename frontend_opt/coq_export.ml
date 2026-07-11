@@ -173,8 +173,9 @@ let render_measure_param_coq ~(base : string)
   in
   spf "Parameter %s : %s." base (String.concat " -> " arrows)
 
-(* coq_preamble.rs runs coqc on every benchmark, covering the arms they reach. These pin
-   what no benchmark reaches, so coqc never sees: the bool [==] to [Bool.eqb] / [!=] to
+(* The [export-axioms-coq] output is coqc-checked per benchmark, covering the arms they
+   reach. These pin what no benchmark reaches, so coqc never sees: the bool [==] to
+   [Bool.eqb] / [!=] to
    [negb] dispatch (reachable via a measure's [<>] or bool [=] — to_raw_term's
    [normalize_eq_op]), and the [Fixpoint] half of the [is_self_recursive] split. *)
 let%test_module "coq term and measure rendering" =

@@ -80,8 +80,7 @@ let item_check bctx inv_m imp_m (name, rty) =
       Fai name
 
 (* Check each task independently, returning one [(name, passed)] per task in
-   source order ([true] = type-checked). Mirrors [Iteminfer.infer_one]'s per-task shape;
-   bctx is threaded through tasks but not returned. *)
+   source order ([true] = type-checked). bctx is threaded through tasks but not returned. *)
 let struc_check bctx items =
   let bctx, imp_m = mk_imp_m bctx items in
   let inv_m = mk_invs items in

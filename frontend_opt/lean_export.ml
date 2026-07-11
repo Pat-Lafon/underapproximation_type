@@ -27,7 +27,7 @@ let leansetting =
     sym_forall = "∀ ";
     sym_exists = "∃ ";
     layout_typedid = (fun x -> spf "(%s : %s)" x.x (lean_layout_ty x.ty));
-    layout_mp = (function "==" -> "=" | "mod" -> "%" | x -> x);
+    layout_mp = (function "==" -> "=" | "!=" -> "≠" | "mod" -> "%" | x -> x);
   }
 
 let layout_prop_to_lean = layout_prop_ leansetting
@@ -35,7 +35,7 @@ let lean_ctor (cname : string) = String.capitalize_ascii cname
 
 let render_inductive (d : Dtencoding.datatype_decl) : string =
   spf
-    "inductive %s where\n%s\n  deriving DecidableEq, Repr, Plausible.Arbitrary"
+    "inductive %s where\n%s\n  deriving DecidableEq, Repr"
     d.dt_name
     (List.map
        (Export_helper.ctor_line ~layout_ty:lean_layout_ty ~ctor:lean_ctor)
