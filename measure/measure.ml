@@ -1,4 +1,5 @@
 open Zutils
+open Prop
 open Sugar
 open Ast
 
@@ -49,6 +50,22 @@ let register_items items : unit =
 
 let is_self_recursive (d : rec_def) : bool =
   List.exists (fun v -> String.equal v.x d.fname) (typed_fv_raw_term d.body)
+
+(* The measure's base value, read off the body so nothing is hardcoded ([Leaf -> 5]
+   yields 5): the integer its arm on the nullary constructor (the [Matchcase] with
+   no argument binders) returns. The non-[Base] cases name why there is none. *)
+type base_value = Base of int | No_nullary_arm | Non_literal_base
+
+let base_value (d : rec_def) : base_value =
+  match d.body.x with
+  | Match { match_cases; _ } -> (
+      match
+        List.find_opt (function Matchcase { args; _ } -> args = []) match_cases
+      with
+      | Some (Matchcase { exp; _ }) -> (
+          match exp.x with Const (I n) -> Base n | _ -> Non_literal_base)
+      | None -> No_nullary_arm)
+  | _ -> No_nullary_arm
 
 let all_defs () : rec_def list = List.rev_map snd !registry
 
