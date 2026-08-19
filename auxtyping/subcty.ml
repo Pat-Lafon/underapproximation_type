@@ -4,6 +4,9 @@ open Prop
 open ZUtilsConfig
 open Zdatatype
 
+let _log_auxtyping = _log "auxtyping"
+let _log_queries = _log "queries"
+let _log_debug = _log "debug"
 let layout_qt = function Nt.Fa -> "∀" | Nt.Ex -> "∃"
 
 let layout_qv { x = qt, x; ty } =

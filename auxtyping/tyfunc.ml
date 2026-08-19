@@ -3,7 +3,7 @@ open Zutils
 open Zdatatype
 
 let if_opt = false
-let _log = ZUtilsConfig._log_typing
+let _log = ZUtilsConfig._log "typing"
 
 let _simp_prop p =
   if if_opt then

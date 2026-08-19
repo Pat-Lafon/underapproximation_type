@@ -4,7 +4,7 @@ open Sugar
 open Typectx
 open Auxtyping
 
-let _log = ZUtilsConfig._log_typing
+let _log = ZUtilsConfig._log "typing"
 let _decreasing = "decreasing"
 
 exception RecArgCheckFailure

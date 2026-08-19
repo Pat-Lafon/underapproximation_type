@@ -3,7 +3,7 @@ open Zutils
 open Bidirect
 open Zdatatype
 
-let _log = ZUtilsConfig._log_result
+let _log = ZUtilsConfig._log "result"
 
 type type_result = Success of built_in_ctx | Fail
 
