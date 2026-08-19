@@ -115,5 +115,5 @@ let emit_query backend axioms query =
   Out_channel.with_open_text filename (fun oc ->
       emit_axiom_preamble p oc axioms;
       output_string oc (p.query_decl idx query);
-      ZUtilsConfig._log_queries (fun () ->
+      ZUtilsConfig._log "queries" (fun () ->
           Printf.eprintf "Emitted subtyping query to %s\n" filename))

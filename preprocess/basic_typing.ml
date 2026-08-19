@@ -6,7 +6,7 @@ open Zdatatype
 
 type t = Nt.t
 
-let _log = ZUtilsConfig._log_preprocess
+let _log = ZUtilsConfig._log "preprocess"
 
 let constraint_cty_type_check (ctx : t ctx) (bc : BC.bc) ({ phi; nty } : t cty)
     =

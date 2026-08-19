@@ -26,7 +26,7 @@ let builtin_rty_ctx =
   ]
 
 let _ctxs = ref None
-let _log = ZUtilsConfig._log_preprocess
+let _log = ZUtilsConfig._log "preprocess"
 
 (* Registers eligible ADTs into [Dtencoding.decl_registry] so they get a structured Z3 sort
    rather than an uninterpreted one. *)
@@ -181,7 +181,7 @@ let load_ctxs () =
                       | MFuncImpRaw { if_rec = true; _ } -> true | _ -> false)
                     items) ->
             _failatwith [%here]
-              "zutils.smt_encoding=both requires at least one recursive \
+              "zutils.smt_encoding [\"Both\"] requires at least one recursive \
                measure in the typing context"
         | ZUtilsConfig.Axiom | ZUtilsConfig.Both -> ()
       in
