@@ -26,12 +26,10 @@ let builtin_rty_ctx =
   ]
 
 let _ctxs = ref None
-let _log = ZUtilsConfig._log "preprocess"
-
-(* Registers eligible ADTs into [Dtencoding.decl_registry] so they get a structured Z3 sort
+(* Registers eligible ADTs into [Z3decls.decl_registry] so they get a structured Z3 sort
    rather than an uninterpreted one. *)
 let collect_dt_decls items =
-  let module D = Prop.Dtencoding in
+  let module D = Prop.Z3decls in
   let ctor_of_decl { constr_name; args } =
     match args with
     | CtorTuple [] ->
@@ -50,7 +48,7 @@ let collect_dt_decls items =
         if Nt.(is_uninterp (to_smtty (Ty_constructor (type_name, [])))) then
           let ctors = List.map ctor_of_decl decls in
           if List.exists Option.is_none ctors then (
-            _log (fun () ->
+            TypecheckerLog.preprocess (fun () ->
                 Printf.printf
                   "collect_dt_decls: skipping `%s` from datatype encoding \
                    (positional constructor; falls back to uninterpreted sort)\n"
@@ -77,11 +75,11 @@ let assert_monomorphic loc kind name = function
            kind name (String.concat ", " tvars))
 
 (* An encodable datatype's constructor/recognizer/accessor predicate names are fixed by
-   [Dtencoding], so their normal-type signatures are derived here rather than restated in each
+   [Z3decls], so their normal-type signatures are derived here rather than restated in each
    benchmark's [normal_typing.ml]. *)
-let derive_dt_method_preds (decls : Prop.Dtencoding.datatype_decl list) :
+let derive_dt_method_preds (decls : Prop.Z3decls.datatype_decl list) :
     Nt.t item list =
-  let module D = Prop.Dtencoding in
+  let module D = Prop.Z3decls in
   let val_decl name args ret =
     let ty = Nt.construct_arr_tp (args, ret) in
     assert_monomorphic [%here] "datatype predicate" name
@@ -215,6 +213,6 @@ let preprocess source_files =
   let _, code = struct_check (load_basic_ctx ()) items' in
   let code = Type_alias.item_inline (load_alias () @ alias) code in
   let () =
-    _log (fun _ -> Pp.printf "@{<bold>result:@}\n%s\n" (layout_structure code))
+    TypecheckerLog.preprocess (fun _ -> Pp.printf "@{<bold>result:@}\n%s\n" (layout_structure code))
   in
   normalize_structure code

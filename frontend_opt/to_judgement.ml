@@ -34,6 +34,6 @@ let pprint_subtyping ctx (r1, r2) () =
   Pp.printf "<:@{<teal>%s@}\n\n" (layout_rty r2)
 
 let pprint_nonempty ctx r () =
-  Pp.printf "@{<bold>None-mptyness Check:@}\n";
+  Pp.printf "@{<bold>Non-emptiness Check:@}\n";
   ctx ();
   Pp.printf "⊢@{<purple>%s@} is not empty\n\n" (layout_rty r)

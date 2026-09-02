@@ -20,16 +20,17 @@ where `let unique_list_gen ...` defines the generator impementation and `let[@as
 
 # Testing
 
-Currently, the testing suite is split into four groups:
+Currently, the testing suite is split into five groups:
   - `test/fast`, which are non-flaky tests that run relatively fast
   - `test/slow`, which are non-flaky tests that run a bit slow (>1s locally for me)
   - `test/flaky`, which are flaky tests which may or may not pass,
     depending on the exact local configuration
   - `test/monad`, which are the tests using some of the parametric and monadic features.
     Currently, they are not working, so they have been kept in a separate file for now.
+  - `test/emptiness`, which check whether a written specification is inhabited
 
 Running `dune test test/fast -w` in a separate test window while developing
-will run each test on any file change, which makes it easier to ensure that 
+will run each test on any file change, which makes it easier to ensure that
 each change preserves the prior behavior of the type checker. The CI runs
-`dune test test/fast test/slow`, which runs both the fast and slow test sets.
+`dune test test/fast test/slow test/emptiness`.
 By default, the testing framework only shows the tests which failed.

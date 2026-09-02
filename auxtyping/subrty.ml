@@ -2,10 +2,8 @@ open Language
 open Zutils
 open Subcty
 
-let _log = ZUtilsConfig._log "typing"
-
 let rec sub_rty rctx (rty1, rty2) =
-  ( _log @@ fun _ ->
+  ( TypecheckerLog.typing @@ fun _ ->
     pprint_subtyping
       (fun () ->
         Typectx.pprint_ctx layout_rty rctx.rty_ctx;
@@ -46,3 +44,14 @@ let non_emptiness_rty rctx rty =
   | RtyArr _ -> true
   | RtyPolyPred _ -> true
   | _ -> _failatwith [%here] "die"
+let rec non_emptiness_spec rctx = function
+  | RtyArr { arg; argrty; retty } ->
+      non_emptiness_spec
+        { rctx with rty_ctx = Typectx.add_to_right rctx.rty_ctx arg#:argrty }
+        retty
+  | rty ->
+      (TypecheckerLog.typing @@ fun _ ->
+       pprint_nonempty
+         (fun () -> Typectx.pprint_ctx layout_rty rctx.rty_ctx)
+         rty ());
+      non_emptiness_rty rctx rty

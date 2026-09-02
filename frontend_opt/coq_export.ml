@@ -3,41 +3,13 @@ open Prop
 open Sugar
 open Measure
 
-let rec coq_layout_ty = function
-  | Nt.Ty_constructor (name, _) -> (
-      match name with
-      | "bool" -> "bool"
-      | "int" -> "Z"
-      | "unit" -> "unit"
-      | _ -> name)
-  | Nt.Ty_tuple tys -> String.concat " * " (List.map coq_layout_ty tys)
-  | ty ->
-      _die_with [%here]
-        (spf "coq_layout_ty: unsupported type '%s'" (Nt.layout ty))
-
-(* [!=] maps to [<>]: Coq has no [!=] notation. *)
-let coqsetting =
-  {
-    sym_true = "True";
-    sym_false = "False";
-    sym_and = " /\\ ";
-    sym_or = " \\/ ";
-    sym_not = "~";
-    sym_implies = "->";
-    sym_iff = "<->";
-    sym_forall = "forall ";
-    sym_exists = "exists ";
-    layout_typedid = (fun x -> spf "(%s : %s)" x.x (coq_layout_ty x.ty));
-    layout_mp = (function "==" -> "=" | "!=" -> "<>" | x -> x);
-  }
-
 let layout_prop_to_coq = layout_prop_ coqsetting
 
 (* Constructor names arrive lowercased; the rendered [Inductive] and its [match] arms
    use the capitalized form ([Nil]/[Cons]). *)
 let coq_ctor (cname : string) = String.capitalize_ascii cname
 
-let render_inductive_coq (d : Dtencoding.datatype_decl) : string =
+let render_inductive_coq (d : Z3decls.datatype_decl) : string =
   spf "Inductive %s : Type :=\n%s." d.dt_name
     (List.map
        (Export_helper.ctor_line ~layout_ty:coq_layout_ty ~ctor:coq_ctor)
@@ -46,8 +18,8 @@ let render_inductive_coq (d : Dtencoding.datatype_decl) : string =
 
 (* The recognizer/accessor function names ([is_nil]/[tail]) are lowercase to match
    the relational predicate names the axioms reference. *)
-let render_match_def_coq (d : Dtencoding.datatype_decl) ~name ~ret
-    (arm : Dtencoding.ctor_spec -> string) : string =
+let render_match_def_coq (d : Z3decls.datatype_decl) ~name ~ret
+    (arm : Z3decls.ctor_spec -> string) : string =
   spf
     "Definition %s (x : %s) : %s :=\n\
     \  match x with\n\
@@ -58,8 +30,8 @@ let render_match_def_coq (d : Dtencoding.datatype_decl) ~name ~ret
     (List.map arm d.ctors |> String.concat "\n")
     name
 
-let render_recognizer_coq (d : Dtencoding.datatype_decl)
-    (target : Dtencoding.ctor_spec) : string =
+let render_recognizer_coq (d : Z3decls.datatype_decl)
+    (target : Z3decls.ctor_spec) : string =
   render_match_def_coq d
     ~name:(spf "is_%s" (String.lowercase_ascii target.cname))
     ~ret:"bool"
@@ -67,8 +39,8 @@ let render_recognizer_coq (d : Dtencoding.datatype_decl)
       let rhs = if c.cname = target.cname then "true" else "false" in
       spf "  | %s%s => %s" (coq_ctor c.cname) (Export_helper.wildcards c) rhs)
 
-let render_accessor_coq (d : Dtencoding.datatype_decl)
-    (f : Dtencoding.field_spec) : string =
+let render_accessor_coq (d : Z3decls.datatype_decl)
+    (f : Z3decls.field_spec) : string =
   render_match_def_coq d ~name:f.fname
     ~ret:(spf "option %s" (coq_layout_ty f.ftype))
     (fun c ->
@@ -82,7 +54,7 @@ let render_accessor_coq (d : Dtencoding.datatype_decl)
    against that result; Coq won't type it without this [T >-> option] coercion.
    [Arguments _ /.] makes [cbn] unfold the inserted [some_<dt> xs] back to
    [Some xs], so [prove_axiom]'s [injection] can strip the constructor. *)
-let render_option_coercion_coq (d : Dtencoding.datatype_decl) : string =
+let render_option_coercion_coq (d : Z3decls.datatype_decl) : string =
   spf
     "Definition some_%s (x : %s) : option %s := Some x.\n\
      Coercion some_%s : %s >-> option.\n\
@@ -90,7 +62,7 @@ let render_option_coercion_coq (d : Dtencoding.datatype_decl) : string =
     d.dt_name d.dt_name d.dt_name d.dt_name d.dt_name d.dt_name
 
 (* Reuses [Export_helper.accessor_fields] so both backends order accessors identically. *)
-let render_datatype_decl_coq (d : Dtencoding.datatype_decl) : string =
+let render_datatype_decl_coq (d : Z3decls.datatype_decl) : string =
   let recognizers = List.map (render_recognizer_coq d) d.ctors in
   let accessors =
     List.map (render_accessor_coq d) (Export_helper.accessor_fields d)
@@ -100,7 +72,7 @@ let render_datatype_decl_coq (d : Dtencoding.datatype_decl) : string =
     @ accessors)
 
 let render_datatype_decls_coq () : string =
-  Dtencoding.topo_sort_decls ()
+  Z3decls.registered_decls ()
   |> List.map render_datatype_decl_coq
   |> String.concat "\n\n"
 

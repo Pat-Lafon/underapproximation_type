@@ -114,7 +114,7 @@ let type_check_group (bctx : built_in_ctx) =
                 (spf "inductive invaraint of %s is missing" fixname.x)
           | Some rty ->
               let () =
-                _log @@ fun _ ->
+                TypecheckerLog.typing @@ fun _ ->
                 Pp.printf "@{<bold>inv:@} %s\n" (layout_rty rty)
               in
               value_type_check rctx v rty)

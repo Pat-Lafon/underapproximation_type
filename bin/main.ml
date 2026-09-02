@@ -18,17 +18,26 @@ let subtype_check source_file () =
   let code = Preprocess.preprocess [ source_file ] in
   let _, rty1 = get_rty_by_name code "rty1" in
   let _, rty2 = get_rty_by_name code "rty2" in
-  let ctx = Typectx.emp in
   let _ =
     pprint_subtyping
       (fun () -> Typectx.pprint_ctx layout_rty Typectx.emp)
       (rty1, rty2) ()
   in
   let _ = Preprocess.load_bctx () in
-  let () = Statistic.create_subtyping_stat () in
+  let () = Statistic.create_query_stat "subtyping" in
   let res =
     Auxtyping.sub_rty (Typing.Rctx.emp "subtyping" [] []) (rty1, rty2)
   in
+  Pp.printf "@{<bold>Result: %b@}\n" res;
+  Stdlib.exit (if res then 0 else 1)
+
+let nonempty_check source_file () =
+  let code = Preprocess.preprocess [ source_file ] in
+  let _, rty = get_rty_by_name code "rty" in
+  let _ = Preprocess.load_bctx () in
+  let () = Statistic.create_query_stat "nonempty" in
+  let rctx = Typing.Rctx.emp "nonempty" [] [] in
+  let res = Auxtyping.non_emptiness_spec rctx rty in
   Pp.printf "@{<bold>Result: %b@}\n" res;
   Stdlib.exit (if res then 0 else 1)
 
@@ -100,6 +109,7 @@ let commands =
     [
       one_param_file "print-source-code" print_source_code;
       one_param_file "subtype-check" subtype_check;
+      one_param_file "nonempty-check" nonempty_check;
       one_param_file "type-check" type_check;
       config_only "export-axioms-lean" export_axioms_lean;
       config_only "export-axioms-coq" export_axioms_coq;

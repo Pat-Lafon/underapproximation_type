@@ -3,6 +3,6 @@
  (name typechecker_config)
  (wrapped false)
  (libraries zutils yojson)
- (modules typecheckerConfig)
+ (modules typecheckerConfig typecheckerLog)
  (preprocess
   (pps ppx_deriving_yojson)))

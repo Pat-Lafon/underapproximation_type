@@ -98,8 +98,7 @@ let create_stat function_name (imp : (Nt.t, Nt.t term) typed) =
   | None -> Hashtbl.add _stat_tab function_name stat
   | Some _ -> _die [%here]
 
-let create_subtyping_stat () =
-  let function_name = "subtyping" in
+let create_query_stat function_name =
   let mp = 0 in
   let stat =
     {
