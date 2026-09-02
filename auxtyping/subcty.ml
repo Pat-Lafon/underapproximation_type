@@ -4,9 +4,6 @@ open Prop
 open ZUtilsConfig
 open Zdatatype
 
-let _log_auxtyping = _log "auxtyping"
-let _log_queries = _log "queries"
-let _log_debug = _log "debug"
 let layout_qt = function Nt.Fa -> "∀" | Nt.Ex -> "∃"
 
 let layout_qv { x = qt, x; ty } =
@@ -48,7 +45,7 @@ let record_nondecisive ~reason ~coerced_to =
 
 let check_valid query =
   let () =
-    _log_debug @@ fun _ ->
+    ZUtilsLog.queries @@ fun _ ->
     Printf.printf "check valid: %s\n" (layout_prop_ query)
   in
   let () = report_unclosed [%here] query in
@@ -158,13 +155,13 @@ let sub_cty ou rctx cty1 cty2 =
         in
         let () =
           TypecheckerLog.auxtyping @@ fun _ ->
-          Printf.printf "let[@valid] tmp = %s\n" (layout_prop_source query)
+          Printf.printf "let[@axiom] tmp = %s\n" (layout_prop__raw query)
         in
         let valid = check_valid query in
         (* [sub_cty] runs on the synthesis enumeration path, where most checks
            fail by design; gate the dump so it doesn't flood. *)
         if not valid then
-          (_log_queries @@ fun _ ->
+          (ZUtilsLog.queries @@ fun _ ->
            Emit.emit_query
              (TypecheckerConfig.get_emit_backend ())
              (Prover.select_axioms query) query);
@@ -216,7 +213,7 @@ let non_emptiness_cty rctx cty =
           in
           let () =
             TypecheckerLog.auxtyping @@ fun _ ->
-            Printf.printf "let[@sat] tmp = %s\n" (layout_prop_source query)
+            Printf.printf "let[@axiom] tmp = %s\n" (layout_prop__raw query)
           in
           let axioms = Prover.select_axioms query in
           let extra_bodies = functional_bodies query in

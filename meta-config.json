@@ -1,8 +1,9 @@
 {
     "zutils": {
-        "log_tags": ["auxtyping", "preprocess", "typing", "result", "never-use"]
+        "log_tags": []
     },
     "typechecker": {
+        "log_tags": ["auxtyping", "preprocess", "typing", "result"],
         "prim_path": {
             "data_type_decls": "data/predefined/data_type_decls.ml",
             "normal_typing": "data/predefined/normal_typing.ml",

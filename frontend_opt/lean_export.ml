@@ -33,7 +33,7 @@ let leansetting =
 let layout_prop_to_lean = layout_prop_ leansetting
 let lean_ctor (cname : string) = String.capitalize_ascii cname
 
-let render_inductive (d : Dtencoding.datatype_decl) : string =
+let render_inductive (d : Z3decls.datatype_decl) : string =
   spf
     "inductive %s where\n%s\n  deriving DecidableEq, Repr"
     d.dt_name
@@ -42,13 +42,13 @@ let render_inductive (d : Dtencoding.datatype_decl) : string =
        d.ctors
     |> String.concat "\n")
 
-let render_match_def (d : Dtencoding.datatype_decl) ~name ~ret
-    (arm : Dtencoding.ctor_spec -> string) : string =
+let render_match_def (d : Z3decls.datatype_decl) ~name ~ret
+    (arm : Z3decls.ctor_spec -> string) : string =
   spf "@[simp, grind =] def %s : %s → %s\n%s" name d.dt_name ret
     (List.map arm d.ctors |> String.concat "\n")
 
-let render_recognizer (d : Dtencoding.datatype_decl)
-    (target : Dtencoding.ctor_spec) : string =
+let render_recognizer (d : Z3decls.datatype_decl)
+    (target : Z3decls.ctor_spec) : string =
   render_match_def d
     ~name:(spf "is_%s" (String.lowercase_ascii target.cname))
     ~ret:"Bool"
@@ -56,7 +56,7 @@ let render_recognizer (d : Dtencoding.datatype_decl)
       let rhs = if c.cname = target.cname then "true" else "false" in
       spf "  | .%s%s => %s" (lean_ctor c.cname) (Export_helper.wildcards c) rhs)
 
-let render_accessor (d : Dtencoding.datatype_decl) (f : Dtencoding.field_spec) :
+let render_accessor (d : Z3decls.datatype_decl) (f : Z3decls.field_spec) :
     string =
   render_match_def d ~name:f.fname
     ~ret:(spf "Option %s" (lean_layout_ty f.ftype))
@@ -68,7 +68,7 @@ let render_accessor (d : Dtencoding.datatype_decl) (f : Dtencoding.field_spec) :
       else
         spf "  | .%s%s => none" (lean_ctor c.cname) (Export_helper.wildcards c))
 
-let render_datatype_decl (d : Dtencoding.datatype_decl) : string =
+let render_datatype_decl (d : Z3decls.datatype_decl) : string =
   let recognizers = List.map (render_recognizer d) d.ctors in
   let accessors =
     List.map (render_accessor d) (Export_helper.accessor_fields d)
@@ -76,27 +76,27 @@ let render_datatype_decl (d : Dtencoding.datatype_decl) : string =
   String.concat "\n\n" ((render_inductive d :: recognizers) @ accessors)
 
 let render_datatype_decls () : string =
-  Dtencoding.topo_sort_decls ()
+  Z3decls.registered_decls ()
   |> List.map render_datatype_decl
   |> String.concat "\n\n"
 
 (* These [@[simp, grind =]] defs, in [render_datatype_decl] emission order, are what
    [namespace Axioms] re-declares [local]. *)
 let datatype_def_names () : string list =
-  Dtencoding.topo_sort_decls ()
-  |> List.concat_map (fun (d : Dtencoding.datatype_decl) ->
+  Z3decls.registered_decls ()
+  |> List.concat_map (fun (d : Z3decls.datatype_decl) ->
          List.map
-           (fun (c : Dtencoding.ctor_spec) ->
+           (fun (c : Z3decls.ctor_spec) ->
              "is_" ^ String.lowercase_ascii c.cname)
            d.ctors
          @ List.map
-             (fun (f : Dtencoding.field_spec) -> f.fname)
+             (fun (f : Z3decls.field_spec) -> f.fname)
              (Export_helper.accessor_fields d))
 
 (* The inductive type names (topo order), targets of [attribute [local grind cases]]. *)
 let datatype_type_names () : string list =
-  Dtencoding.topo_sort_decls ()
-  |> List.map (fun (d : Dtencoding.datatype_decl) -> d.dt_name)
+  Z3decls.registered_decls ()
+  |> List.map (fun (d : Z3decls.datatype_decl) -> d.dt_name)
 
 open Ast
 

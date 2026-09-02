@@ -3,59 +3,18 @@ open Zutils
 open Bidirect
 open Zdatatype
 
-let _log = ZUtilsConfig._log "result"
-
-type type_result = Success of built_in_ctx | Fail
-
-type task_result =
-  | TypeCheckResult of string * type_result
-  | ValidResult of string * Nt.t prop * Prover.valid_result
-  | SatResult of string * Nt.t prop * Prover.smt_result
-
-let _type_check_info name rty =
+let _task_info name rty =
   TypecheckerLog.result @@ fun _ ->
   Pp.printf "@{<bold>Type Check %s:@}\n" name;
   Pp.printf "@{<bold>check against with:@} %s\n" (layout_rty rty)
 
-let _type_check_result_info name result =
+let _task_succ name =
   TypecheckerLog.result @@ fun _ ->
-  match result with
-  | Success _ ->
-      Pp.printf "@{<bold>@{<yellow>Task %s, type check succeeded@}@}\n" name
-  | Fail -> Pp.printf "@{<bold>@{<red>Task %s, type check failed@}@}\n" name
+  Pp.printf "@{<bold>@{<yellow>Task %s, type check succeeded@}@}\n" name
 
-let _valid_result_info name prop result =
+let _task_fail name =
   TypecheckerLog.result @@ fun _ ->
-  match result with
-  | Prover.SmtValid ->
-      Pp.printf "@{<bold>@{<yellow>Query %s (%s) is valid.@}@}\n" name
-        (layout_prop prop)
-  | SmtInvalid ->
-      Pp.printf "@{<bold>@{<red>Query %s (%s) is invalid.@}@}\n" name
-        (layout_prop prop)
-  | Unknown reason ->
-      let reason = Option.value ~default:"unknown" reason in
-      Pp.printf "@{<bold>@{<red>Query %s (%s) is unknown: %s.@}@}\n" name
-        (layout_prop prop) reason
-
-let _sat_result_info name prop result =
-  TypecheckerLog.result @@ fun _ ->
-  match result with
-  | Prover.SmtSat ->
-      Pp.printf "@{<bold>@{<yellow>Query %s (%s) is sat.@}@}\n" name
-        (layout_prop prop)
-  | SmtUnsat ->
-      Pp.printf "@{<bold>@{<red>Query %s (%s) is unsat.@}@}\n" name
-        (layout_prop prop)
-  | Unknown reason ->
-      let reason = Option.value ~default:"unknown" reason in
-      Pp.printf "@{<bold>@{<red>Query %s (%s) is unknown: %s.@}@}\n" name
-        (layout_prop prop) reason
-
-let _task_result_info = function
-  | TypeCheckResult (name, result) -> _type_check_result_info name result
-  | ValidResult (name, prop, res) -> _valid_result_info name prop res
-  | SatResult (name, prop, res) -> _sat_result_info name prop res
+  Pp.printf "@{<bold>@{<red>Task %s, type check failed@}@}\n" name
 
 let mk_imp_m bctx items =
   List.fold_left
@@ -179,8 +138,8 @@ let struc_check bctx items =
   let () =
     match List.filter (fun (_, ok) -> not ok) results with
     | [] ->
-        _log @@ fun _ -> Pp.printf "@{<bold>@{<yellow>All tasks succeeded@}@}\n"
+        TypecheckerLog.result @@ fun _ -> Pp.printf "@{<bold>@{<yellow>All tasks succeeded@}@}\n"
     | failed ->
-        _log @@ fun _ -> List.iter (fun (name, _) -> _task_fail name) failed
+        TypecheckerLog.result @@ fun _ -> List.iter (fun (name, _) -> _task_fail name) failed
   in
   results

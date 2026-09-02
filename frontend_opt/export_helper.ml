@@ -5,36 +5,36 @@ open Sugar
 (* Datatype-rendering helpers shared by the Lean and Coq export twins
    ([lean_export.ml] / [coq_export.ml]). *)
 
-let wildcards (c : Dtencoding.ctor_spec) =
+let wildcards (c : Z3decls.ctor_spec) =
   String.concat "" (List.map (fun _ -> " _") c.fields)
 
-let binder_of (f : Dtencoding.field_spec) = String.sub f.fname 0 1
+let binder_of (f : Z3decls.field_spec) = String.sub f.fname 0 1
 
-let ctor_has_field (f : Dtencoding.field_spec) (c : Dtencoding.ctor_spec) =
-  List.exists (fun (g : Dtencoding.field_spec) -> g.fname = f.fname) c.fields
+let ctor_has_field (f : Z3decls.field_spec) (c : Z3decls.ctor_spec) =
+  List.exists (fun (g : Z3decls.field_spec) -> g.fname = f.fname) c.fields
 
-let accessor_binders (f : Dtencoding.field_spec) (c : Dtencoding.ctor_spec) =
+let accessor_binders (f : Z3decls.field_spec) (c : Z3decls.ctor_spec) =
   List.map
-    (fun (g : Dtencoding.field_spec) ->
+    (fun (g : Z3decls.field_spec) ->
       if g.fname = f.fname then binder_of f else "_")
     c.fields
   |> String.concat " "
 
 (* One [Inductive]/[inductive] constructor line, e.g. [  | Cons (head : Z) (tail : ilist)];
    [layout_ty]/[ctor] supply the per-target type and constructor rendering. *)
-let ctor_line ~layout_ty ~ctor (c : Dtencoding.ctor_spec) =
+let ctor_line ~layout_ty ~ctor (c : Z3decls.ctor_spec) =
   let flds =
     List.map
-      (fun (f : Dtencoding.field_spec) ->
+      (fun (f : Z3decls.field_spec) ->
         spf " (%s : %s)" f.fname (layout_ty f.ftype))
       c.fields
     |> String.concat ""
   in
   spf "  | %s%s" (ctor c.cname) flds
 
-let accessor_fields (d : Dtencoding.datatype_decl) : Dtencoding.field_spec list
+let accessor_fields (d : Z3decls.datatype_decl) : Z3decls.field_spec list
     =
-  List.concat_map (fun (c : Dtencoding.ctor_spec) -> c.fields) d.ctors
+  List.concat_map (fun (c : Z3decls.ctor_spec) -> c.fields) d.ctors
 
 open Ast
 

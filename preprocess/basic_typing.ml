@@ -6,8 +6,6 @@ open Zdatatype
 
 type t = Nt.t
 
-let _log = ZUtilsConfig._log "preprocess"
-
 let constraint_cty_type_check (ctx : t ctx) (bc : BC.bc) ({ phi; nty } : t cty)
     =
   let ctx = add_to_right ctx default_v#:nty in
@@ -16,10 +14,7 @@ let constraint_cty_type_check (ctx : t ctx) (bc : BC.bc) ({ phi; nty } : t cty)
 
 let constraint_rty_type_check (ctx : t ctx) (bc : BC.bc) (rty : t rty) =
   let rec aux ctx bc rty =
-    let () =
-      TypecheckerLog.preprocess @@ fun _ ->
-      Printf.printf "rty: %s\n" (layout_rty rty)
-    in
+    let () = TypecheckerLog.preprocess @@ fun _ -> Printf.printf "rty: %s\n" (layout_rty rty) in
     match rty with
     | RtyBase { ou; cty } ->
         let bc, cty = constraint_cty_type_check ctx bc cty in
@@ -82,8 +77,7 @@ let rec constraint_term_type_infer (ctx : t ctx) (bc : BC.bc) (e : t raw_term) =
   | Var id ->
       let bc, id = constraint_id_type_check ctx bc id in
       let () =
-        TypecheckerLog.preprocess @@ fun _ ->
-        Printf.printf "id: %s : %s\n" id.x (Nt.layout id.ty)
+        TypecheckerLog.preprocess @@ fun _ -> Printf.printf "id: %s : %s\n" id.x (Nt.layout id.ty)
       in
       (bc, (Var id)#:id.ty)
   | Tuple es ->

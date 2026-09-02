@@ -5,33 +5,33 @@ open Sugar
 open Measure
 
 let dt_decl (dt_name : string) =
-  match Hashtbl.find_opt Prop.Dtencoding.decl_registry dt_name with
+  match Prop.Z3decls.find_decl dt_name with
   | Some d -> d
   | None -> _die_with [%here] (spf "no datatype %s in registry" dt_name)
 
 let func_of zenv dt_name f =
-  match Prop.Dtencoding.z3_data_type_func_lookup zenv dt_name f with
+  match Prop.Z3decls.z3_data_type_func_lookup zenv dt_name f with
   | Some fd -> fd
   | None -> _die_with [%here] (spf "datatype %s has no function %s" dt_name f)
 
-let resolve_cases dt_name (decl : Prop.Dtencoding.datatype_decl) cases =
+let resolve_cases dt_name (decl : Prop.Z3decls.datatype_decl) cases =
   let resolve (Matchcase { constructor; args; exp }) =
     let cname = String.lowercase_ascii constructor.x in
     match
       List.find_opt
-        (fun c -> String.equal c.Prop.Dtencoding.cname cname)
+        (fun c -> String.equal c.Prop.Z3decls.cname cname)
         decl.ctors
     with
     | None -> _die_with [%here] (spf "%s has no constructor %s" dt_name cname)
     | Some c ->
-        if List.length c.Prop.Dtencoding.fields <> List.length args then
+        if List.length c.Prop.Z3decls.fields <> List.length args then
           _die_with [%here] (spf "arity mismatch for constructor %s" cname);
         (c, args, exp)
   in
   let resolved = List.map resolve cases in
   let case_ctors =
     List.sort_uniq String.compare
-      (List.map (fun (c, _, _) -> c.Prop.Dtencoding.cname) resolved)
+      (List.map (fun (c, _, _) -> c.Prop.Z3decls.cname) resolved)
   in
   if List.length case_ctors <> List.length resolved then
     _die_with [%here] (spf "duplicate constructor in match on %s" dt_name);
@@ -41,7 +41,7 @@ let resolve_cases dt_name (decl : Prop.Dtencoding.datatype_decl) cases =
          dt_name (List.length case_ctors) (List.length decl.ctors));
   resolved
 
-let rec encode (zenv : Prop.Dtencoding.z3_env) env
+let rec encode (zenv : Prop.Z3decls.z3_env) env
     (t : (Nt.t, Nt.t raw_term) typed) : Z3.Expr.expr =
   let ctx = zenv.ctx in
   match t.x with
@@ -70,7 +70,7 @@ let rec encode (zenv : Prop.Dtencoding.z3_env) env
   | Match { matched; match_cases } -> encode_match zenv env matched match_cases
   | _ -> _die_with [%here] "unsupported raw_term form in rec-def body"
 
-and encode_op (zenv : Prop.Dtencoding.z3_env) env (op : (Nt.t, op) typed) args
+and encode_op (zenv : Prop.Z3decls.z3_env) env (op : (Nt.t, op) typed) args
     retty =
   let ctx = zenv.ctx in
   let a = List.map (encode zenv env) args in
@@ -93,11 +93,11 @@ and encode_op (zenv : Prop.Dtencoding.z3_env) env (op : (Nt.t, op) typed) args
       let dt_name = Nt.layout retty in
       Z3.FuncDecl.apply (func_of zenv dt_name (String.lowercase_ascii c)) a
 
-and encode_app (zenv : Prop.Dtencoding.z3_env) env
+and encode_app (zenv : Prop.Z3decls.z3_env) env
     (f : (Nt.t, Nt.t raw_term) typed) args =
   match f.x with
   | Var fn -> (
-      match Prop.Func_encoding.lookup zenv.rec_func_map fn.x with
+      match Prop.Z3decls.rec_func_lookup zenv fn.x with
       | Some fd -> Z3.FuncDecl.apply fd (List.map (encode zenv env) args)
       | None ->
           _die_with [%here]
@@ -105,7 +105,7 @@ and encode_app (zenv : Prop.Dtencoding.z3_env) env
   | _ ->
       _die_with [%here] "higher-order application unsupported in rec-def body"
 
-and encode_match (zenv : Prop.Dtencoding.z3_env) env
+and encode_match (zenv : Prop.Z3decls.z3_env) env
     (matched : (Nt.t, Nt.t raw_term) typed) cases =
   let ctx = zenv.ctx in
   let m = encode zenv env matched in
@@ -116,8 +116,8 @@ and encode_match (zenv : Prop.Dtencoding.z3_env) env
     let env =
       List.map2
         (fun field arg ->
-          (arg.x, Z3.FuncDecl.apply (dt_func field.Prop.Dtencoding.fname) [ m ]))
-        c.Prop.Dtencoding.fields args
+          (arg.x, Z3.FuncDecl.apply (dt_func field.Prop.Z3decls.fname) [ m ]))
+        c.Prop.Z3decls.fields args
       @ env
     in
     encode zenv env exp
@@ -128,21 +128,21 @@ and encode_match (zenv : Prop.Dtencoding.z3_env) env
     | [ rc ] -> encode_case rc
     | ((c, _, _) as rc) :: rest ->
         Z3.Boolean.mk_ite ctx
-          (Z3.FuncDecl.apply (dt_func ("is_" ^ c.Prop.Dtencoding.cname)) [ m ])
+          (Z3.FuncDecl.apply (dt_func ("is_" ^ c.Prop.Z3decls.cname)) [ m ])
           (encode_case rc) (build rest)
   in
   build resolved
 
 (* One forward pass suffices because [all_defs] is in source order: each callee's decl precedes
    its use. *)
-let register_all_for_ctx (zenv : Prop.Dtencoding.z3_env) : unit =
+let register_all_for_ctx (zenv : Prop.Z3decls.z3_env) : unit =
   let ctx = zenv.ctx in
   let bool_sort = Prop.Z3aux.tp_to_sort zenv Nt.bool_ty in
   (* [make_body] is deferred past [register_rec_func] so a self-call finds the fd in [rec_func_map];
      and since [mk_func_decl] can't attach a body, even the non-recursive wrapper uses [add_rec_def]. *)
   let define_rec name argsorts retsort argexprs make_body =
     let fd = Z3.FuncDecl.mk_rec_func_decl_s ctx name argsorts retsort in
-    Prop.Func_encoding.register_rec_func zenv.rec_func_map name fd;
+    Prop.Z3decls.register_rec_func zenv name fd;
     Z3.FuncDecl.add_rec_def ctx fd argexprs (make_body ());
     fd
   in
@@ -175,9 +175,9 @@ let register_all_for_ctx (zenv : Prop.Dtencoding.z3_env) : unit =
 let build_functional_query (prop : Nt.t prop) : string option =
   let func_ctx = Z3.mk_context [] in
   let zenv =
-    Prop.Dtencoding.register_all_for_ctx func_ctx Prop.Z3aux.tp_to_sort
+    Prop.Z3aux.mk_env func_ctx
   in
   register_all_for_ctx zenv;
   let query = Prop.Propencoding.to_z3 zenv prop in
   if Prop.Z3aux.has_uninterpreted_app query then None
-  else Some (Prop.Prover.serialize_expr zenv query)
+  else Some (Prop.Prover.serialize zenv [ query ])

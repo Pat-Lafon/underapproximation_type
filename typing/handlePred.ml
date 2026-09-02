@@ -15,8 +15,6 @@ open Zdatatype
 
 type solution = { args : (Nt.t, string) typed list; body : Nt.t prop }
 
-let _log = ZUtilsConfig._log "instantiateRty"
-
 let layout_solution (p, sol) =
   spf "%s(%s) := %s" p
     (List.split_by_comma _get_x sol.args)
@@ -176,8 +174,7 @@ let instantiate_poly_pred_rty_aux pds frty xrty =
   in
   let* pds, m = unification_rtys pds [ (xrty, argrty) ] in
   let () =
-    TypecheckerLog.instantiate_rty (fun () ->
-        Printf.printf "solution:\n%s\n" (layaout_solutions m))
+    TypecheckerLog.instantiate_rty (fun () -> Printf.printf "solution:\n%s\n" (layaout_solutions m))
   in
   let argrty = minstantiate_rty m argrty in
   (* let retty = *)
