@@ -39,8 +39,8 @@ let render_recognizer_coq (d : Z3decls.datatype_decl)
       let rhs = if c.cname = target.cname then "true" else "false" in
       spf "  | %s%s => %s" (coq_ctor c.cname) (Export_helper.wildcards c) rhs)
 
-let render_accessor_coq (d : Z3decls.datatype_decl)
-    (f : Z3decls.field_spec) : string =
+let render_accessor_coq (d : Z3decls.datatype_decl) (f : Z3decls.field_spec) :
+    string =
   render_match_def_coq d ~name:f.fname
     ~ret:(spf "option %s" (coq_layout_ty f.ftype))
     (fun c ->
