@@ -162,11 +162,12 @@ let sub_cty ou rctx cty1 cty2 =
         let valid = check_valid query in
         (* [sub_cty] runs on the synthesis enumeration path, where most checks
            fail by design; gate the dump so it doesn't flood. *)
-        if not valid then
-          (ZUtilsLog.queries @@ fun _ ->
+        (if not valid then
+           ZUtilsLog.queries @@ fun _ ->
            Emit.emit_query
              (TypecheckerConfig.get_emit_backend ())
-             (Prover.select_axioms query) query);
+             (Prover.select_axioms query)
+             query);
         valid)
   in
   let () = Statistic.stat_query_time (rctx.task_name, time) in

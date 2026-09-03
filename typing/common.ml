@@ -117,11 +117,13 @@ let _warinning_typing_error loc (str, rty) =
     (layout_rty rty)
 
 let pprint_typing_check_term rctx (e, ty) =
-  TypecheckerLog.typing @@ pprint_typing_check (pprint rctx) (layout_typed_term e, layout_rty ty)
+  TypecheckerLog.typing
+  @@ pprint_typing_check (pprint rctx) (layout_typed_term e, layout_rty ty)
 
 let pprint_typing_infer_term_before rctx e =
   if ZUtilsConfig.get_show_type_infer_pre_judgement () then
-    TypecheckerLog.typing @@ pprint_typing_infer (pprint rctx) (layout_typed_term e, "??")
+    TypecheckerLog.typing
+    @@ pprint_typing_infer (pprint rctx) (layout_typed_term e, "??")
   else ()
 
 let layout_rty_opt res =
@@ -132,10 +134,12 @@ let pprint_typing_infer_term_after rctx (e, ty) =
   @@ pprint_typing_infer (pprint rctx) (layout_typed_term e, layout_rty_opt ty)
 
 let pprint_typing_check_value rctx (e, ty) =
-  TypecheckerLog.typing @@ pprint_typing_check (pprint rctx) (layout_typed_value e, layout_rty ty)
+  TypecheckerLog.typing
+  @@ pprint_typing_check (pprint rctx) (layout_typed_value e, layout_rty ty)
 
 let pprint_typing_infer_value_before rctx e =
-  TypecheckerLog.typing @@ pprint_typing_infer (pprint rctx) (layout_typed_value e, "??")
+  TypecheckerLog.typing
+  @@ pprint_typing_infer (pprint rctx) (layout_typed_value e, "??")
 
 let pprint_typing_infer_value_after rctx (e, res) =
   TypecheckerLog.typing
@@ -147,8 +151,10 @@ let pprint_typing_subtyping rctx (rty1, rty2) =
   TypecheckerLog.typing @@ pprint_subtyping (pprint rctx) (rty1, rty2)
 
 let pprint_typing_infer_match_case rctx constr (e, rty) =
-  (TypecheckerLog.typing @@ fun _ -> Pp.printf "@{<bold>Infer from match case %s:@}\n" constr.x);
-  TypecheckerLog.typing @@ pprint_typing_infer (pprint rctx) (layout_typed_term e, layout_rty rty)
+  ( TypecheckerLog.typing @@ fun _ ->
+    Pp.printf "@{<bold>Infer from match case %s:@}\n" constr.x );
+  TypecheckerLog.typing
+  @@ pprint_typing_infer (pprint rctx) (layout_typed_term e, layout_rty rty)
 
 let rec lookup_ctxs ctxs id =
   match ctxs with

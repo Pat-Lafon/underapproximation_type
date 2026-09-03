@@ -163,8 +163,7 @@ let register_all_for_ctx (zenv : Prop.Z3decls.z3_env) : unit =
     in
     let res = Z3.Expr.mk_const_s ctx "res" retsort in
     ignore
-      (define_rec d.fname (argsorts @ [ retsort ]) bool_sort
-         (argexprs @ [ res ])
+      (define_rec d.fname (argsorts @ [ retsort ]) bool_sort (argexprs @ [ res ])
          (fun () ->
            Z3.Boolean.mk_eq ctx (Z3.FuncDecl.apply impl_fd argexprs) res))
   in
@@ -174,9 +173,7 @@ let register_all_for_ctx (zenv : Prop.Z3decls.z3_env) : unit =
    the prover's axiom encoding. [None] if the query has an uninterpreted app. *)
 let build_functional_query (prop : Nt.t prop) : string option =
   let func_ctx = Z3.mk_context [] in
-  let zenv =
-    Prop.Z3aux.mk_env func_ctx
-  in
+  let zenv = Prop.Z3aux.mk_env func_ctx in
   register_all_for_ctx zenv;
   let query = Prop.Propencoding.to_z3 zenv prop in
   if Prop.Z3aux.has_uninterpreted_app query then None

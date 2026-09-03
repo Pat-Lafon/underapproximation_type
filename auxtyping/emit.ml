@@ -18,7 +18,8 @@ let lean_section axioms =
   in
   let axioms_namespace =
     Printf.sprintf "namespace Axioms\n%s\n\n%send Axioms"
-      (render_axioms_scaffolding ()) proofs
+      (render_axioms_scaffolding ())
+      proofs
   in
   String.concat "\n\n"
     [ render_datatype_decls (); render_all_lean (); axioms_namespace ]

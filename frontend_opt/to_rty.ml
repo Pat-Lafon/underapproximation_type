@@ -77,7 +77,7 @@ let rec rty_of_expr expr =
 
 let rty_of_expr expr =
   let rty = rty_of_expr expr in
-  check_wf_rty rty;
+  check_syntactically_wf_rty rty;
   rty
 
 (* Inverse of [rty_of_expr]: the re-parseable source form (versus [layout_rty]'s

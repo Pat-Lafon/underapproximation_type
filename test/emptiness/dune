@@ -1,9 +1,11 @@
 (library
-  (name emptiness)
-  (inline_tests
-    (deps (glob_files_rec ../../data/predefined/**)
-          (glob_files_rec ../data/emptiness/**)
-          (file ../meta-config.json)))
-  (libraries auxtest)
-  (modules emptiness)
-  (preprocess (pps ppx_expect)))
+ (name emptiness)
+ (inline_tests
+  (deps
+   (glob_files_rec ../../data/predefined/**)
+   (glob_files_rec ../data/emptiness/**)
+   (file ../meta-config.json)))
+ (libraries auxtest)
+ (modules emptiness)
+ (preprocess
+  (pps ppx_expect)))

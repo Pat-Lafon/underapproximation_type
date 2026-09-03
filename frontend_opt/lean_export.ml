@@ -34,9 +34,7 @@ let layout_prop_to_lean = layout_prop_ leansetting
 let lean_ctor (cname : string) = String.capitalize_ascii cname
 
 let render_inductive (d : Z3decls.datatype_decl) : string =
-  spf
-    "inductive %s where\n%s\n  deriving DecidableEq, Repr"
-    d.dt_name
+  spf "inductive %s where\n%s\n  deriving DecidableEq, Repr" d.dt_name
     (List.map
        (Export_helper.ctor_line ~layout_ty:lean_layout_ty ~ctor:lean_ctor)
        d.ctors
@@ -47,8 +45,8 @@ let render_match_def (d : Z3decls.datatype_decl) ~name ~ret
   spf "@[simp, grind =] def %s : %s → %s\n%s" name d.dt_name ret
     (List.map arm d.ctors |> String.concat "\n")
 
-let render_recognizer (d : Z3decls.datatype_decl)
-    (target : Z3decls.ctor_spec) : string =
+let render_recognizer (d : Z3decls.datatype_decl) (target : Z3decls.ctor_spec) :
+    string =
   render_match_def d
     ~name:(spf "is_%s" (String.lowercase_ascii target.cname))
     ~ret:"Bool"

@@ -98,8 +98,10 @@ let struc_check bctx items =
   let () =
     match List.filter (fun (_, ok) -> not ok) results with
     | [] ->
-        TypecheckerLog.result @@ fun _ -> Pp.printf "@{<bold>@{<yellow>All tasks succeeded@}@}\n"
+        TypecheckerLog.result @@ fun _ ->
+        Pp.printf "@{<bold>@{<yellow>All tasks succeeded@}@}\n"
     | failed ->
-        TypecheckerLog.result @@ fun _ -> List.iter (fun (name, _) -> _task_fail name) failed
+        TypecheckerLog.result @@ fun _ ->
+        List.iter (fun (name, _) -> _task_fail name) failed
   in
   results

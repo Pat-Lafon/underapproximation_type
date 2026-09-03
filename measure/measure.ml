@@ -60,7 +60,9 @@ let base_value (d : rec_def) : base_value =
   match d.body.x with
   | Match { match_cases; _ } -> (
       match
-        List.find_opt (function Matchcase { args; _ } -> args = []) match_cases
+        List.find_opt
+          (function Matchcase { args; _ } -> args = [])
+          match_cases
       with
       | Some (Matchcase { exp; _ }) -> (
           match exp.x with Const (I n) -> Base n | _ -> Non_literal_base)

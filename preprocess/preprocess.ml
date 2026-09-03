@@ -26,6 +26,7 @@ let builtin_rty_ctx =
   ]
 
 let _ctxs = ref None
+
 (* Registers eligible ADTs into [Z3decls.decl_registry] so they get a structured Z3 sort
    rather than an uninterpreted one. *)
 let collect_dt_decls items =
@@ -213,6 +214,7 @@ let preprocess source_files =
   let _, code = struct_check (load_basic_ctx ()) items' in
   let code = Type_alias.item_inline (load_alias () @ alias) code in
   let () =
-    TypecheckerLog.preprocess (fun _ -> Pp.printf "@{<bold>result:@}\n%s\n" (layout_structure code))
+    TypecheckerLog.preprocess (fun _ ->
+        Pp.printf "@{<bold>result:@}\n%s\n" (layout_structure code))
   in
   normalize_structure code

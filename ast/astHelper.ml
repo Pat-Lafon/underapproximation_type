@@ -90,7 +90,7 @@ let is_free_rty x rty = List.exists (String.equal x) @@ fv_rty_id rty
 let is_close_rty dom rty =
   List.for_all (fun x -> List.exists (String.equal x) dom) @@ fv_rty_id rty
 
-let check_wf_rty (tau : 't rty) =
+let check_syntactically_wf_rty (tau : 't rty) =
   let rec aux tau =
     match tau with
     | RtyBase _ -> ()
@@ -99,7 +99,7 @@ let check_wf_rty (tau : 't rty) =
         | RtyBase { ou = Over; _ } -> ()
         | _ ->
             if is_free_rty arg retty then
-              _die_with [%here] "Rty is not well-fromed")
+              _die_with [%here] "Rty is not well-formed")
     | RtyPolyType { rty; _ } -> aux rty
     | RtyPolyPred { rty; _ } -> aux rty
   in

@@ -32,8 +32,7 @@ let ctor_line ~layout_ty ~ctor (c : Z3decls.ctor_spec) =
   in
   spf "  | %s%s" (ctor c.cname) flds
 
-let accessor_fields (d : Z3decls.datatype_decl) : Z3decls.field_spec list
-    =
+let accessor_fields (d : Z3decls.datatype_decl) : Z3decls.field_spec list =
   List.concat_map (fun (c : Z3decls.ctor_spec) -> c.fields) d.ctors
 
 open Ast
