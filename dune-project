@@ -10,7 +10,8 @@
 (pin
  (package
   (name zutils))
- (url "git+https://github.com/OCamlRefinementType/zutils.git"))
+ (url
+  "git+https://github.com/OCamlRefinementType/zutils.git#837403579ee7f071beb0ee8f7cd39d75f08fe0e9"))
 
 (authors "Author Name")
 
