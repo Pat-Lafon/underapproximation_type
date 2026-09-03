@@ -107,12 +107,12 @@ let derive_dt_method_preds (decls : Prop.Z3decls.datatype_decl list) :
     decls
 
 let resolve_files (prim_path : TypecheckerConfig.prim_path) : string list =
-  let rest =
-    [ prim_path.normal_typing; prim_path.coverage_typing; prim_path.axioms ]
-  in
-  (* The datatype-bearing file loads first so [normal_typing]/[coverage_typing] references to
-     its types resolve. *)
-  prim_path.data_type_decls :: rest
+  [
+    prim_path.data_type_decls;
+    prim_path.normal_typing;
+    prim_path.coverage_typing;
+    prim_path.axioms;
+  ]
 
 let relational_of_functional (ty : Nt.t) : Nt.t =
   let args, ret = Nt.destruct_arr_tp ty in
