@@ -106,10 +106,6 @@ let derive_dt_method_preds (decls : Prop.Z3decls.datatype_decl list) :
         d.ctors)
     decls
 
-(* Concatenated into one item list, so these are names for a benchmark to point at
-   rather than roles anything downstream reads. [data_type_decls] is the one a
-   benchmark adds: its own datatypes and measures, which the predefined set has no
-   place for, hence the option. *)
 let resolve_files (prim_path : TypecheckerConfig.prim_path) : string list =
   Option.to_list prim_path.data_type_decls
   @ [ prim_path.normal_typing; prim_path.coverage_typing; prim_path.axioms ]
