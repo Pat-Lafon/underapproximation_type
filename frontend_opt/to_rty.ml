@@ -132,7 +132,9 @@ let rec normalize_rty = function
 let%test_module "abd rty source round-trip" =
   (module struct
     (* The renderers read the global zutils config; seed it before round-tripping. *)
-    let () = ZUtilsConfig.set ZUtilsConfig.default
+    let () =
+      ZUtilsConfig.set (Result.get_ok (ZUtilsConfig.of_yojson (`Assoc [])))
+
     let eq = equal_rty (fun _ _ -> true)
 
     (* rty_to_expr then rty_of_expr recovers the same coverage type, so a
