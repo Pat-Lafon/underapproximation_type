@@ -1,5 +1,5 @@
 type prim_path = {
-  data_type_decls : string;
+  data_type_decls : string option; [@default None]
   normal_typing : string;
   coverage_typing : string;
   axioms : string;
