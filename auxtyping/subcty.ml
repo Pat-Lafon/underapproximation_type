@@ -53,7 +53,7 @@ let check_valid query =
   let axioms = Prover.select_axioms query in
   let neg = smart_not query in
   let extra_bodies = functional_bodies neg in
-  match Prover.check_sat ~axioms:(List.map snd axioms) ~extra_bodies neg with
+  match Prover.check_sat ~axioms ~extra_bodies neg with
   | SmtUnsat -> true
   | SmtSat -> false
   | Unknown reason ->
@@ -222,7 +222,7 @@ let non_emptiness_cty rctx cty =
           in
           let axioms = Prover.select_axioms query in
           let extra_bodies = functional_bodies query in
-          Prover.check_sat ~axioms:(List.map snd axioms) ~extra_bodies query)
+          Prover.check_sat ~axioms ~extra_bodies query)
     in
     let () = Statistic.stat_query_time (rctx.task_name, time) in
     let res =
