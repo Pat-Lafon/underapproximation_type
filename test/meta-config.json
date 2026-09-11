@@ -9,7 +9,7 @@
         "prim_path": {
             "normal_typing": "data/predefined/normal_typing.ml",
             "coverage_typing": "data/predefined/coverage_typing.ml",
-            "axioms": "data/predefined/wf_decreasing_axioms.ml"
+            "axioms": "data/predefined/axioms.ml"
         }
     }
 }
