@@ -3,8 +3,6 @@ open Prop
 open Sugar
 open Measure
 
-let layout_prop_to_coq = layout_prop_ coqsetting
-
 (* Constructor names arrive lowercased; the rendered [Inductive] and its [match] arms
    use the capitalized form ([Nil]/[Cons]). *)
 let coq_ctor (cname : string) = String.capitalize_ascii cname
