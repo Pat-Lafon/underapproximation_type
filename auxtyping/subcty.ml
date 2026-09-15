@@ -52,8 +52,9 @@ let check_valid query =
   let query = fresh_name_prop query in
   let axioms = Prover.select_axioms query in
   let neg = smart_not query in
-  let extra_bodies = functional_bodies neg in
-  match Prover.check_sat ~axioms ~extra_bodies neg with
+  match
+    Prover.check_sat ~axioms ~functional_bodies:(functional_bodies neg) neg
+  with
   | SmtUnsat -> true
   | SmtSat -> false
   | Unknown reason ->
@@ -157,7 +158,7 @@ let sub_cty ou rctx cty1 cty2 =
         in
         let () =
           TypecheckerLog.auxtyping @@ fun _ ->
-          Printf.printf "let[@axiom] tmp = %s\n" (layout_prop__raw query)
+          Printf.printf "let[@axiom] tmp = %s\n" (layout_prop_source query)
         in
         let valid = check_valid query in
         (* [sub_cty] runs on the synthesis enumeration path, where most checks
@@ -218,11 +219,11 @@ let non_emptiness_cty rctx cty =
           in
           let () =
             TypecheckerLog.auxtyping @@ fun _ ->
-            Printf.printf "let[@axiom] tmp = %s\n" (layout_prop__raw query)
+            Printf.printf "let[@axiom] tmp = %s\n" (layout_prop_source query)
           in
           let axioms = Prover.select_axioms query in
-          let extra_bodies = functional_bodies query in
-          Prover.check_sat ~axioms ~extra_bodies query)
+          Prover.check_sat ~axioms ~functional_bodies:(functional_bodies query)
+            query)
     in
     let () = Statistic.stat_query_time (rctx.task_name, time) in
     let res =

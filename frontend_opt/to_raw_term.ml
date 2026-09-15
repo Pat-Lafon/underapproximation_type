@@ -125,11 +125,9 @@ let rec typed_raw_term_of_pattern pattern =
   | Ppat_tuple ps ->
       (Tuple (List.map typed_raw_term_of_pattern ps))#:Nt.Ty_unknown
   | Ppat_record (fields, _) ->
-      (* Drop labels: these are inline-record constructor args, positional in
-         declaration order, which the enclosing Ppat_construct de_tuple_terms
-         back into the constructor's argument list. *)
-      (Tuple (List.map (fun (_, p) -> typed_raw_term_of_pattern p) fields))#:Nt
-                                                                             .Ty_unknown
+      (* Ppat_construct de-tuples these positionally; labels carry nothing. *)
+      let ps = List.map snd fields in
+      (Tuple (List.map typed_raw_term_of_pattern ps))#:Nt.Ty_unknown
   | Ppat_var ident -> (Var ident.txt#:Nt.Ty_unknown)#:Nt.Ty_unknown
   | Ppat_constraint (ident, tp) ->
       let term = typed_raw_term_of_pattern ident in
@@ -165,8 +163,7 @@ let typed_id_of_pattern pattern =
 (* let monadic_operator = [ _bind; _fmap; _return ] *)
 (* let monadic_operator = [] *)
 
-(* program.ml measures use OCaml structural [=]/[<>]; Cobb's prop language spells value
-   equality [==]/[!=] (ast.ml builtin_primop). Map at the measure operator head. *)
+(* Only [==]/[!=] are builtin; an unnormalized [=]/[<>] head misses lookup. *)
 let normalize_eq_op = function "=" -> "==" | "<>" -> "!=" | op -> op
 
 let typed_raw_term_of_expr expr =
@@ -215,15 +212,11 @@ let typed_raw_term_of_expr expr =
     | Pexp_apply (func, args) ->
         let args = List.map (fun x -> aux @@ snd x) args in
         let func = aux func in
-        (* A builtin-operator head ([&&], [==], [+]) encodes as [AppOp PrimOp], not a
-           free-variable [App] — rec-def measure bodies apply such operators. *)
-        let res =
-          match func.x with
-          | Var f when is_builtin_op (normalize_eq_op f.x) ->
-              AppOp ((PrimOp (normalize_eq_op f.x))#:f.ty, args)
-          | _ -> App (func, args)
-        in
-        res#:Nt.Ty_unknown
+        (* Measure bodies apply builtin operators, not free variables. *)
+        (match func.x with
+        | Var f when is_builtin_op (normalize_eq_op f.x) ->
+            AppOp ((PrimOp (normalize_eq_op f.x))#:f.ty, args)
+        | _ -> App (func, args))#:Nt.Ty_unknown
     | Pexp_ifthenelse (e1, e2, Some e3) ->
         (Ifte (aux e1, aux e2, aux e3))#:Nt.Ty_unknown
     | Pexp_ifthenelse (e1, e2, None) ->

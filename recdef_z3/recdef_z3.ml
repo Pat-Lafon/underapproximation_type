@@ -9,10 +9,10 @@ let dt_decl (dt_name : string) =
   | Some d -> d
   | None -> _die_with [%here] (spf "no datatype %s in registry" dt_name)
 
-let func_of zenv dt_name f =
-  match Prop.Z3decls.z3_data_type_func_lookup zenv dt_name f with
+let func_of zenv f =
+  match Prop.Z3decls.func_lookup zenv f with
   | Some fd -> fd
-  | None -> _die_with [%here] (spf "datatype %s has no function %s" dt_name f)
+  | None -> _die_with [%here] (spf "no function %s in the env" f)
 
 let resolve_cases dt_name (decl : Prop.Z3decls.datatype_decl) cases =
   let resolve (Matchcase { constructor; args; exp }) =
@@ -65,13 +65,12 @@ let rec encode (zenv : Prop.Z3decls.z3_env) env
   | Let _ ->
       _die_with [%here]
         "only non-recursive single-binding let supported in rec-def body"
-  | AppOp (op, args) -> encode_op zenv env op args t.ty
+  | AppOp (op, args) -> encode_op zenv env op args
   | App (f, args) -> encode_app zenv env f args
   | Match { matched; match_cases } -> encode_match zenv env matched match_cases
   | _ -> _die_with [%here] "unsupported raw_term form in rec-def body"
 
-and encode_op (zenv : Prop.Z3decls.z3_env) env (op : (Nt.t, op) typed) args
-    retty =
+and encode_op (zenv : Prop.Z3decls.z3_env) env (op : (Nt.t, op) typed) args =
   let ctx = zenv.ctx in
   let a = List.map (encode zenv env) args in
   match (op.x, a) with
@@ -90,14 +89,13 @@ and encode_op (zenv : Prop.Z3decls.z3_env) env (op : (Nt.t, op) typed) args
   | PrimOp "mod", [ x; y ] -> Z3.Arithmetic.Integer.mk_mod ctx x y
   | PrimOp p, _ -> _die_with [%here] (spf "unsupported primop %s" p)
   | DtConstructor c, _ ->
-      let dt_name = Nt.layout retty in
-      Z3.FuncDecl.apply (func_of zenv dt_name (String.lowercase_ascii c)) a
+      Z3.FuncDecl.apply (func_of zenv (String.lowercase_ascii c)) a
 
 and encode_app (zenv : Prop.Z3decls.z3_env) env
     (f : (Nt.t, Nt.t raw_term) typed) args =
   match f.x with
   | Var fn -> (
-      match Prop.Z3decls.rec_func_lookup zenv fn.x with
+      match Prop.Z3decls.func_lookup zenv fn.x with
       | Some fd -> Z3.FuncDecl.apply fd (List.map (encode zenv env) args)
       | None ->
           _die_with [%here]
@@ -110,7 +108,7 @@ and encode_match (zenv : Prop.Z3decls.z3_env) env
   let ctx = zenv.ctx in
   let m = encode zenv env matched in
   let dt_name = Nt.layout matched.ty in
-  let dt_func f = func_of zenv dt_name f in
+  let dt_func f = func_of zenv f in
   let resolved = resolve_cases dt_name (dt_decl dt_name) cases in
   let encode_case (c, args, exp) =
     let env =
@@ -138,11 +136,11 @@ and encode_match (zenv : Prop.Z3decls.z3_env) env
 let register_all_for_ctx (zenv : Prop.Z3decls.z3_env) : unit =
   let ctx = zenv.ctx in
   let bool_sort = Prop.Z3aux.tp_to_sort zenv Nt.bool_ty in
-  (* [make_body] is deferred past [register_rec_func] so a self-call finds the fd in [rec_func_map];
+  (* [make_body] is deferred past [register_func] so a self-call finds the fd in the env;
      and since [mk_func_decl] can't attach a body, even the non-recursive wrapper uses [add_rec_def]. *)
   let define_rec name argsorts retsort argexprs make_body =
     let fd = Z3.FuncDecl.mk_rec_func_decl_s ctx name argsorts retsort in
-    Prop.Z3decls.register_rec_func zenv name fd;
+    Prop.Z3decls.register_func zenv name fd;
     Z3.FuncDecl.add_rec_def ctx fd argexprs (make_body ());
     fd
   in
