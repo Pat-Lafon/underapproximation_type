@@ -34,12 +34,9 @@ let get_ou expr =
   | _ -> Under
 
 let mk_ou_attr ou =
-  let txt = match ou with Over -> "over" | Under -> "under" in
-  {
-    attr_name = Location.mknoloc txt;
-    attr_payload = PStr [];
-    attr_loc = Location.none;
-  }
+  Ast_helper.Attr.mk
+    (Location.mknoloc (match ou with Over -> "over" | Under -> "under"))
+    (PStr [])
 
 let base_type_name = Nt._constructor_ty_0 "baseType"
 let _monad = "M"
@@ -80,8 +77,7 @@ let rty_of_expr expr =
   check_syntactically_wf_rty rty;
   rty
 
-(* Inverse of [rty_of_expr]: the re-parseable source form (versus [layout_rty]'s
-   [\[v:ty | phi\]] display form) that a committed [.abd] file is read back from. *)
+(* Inverse of [rty_of_expr]; [layout_rty] renders the display form. *)
 let rec rty_to_expr = function
   | RtyBase { ou; cty } ->
       let e = cty_to_expr cty in
@@ -106,29 +102,6 @@ let rec rty_to_expr = function
 let layout_rty_source rty = string_of_expression (rty_to_expr rty)
 let rty_of_source str = rty_of_expr (parse_expression str)
 
-(* [prop_to_expr] renders n-ary [And]/[Or] as binary OCaml [&&]/[||] and drops
-   singleton [And \[p\]], so a parsed-back prop is flattened where the inferred
-   one may nest; [smart_and]/[smart_or] put both into the same flat form so
-   [equal_rty] compares a round-tripped [.abd] against fresh abduction. *)
-let rec normalize_rty = function
-  | RtyBase { ou; cty = { nty; phi } } ->
-      let rec flatten = function
-        | Lit _ as p -> p
-        | Implies (a, b) -> Implies (flatten a, flatten b)
-        | Ite (a, b, c) -> Ite (flatten a, flatten b, flatten c)
-        | Not p -> Not (flatten p)
-        | And es -> smart_and (List.map flatten es)
-        | Or es -> smart_or (List.map flatten es)
-        | Iff (a, b) -> Iff (flatten a, flatten b)
-        | Forall { qv; body } -> Forall { qv; body = flatten body }
-        | Exists { qv; body } -> Exists { qv; body = flatten body }
-      in
-      RtyBase { ou; cty = { nty; phi = flatten phi } }
-  | RtyArr { argrty; arg; retty } ->
-      RtyArr { argrty = normalize_rty argrty; arg; retty = normalize_rty retty }
-  | RtyPolyType { pt; rty } -> RtyPolyType { pt; rty = normalize_rty rty }
-  | RtyPolyPred { pred; rty } -> RtyPolyPred { pred; rty = normalize_rty rty }
-
 let%test_module "abd rty source round-trip" =
   (module struct
     (* The renderers read the global zutils config; seed it before round-tripping. *)
@@ -137,19 +110,19 @@ let%test_module "abd rty source round-trip" =
 
     let eq = equal_rty (fun _ _ -> true)
 
-    (* rty_to_expr then rty_of_expr recovers the same coverage type, so a
-       committed [.abd] read back by [check_or_write_abduction_file] matches. *)
+    (* Parsing a rendered prop reshapes it — n-ary [And]/[Or] come back binary —
+       so [equal_rty] only holds between two types both put through this. *)
+    let normalize rty = rty_of_source (layout_rty_source rty)
+
     let%test "existential base coverage type round-trips" =
       let src =
         "(((is_nil v) && (fun (((n)[@exists]) : int) -> (len v n) && (n <= \
          s))) : [%v : ilist]) [@under]"
       in
       let r = rty_of_source src in
-      eq (normalize_rty r) (normalize_rty (rty_of_source (layout_rty_source r)))
+      eq r (rty_of_source (layout_rty_source r))
 
-    (* [normalize_rty] must erase the nesting/singleton difference between an
-       inferred n-ary [And] and the binary [And] a round-trip produces. *)
-    let%test "nested and singleton And normalize to the flat form" =
+    let%test "nested and singleton And normalize to one form" =
       let base phi =
         RtyBase
           { ou = Under; cty = { nty = Nt.Ty_constructor ("ilist", []); phi } }
@@ -157,9 +130,9 @@ let%test_module "abd rty source round-trip" =
       let pred name = Lit (AAppOp (name#:Nt.bool_ty, []))#:Nt.bool_ty in
       let a, b, c = (pred "a", pred "b", pred "c") in
       eq
-        (normalize_rty (base (And [ a; And [ b; c ] ])))
-        (normalize_rty (base (And [ a; b; c ])))
+        (normalize (base (And [ a; And [ b; c ] ])))
+        (normalize (base (And [ a; b; c ])))
       && eq
-           (normalize_rty (base (And [ And [ a ]; b ])))
-           (normalize_rty (base (And [ a; b ])))
+           (normalize (base (And [ And [ a ]; b ])))
+           (normalize (base (And [ a; b ])))
   end)

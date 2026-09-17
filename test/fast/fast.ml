@@ -17,7 +17,8 @@ let%expect_test "test_cases/basic_int" =
 let%expect_test "test_cases/closure_capture" =
   run_test "data/test_cases/pair_diagonal.ml";
   run_test "data/test_cases/closure_capture_pair.ml";
-  [%expect {|
+  [%expect
+    {|
     passing:
     failing: diagonal
     passing: f, diagonal_via_closure

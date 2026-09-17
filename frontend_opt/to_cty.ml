@@ -70,8 +70,7 @@ let cty_of_expr expr =
   | [ { x; ty } ], phi when String.equal x default_v -> { nty = ty; phi }
   | _ -> _failatwith [%here] (string_of_expression expr)
 
-(* Inverse of [cty_of_expr]: the re-parseable [(phi : [%v: nty])] source form
-   that [rty_of_expr] reads back, versus [pprint]'s [v:nty | phi] display form. *)
+(* Inverse of [cty_of_expr]; [pprint] renders the display form [v:nty | phi]. *)
 let cty_to_expr { nty; phi } =
   desc_to_ocamlexpr
   @@ Pexp_constraint (prop_to_expr phi, notated (default_v, nty))
