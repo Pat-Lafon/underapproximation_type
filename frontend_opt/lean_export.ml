@@ -30,7 +30,7 @@ let leansetting =
     layout_mp = (function "==" -> "=" | "!=" -> "≠" | "mod" -> "%" | x -> x);
   }
 
-let layout_prop_to_lean = layout_prop_ leansetting
+let layout_prop_to_lean = layout_prop_with leansetting
 let lean_ctor (cname : string) = String.capitalize_ascii cname
 
 let render_inductive (d : Z3decls.datatype_decl) : string =

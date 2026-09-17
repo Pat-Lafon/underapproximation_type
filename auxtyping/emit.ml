@@ -27,7 +27,7 @@ let lean_section axioms =
 
 let coq_section axioms =
   let rendered =
-    List.map (fun (name, prop) -> (name, layout_prop_to_coq prop)) axioms
+    List.map (fun (name, prop) -> (name, layout_prop_to_rocq prop)) axioms
   in
   let axiom_decls =
     rendered
@@ -83,7 +83,7 @@ let pieces = function
                Proof.\n\
                Admitted.\n\
                End Query.\n"
-              idx (layout_prop_to_coq body));
+              idx (layout_prop_to_rocq body));
       }
 
 let emit_axiom_preamble p oc axioms =
