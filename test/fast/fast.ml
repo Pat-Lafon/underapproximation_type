@@ -14,6 +14,16 @@ let%expect_test "test_cases/basic_int" =
     failing: test3 
   |}]
 
+let%expect_test "test_cases/closure_capture" =
+  run_test "data/test_cases/pair_diagonal.ml";
+  run_test "data/test_cases/closure_capture_pair.ml";
+  [%expect {|
+    passing:
+    failing: diagonal
+    passing: f, diagonal_via_closure
+    failing:
+    |}]
+
 let%expect_test "basic/duplicate_list" =
   run_test "data/PLDI23/basic/duplicate_list.ml";
   [%expect {|
