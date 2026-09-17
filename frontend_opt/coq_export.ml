@@ -10,7 +10,7 @@ let coq_ctor (cname : string) = String.capitalize_ascii cname
 let render_inductive_coq (d : Z3decls.datatype_decl) : string =
   spf "Inductive %s : Type :=\n%s." d.dt_name
     (List.map
-       (Export_helper.ctor_line ~layout_ty:coq_layout_ty ~ctor:coq_ctor)
+       (Export_helper.ctor_line ~layout_ty:rocq_layout_ty ~ctor:coq_ctor)
        d.ctors
     |> String.concat "\n")
 
@@ -40,7 +40,7 @@ let render_recognizer_coq (d : Z3decls.datatype_decl)
 let render_accessor_coq (d : Z3decls.datatype_decl) (f : Z3decls.field_spec) :
     string =
   render_match_def_coq d ~name:f.fname
-    ~ret:(spf "option %s" (coq_layout_ty f.ftype))
+    ~ret:(spf "option %s" (rocq_layout_ty f.ftype))
     (fun c ->
       if Export_helper.ctor_has_field f c then
         spf "  | %s %s => Some %s" (coq_ctor c.cname)
@@ -112,7 +112,7 @@ let render_rt_coq = Export_helper.render_rt_ coq_term_setting
 
 let render_def ~kw =
   Export_helper.render_def ~kw ~stmt_end:"."
-    ~layout_typedid:coqsetting.layout_typedid
+    ~layout_typedid:rocqsetting.layout_typedid
 
 (* A [Fixpoint] with no recursive call fails Coq's termination check, so a non-recursive
    measure must render as [Definition]. *)
@@ -121,7 +121,7 @@ let render_function_def_coq ~(recursive : bool) ~(name : string)
     : string =
   render_def
     ~kw:(if recursive then "Fixpoint" else "Definition")
-    ~name ~params ~retty:(coq_layout_ty body.ty) ~body:(render_rt_coq body)
+    ~name ~params ~retty:(rocq_layout_ty body.ty) ~body:(render_rt_coq body)
 
 (* Twin of [render_wrapper_def]: the body is propositional [impl args = res], not the
    boolean equality used inside measure bodies. *)
@@ -138,8 +138,8 @@ let render_wrapper_def_coq ~(base : string) ~(impl : string)
 let render_measure_param_coq ~(base : string)
     ~(params : (Nt.t, string) typed list) ~(ret : Nt.t) : string =
   let arrows =
-    List.map (fun p -> coq_layout_ty p.ty) params
-    @ [ coq_layout_ty ret; "Prop" ]
+    List.map (fun p -> rocq_layout_ty p.ty) params
+    @ [ rocq_layout_ty ret; "Prop" ]
   in
   spf "Parameter %s : %s." base (String.concat " -> " arrows)
 
