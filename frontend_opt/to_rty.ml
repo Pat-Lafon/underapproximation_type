@@ -108,10 +108,8 @@ let%test_module "abd rty source round-trip" =
     let () =
       ZUtilsConfig.set (Result.get_ok (ZUtilsConfig.of_yojson (`Assoc [])))
 
-    let eq = equal_rty (fun _ _ -> true)
+    let eq = equal_rty Nt.equal_nt
 
-    (* Parsing a rendered prop reshapes it — n-ary [And]/[Or] come back binary —
-       so [equal_rty] only holds between two types both put through this. *)
     let normalize rty = rty_of_source (layout_rty_source rty)
 
     let%test "existential base coverage type round-trips" =
