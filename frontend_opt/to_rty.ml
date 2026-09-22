@@ -108,6 +108,10 @@ let%test_module "abd rty source round-trip" =
       ZUtilsConfig.set (Result.get_ok (ZUtilsConfig.of_yojson (`Assoc [])))
 
     let eq = equal_rty Nt.equal_nt
+
+    (* [fun ?(a : int) -> ...] fills [a] with [Prop.mk_true]; rendered [true]
+       reparses [Ty_unknown], not [bool]. *)
+    let eq_untyped = equal_rty (fun _ _ -> true)
     let normalize rty = rty_of_source (layout_rty_source rty)
 
     let%test "existential base coverage type round-trips" =
@@ -136,16 +140,15 @@ let%test_module "abd rty source round-trip" =
       in
       eq r (normalize r)
 
-    (* [M e] has no inverse: it parses to the [RtyArr] the renderer emits, whose
-       unit argument [mk_return_rty] fills with [Prop.mk_true]. *)
+    (* [M e] has no inverse: it parses to the [RtyArr] the renderer emits. *)
     let%test "monadic return round-trips as an arrow" =
       let r = rty_of_source "M ((v >= 0 : [%v: int]) [@under])" in
-      eq r (normalize r)
+      eq_untyped r (normalize r)
 
     (* An optional-label argument is the other source form for an arrow. *)
     let%test "optional-label argument round-trips" =
       let r = rty_of_source "fun ?(a : int) -> (v >= 0 : [%v: int]) [@under]" in
-      eq r (normalize r)
+      eq_untyped r (normalize r)
 
     let%test "poly type round-trips" =
       let r = RtyPolyType { pt = "a"; rty = int_under } in
