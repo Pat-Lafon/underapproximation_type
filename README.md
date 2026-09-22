@@ -32,5 +32,5 @@ Currently, the testing suite is split into five groups:
 Running `dune test test/fast -w` in a separate test window while developing
 will run each test on any file change, which makes it easier to ensure that
 each change preserves the prior behavior of the type checker. The CI runs
-`dune test test/fast test/slow test/emptiness`.
+`dune test test/fast test/slow test/emptiness frontend_opt`.
 By default, the testing framework only shows the tests which failed.
