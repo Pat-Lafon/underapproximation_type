@@ -50,11 +50,8 @@ let check_valid query =
   in
   let () = report_unclosed [%here] query in
   let query = fresh_name_prop query in
-  let axioms = Prover.select_axioms query in
   let neg = smart_not query in
-  match
-    Prover.check_sat ~axioms ~functional_bodies:(functional_bodies neg) neg
-  with
+  match Prover.check_sat ~functional_bodies:(functional_bodies neg) neg with
   | SmtUnsat -> true
   | SmtSat -> false
   | Unknown reason ->
@@ -221,9 +218,7 @@ let non_emptiness_cty rctx cty =
             TypecheckerLog.auxtyping @@ fun _ ->
             Printf.printf "let[@axiom] tmp = %s\n" (layout_prop_source query)
           in
-          let axioms = Prover.select_axioms query in
-          Prover.check_sat ~axioms ~functional_bodies:(functional_bodies query)
-            query)
+          Prover.check_sat ~functional_bodies:(functional_bodies query) query)
     in
     let () = Statistic.stat_query_time (rctx.task_name, time) in
     let res =
