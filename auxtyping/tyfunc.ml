@@ -93,7 +93,6 @@ let n_to_one_ctys prop_f = function
       else _die [%here]
 
 let union_ctys = n_to_one_ctys smart_or
-let intersect_ctys = n_to_one_ctys smart_and
 
 let rec union_rtys = function
   | [] -> _die [%here]

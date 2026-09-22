@@ -176,7 +176,11 @@ let type_check_group (bctx : built_in_ctx) =
         in
         (* let () = Printf.printf "fix rty' %s\n" (layout_rty rty') in *)
         let retty = subst_rty_instance arg (AVar fixarg) retty in
-        let rctx' = Rctx.add_vars rctx [ fixarg.x#:argrty; fixname.x#:rty' ] in
+        let rctx' =
+          Rctx.set_rec_bound
+            (Rctx.add_vars rctx [ fixarg.x#:argrty; fixname.x#:rty' ])
+            fixname.x (apply_rec_arg1 fixarg)
+        in
         let* body = term_type_check rctx' body retty in
         Some
           (VFix { fixname = fixname.x#:rty; fixarg = fixarg.x#:argrty; body })#:rty
@@ -296,14 +300,11 @@ let type_check_group (bctx : built_in_ctx) =
                 instantiate_poly_pred_rty rctx.pred_ctx appf.ty apparg'.ty
               in
               let rctx' = Rctx.add_preds rctx poly_preds in
-              (* Rec-arg soundness: at the fix's own call site, apparg must
-                 lie within the well-foundedness bound from _cur_rec_func_name.
-                 RecArgCheckFailure collapses to [None] in Termcheck's entry
-                 points, so every caller sees "does not type-check". *)
+              (* Termination: a recursive call's argument must decrease. *)
               let () =
-                match (get_cur_rec_func_name (), appf.x) with
-                | Some (recname, argcty, _), VVar id
-                  when String.equal id.x recname ->
+                match (rctx.rec_bound, appf.x) with
+                | Some (recname, argcty), VVar id when String.equal id.x recname
+                  ->
                     let rec_arg_rty = RtyBase { ou = Under; cty = argcty } in
                     if not (subtyping rctx' (rec_arg_rty, apparg_rty)) then (
                       _warinning_subtyping_error [%here]

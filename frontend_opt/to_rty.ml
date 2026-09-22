@@ -41,6 +41,14 @@ let mk_ou_attr ou =
 let base_type_name = Nt._constructor_ty_0 "baseType"
 let _monad = "M"
 
+(* Same as [mk_top_overrty] but with an untyped [true]. Parsing leaves
+   constants untyped for inference to fill in, so an rty holding the typed
+   [true] would not equal itself after printing and reparsing. *)
+let parsed_top_overrty nty =
+  if Nt.is_base_tp nty then
+    cty_to_overrty { nty; phi = Lit (AC (B true))#:Nt.Ty_unknown }
+  else _die [%here]
+
 let rec rty_of_expr expr =
   match expr.pexp_desc with
   | Pexp_constraint _ -> RtyBase { ou = get_ou expr; cty = cty_of_expr expr }
@@ -52,7 +60,7 @@ let rec rty_of_expr expr =
   | Pexp_fun (Asttypes.Optional _, None, pattern, body) ->
       let param = To_raw_term.typed_id_of_pattern pattern in
       let retty = rty_of_expr body in
-      let argrty = mk_top_overrty param.ty in
+      let argrty = parsed_top_overrty param.ty in
       RtyArr { argrty; arg = param.x; retty }
   | Pexp_fun (_, Some rtyexpr, pattern, body) ->
       let retty = rty_of_expr body in
@@ -67,7 +75,12 @@ let rec rty_of_expr expr =
       let argrty = rty_of_expr vb.pvb_expr in
       RtyArr { argrty; arg; retty }
   | Pexp_construct (c, Some expr) when String.equal _monad (longid_to_id c) ->
-      mk_return_rty (rty_of_expr expr)
+      RtyArr
+        {
+          retty = rty_of_expr expr;
+          arg = Rename.dummy_var ();
+          argrty = parsed_top_overrty Nt.unit_ty;
+        }
   | _ ->
       _failatwith [%here]
         (spf "wrong refinement type: %s" (string_of_expression expr))
@@ -108,10 +121,6 @@ let%test_module "abd rty source round-trip" =
       ZUtilsConfig.set (Result.get_ok (ZUtilsConfig.of_yojson (`Assoc [])))
 
     let eq = equal_rty Nt.equal_nt
-
-    (* [fun ?(a : int) -> ...] fills [a] with [Prop.mk_true]; rendered [true]
-       reparses [Ty_unknown], not [bool]. *)
-    let eq_untyped = equal_rty (fun _ _ -> true)
     let normalize rty = rty_of_source (layout_rty_source rty)
 
     let%test "existential base coverage type round-trips" =
@@ -143,12 +152,12 @@ let%test_module "abd rty source round-trip" =
     (* [M e] has no inverse: it parses to the [RtyArr] the renderer emits. *)
     let%test "monadic return round-trips as an arrow" =
       let r = rty_of_source "M ((v >= 0 : [%v: int]) [@under])" in
-      eq_untyped r (normalize r)
+      eq r (normalize r)
 
     (* An optional-label argument is the other source form for an arrow. *)
     let%test "optional-label argument round-trips" =
       let r = rty_of_source "fun ?(a : int) -> (v >= 0 : [%v: int]) [@under]" in
-      eq_untyped r (normalize r)
+      eq r (normalize r)
 
     let%test "poly type round-trips" =
       let r = RtyPolyType { pt = "a"; rty = int_under } in
