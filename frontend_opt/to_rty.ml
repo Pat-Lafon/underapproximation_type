@@ -84,10 +84,9 @@ let rec rty_to_expr = function
       { e with pexp_attributes = mk_ou_attr ou :: e.pexp_attributes }
   | RtyArr { argrty; arg; retty } ->
       desc_to_ocamlexpr
-      @@ Pexp_fun
-           ( Asttypes.Nolabel,
-             Some (rty_to_expr argrty),
-             string_to_pattern arg,
+      @@ Pexp_let
+           ( Asttypes.Nonrecursive,
+             [ mk_vb (string_to_pattern arg, rty_to_expr argrty) ],
              rty_to_expr retty )
   | RtyPolyType { pt; rty } ->
       mklam
@@ -109,7 +108,6 @@ let%test_module "abd rty source round-trip" =
       ZUtilsConfig.set (Result.get_ok (ZUtilsConfig.of_yojson (`Assoc [])))
 
     let eq = equal_rty Nt.equal_nt
-
     let normalize rty = rty_of_source (layout_rty_source rty)
 
     let%test "existential base coverage type round-trips" =
@@ -119,6 +117,46 @@ let%test_module "abd rty source round-trip" =
       in
       let r = rty_of_source src in
       eq r (rty_of_source (layout_rty_source r))
+
+    let int_over = rty_of_source "(true : [%v: int]) [@over]"
+    let int_under = rty_of_source "(v >= 0 : [%v: int]) [@under]"
+
+    let%test "arrow round-trips" =
+      let r = RtyArr { argrty = int_over; arg = "a"; retty = int_under } in
+      eq r (normalize r)
+
+    let%test "nested arrows round-trip" =
+      let r =
+        RtyArr
+          {
+            argrty = int_over;
+            arg = "a";
+            retty = RtyArr { argrty = int_over; arg = "b"; retty = int_under };
+          }
+      in
+      eq r (normalize r)
+
+    (* [M e] has no inverse: it parses to the [RtyArr] the renderer emits, whose
+       unit argument [mk_return_rty] fills with [Prop.mk_true]. *)
+    let%test "monadic return round-trips as an arrow" =
+      let r = rty_of_source "M ((v >= 0 : [%v: int]) [@under])" in
+      eq r (normalize r)
+
+    (* An optional-label argument is the other source form for an arrow. *)
+    let%test "optional-label argument round-trips" =
+      let r = rty_of_source "fun ?(a : int) -> (v >= 0 : [%v: int]) [@under]" in
+      eq r (normalize r)
+
+    let%test "poly type round-trips" =
+      let r = RtyPolyType { pt = "a"; rty = int_under } in
+      eq r (normalize r)
+
+    let%test "poly pred round-trips" =
+      let r =
+        RtyPolyPred
+          { pred = "p"#:(Nt.mk_arr Nt.int_ty Nt.bool_ty); rty = int_under }
+      in
+      eq r (normalize r)
 
     let%test "nested and singleton And normalize to one form" =
       let base phi =
