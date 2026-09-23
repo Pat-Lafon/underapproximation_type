@@ -432,6 +432,15 @@ let type_check_group (bctx : built_in_ctx) =
         (* let () = *)
         (*   Printf.printf "constructor.ty : %s\n" (layout_rty constructor_rty) *)
         (* in *)
+        (* Each field's binder is substituted into the constructor's rty below,
+           so two [_] would stand one variable in for two fields on top of
+           colliding in the rctx. *)
+        let args =
+          List.map
+            (fun x ->
+              if String.equal x.x "_" then (Rename.fresh_var ())#:x.ty else x)
+            args
+        in
         let args, retty =
           List.fold_left
             (fun (args, rty) x ->
