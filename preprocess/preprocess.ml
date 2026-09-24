@@ -10,11 +10,8 @@ let parse file =
 let multi_parse files = List.concat_map parse files
 
 let builtin_basic_ctx =
-  let ctor dt name =
-    constructor_declaration_mk_ (dt, { constr_name = name; args = CtorTuple [] })
-  in
-  Typectx.add_to_rights Typectx.emp
-    [ ctor Nt.bool_ty "True"; ctor Nt.bool_ty "False"; ctor Nt.unit_ty "TT" ]
+  Typectx.ctx_from_list
+    [ "True"#:Nt.bool_ty; "False"#:Nt.bool_ty; "TT"#:Nt.unit_ty ]
 
 let builtin_rty_ctx =
   let under nty phi = RtyBase { ou = Under; cty = { nty; phi } } in
@@ -27,25 +24,23 @@ let builtin_rty_ctx =
 
 let _ctxs = ref None
 
-(* Registers eligible ADTs into [Z3decls.decl_registry] so they get a structured Z3 sort
-   rather than an uninterpreted one. *)
 let collect_dt_decls items =
   let module D = Prop.Z3decls in
   let ctor_of_decl { constr_name; args } =
-    match args with
-    | CtorTuple [] ->
-        Some D.{ cname = String.lowercase_ascii constr_name; fields = [] }
-    | CtorRecord xs ->
-        Some
-          D.
-            {
-              cname = String.lowercase_ascii constr_name;
-              fields = List.map (fun x -> { fname = x.x; ftype = x.ty }) xs;
-            }
-    | CtorTuple (_ :: _) -> None (* positional ctor: type not encodable *)
+    let fields =
+      match args with
+      | CtorTuple [] -> Some []
+      | CtorRecord xs ->
+          Some (List.map (fun x -> D.{ fname = x.x; ftype = x.ty }) xs)
+      | CtorTuple (_ :: _) -> None
+    in
+    Option.map
+      (fun fields -> D.{ cname = String.lowercase_ascii constr_name; fields })
+      fields
   in
   let dt_decl_of_item = function
-    | MTyDecl { type_name; type_decl = Decl_constructors decls; _ } ->
+    | MTyDecl
+        { type_name; type_params = []; type_decl = Decl_constructors decls } ->
         if Nt.(is_uninterp (to_smtty (Ty_constructor (type_name, [])))) then
           let ctors = List.map ctor_of_decl decls in
           if List.exists Option.is_none ctors then (
@@ -58,8 +53,7 @@ let collect_dt_decls items =
           else
             Some D.{ dt_name = type_name; ctors = List.filter_map Fun.id ctors }
         else None
-          (* builtin smtty name like [unit]/[bool] — handled by [smt_tp_to_sort] *)
-    | MTyDecl { type_decl = Decl_record _; _ } -> None
+    | MTyDecl _ -> None
     | MValDecl _ | MMethodPred _ | MAxiom _ | MFuncImpRaw _ | MFuncImp _
     | MRty _ | MLocalRty _ ->
         None
@@ -68,13 +62,6 @@ let collect_dt_decls items =
   List.iter D.register_decl decls;
   decls
 
-let assert_monomorphic loc kind name = function
-  | [] -> ()
-  | tvars ->
-      _failatwith loc
-        (Printf.sprintf "polymorphic %s `%s` not supported (type variables: %s)"
-           kind name (String.concat ", " tvars))
-
 (* An encodable datatype's constructor/recognizer/accessor predicate names are fixed by
    [Z3decls], so their normal-type signatures are derived here rather than restated in each
    benchmark's [normal_typing.ml]. *)
@@ -82,10 +69,7 @@ let derive_dt_method_preds (decls : Prop.Z3decls.datatype_decl list) :
     Nt.t item list =
   let module D = Prop.Z3decls in
   let val_decl name args ret =
-    let ty = Nt.construct_arr_tp (args, ret) in
-    assert_monomorphic [%here] "datatype predicate" name
-      (Nt.gather_type_vars ty);
-    MValDecl name#:ty
+    MValDecl name#:(Nt.construct_arr_tp (args, ret))
   in
   List.concat_map
     (fun (d : D.datatype_decl) ->
@@ -110,6 +94,13 @@ let resolve_files (prim_path : TypecheckerConfig.prim_path) : string list =
   Option.to_list prim_path.data_type_decls
   @ [ prim_path.normal_typing; prim_path.coverage_typing; prim_path.axioms ]
 
+let assert_monomorphic loc kind name = function
+  | [] -> ()
+  | tvars ->
+      _failatwith loc
+        (Printf.sprintf "polymorphic %s `%s` not supported (type variables: %s)"
+           kind name (String.concat ", " tvars))
+
 let relational_of_functional (ty : Nt.t) : Nt.t =
   let args, ret = Nt.destruct_arr_tp ty in
   Nt.construct_arr_tp (args @ [ ret ], Nt.bool_ty)
@@ -129,14 +120,10 @@ let struct_check_program items =
     List.fold_right
       (fun item (defs, measures, specs) ->
         match item with
-        | MTyDecl _ | MValDecl _ | MMethodPred _ ->
+        | MTyDecl _ | MValDecl _ | MMethodPred _ | MFuncImp _ ->
             (item :: defs, measures, specs)
         | MFuncImpRaw { name; if_rec; body } ->
             (defs, (name, if_rec, body) :: measures, specs)
-        | MFuncImp _ ->
-            _failatwith [%here]
-              "struct_check_program: normalized measure (MFuncImp) in typing \
-               context"
         | MAxiom _ | MRty _ | MLocalRty _ -> (defs, measures, item :: specs))
       items ([], [], [])
   in
@@ -165,7 +152,13 @@ let load_ctxs () =
       let alias = Type_alias.item_mk_type_alias_ctx items in
       let items = Type_alias.item_inline alias items in
       let basic_ctx, items = struct_check_program items in
-      (* After [struct_check_program] so the measure bodies carry types. *)
+      let builtin_ctx =
+        Typectx.add_to_rights (struct_mk_rty_ctx items) builtin_rty_ctx
+      in
+      let axioms = struct_mk_axiom_ctx items in
+      let bctx = { builtin_ctx; cur_axiom_names = [] } in
+      let bctx = axiom_add_to_rights bctx axioms in
+      (* After type checking, so the measure bodies carry types. *)
       let () = Measure.register_items items in
       let () =
         match ZUtilsConfig.get_smt_encoding () with
@@ -180,12 +173,6 @@ let load_ctxs () =
                measure in the typing context"
         | ZUtilsConfig.Axiom | ZUtilsConfig.Both -> ()
       in
-      let builtin_ctx =
-        Typectx.add_to_rights (struct_mk_rty_ctx items) builtin_rty_ctx
-      in
-      let axioms = struct_mk_axiom_ctx items in
-      let bctx = { builtin_ctx; cur_axiom_names = [] } in
-      let bctx = axiom_add_to_rights bctx axioms in
       let res = (alias, basic_ctx, bctx) in
       _ctxs := Some res;
       res
@@ -207,10 +194,17 @@ let preprocess source_files =
   let items' = Type_alias.item_inline (load_alias ()) items in
   let alias = Type_alias.item_mk_type_alias_ctx items' in
   let items' = Type_alias.item_inline alias items' in
+  (* let () = Pp.printf "@{<bold>result:@}\n%s\n" (layout_structure items) in *)
+  (* let () = Pp.printf "@{<bold>result:@}\n%s\n" (layout_structure items') in *)
   let _, code = struct_check (load_basic_ctx ()) items' in
-  let code = Type_alias.item_inline (load_alias () @ alias) code in
+  let code = Type_alias.item_inline alias code in
+  let code = Type_alias.item_inline (load_alias ()) code in
   let () =
     TypecheckerLog.preprocess (fun _ ->
         Pp.printf "@{<bold>result:@}\n%s\n" (layout_structure code))
   in
+  (* let () = *)
+  (*   Pp.printf "@{<bold>alias:@}\n%s\n" (Type_alias.layout_alias (load_alias ())) *)
+  (* in *)
+  (* let () = _die [%here] in *)
   normalize_structure code

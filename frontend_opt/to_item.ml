@@ -33,8 +33,11 @@ let ocaml_structure_item_to_item structure =
          match value_binding.pvb_attributes with
          | [ x ] -> (
              match x.attr_name.txt with
-             | "axiom" ->
-                 MAxiom { name; prop = prop_of_expr value_binding.pvb_expr }
+             | "axiom" -> (
+                 match x.attr_payload with
+                 | PStr [] ->
+                     MAxiom { name; prop = prop_of_expr value_binding.pvb_expr }
+                 | _ -> _die [%here])
              | "assert" -> (
                  let rty = rty_of_expr value_binding.pvb_expr in
                  match x.attr_payload with

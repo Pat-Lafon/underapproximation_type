@@ -16,9 +16,6 @@ let mk_self_wf_dec x =
   let lt = lt#:Nt.(construct_arr_tp ([ x.ty; x.ty ], bool_ty)) in
   lit_to_prop (AAppOp (lt, List.map tvar_to_lit [ default_v#:x.ty; x ]))
 
-let apply_rec_arg1 (fixarg : (Nt.t, string) typed) : Nt.t cty =
-  { nty = fixarg.ty; phi = mk_self_wf_dec fixarg }
-
 module Rctx = struct
   let emp task_name tyvar_ctx invs =
     {
@@ -29,8 +26,6 @@ module Rctx = struct
       inv_ctx = ctx_from_list invs;
       rec_bound = None;
     }
-
-  let set_rec_bound rctx name cty = { rctx with rec_bound = Some (name, cty) }
 
   (* let to_ctx_g_v_pair ctx = *)
   (*   let rec aux (gctx, ctx) l = *)
@@ -168,8 +163,5 @@ let rec lookup_ctxs ctxs id =
       match get_opt ctx id with
       | Some res -> Some res
       | None -> lookup_ctxs ctxs id)
-
-let lookup_id (rctx : rctx) (bctx : built_in_ctx) id =
-  lookup_ctxs [ rctx.rty_ctx; bctx.builtin_ctx ] id
 
 (** Debug *)

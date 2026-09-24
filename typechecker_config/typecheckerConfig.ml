@@ -11,7 +11,6 @@ type t = {
   log_tags : string list; [@default []]
   lean_preamble : string option; [@default None]
   coq_preamble : string option; [@default None]
-  emit_backend : string option; [@default None]
 }
 [@@deriving of_yojson { strict = true }]
 
@@ -30,12 +29,3 @@ let bootstrap root =
 let get_log_tags () = (get ()).log_tags
 let get_lean_preamble_path () = (get ()).lean_preamble
 let get_coq_preamble_path () = (get ()).coq_preamble
-
-let get_emit_backend () =
-  match (get ()).emit_backend with
-  | None | Some "lean" -> `Lean
-  | Some "coq" -> `Coq
-  | Some other ->
-      failwith
-        (Printf.sprintf "unknown emit_backend %S (expected \"lean\" or \"coq\")"
-           other)

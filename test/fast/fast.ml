@@ -81,6 +81,99 @@ let%expect_test "quickchick/SizedList" =
     failing:
   |}]
 
+(* Pins what no data file reaches: the bool [==]/[!=] dispatch to [Bool.eqb]/[negb]
+   and the [Fixpoint] half of the [is_self_recursive] split. *)
+module Coq_render = struct
+  open Zutils
+  open Language
+
+  let ic n = Nt.Ty_constructor (n, [])
+  let param name ty : (Nt.t, string) typed = { ty; x = name }
+
+  let var name ty : (Nt.t, Nt.t raw_term) typed =
+    { ty; x = Var { ty; x = name } }
+
+  let lit ty c : (Nt.t, Nt.t raw_term) typed = { ty; x = Const c }
+
+  let len_body : (Nt.t, Nt.t raw_term) typed =
+    let succ_call : (Nt.t, Nt.t raw_term) typed =
+      {
+        ty = ic "int";
+        x =
+          AppOp
+            ( { ty = ic "int"; x = PrimOp "+" },
+              [
+                lit (ic "int") (I 1);
+                {
+                  ty = ic "int";
+                  x = App (var "len_impl" (ic "int"), [ var "t" (ic "ilist") ]);
+                };
+              ] );
+      }
+    in
+    {
+      ty = ic "int";
+      x =
+        Match
+          {
+            matched = var "l" (ic "ilist");
+            match_cases =
+              [
+                Matchcase
+                  {
+                    constructor = param "nil" (ic "ilist");
+                    args = [];
+                    exp = lit (ic "int") (I 0);
+                  };
+                Matchcase
+                  {
+                    constructor = param "cons" (ic "ilist");
+                    args = [ param "_" (ic "int"); param "t" (ic "ilist") ];
+                    exp = succ_call;
+                  };
+              ];
+          };
+    }
+
+  let eq (op : string) a b : (Nt.t, Nt.t raw_term) typed =
+    { ty = ic "bool"; x = AppOp ({ ty = ic "bool"; x = PrimOp op }, [ a; b ]) }
+
+  let eq_demo_body : (Nt.t, Nt.t raw_term) typed =
+    {
+      ty = ic "bool";
+      x =
+        Ifte
+          ( eq "==" (var "x" (ic "int")) (lit (ic "int") (I 0)),
+            eq "==" (var "b" (ic "bool")) (lit (ic "bool") (B true)),
+            eq "!=" (var "x" (ic "int")) (lit (ic "int") (I 0)) );
+    }
+
+  let%expect_test "coq: self-recursive measure renders Fixpoint" =
+    print_string
+      (render_function_def_coq ~recursive:true ~name:"len_impl"
+         ~params:[ param "l" (ic "ilist") ]
+         ~body:len_body);
+    [%expect
+      {|
+      Fixpoint len_impl (l : ilist) : Z :=
+        match l with
+        | Nil => 0
+        | Cons _ t => 1 + (len_impl t)
+        end.
+      |}]
+
+  let%expect_test "coq: equality dispatches on operand sort" =
+    print_string
+      (render_function_def_coq ~recursive:false ~name:"eq_demo_impl"
+         ~params:[ param "x" (ic "int"); param "b" (ic "bool") ]
+         ~body:eq_demo_body);
+    [%expect
+      {|
+      Definition eq_demo_impl (x : Z) (b : bool) : bool :=
+        if x =? 0 then Bool.eqb b true else negb (x =? 0).
+      |}]
+end
+
 let%expect_test "leonidas/CompleteTree" =
   run_test "data/PLDI23/leonidas/CompleteTree.ml";
   [%expect {|
@@ -123,6 +216,14 @@ let%expect_test "elrond/BankersQueue" =
     failing:
   |}]
 
+let%expect_test "emptiness/nonempty_int" =
+  run_emptiness_test "data/emptiness/nonempty_int.ml";
+  [%expect {| nonempty: true |}]
+
+let%expect_test "emptiness/empty_int" =
+  run_emptiness_test "data/emptiness/empty_int.ml";
+  [%expect {| nonempty: false |}]
+
 let%expect_test "quickcheck/SizedHeap" =
   run_test "data/PLDI23/quickcheck/SizedHeap.ml";
   [%expect {|
@@ -143,3 +244,57 @@ let%expect_test "simple/ReturnError" =
     passing:
     failing: sized_list_gen
   |}]
+
+module Rty_source = struct
+  open Zutils
+  open Sugar
+  open Language
+
+  (* The renderers read the global zutils config. *)
+  let () = ZUtilsConfig.set (Result.get_ok (ZUtilsConfig.of_yojson (`Assoc [])))
+
+  let round_trips r =
+    equal_rty Nt.equal_nt r (rty_of_source (layout_rty_source r))
+
+  let int_over = rty_of_source "(true : [%v: int]) [@over]"
+  let int_under = rty_of_source "(v >= 0 : [%v: int]) [@under]"
+
+  let%expect_test "rty source: existential base coverage type" =
+    assert (
+      round_trips
+        (rty_of_source
+           "(((is_nil v) && (fun (((n)[@exists]) : int) -> (len v n) && (n <= \
+            s))) : [%v : ilist]) [@under]"))
+
+  let%expect_test "rty source: arrow" =
+    assert (
+      round_trips (RtyArr { argrty = int_over; arg = "a"; retty = int_under }))
+
+  let%expect_test "rty source: nested arrows" =
+    assert (
+      round_trips
+        (RtyArr
+           {
+             argrty = int_over;
+             arg = "a";
+             retty = RtyArr { argrty = int_over; arg = "b"; retty = int_under };
+           }))
+
+  (* [M e] has no inverse: it parses to the [RtyArr] the renderer emits. *)
+  let%expect_test "rty source: monadic return" =
+    assert (round_trips (rty_of_source "M ((v >= 0 : [%v: int]) [@under])"))
+
+  let%expect_test "rty source: optional-label argument" =
+    assert (
+      round_trips
+        (rty_of_source "fun ?(a : int) -> (v >= 0 : [%v: int]) [@under]"))
+
+  let%expect_test "rty source: poly type" =
+    assert (round_trips (RtyPolyType { pt = "a"; rty = int_under }))
+
+  let%expect_test "rty source: poly pred" =
+    assert (
+      round_trips
+        (RtyPolyPred
+           { pred = "p"#:(Nt.mk_arr Nt.int_ty Nt.bool_ty); rty = int_under }))
+end

@@ -173,21 +173,22 @@ let rec constraint_term_type_infer (ctx : t ctx) (bc : BC.bc) (e : t raw_term) =
               List.fold_right
                 (fun x (bc, args) ->
                   let bc, t = BC.fresh bc in
-                  (bc, (x.x#:t) :: args))
+                  (* Each [_] gets its own name, so two in one pattern neither
+                     collide in the ctx nor share a binder downstream. The
+                     leading [_] keeps it unused wherever it is rendered. *)
+                  let x =
+                    if String.equal x.x "_" then "_" ^ Rename.fresh_var ()
+                    else x.x
+                  in
+                  (bc, (x#:t) :: args))
                 args (bc, [])
             in
             let bc, op =
               constraint_op_type_infer ctx bc (DtConstructor constructor.x)
             in
             let constructor = constructor.x#:op.ty in
-            (* Two [_] in one pattern (e.g. [Rbtnode (_, l, _, r)]) would
-               duplicate-collide in the ctx; drop wildcards here, keep them in
-               [args] for the arity check below. *)
-            let ctx_args =
-              List.filter (fun a -> not (String.equal a.x "_")) args
-            in
             let bc, exp =
-              constraint_term_type_check (add_to_rights ctx ctx_args) bc exp
+              constraint_term_type_check (add_to_rights ctx args) bc exp
             in
             let constructor_ty =
               Nt.construct_arr_tp (List.map _get_ty args, matched.ty)

@@ -9,7 +9,7 @@
   auxtyping
   statistic
   CoverageType.typechecker_config)
- (modules common handlePred bidirect termcheck itemcheck typing)
+ (modules common handlePred bidirect itemcheck typing)
  (preprocess
   (pps
    ppx_optcomp

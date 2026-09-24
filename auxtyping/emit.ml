@@ -5,7 +5,6 @@ type backend_pieces = {
   preamble_path : string option;
   (* The text between the header and the query: datatype decls, measures, axioms. *)
   render_section : (string * Nt.t prop) list -> string;
-  query_decl : int -> Nt.t prop -> string;
 }
 
 let lean_section axioms =
@@ -63,27 +62,12 @@ let pieces = function
         ext = ".lean";
         preamble_path = TypecheckerConfig.get_lean_preamble_path ();
         render_section = lean_section;
-        query_decl =
-          (fun idx goal ->
-            Printf.sprintf "\ntheorem subtyping_query_%i : %s := by\n  sorry\n"
-              idx (layout_prop_to_lean goal));
       }
   | `Coq ->
       {
         ext = ".v";
         preamble_path = TypecheckerConfig.get_coq_preamble_path ();
         render_section = coq_section;
-        query_decl =
-          (fun idx body ->
-            Printf.sprintf
-              "\n\
-               Module Query (A : COVERAGE_AXIOMS).\n\
-               Import A.\n\
-               Lemma subtyping_query_%i : %s.\n\
-               Proof.\n\
-               Admitted.\n\
-               End Query.\n"
-              idx (layout_prop_to_rocq body));
       }
 
 let emit_axiom_preamble p oc axioms =
@@ -106,8 +90,10 @@ let query_dir =
      (try Sys.mkdir dir 0o755 with Sys_error _ when Sys.file_exists dir -> ());
      dir)
 
-let emit_query backend axioms query =
-  let p = pieces backend in
+(* The query as a Lean theorem left [sorry], under the axioms it was solved
+   against. *)
+let emit_query axioms query =
+  let p = pieces `Lean in
   let idx = !Prover.query_counter in
   let filename =
     Filename.concat (Lazy.force query_dir)
@@ -115,6 +101,6 @@ let emit_query backend axioms query =
   in
   Out_channel.with_open_text filename (fun oc ->
       emit_axiom_preamble p oc axioms;
-      output_string oc (p.query_decl idx query);
-      ZUtilsLog.queries (fun () ->
-          Printf.eprintf "Emitted subtyping query to %s\n" filename))
+      Printf.fprintf oc "\ntheorem subtyping_query_%i : %s := by\n  sorry\n" idx
+        (layout_prop_to_lean query));
+  Printf.eprintf "Emitted subtyping query to %s\n" filename

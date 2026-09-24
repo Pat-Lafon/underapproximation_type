@@ -11,7 +11,7 @@ let value_infer_mode = PolyPredParam
 
 let type_check_group (bctx : built_in_ctx) =
   let _find_in_ctx loc (rctx : rctx) (id : (Nt.t, string) typed) =
-    let res = lookup_id rctx bctx id.x in
+    let res = lookup_ctxs [ rctx.rty_ctx; bctx.builtin_ctx ] id.x in
     match res with
     | Some res ->
         let rty = fresh_name_rty res in
@@ -176,10 +176,13 @@ let type_check_group (bctx : built_in_ctx) =
         in
         (* let () = Printf.printf "fix rty' %s\n" (layout_rty rty') in *)
         let retty = subst_rty_instance arg (AVar fixarg) retty in
+        let rctx' = Rctx.add_vars rctx [ fixarg.x#:argrty; fixname.x#:rty' ] in
         let rctx' =
-          Rctx.set_rec_bound
-            (Rctx.add_vars rctx [ fixarg.x#:argrty; fixname.x#:rty' ])
-            fixname.x (apply_rec_arg1 fixarg)
+          {
+            rctx' with
+            rec_bound =
+              Some (fixname.x, { nty = fixarg.ty; phi = mk_self_wf_dec fixarg });
+          }
         in
         let* body = term_type_check rctx' body retty in
         Some
@@ -432,15 +435,6 @@ let type_check_group (bctx : built_in_ctx) =
         (* let () = *)
         (*   Printf.printf "constructor.ty : %s\n" (layout_rty constructor_rty) *)
         (* in *)
-        (* Each field's binder is substituted into the constructor's rty below,
-           so two [_] would stand one variable in for two fields on top of
-           colliding in the rctx. *)
-        let args =
-          List.map
-            (fun x ->
-              if String.equal x.x "_" then (Rename.fresh_var ())#:x.ty else x)
-            args
-        in
         let args, retty =
           List.fold_left
             (fun (args, rty) x ->
@@ -474,16 +468,23 @@ let type_check_group (bctx : built_in_ctx) =
           (CMatchcase
              { constructor = constructor.x#:constructor_rty; args; exp = exp' })
   in
-  (term_type_check, term_type_infer, value_type_infer)
+  (value_type_check, term_type_check, value_type_infer, term_type_infer)
+
+(* A recursive call whose argument does not decrease fails the whole function. *)
+let or_rec_arg_failure f = try f () with RecArgCheckFailure -> None
+
+let value_type_check bctx ctx (value, rty) =
+  let f, _, _, _ = type_check_group bctx in
+  or_rec_arg_failure (fun () -> f ctx value rty)
 
 let term_type_check bctx ctx (value, rty) =
-  let f, _, _ = type_check_group bctx in
-  f ctx value rty
-
-let term_type_infer bctx ctx e =
-  let _, f, _ = type_check_group bctx in
-  f ctx e
+  let _, f, _, _ = type_check_group bctx in
+  or_rec_arg_failure (fun () -> f ctx value rty)
 
 let value_type_infer bctx ctx v =
-  let _, _, f = type_check_group bctx in
-  f ctx v
+  let _, _, f, _ = type_check_group bctx in
+  or_rec_arg_failure (fun () -> f ctx v)
+
+let term_type_infer bctx ctx e =
+  let _, _, _, f = type_check_group bctx in
+  or_rec_arg_failure (fun () -> f ctx e)

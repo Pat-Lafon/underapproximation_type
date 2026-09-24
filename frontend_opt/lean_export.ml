@@ -31,62 +31,46 @@ let leansetting =
   }
 
 let layout_prop_to_lean = layout_prop_with leansetting
-let lean_ctor (cname : string) = String.capitalize_ascii cname
 
-let render_inductive (d : Z3decls.datatype_decl) : string =
-  spf "inductive %s where\n%s\n  deriving DecidableEq, Repr" d.dt_name
-    (List.map
-       (Export_helper.ctor_line ~layout_ty:lean_layout_ty ~ctor:lean_ctor)
-       d.ctors
-    |> String.concat "\n")
+let lean_primop = function
+  | "mod" -> "%"
+  | ("+" | "-" | "*" | ">" | "<" | ">=" | "<=" | "&&" | "||") as p -> p
+  | p -> _die_with [%here] (spf "lean_primop: unsupported primop %s" p)
 
-let render_match_def (d : Z3decls.datatype_decl) ~name ~ret
-    (arm : Z3decls.ctor_spec -> string) : string =
-  spf "@[simp, grind =] def %s : %s → %s\n%s" name d.dt_name ret
-    (List.map arm d.ctors |> String.concat "\n")
+let lean_export_setting : Export_helper.setting =
+  {
+    ctor_ref = (fun c -> "." ^ Export_helper.ctor_name c);
+    primop = lean_primop;
+    not_ = (fun a -> spf "!%s" a);
+    (* Term equality stays Bool-valued [==]/[!=] ([BEq]), unlike the propositional
+       [=] that [layout_mp] emits for prop bodies. *)
+    eq = (fun op lhs rhs _ -> spf "%s %s %s" lhs op rhs);
+    match_end = "";
+    let_sep = "";
+    layout_ty = lean_layout_ty;
+    option_ty = spf "Option %s";
+    some_ = "some";
+    none_ = "none";
+    inductive =
+      (fun d lines ->
+        spf "inductive %s where\n%s\n  deriving DecidableEq, Repr" d.dt_name
+          (String.concat "\n" lines));
+    match_def =
+      (fun d ~name ~ret arms ->
+        spf "@[simp, grind =] def %s : %s → %s\n%s" name d.dt_name ret
+          (String.concat "\n" arms));
+    dt_extra = (fun _ -> []);
+  }
 
-let render_recognizer (d : Z3decls.datatype_decl) (target : Z3decls.ctor_spec) :
-    string =
-  render_match_def d
-    ~name:(spf "is_%s" (String.lowercase_ascii target.cname))
-    ~ret:"Bool"
-    (fun c ->
-      let rhs = if c.cname = target.cname then "true" else "false" in
-      spf "  | .%s%s => %s" (lean_ctor c.cname) (Export_helper.wildcards c) rhs)
-
-let render_accessor (d : Z3decls.datatype_decl) (f : Z3decls.field_spec) :
-    string =
-  render_match_def d ~name:f.fname
-    ~ret:(spf "Option %s" (lean_layout_ty f.ftype))
-    (fun c ->
-      if Export_helper.ctor_has_field f c then
-        spf "  | .%s %s => some %s" (lean_ctor c.cname)
-          (Export_helper.accessor_binders f c)
-          (Export_helper.binder_of f)
-      else
-        spf "  | .%s%s => none" (lean_ctor c.cname) (Export_helper.wildcards c))
-
-let render_datatype_decl (d : Z3decls.datatype_decl) : string =
-  let recognizers = List.map (render_recognizer d) d.ctors in
-  let accessors =
-    List.map (render_accessor d) (Export_helper.accessor_fields d)
-  in
-  String.concat "\n\n" ((render_inductive d :: recognizers) @ accessors)
-
-let render_datatype_decls () : string =
-  Z3decls.registered_decls ()
-  |> List.map render_datatype_decl
-  |> String.concat "\n\n"
+let render_datatype_decls =
+  Export_helper.render_datatype_decls lean_export_setting
 
 (* These [@[simp, grind =]] defs, in [render_datatype_decl] emission order, are what
    [namespace Axioms] re-declares [local]. *)
 let datatype_def_names () : string list =
   Z3decls.registered_decls ()
   |> List.concat_map (fun (d : Z3decls.datatype_decl) ->
-         List.map
-           (fun (c : Z3decls.ctor_spec) ->
-             "is_" ^ String.lowercase_ascii c.cname)
-           d.ctors
+         List.map Export_helper.recognizer_name d.ctors
          @ List.map
              (fun (f : Z3decls.field_spec) -> f.fname)
              (Export_helper.accessor_fields d))
@@ -98,24 +82,7 @@ let datatype_type_names () : string list =
 
 open Ast
 
-let lean_primop = function
-  | "mod" -> "%"
-  | ("+" | "-" | "*" | ">" | "<" | ">=" | "<=" | "&&" | "||") as p -> p
-  | p -> _die_with [%here] (spf "lean_primop: unsupported primop %s" p)
-
-let lean_term_setting : Export_helper.term_setting =
-  {
-    ctor_ref = (fun c -> "." ^ lean_ctor c);
-    primop = lean_primop;
-    not_ = (fun a -> spf "!%s" a);
-    (* Term equality stays Bool-valued [==]/[!=] ([BEq]), unlike the propositional
-       [=] that [layout_mp] emits for prop bodies. *)
-    eq = (fun op lhs rhs _ -> spf "%s %s %s" lhs op rhs);
-    match_end = "";
-    let_sep = "";
-  }
-
-let render_rt = Export_helper.render_rt_ lean_term_setting
+let render_rt = Export_helper.render_rt_ lean_export_setting
 
 let render_def =
   Export_helper.render_def ~kw:"def" ~stmt_end:""
@@ -128,17 +95,8 @@ let render_function_def ~(name : string) ~(params : (Nt.t, string) typed list)
   render_def ~name ~params ~retty:(lean_layout_ty body.ty)
     ~body:(render_rt body)
 
-(* Relational wrapper for a measure: the Lean twin of the wrapper
-   func_decl [Recdef_z3.register_all_for_ctx] derives for Z3. *)
-let render_wrapper_def ~(base : string) ~(impl : string)
-    ~(params : (Nt.t, string) typed list) ~(ret : Nt.t) : string =
-  let call = String.concat " " (impl :: List.map (fun p -> p.x) params) in
-  render_def ~name:base
-    ~params:(params @ [ "res"#:ret ])
-    ~retty:"Prop" ~body:(spf "%s = res" call)
-
 (* The bridge lemma + [grind_pattern] for a measure. [rfl] closes
-   it because [render_wrapper_def]'s wrapper is definitionally [impl args = res]. *)
+   it because the wrapper is definitionally [impl args = res]. *)
 let render_intro_lemma ~(base : string) ~(impl : string)
     ~(params : (Nt.t, string) typed list) : string =
   let args = List.map (fun p -> p.x) params in
@@ -150,15 +108,12 @@ let render_intro_lemma ~(base : string) ~(impl : string)
   spf "  theorem %s_intro %s : %s := rfl\n  grind_pattern %s_intro => %s" base
     binders rel_app base impl_call
 
-(* Mirrors the impl+wrapper pair [Recdef_z3.register_all_for_ctx] builds for Z3. *)
 let render_all_lean : unit -> string =
-  render_impl_wrapper
+  Export_helper.render_impl_wrapper
     ~impl:(fun (d : rec_def) ->
       render_function_def ~name:(impl_name d.fname) ~params:d.params
         ~body:(to_impl_calls d.body))
-    ~wrapper:(fun (d : rec_def) ->
-      render_wrapper_def ~base:d.fname ~impl:(impl_name d.fname)
-        ~params:d.params ~ret:d.body.ty)
+    ~wrapper:(Export_helper.render_wrapper ~render_def)
 
 (* Heads the body of [namespace Axioms], ahead of the axiom theorems. Attributes are [local] so
    this simp/grind config stays scoped to those theorems — dropped at [end Axioms], not leaking
@@ -168,7 +123,7 @@ let render_axioms_scaffolding () : string =
     spf "  attribute [%s] %s" modifiers (String.concat " " names)
   in
   let intros =
-    render_all
+    Export_helper.render_all
       (fun (d : rec_def) ->
         render_intro_lemma ~base:d.fname ~impl:(impl_name d.fname)
           ~params:d.params)

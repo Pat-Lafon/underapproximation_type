@@ -10,11 +10,7 @@ open Common
 let constructor_declaration_of_ocaml { pcd_name; pcd_args; _ } =
   let args =
     match pcd_args with
-    | Pcstr_tuple cts ->
-        CtorTuple
-          (List.mapi
-             (fun i ct -> (Printf.sprintf "field_%d" i)#:(core_type_to_t ct))
-             cts)
+    | Pcstr_tuple cts -> CtorTuple (List.map core_type_to_t cts)
     | Pcstr_record lds ->
         CtorRecord
           (List.map
@@ -58,8 +54,7 @@ let of_ocamltypedec { ptype_name; ptype_params; ptype_kind; ptype_manifest; _ }
 let constructor_declaration_to_ocaml { constr_name; args } =
   let pcd_args =
     match args with
-    | CtorTuple xs ->
-        Pcstr_tuple (List.map (fun x -> Nt.t_to_core_type x.ty) xs)
+    | CtorTuple ts -> Pcstr_tuple (List.map Nt.t_to_core_type ts)
     | CtorRecord xs ->
         Pcstr_record
           (List.map

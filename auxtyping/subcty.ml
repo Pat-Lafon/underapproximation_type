@@ -45,11 +45,11 @@ let record_nondecisive ~reason ~coerced_to =
 
 let check_valid query =
   let () =
-    ZUtilsLog.queries @@ fun _ ->
+    ZUtilsLog.debug @@ fun _ ->
     Printf.printf "check valid: %s\n" (layout_prop_ query)
   in
-  let () = report_unclosed [%here] query in
   let query = fresh_name_prop query in
+  let () = report_unclosed [%here] query in
   let neg = smart_not query in
   match Prover.check_sat ~functional_bodies:(functional_bodies neg) neg with
   | SmtUnsat -> true
@@ -162,10 +162,7 @@ let sub_cty ou rctx cty1 cty2 =
            fail by design; gate the dump so it doesn't flood. *)
         (if not valid then
            ZUtilsLog.queries @@ fun _ ->
-           Emit.emit_query
-             (TypecheckerConfig.get_emit_backend ())
-             (Prover.select_axioms query)
-             query);
+           Emit.emit_query (Prover.select_axioms query) query);
         valid)
   in
   let () = Statistic.stat_query_time (rctx.task_name, time) in

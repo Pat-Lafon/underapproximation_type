@@ -13,7 +13,6 @@
   language
   preprocess
   typing
-  CoverageType.auxtyping
   CoverageType.typechecker_config)
  (preprocess
   (pps ppx_jane)))
