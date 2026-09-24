@@ -88,7 +88,7 @@ and 't raw_match_case =
 [@@deriving eq, ord, show, sexp]
 
 type arg_spec =
-  | CtorTuple of (Nt.nt, string) typed list
+  | CtorTuple of Nt.nt list
   | CtorRecord of (Nt.nt, string) typed list
 [@@deriving eq, ord, show, sexp]
 
@@ -96,10 +96,9 @@ type constructor_declaration = { constr_name : string; args : arg_spec }
 [@@deriving eq, ord, show, sexp]
 
 let constructor_args_types (spec : arg_spec) : Nt.nt list =
-  match spec with CtorTuple xs | CtorRecord xs -> List.map (fun x -> x.ty) xs
-
-let constructor_args (spec : arg_spec) : (Nt.nt, string) typed list =
-  match spec with CtorTuple xs | CtorRecord xs -> xs
+  match spec with
+  | CtorTuple ts -> ts
+  | CtorRecord xs -> List.map (fun x -> x.ty) xs
 
 type type_decl =
   | Decl_constructors of constructor_declaration list

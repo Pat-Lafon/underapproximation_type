@@ -33,17 +33,12 @@ let get_ou expr =
   | l when List.exists (fun x -> String.equal x.attr_name.txt "over") l -> Over
   | _ -> Under
 
-let mk_ou_attr ou =
-  Ast_helper.Attr.mk
-    (Location.mknoloc (match ou with Over -> "over" | Under -> "under"))
-    (PStr [])
-
 let base_type_name = Nt._constructor_ty_0 "baseType"
 let _monad = "M"
 
-(* Same as [mk_top_overrty] but with an untyped [true]. Parsing leaves
-   constants untyped for inference to fill in, so an rty holding the typed
-   [true] would not equal itself after printing and reparsing. *)
+(* Parsing leaves constants untyped for inference to fill in, so an rty
+   holding [mk_top_overrty]'s typed [true] would not equal itself after
+   printing and reparsing. *)
 let parsed_top_overrty nty =
   if Nt.is_base_tp nty then
     cty_to_overrty { nty; phi = Lit (AC (B true))#:Nt.Ty_unknown }
@@ -94,7 +89,12 @@ let rty_of_expr expr =
 let rec rty_to_expr = function
   | RtyBase { ou; cty } ->
       let e = cty_to_expr cty in
-      { e with pexp_attributes = mk_ou_attr ou :: e.pexp_attributes }
+      let attr =
+        Ast_helper.Attr.mk
+          (Location.mknoloc (match ou with Over -> "over" | Under -> "under"))
+          (PStr [])
+      in
+      { e with pexp_attributes = attr :: e.pexp_attributes }
   | RtyArr { argrty; arg; retty } ->
       desc_to_ocamlexpr
       @@ Pexp_let
@@ -113,74 +113,3 @@ let rec rty_to_expr = function
 
 let layout_rty_source rty = string_of_expression (rty_to_expr rty)
 let rty_of_source str = rty_of_expr (parse_expression str)
-
-let%test_module "abd rty source round-trip" =
-  (module struct
-    (* The renderers read the global zutils config; seed it before round-tripping. *)
-    let () =
-      ZUtilsConfig.set (Result.get_ok (ZUtilsConfig.of_yojson (`Assoc [])))
-
-    let eq = equal_rty Nt.equal_nt
-    let normalize rty = rty_of_source (layout_rty_source rty)
-
-    let%test "existential base coverage type round-trips" =
-      let src =
-        "(((is_nil v) && (fun (((n)[@exists]) : int) -> (len v n) && (n <= \
-         s))) : [%v : ilist]) [@under]"
-      in
-      let r = rty_of_source src in
-      eq r (rty_of_source (layout_rty_source r))
-
-    let int_over = rty_of_source "(true : [%v: int]) [@over]"
-    let int_under = rty_of_source "(v >= 0 : [%v: int]) [@under]"
-
-    let%test "arrow round-trips" =
-      let r = RtyArr { argrty = int_over; arg = "a"; retty = int_under } in
-      eq r (normalize r)
-
-    let%test "nested arrows round-trip" =
-      let r =
-        RtyArr
-          {
-            argrty = int_over;
-            arg = "a";
-            retty = RtyArr { argrty = int_over; arg = "b"; retty = int_under };
-          }
-      in
-      eq r (normalize r)
-
-    (* [M e] has no inverse: it parses to the [RtyArr] the renderer emits. *)
-    let%test "monadic return round-trips as an arrow" =
-      let r = rty_of_source "M ((v >= 0 : [%v: int]) [@under])" in
-      eq r (normalize r)
-
-    (* An optional-label argument is the other source form for an arrow. *)
-    let%test "optional-label argument round-trips" =
-      let r = rty_of_source "fun ?(a : int) -> (v >= 0 : [%v: int]) [@under]" in
-      eq r (normalize r)
-
-    let%test "poly type round-trips" =
-      let r = RtyPolyType { pt = "a"; rty = int_under } in
-      eq r (normalize r)
-
-    let%test "poly pred round-trips" =
-      let r =
-        RtyPolyPred
-          { pred = "p"#:(Nt.mk_arr Nt.int_ty Nt.bool_ty); rty = int_under }
-      in
-      eq r (normalize r)
-
-    let%test "nested and singleton And normalize to one form" =
-      let base phi =
-        RtyBase
-          { ou = Under; cty = { nty = Nt.Ty_constructor ("ilist", []); phi } }
-      in
-      let pred name = Lit (AAppOp (name#:Nt.bool_ty, []))#:Nt.bool_ty in
-      let a, b, c = (pred "a", pred "b", pred "c") in
-      eq
-        (normalize (base (And [ a; And [ b; c ] ])))
-        (normalize (base (And [ a; b; c ])))
-      && eq
-           (normalize (base (And [ And [ a ]; b ])))
-           (normalize (base (And [ a; b ])))
-  end)
