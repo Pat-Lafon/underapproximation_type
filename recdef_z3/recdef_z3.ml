@@ -45,8 +45,8 @@ let rec encode (zenv : Prop.Z3decls.z3_env) env
     (t : (Nt.t, Nt.t raw_term) typed) : Z3.Expr.expr =
   let ctx = zenv.ctx in
   match t.x with
-  | Const (I n) -> Prop.Z3aux.int_to_z3 ctx n
-  | Const (B b) -> Prop.Z3aux.bool_to_z3 ctx b
+  | Const (I n) -> Prop.Z3aux.int_to_z3 zenv n
+  | Const (B b) -> Prop.Z3aux.bool_to_z3 zenv b
   | Const _ -> _die_with [%here] "unsupported constant in rec-def body"
   | Var x -> (
       match List.assoc_opt x.x env with
