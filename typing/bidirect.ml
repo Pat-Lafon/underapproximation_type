@@ -236,7 +236,7 @@ let type_check_group (bctx : built_in_ctx) =
     match argrty with
     | RtyArr _ ->
         (* Subsumption applies only to closed terms. [sub_cty] quantifies an
-           under-typed binder separately on each side, so a closure capturing
+           under-typed binder existentially inside [∀v], so a closure capturing
            one would be checked against a fresh witness per result value while
            the program fixes a single value when it creates the closure. *)
         let _, underctx = build_wf_ctx (Typectx.ctx_to_list rctx.rty_ctx) in
@@ -341,10 +341,13 @@ let type_check_group (bctx : built_in_ctx) =
                 match (rctx.rec_bound, appf.x) with
                 | Some (recname, argcty), VVar id when String.equal id.x recname
                   ->
-                    let rec_arg_rty = RtyBase { ou = Under; cty = argcty } in
-                    if not (subtyping rctx' (rec_arg_rty, apparg_rty)) then (
-                      _warinning_subtyping_error [%here]
-                        (rec_arg_rty, apparg_rty);
+                    let arg_rty =
+                      cty_to_overrty (as_under_base_rty [%here] apparg_rty)
+                    in
+                    let bound_rty = cty_to_overrty argcty in
+                    let hyps = Rctx.as_hypotheses rctx' in
+                    if not (subtyping hyps (arg_rty, bound_rty)) then (
+                      _warinning_subtyping_error [%here] (arg_rty, bound_rty);
                       raise RecArgCheckFailure)
                 | _ -> ()
               in
