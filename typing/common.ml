@@ -17,6 +17,20 @@ let mk_self_wf_dec x =
   lit_to_prop (AAppOp (lt, List.map tvar_to_lit [ default_v#:x.ty; x ]))
 
 module Rctx = struct
+  (* Every binder as an over-typed hypothesis, so a query ranges over all the
+     values the context admits, path conditions included. *)
+  let as_hypotheses rctx =
+    let to_over = function
+      | RtyBase { cty; _ } -> RtyBase { ou = Over; cty }
+      | rty -> rty
+    in
+    let ctx = Typectx.ctx_to_list rctx.rty_ctx in
+    {
+      rctx with
+      rty_ctx =
+        Typectx.ctx_from_list (List.map (fun x -> x.x#:(to_over x.ty)) ctx);
+    }
+
   let emp task_name tyvar_ctx invs =
     {
       task_name;
