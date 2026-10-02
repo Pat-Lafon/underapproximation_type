@@ -80,7 +80,9 @@ let derive_dt_method_preds (decls : Prop.Z3decls.datatype_decl list) :
             List.map (fun (f : D.field_spec) -> f.ftype) c.fields
           in
           let ctor = val_decl c.cname field_tys dt_ty in
-          let recognizer = val_decl ("is_" ^ c.cname) [ dt_ty ] Nt.bool_ty in
+          let recognizer =
+            val_decl (D.recognizer_name c.cname) [ dt_ty ] Nt.bool_ty
+          in
           let accessors =
             List.map
               (fun (f : D.field_spec) -> val_decl f.fname [ dt_ty ] f.ftype)

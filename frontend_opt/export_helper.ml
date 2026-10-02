@@ -30,11 +30,7 @@ type setting = {
 }
 
 let ctor_name (cname : string) = String.capitalize_ascii cname
-
-(* Lowercase, to match the relational predicate names the axioms reference. *)
-let recognizer_name (c : Z3decls.ctor_spec) =
-  "is_" ^ String.lowercase_ascii c.cname
-
+let recognizer_name (c : Z3decls.ctor_spec) = Z3decls.recognizer_name c.cname
 let apply head args = String.concat " " (head :: args)
 
 (* One constructor line, e.g. [  | Cons (head : Z) (tail : ilist)]. *)

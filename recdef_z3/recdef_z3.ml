@@ -126,7 +126,9 @@ and encode_match (zenv : Prop.Z3decls.z3_env) env
     | [ rc ] -> encode_case rc
     | ((c, _, _) as rc) :: rest ->
         Z3.Boolean.mk_ite ctx
-          (Z3.FuncDecl.apply (dt_func ("is_" ^ c.Prop.Z3decls.cname)) [ m ])
+          (Z3.FuncDecl.apply
+             (dt_func (Prop.Z3decls.recognizer_name c.Prop.Z3decls.cname))
+             [ m ])
           (encode_case rc) (build rest)
   in
   build resolved
