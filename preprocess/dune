@@ -7,7 +7,8 @@
   zutils
   language
   CoverageType.typechecker_config
-  CoverageType.measure)
+  CoverageType.measure
+  CoverageType.recdef_z3)
  (modules type_alias basic_typing normalization preprocess)
  (preprocess
   (pps

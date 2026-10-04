@@ -24,6 +24,7 @@ let builtin_rty_ctx =
 
 let _ctxs = ref None
 
+(* Positional constructors stay uninterpreted: axioms name fields by record label. *)
 let collect_dt_decls items =
   let module D = Prop.Z3decls in
   let ctor_of_decl { constr_name; args } =
@@ -173,7 +174,8 @@ let load_ctxs () =
             _failatwith [%here]
               "zutils.smt_encoding [\"Both\"] requires at least one recursive \
                measure in the typing context"
-        | ZUtilsConfig.Axiom | ZUtilsConfig.Both -> ()
+        | ZUtilsConfig.Both -> Recdef_z3.build_functional_ctx ()
+        | ZUtilsConfig.Axiom -> ()
       in
       let res = (alias, basic_ctx, bctx) in
       _ctxs := Some res;
