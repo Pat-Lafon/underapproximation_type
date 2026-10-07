@@ -124,21 +124,17 @@ let sub_cty ou rctx cty1 cty2 =
       _die [%here])
   in
   let nty = if Nt.equal_nt cty1.nty cty2.nty then cty1.nty else _die [%here] in
-  let overctx = (default_v, mk_top_cty nty) :: overctx in
+  let overctx_with_v = (default_v, mk_top_cty nty) :: overctx in
   let query =
     match ou with
     | Over ->
         let prop = smart_implies cty1.phi cty2.phi in
-        List.fold_right smart_dependent_forall
-          (overctx @ [ (default_v, mk_top_cty cty1.nty) ])
-          prop
+        List.fold_right smart_dependent_forall overctx_with_v prop
     | Under ->
         let rhs = List.fold_right smart_dependent_exists underctx cty1.phi in
         let lhs = List.fold_right smart_dependent_exists underctx cty2.phi in
         let prop = smart_implies lhs rhs in
-        List.fold_right smart_dependent_forall
-          (overctx @ [ (default_v, mk_top_cty cty2.nty) ])
-          prop
+        List.fold_right smart_dependent_forall overctx_with_v prop
   in
   let () = Statistic.stat_query_formula (rctx.task_name, query) in
   let time, res =
@@ -155,7 +151,7 @@ let sub_cty ou rctx cty1 cty2 =
         in
         let () =
           TypecheckerLog.auxtyping @@ fun _ ->
-          Printf.printf "let[@axiom] tmp = %s\n" (layout_prop_source query)
+          Printf.printf "let[@valid] tmp = %s\n" (layout_prop_source query)
         in
         let valid = check_valid query in
         (* [sub_cty] runs on the synthesis enumeration path, where most checks
@@ -196,7 +192,6 @@ let non_emptiness_cty rctx cty =
         "left-hand-side type should be closed under over + under ctx"
         (is_close_cty (List.map fst (overctx @ underctx)) cty)
     in
-    let overctx = (default_v, mk_top_cty cty.nty) :: overctx in
     let query =
       List.fold_right smart_dependent_exists (overctx @ underctx) cty.phi
     in
@@ -213,7 +208,7 @@ let non_emptiness_cty rctx cty =
           in
           let () =
             TypecheckerLog.auxtyping @@ fun _ ->
-            Printf.printf "let[@axiom] tmp = %s\n" (layout_prop_source query)
+            Printf.printf "let[@valid] tmp = %s\n" (layout_prop_source query)
           in
           Prover.check_sat ~functional_bodies:(functional_bodies query) query)
     in
