@@ -134,9 +134,7 @@ let sub_cty ou rctx cty1 cty2 =
         let rhs = List.fold_right smart_dependent_exists underctx cty1.phi in
         let lhs = List.fold_right smart_dependent_exists underctx cty2.phi in
         let prop = smart_implies lhs rhs in
-        List.fold_right smart_dependent_forall
-          (overctx @ [ (default_v, mk_top_cty cty2.nty) ])
-          prop
+        List.fold_right smart_dependent_forall overctx_with_v prop
   in
   let () = Statistic.stat_query_formula (rctx.task_name, query) in
   let time, res =
@@ -153,7 +151,7 @@ let sub_cty ou rctx cty1 cty2 =
         in
         let () =
           TypecheckerLog.auxtyping @@ fun _ ->
-          Printf.printf "let[@axiom] tmp = %s\n" (layout_prop_source query)
+          Printf.printf "let[@valid] tmp = %s\n" (layout_prop_source query)
         in
         let valid = check_valid query in
         (* [sub_cty] runs on the synthesis enumeration path, where most checks
@@ -209,7 +207,7 @@ let non_emptiness_cty rctx cty =
           in
           let () =
             TypecheckerLog.auxtyping @@ fun _ ->
-            Printf.printf "let[@axiom] tmp = %s\n" (layout_prop_source query)
+            Printf.printf "let[@valid] tmp = %s\n" (layout_prop_source query)
           in
           Prover.check_sat ~functional_bodies:(functional_bodies query) query)
     in
