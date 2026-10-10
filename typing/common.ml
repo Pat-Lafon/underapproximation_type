@@ -10,27 +10,15 @@ let _decreasing = "decreasing"
    check can't report [None] — it has to fail the whole function. *)
 exception RecArgCheckFailure
 
+(* On [int], [<] alone is not well-founded, so the bound also floors [v] at 0. *)
 let mk_self_wf_dec x =
   let open Prop in
-  let lt = if Nt.equal_nt x.ty Nt.int_ty then "<" else _decreasing in
-  let lt = lt#:Nt.(construct_arr_tp ([ x.ty; x.ty ], bool_ty)) in
-  lit_to_prop (AAppOp (lt, List.map tvar_to_lit [ default_v#:x.ty; x ]))
+  if Nt.equal_nt x.ty Nt.int_ty then make_order_constraint x default_v#:x.ty
+  else
+    let lt = _decreasing#:Nt.(construct_arr_tp ([ x.ty; x.ty ], bool_ty)) in
+    lit_to_prop (AAppOp (lt, List.map tvar_to_lit [ default_v#:x.ty; x ]))
 
 module Rctx = struct
-  (* Every binder as an over-typed hypothesis, so a query ranges over all the
-     values the context admits, path conditions included. *)
-  let as_hypotheses rctx =
-    let to_over = function
-      | RtyBase { cty; _ } -> RtyBase { ou = Over; cty }
-      | rty -> rty
-    in
-    let ctx = Typectx.ctx_to_list rctx.rty_ctx in
-    {
-      rctx with
-      rty_ctx =
-        Typectx.ctx_from_list (List.map (fun x -> x.x#:(to_over x.ty)) ctx);
-    }
-
   let emp task_name tyvar_ctx invs =
     {
       task_name;
