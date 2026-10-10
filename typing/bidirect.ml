@@ -335,15 +335,15 @@ let type_check_group (bctx : built_in_ctx) =
               let poly_preds, appf_ty, apparg_rty =
                 instantiate_poly_pred_rty rctx.pred_ctx appf.ty apparg'.ty
               in
-              let rctx' = Rctx.add_preds rctx poly_preds in
+              let rctx = Rctx.add_preds rctx poly_preds in
               (* Termination: a recursive call's argument must decrease. *)
               let () =
-                match (rctx'.rec_bound, appf.x) with
+                match (rctx.rec_bound, appf.x) with
                 | Some (recname, bound_cty), VVar id
                   when String.equal id.x recname ->
                     let bound_rty = cty_to_overrty bound_cty in
-                    pprint_typing_subtyping rctx' (apparg_rty, bound_rty);
-                    if not (sub_rty_as_over rctx' (apparg_rty, bound_rty)) then (
+                    pprint_typing_subtyping rctx (apparg_rty, bound_rty);
+                    if not (sub_rty_as_over rctx (apparg_rty, bound_rty)) then (
                       _warinning_subtyping_error [%here] (apparg_rty, bound_rty);
                       raise RecArgCheckFailure)
                 | _ -> ()
