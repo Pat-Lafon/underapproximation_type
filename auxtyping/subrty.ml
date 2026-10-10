@@ -37,7 +37,6 @@ let rec sub_rty rctx (rty1, rty2) =
   let () = Statistic.stat_count_query rctx.task_name in
   aux rctx (rty1, rty2)
 
-(* Retags every under-typed binder, path conditions included, as over-typed. *)
 let sub_rty_as_over rctx (rty1, rty2) =
   let to_over = function
     | RtyBase { cty; _ } -> RtyBase { ou = Over; cty }
