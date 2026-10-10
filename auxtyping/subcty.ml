@@ -114,7 +114,6 @@ let sub_cty ou rctx cty1 cty2 =
           Printf.printf "before simp:\n%s\n\n" (layout_prop query)
         in
         let query = SimplProp.simpl_query query in
-        let query = fresh_name_prop query in
         let () = Statistic.stat_query_formula (rctx.task_name, query) in
         let () =
           TypecheckerLog.auxtyping @@ fun _ ->
@@ -168,10 +167,6 @@ let non_emptiness_cty rctx cty =
     let query =
       List.fold_right smart_dependent_exists (overctx @ underctx) cty.phi
     in
-    (* Folding independently-named context-entry phis with [cty.phi] can collide
-       bound-var names; freshen the assembled query for [Propencoding.to_z3]'s
-       unique-quantifiers invariant. *)
-    let query = fresh_name_prop query in
     let () = Statistic.stat_query_formula (rctx.task_name, query) in
     let time, res =
       clock (fun () ->
