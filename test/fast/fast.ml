@@ -28,6 +28,20 @@ let%expect_test "test_cases/rec_arg_nondecreasing" =
     failing: nondec_gen
   |}]
 
+let%expect_test "test_cases/rec_arg_unbounded" =
+  run_test "data/test_cases/rec_arg_unbounded.ml";
+  [%expect {|
+    passing:
+    failing: unbounded_gen
+  |}]
+
+let%expect_test "test_cases/rec_arg_below_zero" =
+  run_test "data/test_cases/rec_arg_below_zero.ml";
+  [%expect {|
+    passing:
+    failing: below_zero_gen
+  |}]
+
 let%expect_test "test_cases/closure_capture" =
   run_test "data/test_cases/pair_diagonal.ml";
   run_test "data/test_cases/closure_capture_pair.ml";
