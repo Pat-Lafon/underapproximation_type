@@ -337,42 +337,37 @@ module Rty_source = struct
   let int_over = rty_of_source "(true : [%v: int]) [@over]"
   let int_under = rty_of_source "(v >= 0 : [%v: int]) [@under]"
 
-  let%expect_test "rty source: existential base coverage type" =
-    assert (
-      round_trips
-        (rty_of_source
-           "(((is_nil v) && (fun (((n)[@exists]) : int) -> (len v n) && (n <= \
-            s))) : [%v : ilist]) [@under]"))
+  let%test "rty source: existential base coverage type" =
+    round_trips
+      (rty_of_source
+         "(((is_nil v) && (fun (((n)[@exists]) : int) -> (len v n) && (n <= \
+          s))) : [%v : ilist]) [@under]")
 
-  let%expect_test "rty source: arrow" =
-    assert (
-      round_trips (RtyArr { argrty = int_over; arg = "a"; retty = int_under }))
+  let%test "rty source: arrow" =
+    round_trips (RtyArr { argrty = int_over; arg = "a"; retty = int_under })
 
-  let%expect_test "rty source: nested arrows" =
-    assert (
-      round_trips
-        (RtyArr
-           {
-             argrty = int_over;
-             arg = "a";
-             retty = RtyArr { argrty = int_over; arg = "b"; retty = int_under };
-           }))
+  let%test "rty source: nested arrows" =
+    round_trips
+      (RtyArr
+         {
+           argrty = int_over;
+           arg = "a";
+           retty = RtyArr { argrty = int_over; arg = "b"; retty = int_under };
+         })
 
   (* [M e] has no inverse: it parses to the [RtyArr] the renderer emits. *)
-  let%expect_test "rty source: monadic return" =
-    assert (round_trips (rty_of_source "M ((v >= 0 : [%v: int]) [@under])"))
+  let%test "rty source: monadic return" =
+    round_trips (rty_of_source "M ((v >= 0 : [%v: int]) [@under])")
 
-  let%expect_test "rty source: optional-label argument" =
-    assert (
-      round_trips
-        (rty_of_source "fun ?(a : int) -> (v >= 0 : [%v: int]) [@under]"))
+  let%test "rty source: optional-label argument" =
+    round_trips
+      (rty_of_source "fun ?(a : int) -> (v >= 0 : [%v: int]) [@under]")
 
-  let%expect_test "rty source: poly type" =
-    assert (round_trips (RtyPolyType { pt = "a"; rty = int_under }))
+  let%test "rty source: poly type" =
+    round_trips (RtyPolyType { pt = "a"; rty = int_under })
 
-  let%expect_test "rty source: poly pred" =
-    assert (
-      round_trips
-        (RtyPolyPred
-           { pred = "p"#:(Nt.mk_arr Nt.int_ty Nt.bool_ty); rty = int_under }))
+  let%test "rty source: poly pred" =
+    round_trips
+      (RtyPolyPred
+         { pred = "p"#:(Nt.mk_arr Nt.int_ty Nt.bool_ty); rty = int_under })
 end
