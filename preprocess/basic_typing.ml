@@ -177,8 +177,7 @@ let rec constraint_term_type_infer (ctx : t ctx) (bc : BC.bc) (e : t raw_term) =
                      collide in the ctx nor share a binder downstream. The
                      leading [_] keeps it unused wherever it is rendered. *)
                   let x =
-                    if String.equal x.x "_" then "_" ^ Rename.fresh_var ()
-                    else x.x
+                    if String.equal x.x "_" then Rename.unique "_x" else x.x
                   in
                   (bc, (x#:t) :: args))
                 args (bc, [])
