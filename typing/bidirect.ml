@@ -356,7 +356,6 @@ let type_check_group (bctx : built_in_ctx) =
                 | Some (recname, bound_cty), VVar id
                   when String.equal id.x recname ->
                     let bound_rty = cty_to_overrty bound_cty in
-                    pprint_typing_subtyping rctx (apparg_rty, bound_rty);
                     if not (sub_rty_as_over rctx (apparg_rty, bound_rty)) then (
                       _warinning_subtyping_error [%here] (apparg_rty, bound_rty);
                       raise RecArgCheckFailure)
