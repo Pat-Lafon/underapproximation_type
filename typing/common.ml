@@ -4,19 +4,9 @@ open Sugar
 open Typectx
 open Auxtyping
 
-let _decreasing = "decreasing"
-
 (* [CMatch] reads [None] as "unreachable arm" and drops it, so a failed decrease
    check can't report [None] — it has to fail the whole function. *)
 exception RecArgCheckFailure
-
-(* On [int], [<] alone is not well-founded, so the bound also floors [v] at 0. *)
-let mk_self_wf_dec x =
-  let open Prop in
-  if Nt.equal_nt x.ty Nt.int_ty then make_order_constraint x default_v#:x.ty
-  else
-    let lt = _decreasing#:Nt.(construct_arr_tp ([ x.ty; x.ty ], bool_ty)) in
-    lit_to_prop (AAppOp (lt, List.map tvar_to_lit [ default_v#:x.ty; x ]))
 
 module Rctx = struct
   let emp task_name tyvar_ctx invs =
