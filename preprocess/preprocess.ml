@@ -25,73 +25,51 @@ let builtin_rty_ctx =
 let _ctxs = ref None
 
 (* Positional constructors stay uninterpreted: axioms name fields by record label. *)
-let collect_dt_decls items =
-  let module D = Prop.Z3decls in
+let register_datatypes items =
+  let open Prop.Z3decls in
   let ctor_of_decl { constr_name; args } =
-    let fields =
-      match args with
-      | CtorTuple [] -> Some []
-      | CtorRecord xs ->
-          Some (List.map (fun x -> D.{ fname = x.x; ftype = x.ty }) xs)
-      | CtorTuple (_ :: _) -> None
-    in
-    Option.map
-      (fun fields -> D.{ cname = String.lowercase_ascii constr_name; fields })
-      fields
+    let cname = String.lowercase_ascii constr_name in
+    match args with
+    | CtorTuple [] -> Some { cname; fields = [] }
+    | CtorRecord xs ->
+        Some
+          {
+            cname;
+            fields = List.map (fun x -> { fname = x.x; ftype = x.ty }) xs;
+          }
+    | CtorTuple _ -> None
   in
   let dt_decl_of_item = function
     | MTyDecl
-        { type_name; type_params = []; type_decl = Decl_constructors decls } ->
-        if Nt.(is_uninterp (to_smtty (Ty_constructor (type_name, [])))) then
-          let ctors = List.map ctor_of_decl decls in
-          if List.exists Option.is_none ctors then (
-            TypecheckerLog.preprocess (fun () ->
-                Printf.printf
-                  "collect_dt_decls: skipping `%s` from datatype encoding \
-                   (positional constructor; falls back to uninterpreted sort)\n"
-                  type_name);
-            None)
-          else
-            Some D.{ dt_name = type_name; ctors = List.filter_map Fun.id ctors }
-        else None
-    | MTyDecl _ -> None
-    | MValDecl _ | MMethodPred _ | MAxiom _ | MFuncImpRaw _ | MFuncImp _
-    | MRty _ | MLocalRty _ ->
-        None
+        { type_name; type_params = []; type_decl = Decl_constructors decls }
+      when Nt.(is_uninterp (to_smtty (Ty_constructor (type_name, [])))) ->
+        let ctors = List.filter_map ctor_of_decl decls in
+        if List.compare_lengths ctors decls = 0 then
+          Some { dt_name = type_name; ctors }
+        else (
+          TypecheckerLog.preprocess (fun () ->
+              Printf.printf
+                "`%s` has a positional constructor; keeping its sort \
+                 uninterpreted\n"
+                type_name);
+          None)
+    | _ -> None
   in
-  let decls = List.filter_map dt_decl_of_item items in
-  List.iter D.register_decl decls;
-  decls
-
-(* An encodable datatype's constructor/recognizer/accessor predicate names are fixed by
-   [Z3decls], so their normal-type signatures are derived here rather than restated in each
-   benchmark's [normal_typing.ml]. *)
-let derive_dt_method_preds (decls : Prop.Z3decls.datatype_decl list) :
-    Nt.t item list =
-  let module D = Prop.Z3decls in
   let val_decl name args ret =
     MValDecl name#:(Nt.construct_arr_tp (args, ret))
   in
-  List.concat_map
-    (fun (d : D.datatype_decl) ->
-      let dt_ty = Nt.Ty_constructor (d.dt_name, []) in
-      List.concat_map
-        (fun (c : D.ctor_spec) ->
-          let field_tys =
-            List.map (fun (f : D.field_spec) -> f.ftype) c.fields
-          in
-          let ctor = val_decl c.cname field_tys dt_ty in
-          let recognizer =
-            val_decl (D.recognizer_name c.cname) [ dt_ty ] Nt.bool_ty
-          in
-          let accessors =
-            List.map
-              (fun (f : D.field_spec) -> val_decl f.fname [ dt_ty ] f.ftype)
-              c.fields
-          in
-          ctor :: recognizer :: accessors)
-        d.ctors)
-    decls
+  let method_preds d =
+    let dt_ty = Nt.Ty_constructor (d.dt_name, []) in
+    List.concat_map
+      (fun c ->
+        val_decl c.cname (List.map (fun f -> f.ftype) c.fields) dt_ty
+        :: val_decl (recognizer_name c.cname) [ dt_ty ] Nt.bool_ty
+        :: List.map (fun f -> val_decl f.fname [ dt_ty ] f.ftype) c.fields)
+      d.ctors
+  in
+  let decls = List.filter_map dt_decl_of_item items in
+  List.iter register_decl decls;
+  List.concat_map method_preds decls
 
 let resolve_files (prim_path : TypecheckerConfig.prim_path) : string list =
   Option.to_list prim_path.data_type_decls
@@ -150,8 +128,7 @@ let load_ctxs () =
       let prim_path = (TypecheckerConfig.get ()).prim_path in
       let files = resolve_files prim_path in
       let items = multi_parse files in
-      let dt_decls = collect_dt_decls items in
-      let items = derive_dt_method_preds dt_decls @ items in
+      let items = register_datatypes items @ items in
       let alias = Type_alias.item_mk_type_alias_ctx items in
       let items = Type_alias.item_inline alias items in
       let basic_ctx, items = struct_check_program items in
