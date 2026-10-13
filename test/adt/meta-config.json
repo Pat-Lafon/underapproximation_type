@@ -1,0 +1,14 @@
+{
+    "zutils": {
+        "log_tags": [],
+        "pred_extension_rules": [[["len"], ["is_cons", "is_nil", "head", "tail"]]]
+    },
+    "typechecker": {
+        "prim_path": {
+            "data_type_decls": "data/adt/ilist.ml",
+            "normal_typing": "data/adt/normal_typing.ml",
+            "coverage_typing": "data/adt/coverage_typing.ml",
+            "axioms": "data/adt/axioms.ml"
+        }
+    }
+}
