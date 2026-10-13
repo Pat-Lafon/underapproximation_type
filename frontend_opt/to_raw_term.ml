@@ -150,13 +150,7 @@ let record_pattern_args record_fields of_pattern c fields =
 let rec typed_raw_term_of_pattern ?(record_fields = []) pattern =
   let aux = typed_raw_term_of_pattern ~record_fields in
   match pattern.ppat_desc with
-  | Ppat_tuple ps ->
-      (Tuple (List.map typed_raw_term_of_pattern ps))#:Nt.Ty_unknown
-  | Ppat_record (fields, Closed) ->
-      (* The enclosing constructor de-tuples these by position, so fields bind
-         in the order written: all of them, in declaration order. *)
-      let ps = List.map snd fields in
-      (Tuple (List.map typed_raw_term_of_pattern ps))#:Nt.Ty_unknown
+  | Ppat_tuple ps -> (Tuple (List.map aux ps))#:Nt.Ty_unknown
   | Ppat_var ident -> (Var ident.txt#:Nt.Ty_unknown)#:Nt.Ty_unknown
   | Ppat_constraint (ident, tp) ->
       let term = aux ident in
@@ -196,7 +190,7 @@ let typed_id_of_pattern pattern =
 (* Only [==]/[!=] are builtin; an unnormalized [=]/[<>] head misses lookup. *)
 let normalize_eq_op = function "=" -> "==" | "<>" -> "!=" | op -> op
 
-let typed_raw_term_of_expr expr =
+let typed_raw_term_of_expr ?(record_fields = []) expr =
   let rec aux expr =
     match expr.pexp_desc with
     | Pexp_tuple es -> (Tuple (List.map aux es))#:Nt.Ty_unknown
