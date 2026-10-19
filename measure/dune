@@ -2,7 +2,7 @@
  (public_name CoverageType.measure)
  (name measure)
  (wrapped true)
- (libraries ast zutils)
+ (libraries ast zutils z3)
  (modules measure)
  (preprocess
   (pps ppx_here)))

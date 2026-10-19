@@ -11,8 +11,7 @@ let%expect_test "adt/sizedlist" =
   let _, passed, failed = Typing.struc_check (Preprocess.load_bctx ()) code in
   Printf.printf "passing: %s\n" (List.split_by_comma Fun.id passed);
   Printf.printf "failing: %s\n" (List.split_by_comma Fun.id failed);
-  [%expect
-    {|
+  [%expect {|
     passing: sizedlist_gen
     failing:
     |}]

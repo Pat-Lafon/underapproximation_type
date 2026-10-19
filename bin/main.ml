@@ -74,6 +74,10 @@ let export_axioms backend oc =
     oc
     (Prop.Prover.all_axioms ())
 
+let export_measures_smt oc =
+  ignore (Preprocess.load_bctx ());
+  Out_channel.output_string oc (Measure.render_smtlib ())
+
 let config_only message f =
   let cmd =
     Command.basic ~summary:message
@@ -84,7 +88,7 @@ let config_only message f =
             ~doc:"config file path"
         and output_file =
           flag "output" (required string)
-            ~doc:"file path for the rendered axioms"
+            ~doc:"file path for the rendered output"
         in
         fun () ->
           let root = Yojson.Safe.from_file config_file in
@@ -102,6 +106,7 @@ let commands =
       one_param_file "type-check" type_check;
       config_only "export-axioms-lean" (export_axioms `Lean);
       config_only "export-axioms-coq" (export_axioms `Coq);
+      config_only "export-measures-smt" export_measures_smt;
     ]
 
 let () = Command_unix.run commands

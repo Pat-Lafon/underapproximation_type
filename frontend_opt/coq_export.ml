@@ -94,6 +94,9 @@ let render_measure_param_coq ~(base : string)
   in
   spf "Parameter %s : %s." base (String.concat " -> " arrows)
 
+let is_self_recursive (d : rec_def) : bool =
+  List.exists (fun v -> String.equal v.x d.fname) (typed_fv_raw_term d.body)
+
 let render_all_coq : unit -> string =
   Export_helper.render_impl_wrapper
     ~impl:(fun (d : rec_def) ->
@@ -107,3 +110,8 @@ let render_all_coq : unit -> string =
 let render_measure_params_coq : unit -> string =
   Export_helper.render_all (fun (d : rec_def) ->
       render_measure_param_coq ~base:d.fname ~params:d.params ~ret:d.body.ty)
+
+let render_arguments_coq () : string =
+  Export_helper.unfold_hint_names ()
+  |> List.map (spf "Arguments %s /.")
+  |> String.concat "\n"

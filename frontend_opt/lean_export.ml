@@ -132,7 +132,7 @@ let render_axioms_scaffolding () : string =
   String.concat "\n"
     [
       attr "local simp, local grind ="
-        (datatype_def_names () @ unfold_hint_names ());
+        (datatype_def_names () @ Export_helper.unfold_hint_names ());
       attr "local grind cases" (datatype_type_names () @ [ "Bool" ]);
       "";
       intros;

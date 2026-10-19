@@ -187,15 +187,20 @@ and render_match_ (st : setting) (matched : (Nt.t, Nt.t raw_term) typed)
         (List.map arm cases |> String.concat "\n")
         st.match_end
 
+(* The measure def + wrapper names each proof backend marks unfoldable, to see through the
+   functional encoding. *)
+let unfold_hint_names () : string list =
+  !registry |> List.concat_map (fun d -> [ d.fname; impl_name d.fname ])
+
 let render_all (render_measure : rec_def -> string) () : string =
-  all_defs () |> List.map render_measure |> String.concat "\n\n"
+  !registry |> List.map render_measure |> String.concat "\n\n"
 
 (* One impl definition then its wrapper, per measure in source order. *)
 let render_impl_wrapper ~impl ~wrapper : unit -> string =
   render_all (fun (d : rec_def) -> impl d ^ "\n\n" ^ wrapper d)
 
 (* A measure's relational wrapper, definitionally [impl args = res]: the same
-   impl+wrapper pair [Recdef_z3.register_all_for_ctx] derives for Z3. *)
+   impl+wrapper pair [Measure.render_smtlib] prints for Z3. *)
 let render_wrapper ~render_def (d : rec_def) : string =
   let call = apply (impl_name d.fname) (List.map (fun p -> p.x) d.params) in
   render_def ~name:d.fname

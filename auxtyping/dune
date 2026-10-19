@@ -8,8 +8,7 @@
   language
   statistic
   CoverageType.typechecker_config
-  CoverageType.measure
-  CoverageType.recdef_z3)
+  CoverageType.measure)
  (modules subcty subrty tyfunc wellfound emit auxtyping)
  (preprocess
   (pps

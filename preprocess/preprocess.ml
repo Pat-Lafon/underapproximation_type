@@ -28,7 +28,7 @@ let _ctxs = ref None
 let register_datatypes items =
   let open Prop.Z3decls in
   let ctor_of_decl { constr_name; args } =
-    let cname = String.lowercase_ascii constr_name in
+    let cname = Measure.z3_ctor_name constr_name in
     match args with
     | CtorTuple [] -> Some { cname; fields = [] }
     | CtorRecord xs ->
@@ -140,20 +140,17 @@ let load_ctxs () =
       let bctx = axiom_add_to_rights bctx axioms in
       (* After type checking, so the measure bodies carry types. *)
       let () = Measure.register_items items in
-      let () =
-        match ZUtilsConfig.get_smt_encoding () with
-        | ZUtilsConfig.Both
-          when not
-                 (List.exists
-                    (function
-                      | MFuncImpRaw { if_rec = true; _ } -> true | _ -> false)
-                    items) ->
-            _failatwith [%here]
-              "zutils.smt_encoding [\"Both\"] requires at least one recursive \
-               measure in the typing context"
-        | ZUtilsConfig.Both -> Recdef_z3.build_functional_ctx ()
-        | ZUtilsConfig.Axiom -> ()
-      in
+      if
+        ZUtilsConfig.get_smt_encoding () = ZUtilsConfig.Both
+        && not
+             (List.exists
+                (function
+                  | MFuncImpRaw { if_rec = true; _ } -> true | _ -> false)
+                items)
+      then
+        _failatwith [%here]
+          "zutils.smt_encoding [\"Both\"] requires at least one recursive \
+           measure in the typing context";
       let res = (alias, basic_ctx, bctx) in
       _ctxs := Some res;
       res
