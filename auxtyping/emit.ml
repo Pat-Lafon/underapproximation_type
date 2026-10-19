@@ -39,11 +39,6 @@ let coq_section axioms =
            Printf.sprintf "Theorem %s : %s.\nProof. prove_axiom. Qed.\n" name p)
     |> String.concat ""
   in
-  let arguments =
-    Measure.unfold_hint_names ()
-    |> List.map (Printf.sprintf "Arguments %s /.")
-    |> String.concat "\n"
-  in
   let module_type =
     Printf.sprintf "Module Type COVERAGE_AXIOMS.\n%s\n\n%sEnd COVERAGE_AXIOMS."
       (render_measure_params_coq ())
@@ -51,7 +46,7 @@ let coq_section axioms =
   in
   let model =
     Printf.sprintf "Module Model <: COVERAGE_AXIOMS.\n%s\n\n%s\n\n%sEnd Model."
-      (render_all_coq ()) arguments theorems
+      (render_all_coq ()) (render_arguments_coq ()) theorems
   in
   String.concat "\n\n" [ render_datatype_decls_coq (); module_type; model ]
   ^ "\n"

@@ -1,8 +1,0 @@
-(library
- (public_name CoverageType.recdef_z3)
- (name recdef_z3)
- (wrapped true)
- (libraries zutils ast z3 measure)
- (modules recdef_z3)
- (preprocess
-  (pps ppx_here)))

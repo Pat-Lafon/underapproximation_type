@@ -50,6 +50,8 @@ and raw_term_to_expr (expr : Nt.t raw_term) =
       let vb = mk_vb (typed_ids_to_pattern lhs, typed_raw_term_to_expr rhs) in
       desc_to_ocamlexpr
       @@ Pexp_let (flag, [ vb ], typed_raw_term_to_expr letbody)
+  | AppOp ({ x = DtConstructor c; _ }, args) ->
+      mk_construct (c, List.map typed_raw_term_to_expr args)
   | AppOp (op, args) ->
       (* NOTE: to make the printed code looks clearer, we don't print type of operators. *)
       mk_op_apply (mkvar (layout_op op.x), List.map typed_raw_term_to_expr args)

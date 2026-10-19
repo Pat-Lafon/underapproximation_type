@@ -25,7 +25,7 @@ let smart_dependent_exists (x, { nty; phi }) query =
 
 let functional_bodies prop =
   match get_smt_encoding () with
-  | Both -> Option.to_list (Recdef_z3.build_functional_query prop)
+  | Both -> [ Measure.build_functional_query prop ]
   | Axiom -> []
 
 let simplify_sub_typectx ctx (rty1, rty2) =
