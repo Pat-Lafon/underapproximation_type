@@ -78,6 +78,13 @@ let export_measures_smt oc =
   ignore (Preprocess.load_bctx ());
   Out_channel.output_string oc (Measure.render_smtlib ())
 
+(* A consumer reads the last assert as the negated goal, so the trailing
+   [false] makes the goal [true] and leaves every axiom an axiom. *)
+let export_axioms_smt oc =
+  ignore (Preprocess.load_bctx ());
+  Out_channel.output_string oc (Prop.Prover.serialize_all_axioms ());
+  Out_channel.output_string oc "(assert false)\n"
+
 let config_only message f =
   let cmd =
     Command.basic ~summary:message
@@ -107,6 +114,7 @@ let commands =
       config_only "export-axioms-lean" (export_axioms `Lean);
       config_only "export-axioms-coq" (export_axioms `Coq);
       config_only "export-measures-smt" export_measures_smt;
+      config_only "export-axioms-smt" export_axioms_smt;
     ]
 
 let () = Command_unix.run commands
