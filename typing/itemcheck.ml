@@ -3,18 +3,62 @@ open Zutils
 open Bidirect
 open Zdatatype
 
-let _task_info name rty =
+type task =
+  | TypeCheck of string * Nt.t rty
+  | ValidCheck of string * Nt.t prop
+  | SatCheck of string * Nt.t prop
+
+type type_result = Success of built_in_ctx | Fail
+
+type task_result =
+  | TypeCheckResult of string * type_result
+  | ValidResult of string * Nt.t prop * Prover.valid_result
+  | SatResult of string * Nt.t prop * Prover.smt_result
+
+let _type_check_info name rty =
   TypecheckerLog.result @@ fun _ ->
   Pp.printf "@{<bold>Type Check %s:@}\n" name;
   Pp.printf "@{<bold>check against with:@} %s\n" (layout_rty rty)
 
-let _task_succ name =
+let _type_check_result_info name result =
   TypecheckerLog.result @@ fun _ ->
-  Pp.printf "@{<bold>@{<yellow>Task %s, type check succeeded@}@}\n" name
+  match result with
+  | Success _ ->
+      Pp.printf "@{<bold>@{<yellow>Task %s, type check succeeded@}@}\n" name
+  | Fail -> Pp.printf "@{<bold>@{<red>Task %s, type check failed@}@}\n" name
 
-let _task_fail name =
+let _valid_result_info name prop result =
   TypecheckerLog.result @@ fun _ ->
-  Pp.printf "@{<bold>@{<red>Task %s, type check failed@}@}\n" name
+  match result with
+  | Prover.SmtValid ->
+      Pp.printf "@{<bold>@{<yellow>Query %s (%s) is valid.@}@}\n" name
+        (layout_prop prop)
+  | SmtInvalid ->
+      Pp.printf "@{<bold>@{<red>Query %s (%s) is invalid.@}@}\n" name
+        (layout_prop prop)
+  | Unknown reason ->
+      let reason = Option.value ~default:"unknown" reason in
+      Pp.printf "@{<bold>@{<red>Query %s (%s) is unknown: %s.@}@}\n" name
+        (layout_prop prop) reason
+
+let _sat_result_info name prop result =
+  TypecheckerLog.result @@ fun _ ->
+  match result with
+  | Prover.SmtSat ->
+      Pp.printf "@{<bold>@{<yellow>Query %s (%s) is sat.@}@}\n" name
+        (layout_prop prop)
+  | SmtUnsat ->
+      Pp.printf "@{<bold>@{<red>Query %s (%s) is unsat.@}@}\n" name
+        (layout_prop prop)
+  | Unknown reason ->
+      let reason = Option.value ~default:"unknown" reason in
+      Pp.printf "@{<bold>@{<red>Query %s (%s) is unknown: %s.@}@}\n" name
+        (layout_prop prop) reason
+
+let _task_result_info = function
+  | TypeCheckResult (name, result) -> _type_check_result_info name result
+  | ValidResult (name, prop, res) -> _valid_result_info name prop res
+  | SatResult (name, prop, res) -> _sat_result_info name prop res
 
 let mk_imp_m bctx items =
   List.fold_left
@@ -121,12 +165,14 @@ let struc_check bctx items =
   let bctx, imp_m = mk_imp_m bctx items in
   let inv_m = mk_invs items in
   let tasks = mk_tasks items in
+  _assert [%here] "duplicate task names" (no_duplicate_names tasks);
   let _, passed, failed =
     List.fold_left
-      (fun (bctx, passed, failed) (name, rty) ->
-        match item_check bctx inv_m imp_m (name, rty) with
-        | Suc bctx -> (bctx, passed @ [ name ], failed)
-        | Fai name -> (bctx, passed, failed @ [ name ]))
+      (fun (bctx, passed, failed) task ->
+        let result = check_task bctx inv_m imp_m task in
+        let bctx = Option.value ~default:bctx (result_bctx result) in
+        if is_success result then (bctx, passed @ [ result ], failed)
+        else (bctx, passed, failed @ [ result ]))
       (bctx, [], []) tasks
   in
   let () =
@@ -138,6 +184,8 @@ let struc_check bctx items =
     | [] ->
         TypecheckerLog.result @@ fun _ ->
         Pp.printf "@{<bold>@{<yellow>All tasks succeeded@}@}\n"
-    | _ -> TypecheckerLog.result @@ fun _ -> List.iter _task_fail failed
+    | _ -> List.iter _task_result_info failed
   in
+  let passed = List.map result_name passed in
+  let failed = List.map result_name failed in
   (Some bctx, passed, failed)

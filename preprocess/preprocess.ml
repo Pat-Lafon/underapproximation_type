@@ -105,7 +105,8 @@ let struct_check_program items =
             (item :: defs, measures, specs)
         | MFuncImpRaw { name; if_rec; body } ->
             (defs, (name, if_rec, body) :: measures, specs)
-        | MAxiom _ | MRty _ | MLocalRty _ -> (defs, measures, item :: specs))
+        | MAxiom _ | MRty _ | MLocalRty _ | MCheckValid _ | MCheckSat _ ->
+            (defs, measures, item :: specs))
       items ([], [], [])
   in
   let base_ctx, typed_defs = struct_check builtin_basic_ctx defs in
