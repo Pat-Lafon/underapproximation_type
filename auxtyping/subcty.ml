@@ -123,16 +123,8 @@ let sub_cty ou rctx cty1 cty2 =
           TypecheckerLog.auxtyping @@ fun _ ->
           Printf.printf "let[@valid] tmp = %s\n" (layout_prop_source query)
         in
-        let valid =
-          Prover.check_valid_bool [%here] ~functional_bodies query
-            ~coerce_to:false
-        in
-        (* [sub_cty] runs on the synthesis enumeration path, where most checks
-           fail by design; gate the dump so it doesn't flood. *)
-        (if not valid then
-           ZUtilsLog.queries @@ fun _ ->
-           Emit.emit_query (Prover.select_axioms query) query);
-        valid)
+        Prover.check_valid_bool [%here] ~functional_bodies query
+          ~coerce_to:false)
   in
   let () = Statistic.stat_query_time (rctx.task_name, time) in
   res

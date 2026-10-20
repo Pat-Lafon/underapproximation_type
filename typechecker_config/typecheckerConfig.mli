@@ -8,7 +8,6 @@ type prim_path = {
 type t = {
   prim_path : prim_path;
   log_tags : string list;
-  lean_preamble : string option;
   coq_preamble : string option;
 }
 
@@ -16,5 +15,4 @@ type t = {
 val bootstrap : Yojson.Safe.t -> unit
 val get : unit -> t
 val get_log_tags : unit -> string list
-val get_lean_preamble_path : unit -> string option
 val get_coq_preamble_path : unit -> string option

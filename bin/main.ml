@@ -111,7 +111,6 @@ let commands =
       one_param_file "subtype-check" subtype_check;
       one_param_file "nonempty-check" nonempty_check;
       one_param_file "type-check" type_check;
-      config_only "export-axioms-lean" (export_axioms `Lean);
       config_only "export-axioms-coq" (export_axioms `Coq);
       config_only "export-measures-smt" export_measures_smt;
       config_only "export-axioms-smt" export_axioms_smt;

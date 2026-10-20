@@ -12,7 +12,6 @@
   to_judgement
   to_item
   export_helper
-  lean_export
   coq_export
   frontend_opt)
  (preprocess

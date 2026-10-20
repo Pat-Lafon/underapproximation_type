@@ -9,7 +9,6 @@ type prim_path = {
 type t = {
   prim_path : prim_path;
   log_tags : string list; [@default []]
-  lean_preamble : string option; [@default None]
   coq_preamble : string option; [@default None]
 }
 [@@deriving of_yojson { strict = true }]
@@ -27,5 +26,4 @@ let bootstrap root =
   set (of_meta_config root)
 
 let get_log_tags () = (get ()).log_tags
-let get_lean_preamble_path () = (get ()).lean_preamble
 let get_coq_preamble_path () = (get ()).coq_preamble
