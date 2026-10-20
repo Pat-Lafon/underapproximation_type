@@ -4,12 +4,10 @@ open Sugar
 open Ast
 open Measure
 
-(* What distinguishes the Lean and Coq export twins: leaf tokens and statement
-   templates. The layout targets Lean's significant indentation; Gallina is
-   whitespace-insensitive, so the Lean-valid layout is also valid Coq. *)
+(* What a renderer supplies: leaf tokens and statement templates. *)
 type setting = {
   ctor_ref : string -> string;
-      (* constructor name to its reference token: Coq [Cons], Lean [.Cons] *)
+      (* constructor name to its reference token, e.g. Coq [Cons] *)
   primop : string -> string;
   not_ : string -> string;
   eq : string -> string -> string -> Nt.t -> string;
@@ -144,7 +142,6 @@ let rec render_rt_ (st : setting) (t : (Nt.t, Nt.t raw_term) typed) : string =
 and render_atom_ (st : setting) (t : (Nt.t, Nt.t raw_term) typed) : string =
   match t.x with
   | Var _ | Const _ -> render_rt_ st t
-  (* Continuation lines clear the opening paren so Lean's layout still parses. *)
   | _ -> spf "(%s)" (reindent ~first:false 1 (render_rt_ st t))
 
 and render_appop_ (st : setting) (op : (Nt.t, op) typed)
