@@ -51,7 +51,7 @@ let simplify_sub_typectx ctx (rty1, rty2) =
   in
   aux ([], ctx) (rty1, rty2)
 
-let sub_cty ?(on_unknown = Prover.Assume_fails) ou rctx cty1 cty2 =
+let sub_cty ?(on_unknown = Prover.Reject) ou rctx cty1 cty2 =
   let ctx_list, cty1, cty2 = simplify_sub_typectx rctx.rty_ctx (cty1, cty2) in
   let () =
     TypecheckerLog.auxtyping @@ fun _ ->
@@ -133,7 +133,7 @@ let sub_cty ?(on_unknown = Prover.Assume_fails) ou rctx cty1 cty2 =
 *)
 let lazy_emptiness_check = false
 
-let non_emptiness_cty ?(on_unknown = Prover.Assume_holds) rctx cty =
+let non_emptiness_cty ?(on_unknown = Prover.Accept) rctx cty =
   if lazy_emptiness_check then true
   else
     let overctx, underctx = build_wf_ctx (Typectx.ctx_to_list rctx.rty_ctx) in
