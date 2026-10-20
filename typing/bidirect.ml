@@ -37,7 +37,7 @@ type checkers = {
     rctx -> (Nt.t, Nt.t term) typed -> (Nt.t rty, Nt.t rty term) typed option;
 }
 
-let type_check_group (bctx : built_in_ctx) =
+let type_check_group ?on_unknown (bctx : built_in_ctx) =
   let _find_in_ctx loc (rctx : rctx) (id : (Nt.t, string) typed) =
     let res = lookup_ctxs [ rctx.rty_ctx; bctx.builtin_ctx ] id.x in
     match res with
@@ -54,7 +54,7 @@ let type_check_group (bctx : built_in_ctx) =
   in
   let subtyping rctx (rty1, rty2) =
     pprint_typing_subtyping rctx (rty1, rty2);
-    sub_rty rctx (rty1, rty2)
+    sub_rty ?on_unknown rctx (rty1, rty2)
   in
   let rec value_type_infer (rctx : rctx) (v : (Nt.t, Nt.t value) typed) :
       (Nt.t rty, Nt.t rty value) typed option =
@@ -319,7 +319,7 @@ let type_check_group (bctx : built_in_ctx) =
               Some (CField { rd; field })#:rty
           | CLetE { rhs; lhs; body } ->
               let* rhs' = term_type_infer rctx rhs in
-              if not (non_emptiness_rty rctx rhs'.ty) then (
+              if not (non_emptiness_rty ?on_unknown rctx rhs'.ty) then (
                 _warinning_nonemptiness_error [%here] rhs'.ty;
                 _warinning_typing_error [%here] (layout_term rhs.x, rhs'.ty);
                 None)
@@ -356,7 +356,10 @@ let type_check_group (bctx : built_in_ctx) =
                 | Some (recname, bound_cty), VVar id
                   when String.equal id.x recname ->
                     let bound_rty = cty_to_overrty bound_cty in
-                    if not (sub_rty_as_over rctx (apparg_rty, bound_rty)) then (
+                    if
+                      not
+                        (sub_rty_as_over ?on_unknown rctx (apparg_rty, bound_rty))
+                    then (
                       _warinning_subtyping_error [%here] (apparg_rty, bound_rty);
                       raise RecArgCheckFailure)
                 | _ -> ()
@@ -455,13 +458,13 @@ let type_check_group (bctx : built_in_ctx) =
         match e.x with
         | CVal _ -> _die [%here]
         | CErr ->
-            if sub_rty rctx (mk_bot_underrty (erase_rty rty), rty) then
-              Some CErr#:rty
+            if sub_rty ?on_unknown rctx (mk_bot_underrty (erase_rty rty), rty)
+            then Some CErr#:rty
             else None
         | CLetDeTuple _ -> failwith "unimp"
         | CApp _ | CAppOp _ | CMatch _ | CLetE _ | CRecord _ | CField _ ->
             let* e' = term_type_infer rctx e in
-            if sub_rty rctx (e'.ty, rty) then Some e'.x#:rty
+            if sub_rty ?on_unknown rctx (e'.ty, rty) then Some e'.x#:rty
             else (
               _warinning_subtyping_error [%here] (e'.ty, rty);
               _warinning_typing_error [%here] (layout_typed_term e, rty);
@@ -527,8 +530,10 @@ let term_type_check bctx ctx (value, rty) =
   or_rec_arg_failure (fun () ->
       (type_check_group bctx).term_type_check ctx value rty)
 
-let value_type_infer bctx ctx v =
-  or_rec_arg_failure (fun () -> (type_check_group bctx).value_type_infer ctx v)
+let value_type_infer ?on_unknown bctx ctx v =
+  or_rec_arg_failure (fun () ->
+      (type_check_group ?on_unknown bctx).value_type_infer ctx v)
 
-let term_type_infer bctx ctx e =
-  or_rec_arg_failure (fun () -> (type_check_group bctx).term_type_infer ctx e)
+let term_type_infer ?on_unknown bctx ctx e =
+  or_rec_arg_failure (fun () ->
+      (type_check_group ?on_unknown bctx).term_type_infer ctx e)
