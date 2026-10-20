@@ -51,7 +51,7 @@ let simplify_sub_typectx ctx (rty1, rty2) =
   in
   aux ([], ctx) (rty1, rty2)
 
-let sub_cty ou rctx cty1 cty2 =
+let sub_cty ?(on_unknown = Prover.Assume_fails) ou rctx cty1 cty2 =
   let ctx_list, cty1, cty2 = simplify_sub_typectx rctx.rty_ctx (cty1, cty2) in
   let () =
     TypecheckerLog.auxtyping @@ fun _ ->
@@ -123,8 +123,7 @@ let sub_cty ou rctx cty1 cty2 =
           TypecheckerLog.auxtyping @@ fun _ ->
           Printf.printf "let[@valid] tmp = %s\n" (layout_prop_source query)
         in
-        Prover.check_valid_bool [%here] ~functional_bodies query
-          ~coerce_to:false)
+        Prover.check_valid_bool [%here] ~functional_bodies query ~on_unknown)
   in
   let () = Statistic.stat_query_time (rctx.task_name, time) in
   res
@@ -134,7 +133,7 @@ let sub_cty ou rctx cty1 cty2 =
 *)
 let lazy_emptiness_check = false
 
-let non_emptiness_cty rctx cty =
+let non_emptiness_cty ?(on_unknown = Prover.Assume_holds) rctx cty =
   if lazy_emptiness_check then true
   else
     let overctx, underctx = build_wf_ctx (Typectx.ctx_to_list rctx.rty_ctx) in
@@ -170,7 +169,7 @@ let non_emptiness_cty rctx cty =
             TypecheckerLog.auxtyping @@ fun _ ->
             Printf.printf "let[@sat] tmp = %s\n" (layout_prop_source query)
           in
-          Prover.check_sat_bool [%here] ~functional_bodies query ~coerce_to:true)
+          Prover.check_sat_bool [%here] ~functional_bodies query ~on_unknown)
     in
     let () = Statistic.stat_query_time (rctx.task_name, time) in
     res
