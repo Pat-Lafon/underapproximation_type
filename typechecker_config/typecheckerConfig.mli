@@ -8,11 +8,9 @@ type prim_path = {
 type t = {
   prim_path : prim_path;
   log_tags : string list;
-  coq_preamble : string option;
 }
 
 (* Populates the zutils + typechecker sections. *)
 val bootstrap : Yojson.Safe.t -> unit
 val get : unit -> t
 val get_log_tags : unit -> string list
-val get_coq_preamble_path : unit -> string option

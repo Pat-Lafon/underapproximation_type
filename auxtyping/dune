@@ -9,7 +9,7 @@
   statistic
   CoverageType.typechecker_config
   CoverageType.measure)
- (modules subcty subrty tyfunc wellfound emit auxtyping)
+ (modules subcty subrty tyfunc wellfound auxtyping)
  (preprocess
   (pps
    ppx_optcomp

@@ -66,14 +66,6 @@ let one_param_file message f =
   in
   (message, cmd)
 
-(* [load_bctx] registers every axiom into the prover, which [all_axioms] reads
-   back. *)
-let export_axioms backend oc =
-  let _ = Preprocess.load_bctx () in
-  Auxtyping.Emit.(emit_axiom_preamble (pieces backend))
-    oc
-    (Prop.Prover.all_axioms ())
-
 let export_measures_smt oc =
   ignore (Preprocess.load_bctx ());
   Out_channel.output_string oc (Measure.render_smtlib ())
@@ -111,7 +103,6 @@ let commands =
       one_param_file "subtype-check" subtype_check;
       one_param_file "nonempty-check" nonempty_check;
       one_param_file "type-check" type_check;
-      config_only "export-axioms-coq" (export_axioms `Coq);
       config_only "export-measures-smt" export_measures_smt;
       config_only "export-axioms-smt" export_axioms_smt;
     ]

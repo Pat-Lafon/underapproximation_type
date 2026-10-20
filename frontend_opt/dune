@@ -2,7 +2,7 @@
  (public_name CoverageType.frontend_opt)
  (name frontend_opt)
  (wrapped true)
- (libraries ast core zutils measure)
+ (libraries ast core zutils)
  (modules
   common
   to_raw_term
@@ -11,8 +11,6 @@
   to_type_dec
   to_judgement
   to_item
-  export_helper
-  coq_export
   frontend_opt)
  (preprocess
   (pps
