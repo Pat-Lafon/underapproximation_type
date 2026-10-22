@@ -51,11 +51,10 @@ let instantiate_prop (p, sol) =
     | Not p -> Not (aux p)
     | And ps -> And (List.map aux ps)
     | Or ps -> Or (List.map aux ps)
-    | Iff (p1, p2) -> Iff (aux p1, aux p2)
     | Forall { qv; body } -> Forall { qv; body = aux body }
     | Exists { qv; body } -> Exists { qv; body = aux body }
     | Lit lit -> instantiate_lit (p, sol) lit
-    | Cmp _ as p -> p
+    | Cmp (op, p1, p2) -> Cmp (op, aux p1, aux p2)
   in
   aux
 

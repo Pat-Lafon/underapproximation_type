@@ -12,7 +12,7 @@ open Common
 let pprint_phi (phi : 't prop) =
   let res =
     match phi with
-    | Cmp (Eq, a, b) ->
+    | Cmp (Eq, Lit a, Lit b) ->
         let* v = typed_lit_force_avar_opt a in
         let* c = typed_lit_force_ac_opt b in
         if String.equal v.x default_v then Some c else None
