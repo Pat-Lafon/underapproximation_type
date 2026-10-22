@@ -57,13 +57,14 @@ module Alpha_equal = struct
   open Zutils
   open Language
 
-  (* [a:{int} → b:{int} → [v:bool | v == (l == r)]] *)
+  (* [a:{int} → b:{int} → [v:bool | v <=> (l == r)]] *)
   let rty a b l r =
     let arr arg retty =
       RtyArr { argrty = mk_top_overrty Nt.int_ty; arg; retty }
     in
     let eq = mk_int_l1_eq_l2 (AVar l#:Nt.int_ty) (AVar r#:Nt.int_ty) in
-    arr a (arr b (mk_eq_lit_underrty eq#:Nt.bool_ty))
+    let phi = Iff (lit_to_prop (AVar default_v#:Nt.bool_ty), eq) in
+    arr a (arr b (RtyBase { ou = Under; cty = { nty = Nt.bool_ty; phi } }))
 
   let%test "alpha_equal_rty: renamed binders" =
     Typing.alpha_equal_rty (rty "x" "y" "x" "y") (rty "a" "b" "a" "b")

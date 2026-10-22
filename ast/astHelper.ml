@@ -306,13 +306,9 @@ let rec value_to_lit loc = function
       ATu lits
   | _ -> _die loc
 
-let mk_eq_lit_prop lit =
-  lit_to_prop @@ mk_lit_eq_lit [%here] (AVar default_v#:lit.ty) lit.x
-
-let mk_eq_var_prop x = lit_to_prop (mk_var_eq_var [%here] default_v#:x.ty x)
-
-let mk_eq_c_prop c =
-  lit_to_prop (mk_var_eq_c [%here] default_v#:(constant_to_nt c) c)
+let mk_eq_lit_prop lit = mk_lit_eq_lit [%here] (AVar default_v#:lit.ty) lit.x
+let mk_eq_var_prop x = mk_var_eq_var [%here] default_v#:x.ty x
+let mk_eq_c_prop c = mk_var_eq_c [%here] default_v#:(constant_to_nt c) c
 
 let mk_eq_lit_cty x = { nty = x.ty; phi = mk_eq_lit_prop x }
 let mk_eq_tvar_cty x = { nty = x.ty; phi = mk_eq_var_prop x }

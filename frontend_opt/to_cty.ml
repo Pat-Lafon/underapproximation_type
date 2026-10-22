@@ -11,10 +11,8 @@ open Common
 
 let pprint_phi (phi : 't prop) =
   let res =
-    let* lit = prop_force_typed_lit_opt phi in
-    let* args = typed_lit_force_aappop_opt (lit, "==") in
-    match args with
-    | [ a; b ] ->
+    match phi with
+    | Cmp (Eq, a, b) ->
         let* v = typed_lit_force_avar_opt a in
         let* c = typed_lit_force_ac_opt b in
         if String.equal v.x default_v then Some c else None

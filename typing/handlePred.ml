@@ -55,6 +55,7 @@ let instantiate_prop (p, sol) =
     | Forall { qv; body } -> Forall { qv; body = aux body }
     | Exists { qv; body } -> Exists { qv; body = aux body }
     | Lit lit -> instantiate_lit (p, sol) lit
+    | Cmp _ as p -> p
   in
   aux
 
